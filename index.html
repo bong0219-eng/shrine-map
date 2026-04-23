@@ -2161,8 +2161,7 @@ html.retreat-mode .filter-btn.active {
     </div>
 </div>
 <script>
-// --- [Fix 1] Reliable Back Button Logic ---
-// We push a history state when leaving the cover so the back button has something to pop.
+// --- Back handling normalized ---
 function hideCoverAndRun(callback) {
   var cv = document.getElementById('cover');
   if (cv) {
@@ -2178,27 +2177,10 @@ function hideCoverAndRun(callback) {
   }
 }
 
-/* ── 뒤로가기 핸들러 (절대원칙: 커버에서만 앱탈출) ── */
-document.addEventListener('backbutton', function(e) {
-  e.preventDefault();
-  _doBack();
-}, false);
-
-window.addEventListener('popstate', function(e) {
-  if (document.documentElement.classList.contains('app-active')) {
-    // 앱 내부 → 스택 재유지 후 커버 이동
-    try { history.pushState({_keep:1}, '', location.pathname + '#app'); } catch(x){}
-    goToCover();
-  }
-  // 커버 상태 → 기본 동작 허용 (앱 탈출)
-});
-
-function _doBack() {
-  if (document.documentElement.classList.contains('app-active')) {
-    goToCover();
-  }
+// 앱 내부 뒤로가기는 아래의 _handleBack() 단일 로직만 사용
+function handleBack() {
+  if (typeof _handleBack === 'function') _handleBack();
 }
-function handleBack() { _doBack(); }
 
 (function(){
   const cover = document.getElementById('cover');
@@ -2344,6 +2326,7 @@ function openPrayerBook(){
   const cv=$('cover');
   if(cv){ cv.style.opacity='0'; cv.style.display='none'; }
   document.documentElement.classList.add('app-active');
+  _screen='map';
   view.classList.add('open');
   try{
     if(typeof window.initPrayerView==='function'){ window.initPrayerView(); }
@@ -2362,6 +2345,8 @@ function openPrayerBook(){
 function closePrayerView(){
   const view=$('prayer-view');
   if(view) view.classList.remove('open');
+  if(typeof window.prCloseDetail==='function'){ try{ window.prCloseDetail(true); }catch(e){} }
+  goToCover();
 }
 
 function openDioceseView(){
@@ -2725,26 +2710,37 @@ function cvInstall(){
 })();
 
 function _handleBack(){
-  if($('exit-dlg').classList.contains('open')){
-  closeExitDlg(); return;
+  if($('exit-dlg') && $('exit-dlg').classList.contains('open')){
+    closeExitDlg(); return;
   }
-  if($('srch-modal').classList.contains('open')){
-  closeSearchModal(); return;
+  if($('srch-modal') && $('srch-modal').classList.contains('open')){
+    closeSearchModal(); return;
   }
-  if($('info-card').classList.contains('open')){
-  closeInfoCard(); return;
+
+  var prayerView = $('prayer-view');
+  var prayerDetail = $('prayer-detail');
+  if(prayerView && prayerView.classList.contains('open')){
+    if(prayerDetail && prayerDetail.classList.contains('show')){
+      if(typeof window.prCloseDetail === 'function'){ window.prCloseDetail(true); }
+      return;
+    }
+    goToCover(); return;
+  }
+
+  if($('info-card') && $('info-card').classList.contains('open')){
+    closeInfoCard(); return;
   }
   if(_activeTab){
-  closeTab(_activeTab); return;
+    closeTab(_activeTab); return;
   }
   if(_routeMode||_rS||_rE){
-  resetRoute(); _routeMode=false; return;
+    resetRoute(); _routeMode=false; return;
   }
-  if(_screen==='map'){
-  goToCover(); return;
+  if(document.documentElement.classList.contains('app-active')){
+    goToCover(); return;
   }
   if(_screen==='cover'){
-  _showBackToast(); return;
+    _showBackToast(); return;
   }
   _showBackToast();
 }
@@ -2855,6 +2851,9 @@ function goToCover(){
   closeTab(_activeTab);
   closeInfoCard();
   resetRoute();
+  const _pv=$('prayer-view'); if(_pv) _pv.classList.remove('open');
+  const _pd=$('prayer-detail'); if(_pd) _pd.classList.remove('show');
+  const _pdb=$('prayer-detail-body'); if(_pdb) _pdb.scrollTop=0;
   // 모든 마커 지도에서 제거
   _markers.forEach(m=>{if(m)try{m.marker.setMap(null);}catch(e){}});
   _retreatMarkers.forEach(o=>{try{o.marker.setMap(null);}catch(e){}});
@@ -5866,15 +5865,28 @@ function prOpenDetail(prayer){
   const detail = prG('prayer-detail');
   const ttl = prG('prayer-detail-ttl');
   const content = prG('prayer-detail-content');
+  const body = prG('prayer-detail-body');
   if(!detail) return;
   ttl.textContent = prayer.title;
   content.innerHTML = prayer.content.replace(/class="symbol"/g,'class="pr-symbol"');
   detail.classList.add('show');
+
+  if(body) body.scrollTop = 0;
+  detail.scrollTop = 0;
+  requestAnimationFrame(function(){
+    if(body) body.scrollTop = 0;
+    detail.scrollTop = 0;
+  });
 }
 
-window.prCloseDetail = function(){
+window.prCloseDetail = function(skipHistory){
   const detail = prG('prayer-detail');
+  const body = prG('prayer-detail-body');
   if(detail) detail.classList.remove('show');
+  if(body) body.scrollTop = 0;
+  if(!skipHistory && document.documentElement.classList.contains('app-active')){
+    // history를 직접 이동시키지 않고 UI만 닫는다.
+  }
 };
 
 
@@ -5952,6 +5964,7 @@ document.addEventListener('DOMContentLoaded', function(){
 </script>
 </body>
 </html>
+
 
 
 
