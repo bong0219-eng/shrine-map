@@ -317,15 +317,29 @@ function openDioceseView(){
   const frame=$('diocese-frame');
   const loading=$('diocese-loading');
   if(loading) loading.style.display='flex';
-  frame.removeAttribute('src');
-  frame.srcdoc=window.__DIOCESE_EMBED_HTML||'';
+  const html = window.__DIOCESE_EMBED_HTML||'';
+  if(!html){ console.warn('Diocese HTML not loaded'); return; }
+  /* blob URL: file:// 환경에서도 스크립트 실행 허용 */
+  try{
+    const blob = new Blob([html], {type:'text/html'});
+    const url = URL.createObjectURL(blob);
+    frame.src = url;
+    frame._blobUrl = url; // 닫을 때 해제용
+  } catch(e){
+    // fallback: srcdoc
+    frame.removeAttribute('src');
+    frame.srcdoc = html;
+  }
   view.classList.add('open');
 }
 function closeDioceseView(){
   const view=$('diocese-view');
   const frame=$('diocese-frame');
   if(view) view.classList.remove('open');
-  if(frame){ frame.srcdoc=''; frame.src='about:blank'; }
+  if(frame){
+    if(frame._blobUrl){ try{ URL.revokeObjectURL(frame._blobUrl); }catch(e){} frame._blobUrl=null; }
+    frame.src='about:blank';
+  }
 }
 function dioceseLoaded(){
   const loading=$('diocese-loading');
@@ -3496,17 +3510,18 @@ window.initPrayerView = function(){
 <script id="principle-back-controller-20260424">
 /*
  * ═══════════════════════════════════════════════════════════
- *  뒤로가기 대원칙 v4 (이 블록만 수정)
+ *  뒤로가기 대원칙 v5 (이 블록만 수정)
  *
  *  ① 앱 탈출은 커버에서만
  *  ② 카테고리 내 뒤로가기 = 전단계 복귀
  *  ③ 카테고리 제일 아래 레이어 → 커버로
  *  ④ 외부링크 복귀 시 → 원래 상태 복원(닫기만)
  *
- *  트랩 전략:
- *  - MutationObserver로 app-active 클래스 추가 감지 → 자동 pushTrap
- *  - 함수 래핑 없음 (기존 코드 완전 무변경)
- *  - onBack 성공 시마다 트랩 재설치
+ *  트랩 전략: 항상 1개만 유지
+ *  - MutationObserver: app-active 추가 시 1회 push
+ *  - onBack 처리 후 레이어 남으면 1회 push
+ *  - 레이어 없으면 커버 복귀 후 push 없음 (다음 back = 앱탈출)
+ *  - touchstart 리스너 없음 (트랩 누적 방지)
  * ═══════════════════════════════════════════════════════════
  */
 (function(){
@@ -3514,12 +3529,9 @@ window.initPrayerView = function(){
   window.__PRINCIPLE_BACK_INIT__ = true;
 
   function g(id){ return document.getElementById(id); }
+  function appActive(){ return document.documentElement.classList.contains('app-active'); }
 
-  function appActive(){
-    return document.documentElement.classList.contains('app-active');
-  }
-
-  /* ── history 트랩 ── */
+  /* ── history 트랩 (항상 1개) ── */
   try{ history.replaceState({__root__:1},'',location.href); }catch(e){}
 
   function pushTrap(){
@@ -3527,155 +3539,120 @@ window.initPrayerView = function(){
     try{ history.pushState({__back__:1},'',location.href); }catch(e){}
   }
 
-  /* ── app-active 변화 감지 → 자동 트랩 설치 ─────────────────
-     hideCoverAndRun 등 어떤 경로로 앱에 진입하든
-     app-active 클래스가 추가되는 순간 트랩을 건다.
-  ──────────────────────────────────────────────────────────── */
+  /* ── app-active 추가 감지 → 트랩 1개 설치 ── */
   var _wasActive = false;
-  var _observer = new MutationObserver(function(){
-    var nowActive = appActive();
-    if(nowActive && !_wasActive){
-      /* 커버 → 앱 진입 */
-      setTimeout(pushTrap, 60);
-    }
-    _wasActive = nowActive;
-  });
-  _observer.observe(document.documentElement, {attributes:true, attributeFilter:['class']});
+  new MutationObserver(function(){
+    var now = appActive();
+    if(now && !_wasActive) setTimeout(pushTrap, 60);
+    _wasActive = now;
+  }).observe(document.documentElement, {attributes:true, attributeFilter:['class']});
 
-  /* ── 레이어 닫기 함수들 ── */
+  /* ── 레이어 닫기 ── */
   function closePrayerDetail(){
     var el = g('prayer-detail');
     if(!el || !el.classList.contains('show')) return false;
-    el.classList.remove('show');
-    return true;
+    el.classList.remove('show'); return true;
   }
 
-  var EXT_VIEWS = [
-    { id:'missa-view',   fn:'closeMissa'       },
-    { id:'prayer-view',  fn:'closePrayerView'  },
-    { id:'diocese-view', fn:'closeDioceseView' }
+  var EXT = [
+    {id:'missa-view',   fn:'closeMissa'      },
+    {id:'prayer-view',  fn:'closePrayerView' },
+    {id:'diocese-view', fn:'closeDioceseView'}
   ];
-  function closeExternalView(){
-    for(var i=0;i<EXT_VIEWS.length;i++){
-      var v = EXT_VIEWS[i];
-      var el = g(v.id);
+  function closeExternal(){
+    for(var i=0;i<EXT.length;i++){
+      var el = g(EXT[i].id);
       if(!el || !el.classList.contains('open')) continue;
-      try{ if(typeof window[v.fn]==='function') window[v.fn](); }catch(e){}
+      try{ if(typeof window[EXT[i].fn]==='function') window[EXT[i].fn](); }catch(e){}
       el.classList.remove('open');
       return true;
     }
     return false;
   }
 
-  function closeModuleView(){
-    var mods = document.querySelectorAll('.module-view.open');
-    if(!mods.length) return false;
-    mods[mods.length-1].classList.remove('open');
-    return true;
+  function closeModule(){
+    var m = document.querySelectorAll('.module-view.open');
+    if(!m.length) return false;
+    m[m.length-1].classList.remove('open'); return true;
   }
 
-  function closeSearchModal(){
+  function closeSearch(){
     var el = g('srch-modal');
     if(!el || !el.classList.contains('open')) return false;
     try{ if(typeof window.closeSearchModal==='function') window.closeSearchModal(); }catch(e){}
-    el.classList.remove('open');
-    return true;
+    el.classList.remove('open'); return true;
   }
 
-  function closeInfoCardLayer(){
+  function closeCard(){
     var el = g('info-card');
     if(!el || !el.classList.contains('open')) return false;
     try{ if(typeof window.closeInfoCard==='function') window.closeInfoCard(); }catch(e){}
-    el.classList.remove('open');
-    el.style.display = 'none';
-    return true;
+    el.classList.remove('open'); el.style.display='none'; return true;
   }
 
-  function closeRouteSheet(){
+  function closeRoute(){
     var el = g('sheet-route');
     if(!el || !el.classList.contains('open')) return false;
-    el.classList.remove('open');
-    return true;
+    el.classList.remove('open'); return true;
   }
 
-  function closeTrailSheet(){
+  function closeTrail(){
     var el = document.querySelector('.trail-sheet.open');
     if(!el) return false;
-    el.classList.remove('open');
-    return true;
+    el.classList.remove('open'); return true;
   }
 
-  function closeActiveTab(){
+  function closeTab(){
     var names = ['nearby','list','region','route'];
     for(var i=0;i<names.length;i++){
       var sh = g('sheet-'+names[i]);
       if(sh && sh.classList.contains('open')){
-        try{
-          if(typeof window.closeTab==='function') window.closeTab(names[i]);
-          else sh.classList.remove('open');
-        }catch(e){ sh.classList.remove('open'); }
+        try{ if(typeof window.closeTab==='function') window.closeTab(names[i]); else sh.classList.remove('open'); }
+        catch(e){ sh.classList.remove('open'); }
         return true;
       }
     }
     return false;
   }
 
-  /* goToCover 중복 실행 방지 플래그 */
-  var _coverBusy = false;
-
-  function returnToCover(){
-    if(_coverBusy) return;
-    _coverBusy = true;
+  /* ── 커버 복귀 ── */
+  var _busy = false;
+  function toCover(){
+    if(_busy) return;
+    _busy = true;
     try{
       if(typeof window.goToCover==='function') window.goToCover();
-      else {
-        document.documentElement.classList.remove('app-active','parish-mode','retreat-mode');
-      }
-      /* hideCoverAndRun 이 opacity:0 으로 숨기므로 반드시 복원 */
+      else document.documentElement.classList.remove('app-active','parish-mode','retreat-mode');
+      /* hideCoverAndRun이 opacity:0으로 숨기므로 강제 복원 */
       var cv = g('cover');
-      if(cv){
-        cv.style.transition = '';
-        cv.style.opacity    = '1';
-        cv.style.display    = '';
-      }
+      if(cv){ cv.style.transition=''; cv.style.opacity='1'; cv.style.display=''; }
     }catch(e){}
-    setTimeout(function(){ _coverBusy = false; }, 600);
+    setTimeout(function(){ _busy=false; }, 500);
   }
 
   /* ── 메인 핸들러 ── */
   function onBack(ev){
-    /* 커버 상태 → 브라우저 기본(탈출) */
-    if(!appActive()) return;
-    /* 커버 복귀 처리 중 → 무시 */
-    if(_coverBusy) return;
-
+    if(!appActive()) return;   /* 커버 상태 → 브라우저 기본 (탈출) */
+    if(_busy) return;
     if(ev && ev.preventDefault) ev.preventDefault();
     if(ev && ev.stopImmediatePropagation) ev.stopImmediatePropagation();
 
+    /* 레이어 우선순위대로 닫기 */
     if(closePrayerDetail()){ pushTrap(); return; }
-    if(closeExternalView()){ pushTrap(); return; }
-    if(closeModuleView())  { pushTrap(); return; }
-    if(closeSearchModal()) { pushTrap(); return; }
-    if(closeInfoCardLayer()){ pushTrap(); return; }
-    if(closeRouteSheet())  { pushTrap(); return; }
-    if(closeTrailSheet())  { pushTrap(); return; }
-    if(closeActiveTab())   { pushTrap(); return; }
+    if(closeExternal())    { pushTrap(); return; }
+    if(closeModule())      { pushTrap(); return; }
+    if(closeSearch())      { pushTrap(); return; }
+    if(closeCard())        { pushTrap(); return; }
+    if(closeRoute())       { pushTrap(); return; }
+    if(closeTrail())       { pushTrap(); return; }
+    if(closeTab())         { pushTrap(); return; }
 
-    /* 모든 레이어 닫힌 상태 → 커버 복귀 */
-    returnToCover();
-    /* 커버 복귀 후 트랩 없음 → 다음 back = 앱 탈출 */
+    /* 모든 레이어 닫힘 → 커버 복귀, 트랩 없음 */
+    toCover();
   }
 
   window.addEventListener('popstate', onBack, true);
   document.addEventListener('backbutton', onBack, true);
-
-  /* ── 터치/클릭마다 트랩 보강 (타이밍 문제 방지) ──
-     openTab, 카드 클릭 등 앱 내 상호작용 후 트랩이 없을 때 대비.
-     래핑이나 함수 교체 없이 순수 이벤트 리스너만 사용.
-  ── */
-  document.addEventListener('touchstart', function(){
-    setTimeout(function(){ if(appActive()) pushTrap(); }, 150);
-  }, {passive:true, capture:false});
 
 })();
 </script>
