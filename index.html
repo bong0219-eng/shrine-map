@@ -3629,13 +3629,12 @@ window.initPrayerView = function(){
 
   /* ── 커버로 복귀 (원칙 3) ── */
   function returnToCover(){
-    /* 앱의 goToCover() 함수 사용 — 마커 정리 등 내부 상태도 함께 처리 */
-    if(callIfExists('goToCover')) return;
-    /* fallback */
+    /* goToCover() 호출 시도 (마커 정리 등 내부 상태 처리) */
+    try{ if(typeof window.goToCover==='function') window.goToCover(); }catch(e){}
+    /* goToCover 성공/실패 무관하게 항상 커버 복원 보장 */
     document.documentElement.classList.remove('app-active','parish-mode','retreat-mode');
-    var cover = g('cover'), app = g('app');
-    if(app)   app.style.display = 'none';
-    if(cover) cover.style.display = '';
+    var cv = g('cover');
+    if(cv){ cv.style.transition=''; cv.style.opacity='1'; cv.style.display=''; }
   }
 
   /* ── 메인 핸들러 ── */
