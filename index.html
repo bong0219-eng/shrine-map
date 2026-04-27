@@ -3509,20 +3509,16 @@ window.initPrayerView = function(){
 <style id="final-color-fix-20260424">:root{--shrine-main:#243a83 !important;--shrine-main-2:#1f2f6b !important;--shrine-soft:#edf1fb !important;--shrine-soft-2:#f5f7fc !important;--church-main:#4f6f90 !important;--church-main-2:#3f5d7b !important;--church-soft:#e8eff6 !important;--church-soft-2:#f4f7fb !important;--retreat-main:#4f8f6a !important;--retreat-main-2:#3f7e5b !important;--retreat-soft:#e8f3ec !important;--retreat-soft-2:#f4faf6 !important}.sheet-title,.sm-title,#tabbar .tab-btn.active,#tabbar .tab-btn.active .tab-icon,#tabbar .tab-btn.active span{color:#ffffff !important}html:not(.parish-mode):not(.retreat-mode) .tab-btn.active{background:linear-gradient(135deg,#243a83,#1f2f6b) !important;color:#ffffff !important;border-color:transparent !important;box-shadow:0 4px 12px rgba(31,47,107,.18) !important}html.parish-mode .tab-btn.active{background:linear-gradient(135deg,#4f6f90,#3f5d7b) !important;color:#ffffff !important;border-color:transparent !important;box-shadow:0 4px 12px rgba(63,93,123,.18) !important}html.retreat-mode .tab-btn.active{background:linear-gradient(135deg,#4f8f6a,#3f7e5b) !important;color:#ffffff !important;border-color:transparent !important;box-shadow:0 4px 12px rgba(63,126,91,.18) !important}.tab-btn:not(.active){background:#f8fafc !important;color:#64748b !important;border-color:rgba(100,116,139,.22) !important}html:not(.parish-mode):not(.retreat-mode) .sm-tab.active{background:linear-gradient(135deg,#243a83,#1f2f6b) !important;color:#ffffff !important;border-color:transparent !important}html.parish-mode .sm-tab.active{background:linear-gradient(135deg,#4f6f90,#3f5d7b) !important;color:#ffffff !important;border-color:transparent !important}html.retreat-mode .sm-tab.active{background:linear-gradient(135deg,#4f8f6a,#3f7e5b) !important;color:#ffffff !important;border-color:transparent !important}.sm-tab:not(.active){background:#ffffff !important;color:#526274 !important}.filter-btn.active,.sm-fb.on{background:#d6b06a !important;color:#1f2937 !important;border-color:#c59b4d !important;font-weight:800 !important}html:not(.parish-mode):not(.retreat-mode) .filter-btn,html:not(.parish-mode):not(.retreat-mode) .sm-fb,html.parish-mode .filter-btn,html.parish-mode .sm-fb,html.retreat-mode .filter-btn,html.retreat-mode .sm-fb{background:rgba(255,255,255,.12) !important;color:rgba(255,255,255,.92) !important;border-color:rgba(255,255,255,.28) !important}html:not(.parish-mode):not(.retreat-mode) .sheet-hd,html:not(.parish-mode):not(.retreat-mode) .srch-bar,html:not(.parish-mode):not(.retreat-mode) .filter-bar,html:not(.parish-mode):not(.retreat-mode) .region-wrap,html:not(.parish-mode):not(.retreat-mode) .sm-hd,html:not(.parish-mode):not(.retreat-mode) .sm-filter{background:linear-gradient(135deg,#1f2f6b,#243a83) !important}html.parish-mode .sheet-hd,html.parish-mode .srch-bar,html.parish-mode .filter-bar,html.parish-mode .region-wrap,html.parish-mode .sm-hd,html.parish-mode .sm-filter{background:linear-gradient(135deg,#3f5d7b,#4f6f90) !important}html.retreat-mode .sheet-hd,html.retreat-mode .srch-bar,html.retreat-mode .filter-bar,html.retreat-mode .region-wrap,html.retreat-mode .sm-hd,html.retreat-mode .sm-filter{background:linear-gradient(135deg,#3f7e5b,#4f8f6a) !important}.search-bar{background:#d7cfc0 !important}.srch-inner,.sm-si,.search-input,.sm-si input{background:#efe7d7 !important;border-color:#d4c7ad !important;color:#374151 !important}.sm-tab{height:54px !important;min-height:54px !important}.sheet-x,.sm-x{color:rgba(255,255,255,.9) !important}</style>
 <script id="principle-back-controller-20260424">
 /*
- * ═══════════════════════════════════════════════════════════
- *  뒤로가기 대원칙 v5 (이 블록만 수정)
+ * ═══════════════════════════════════════════════════
+ *  뒤로가기 대원칙 v6
+ *  ① 앱탈출은 커버에서만
+ *  ② 카테고리 내 = 전단계 복귀
+ *  ③ 제일 아래 레이어 → 커버
+ *  ④ 외부링크 복귀 → 닫기만
  *
- *  ① 앱 탈출은 커버에서만
- *  ② 카테고리 내 뒤로가기 = 전단계 복귀
- *  ③ 카테고리 제일 아래 레이어 → 커버로
- *  ④ 외부링크 복귀 시 → 원래 상태 복원(닫기만)
- *
- *  트랩 전략: 항상 1개만 유지
- *  - MutationObserver: app-active 추가 시 1회 push
- *  - onBack 처리 후 레이어 남으면 1회 push
- *  - 레이어 없으면 커버 복귀 후 push 없음 (다음 back = 앱탈출)
- *  - touchstart 리스너 없음 (트랩 누적 방지)
- * ═══════════════════════════════════════════════════════════
+ *  핵심: hideCoverAndRun 래핑으로 클릭 즉시 트랩 설치
+ *        (MutationObserver 타이밍 문제 완전 제거)
+ * ═══════════════════════════════════════════════════
  */
 (function(){
   if(window.__PRINCIPLE_BACK_INIT__) return;
@@ -3531,7 +3527,7 @@ window.initPrayerView = function(){
   function g(id){ return document.getElementById(id); }
   function appActive(){ return document.documentElement.classList.contains('app-active'); }
 
-  /* ── history 트랩 (항상 1개) ── */
+  /* 초기 상태 세팅 */
   try{ history.replaceState({__root__:1},'',location.href); }catch(e){}
 
   function pushTrap(){
@@ -3539,13 +3535,28 @@ window.initPrayerView = function(){
     try{ history.pushState({__back__:1},'',location.href); }catch(e){}
   }
 
-  /* ── app-active 추가 감지 → 트랩 1개 설치 ── */
-  var _wasActive = false;
-  new MutationObserver(function(){
-    var now = appActive();
-    if(now && !_wasActive) setTimeout(pushTrap, 60);
-    _wasActive = now;
-  }).observe(document.documentElement, {attributes:true, attributeFilter:['class']});
+  /* ── hideCoverAndRun 래핑 ──────────────────────────────
+     커버→앱 진입 순간 클릭 즉시 동기적으로 트랩 설치.
+     원본 함수 로직은 완전히 보존.
+  ──────────────────────────────────────────────────────── */
+  function _wrapHCR(){
+    var orig = window.hideCoverAndRun;
+    if(typeof orig !== 'function' || orig.__wrapped__) return false;
+    window.hideCoverAndRun = function(cb){
+      /* 클릭과 동시에 트랩 1개 설치 (애니메이션 시작 전) */
+      try{ history.pushState({__back__:1},'',location.href); }catch(e){}
+      orig(cb);
+    };
+    window.hideCoverAndRun.__wrapped__ = true;
+    return true;
+  }
+
+  if(!_wrapHCR()){
+    if(document.readyState==='loading')
+      document.addEventListener('DOMContentLoaded', _wrapHCR);
+    else
+      setTimeout(_wrapHCR, 0);
+  }
 
   /* ── 레이어 닫기 ── */
   function closePrayerDetail(){
@@ -3570,39 +3581,39 @@ window.initPrayerView = function(){
     return false;
   }
 
-  function closeModule(){
+  function closeModuleView(){
     var m = document.querySelectorAll('.module-view.open');
     if(!m.length) return false;
     m[m.length-1].classList.remove('open'); return true;
   }
 
-  function closeSearch(){
+  function closeSearchModal(){
     var el = g('srch-modal');
     if(!el || !el.classList.contains('open')) return false;
     try{ if(typeof window.closeSearchModal==='function') window.closeSearchModal(); }catch(e){}
     el.classList.remove('open'); return true;
   }
 
-  function closeCard(){
+  function closeInfoCard(){
     var el = g('info-card');
     if(!el || !el.classList.contains('open')) return false;
     try{ if(typeof window.closeInfoCard==='function') window.closeInfoCard(); }catch(e){}
     el.classList.remove('open'); el.style.display='none'; return true;
   }
 
-  function closeRoute(){
+  function closeRouteSheet(){
     var el = g('sheet-route');
     if(!el || !el.classList.contains('open')) return false;
     el.classList.remove('open'); return true;
   }
 
-  function closeTrail(){
+  function closeTrailSheet(){
     var el = document.querySelector('.trail-sheet.open');
     if(!el) return false;
     el.classList.remove('open'); return true;
   }
 
-  function closeTab(){
+  function closeActiveTab(){
     var names = ['nearby','list','region','route'];
     for(var i=0;i<names.length;i++){
       var sh = g('sheet-'+names[i]);
@@ -3615,37 +3626,47 @@ window.initPrayerView = function(){
     return false;
   }
 
-  /* ── 커버 복귀 ── */
+  /* ── 커버 복귀 ──────────────────────────────────────────
+     goToCover()와 opacity 복원을 try/catch 분리:
+     goToCover()가 throw 해도 opacity는 반드시 복원됨.
+  ──────────────────────────────────────────────────────── */
   var _busy = false;
   function toCover(){
     if(_busy) return;
     _busy = true;
+    /* 1단계: goToCover 호출 (throw 해도 무관) */
     try{
       if(typeof window.goToCover==='function') window.goToCover();
       else document.documentElement.classList.remove('app-active','parish-mode','retreat-mode');
-      /* hideCoverAndRun이 opacity:0으로 숨기므로 강제 복원 */
-      var cv = g('cover');
-      if(cv){ cv.style.transition=''; cv.style.opacity='1'; cv.style.display=''; }
-    }catch(e){}
+    }catch(e){
+      document.documentElement.classList.remove('app-active','parish-mode','retreat-mode');
+    }
+    /* 2단계: 커버 복원 - 항상 실행 */
+    document.documentElement.classList.remove('app-active','parish-mode','retreat-mode');
+    var cv = g('cover');
+    if(cv){
+      cv.style.transition = '';
+      cv.style.opacity    = '1';
+      cv.style.display    = '';
+    }
     setTimeout(function(){ _busy=false; }, 500);
   }
 
   /* ── 메인 핸들러 ── */
   function onBack(ev){
-    if(!appActive()) return;   /* 커버 상태 → 브라우저 기본 (탈출) */
+    if(!appActive()) return;   /* 커버 → 브라우저 기본(탈출) */
     if(_busy) return;
     if(ev && ev.preventDefault) ev.preventDefault();
     if(ev && ev.stopImmediatePropagation) ev.stopImmediatePropagation();
 
-    /* 레이어 우선순위대로 닫기 */
     if(closePrayerDetail()){ pushTrap(); return; }
     if(closeExternal())    { pushTrap(); return; }
-    if(closeModule())      { pushTrap(); return; }
-    if(closeSearch())      { pushTrap(); return; }
-    if(closeCard())        { pushTrap(); return; }
-    if(closeRoute())       { pushTrap(); return; }
-    if(closeTrail())       { pushTrap(); return; }
-    if(closeTab())         { pushTrap(); return; }
+    if(closeModuleView())  { pushTrap(); return; }
+    if(closeSearchModal()) { pushTrap(); return; }
+    if(closeInfoCard())    { pushTrap(); return; }
+    if(closeRouteSheet())  { pushTrap(); return; }
+    if(closeTrailSheet())  { pushTrap(); return; }
+    if(closeActiveTab())   { pushTrap(); return; }
 
     /* 모든 레이어 닫힘 → 커버 복귀, 트랩 없음 */
     toCover();
