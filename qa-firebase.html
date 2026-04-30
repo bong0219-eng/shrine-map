@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>문의 · 건의 | 가톨릭 앱</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- ★ Firebase SDK (compat) -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+
+<style>
+  /* ── 리셋 & 기본 ── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --blue:   #1D4ED8;
+    --blue-l: #EFF6FF;
+    --blue-b: #BFDBFE;
+    --green:  #2A8040;
+    --green-l:#F0FDF4;
+    --green-b:#BBF7D0;
+    --gray-50:#F8FAFC; --gray-100:#F1F5F9; --gray-200:#E2E8F0;
+    --gray-400:#94A3B8; --gray-500:#64748B; --gray-700:#374151;
+    --gray-900:#0F172A;
+    --radius: 14px; --shadow: 0 2px 12px rgba(0,0,0,0.08);
+  }
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background: var(--gray-50);
+    min-height: 100vh;
+    max-width: 480px;
+    margin: 0 auto;
+    color: var(--gray-900);
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* ── 헤더 ── */
+  #header {
+    background: var(--blue);
+    color: #fff;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    position: sticky; top: 0; z-index: 100;
+    box-shadow: 0 2px 16px rgba(29,78,216,.25);
+  }
+  #back-btn {
+    display: none; background: rgba(255,255,255,.18); border: none;
+    color: #fff; border-radius: 10px; width: 36px; height: 36px;
+    font-size: 18px; cursor: pointer; flex-shrink: 0;
+    align-items: center; justify-content: center;
+  }
+  #back-btn.show { display: flex; }
+  #header-texts .title { font-size: 17px; font-weight: 700; }
+  #header-texts .sub   { font-size: 11px; opacity: .72; margin-top: 2px; }
+  #write-btn {
+    margin-left: auto; background: rgba(255,255,255,.18);
+    border: 1px solid rgba(255,255,255,.35); color: #fff;
+    border-radius: 20px; padding: 6px 15px;
+    font-size: 13px; font-weight: 600; cursor: pointer; white-space: nowrap;
+    font-family: inherit;
+  }
+
+  /* ── 뷰 전환 ── */
+  .view { display: none; padding: 0 0 80px; }
+  .view.active { display: block; }
+
+  /* ── 필터 ── */
+  #filter-bar {
+    display: flex; gap: 6px; padding: 14px 14px 8px;
+    overflow-x: auto; scrollbar-width: none;
+  }
+  #filter-bar::-webkit-scrollbar { display: none; }
+  .filter-btn {
+    flex-shrink: 0; border: 1.5px solid var(--gray-200); border-radius: 20px;
+    padding: 5px 14px; font-size: 13px; background: #fff; color: var(--gray-500);
+    cursor: pointer; font-weight: 500; font-family: inherit; transition: all .15s;
+  }
+  .filter-btn.active { background: var(--blue); color: #fff; border-color: var(--blue); font-weight: 700; }
+
+  /* ── 게시글 목록 ── */
+  #post-list { padding: 4px 14px; }
+  .card {
+    background: #fff; border-radius: var(--radius); padding: 14px 16px;
+    margin-bottom: 10px; box-shadow: var(--shadow); cursor: pointer;
+    animation: fadeUp .25s ease both; transition: transform .12s;
+  }
+  .card:active { transform: scale(.98); }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .card-top { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-bottom: 7px; }
+  .card-title { font-size: 14px; font-weight: 600; color: #1E293B; line-height: 1.45; margin-bottom: 5px; }
+  .card-meta  { font-size: 11px; color: var(--gray-400); }
+  .card-date  { margin-left: auto; font-size: 11px; color: var(--gray-400); }
+
+  /* 배지 공통 */
+  .badge {
+    border-radius: 20px; padding: 2px 9px; font-size: 11px; font-weight: 700;
+    display: inline-flex; align-items: center; gap: 3px;
+  }
+  .badge-문의     { background:#EFF6FF; color:#1D4ED8; border:1px solid #BFDBFE; }
+  .badge-수정제안 { background:#FEF9C3; color:#92400E; border:1px solid #FDE68A; }
+  .badge-개선건의 { background:#F0FDF4; color:#166534; border:1px solid #BBF7D0; }
+  .badge-칭찬     { background:#FDF4FF; color:#7E22CE; border:1px solid #E9D5FF; }
+  .badge-lock  { background:#F3F4F6; color:#6B7280; border:1px solid #E5E7EB; font-weight:500; }
+  .badge-done  { background:#F0FDF4; color:#166534; border:1px solid #BBF7D0; font-weight:600; }
+  .badge-wait  { background:#FEF9C3; color:#92400E; border:1px solid #FDE68A; font-weight:500; }
+
+  /* ── 상세 ── */
+  #detail-view { padding: 16px; }
+  .detail-head {
+    background: #fff; border-radius: var(--radius);
+    padding: 16px; margin-bottom: 12px; box-shadow: var(--shadow);
+  }
+  .detail-title { font-size: 17px; font-weight: 700; color: #1E293B; margin: 10px 0 6px; line-height: 1.4; }
+  .detail-meta  { font-size: 12px; color: var(--gray-400); }
+  .detail-body  {
+    background: #fff; border-radius: var(--radius); padding: 16px;
+    font-size: 14px; line-height: 1.85; color: #334155;
+    margin-bottom: 12px; box-shadow: var(--shadow); white-space: pre-wrap;
+  }
+  .answer-box {
+    background: var(--blue-l); border: 1px solid var(--blue-b);
+    border-radius: var(--radius); padding: 16px; margin-bottom: 12px;
+  }
+  .answer-label { font-size: 12px; font-weight: 700; color: var(--blue); margin-bottom: 8px; }
+  .answer-text  { font-size: 14px; line-height: 1.8; color: #1E3A5F; white-space: pre-wrap; }
+  .pending-box  {
+    background: var(--gray-50); border: 1px dashed var(--gray-200);
+    border-radius: var(--radius); padding: 14px; text-align: center;
+    font-size: 13px; color: var(--gray-500); margin-bottom: 12px;
+  }
+
+  /* ── 관리자 영역 ── */
+  .admin-area { margin-top: 20px; padding-top: 16px; border-top: 1px dashed var(--gray-200); }
+  #admin-toggle-btn {
+    width: 100%; background: none; border: 1px dashed var(--gray-200);
+    color: var(--gray-400); border-radius: 10px; padding: 9px;
+    font-size: 12px; cursor: pointer; font-family: inherit;
+  }
+  #admin-form { background: #FFF8F0; border: 1px solid #FED7AA; border-radius: var(--radius); padding: 14px; }
+  .admin-pin-row { display: flex; gap: 8px; margin-bottom: 10px; }
+  #admin-pin-input { flex: 1; }
+  #admin-pin-check { padding: 0 16px; background: #92400E; color: #fff; border: none; border-radius: 10px; font-size: 13px; cursor: pointer; font-family: inherit; }
+  #answer-textarea {
+    width: 100%; border: 1px solid #FED7AA; border-radius: 10px;
+    padding: 10px 12px; font-size: 13px; line-height: 1.75; resize: vertical;
+    font-family: inherit; background: #fff; min-height: 100px;
+  }
+
+  /* ── 글쓰기 ── */
+  #write-view { padding: 16px; }
+  .field-group { margin-bottom: 18px; }
+  .field-label { display: block; font-size: 13px; font-weight: 700; color: var(--gray-700); margin-bottom: 8px; }
+  .cat-row { display: flex; gap: 8px; flex-wrap: wrap; }
+  .cat-opt {
+    border: 1.5px solid var(--gray-200); border-radius: 20px;
+    padding: 6px 16px; font-size: 13px; background: #fff;
+    color: var(--gray-500); cursor: pointer; font-weight: 500; font-family: inherit;
+    transition: all .15s;
+  }
+  .cat-opt.active-문의     { background:#EFF6FF; color:#1D4ED8; border-color:#BFDBFE; font-weight:700; }
+  .cat-opt.active-수정제안 { background:#FEF9C3; color:#92400E; border-color:#FDE68A; font-weight:700; }
+  .cat-opt.active-개선건의 { background:#F0FDF4; color:#166534; border-color:#BBF7D0; font-weight:700; }
+  .cat-opt.active-칭찬     { background:#FDF4FF; color:#7E22CE; border-color:#E9D5FF; font-weight:700; }
+  input[type=text], input[type=number], textarea {
+    width: 100%; border: 1.5px solid var(--gray-200); border-radius: 10px;
+    padding: 11px 14px; font-size: 14px; font-family: inherit; outline: none;
+    background: #fff; transition: border-color .15s;
+  }
+  input[type=text]:focus, input[type=number]:focus, textarea:focus { border-color: var(--blue); }
+  textarea { resize: vertical; line-height: 1.75; }
+  .char-count { text-align: right; font-size: 11px; color: var(--gray-400); margin-top: 4px; }
+  .secret-box {
+    background: var(--gray-50); border: 1px solid var(--gray-200);
+    border-radius: 12px; padding: 14px;
+  }
+  .secret-check-label { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; cursor: pointer; }
+  .secret-desc { font-size: 11px; color: var(--gray-400); margin: 6px 0 0 24px; }
+  .error-msg { color: #DC2626; font-size: 13px; margin-bottom: 12px; }
+  .notice-txt { text-align: center; font-size: 11px; color: var(--gray-400); margin-top: 12px; }
+
+  /* ── 버튼 ── */
+  .btn-primary {
+    width: 100%; background: var(--blue); color: #fff; border: none;
+    border-radius: 12px; padding: 13px; font-size: 15px; font-weight: 700;
+    cursor: pointer; font-family: inherit; transition: opacity .15s;
+  }
+  .btn-primary:active { opacity: .85; }
+  .btn-secondary {
+    flex: 1; background: var(--gray-100); color: var(--gray-500); border: none;
+    border-radius: 12px; padding: 12px; font-size: 14px; font-weight: 600;
+    cursor: pointer; font-family: inherit;
+  }
+  .btn-row { display: flex; gap: 8px; margin-top: 10px; }
+
+  /* ── 성공 화면 ── */
+  #success-view { padding: 60px 24px; text-align: center; display: none; }
+  #success-view .icon { font-size: 52px; margin-bottom: 16px; }
+  #success-view .ttl  { font-size: 20px; font-weight: 700; color: var(--blue); margin-bottom: 8px; }
+  #success-view .sub  { font-size: 14px; color: var(--gray-500); line-height: 1.8; margin-bottom: 28px; }
+
+  /* ── 로딩 / 빈화면 ── */
+  .loading-box { text-align: center; padding: 60px 0; color: var(--gray-400); font-size: 14px; }
+  .spinner {
+    width: 28px; height: 28px; border: 3px solid var(--gray-200);
+    border-top-color: var(--blue); border-radius: 50%;
+    animation: spin .7s linear infinite; margin: 0 auto 12px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ── PIN 모달 ── */
+  #pin-modal {
+    position: fixed; inset: 0; background: rgba(0,0,0,.55);
+    display: none; align-items: center; justify-content: center;
+    z-index: 200; padding: 24px;
+  }
+  #pin-modal.show { display: flex; }
+  .modal-box {
+    background: #fff; border-radius: 20px; padding: 28px 24px;
+    width: 100%; max-width: 320px; text-align: center;
+    box-shadow: 0 20px 60px rgba(0,0,0,.25);
+  }
+  .modal-icon  { font-size: 40px; margin-bottom: 8px; }
+  .modal-title { font-size: 18px; font-weight: 700; margin-bottom: 6px; }
+  .modal-sub   { font-size: 13px; color: var(--gray-500); margin-bottom: 16px; }
+  #pin-input {
+    text-align: center; letter-spacing: 8px; font-size: 22px;
+    font-weight: 700; margin-bottom: 8px;
+  }
+</style>
+</head>
+<body>
+
+<!-- 헤더 -->
+<div id="header">
+  <button id="back-btn" onclick="goList()">←</button>
+  <div id="header-texts">
+    <div class="title" id="header-title">문의 · 건의</div>
+    <div class="sub">가톨릭 앱 문의 · 수정 · 개선건의</div>
+  </div>
+  <button id="write-btn" onclick="goWrite()">✏️ 글쓰기</button>
+</div>
+
+<!-- 목록 뷰 -->
+<div id="list-view" class="view active">
+  <div id="filter-bar"></div>
+  <div id="post-list"><div class="loading-box"><div class="spinner"></div>불러오는 중…</div></div>
+</div>
+
+<!-- 상세 뷰 -->
+<div id="detail-view-wrap" class="view">
+  <div id="detail-view"></div>
+</div>
+
+<!-- 글쓰기 뷰 -->
+<div id="write-view" class="view">
+  <div class="field-group">
+    <label class="field-label">분류</label>
+    <div class="cat-row" id="cat-row"></div>
+  </div>
+  <div class="field-group">
+    <label class="field-label">제목</label>
+    <input type="text" id="f-title" placeholder="간단하게 제목을 적어주세요" maxlength="50">
+  </div>
+  <div class="field-group">
+    <label class="field-label">내용</label>
+    <textarea id="f-content" rows="6" placeholder="문의 내용이나 건의사항을 자유롭게 적어주세요.&#10;익명으로 접수됩니다." maxlength="500"
+      oninput="document.getElementById('char-cnt').textContent=this.value.length"></textarea>
+    <div class="char-count"><span id="char-cnt">0</span> / 500</div>
+  </div>
+  <div class="field-group">
+    <div class="secret-box">
+      <label class="secret-check-label">
+        <input type="checkbox" id="f-secret" onchange="togglePinField(this.checked)">
+        <span>🔒 비밀글로 작성</span>
+      </label>
+      <div class="secret-desc">목록에는 보이지만 내용은 비밀번호 입력 후 열람 가능합니다</div>
+      <div id="pin-field" style="display:none; margin-top:10px;">
+        <input type="number" id="f-pin" placeholder="숫자 4자리 비밀번호 설정" maxlength="4"
+          oninput="if(this.value.length>4)this.value=this.value.slice(0,4)">
+      </div>
+    </div>
+  </div>
+  <div id="form-error" class="error-msg" style="display:none;"></div>
+  <button class="btn-primary" onclick="submitPost()">접수하기</button>
+  <div class="notice-txt">✓ 익명으로 접수됩니다 &nbsp;·&nbsp; ✓ 개인정보 수집 없음</div>
+</div>
+
+<!-- 접수 완료 -->
+<div id="success-view">
+  <div class="icon">🙏</div>
+  <div class="ttl">접수되었습니다</div>
+  <div class="sub">소중한 의견 감사합니다.<br>빠르게 검토 후 답변드리겠습니다.</div>
+  <button class="btn-primary" onclick="goList()">목록으로</button>
+</div>
+
+<!-- PIN 모달 -->
+<div id="pin-modal">
+  <div class="modal-box">
+    <div class="modal-icon">🔒</div>
+    <div class="modal-title">비밀글입니다</div>
+    <div class="modal-sub">작성 시 설정한 4자리 비밀번호를 입력하세요</div>
+    <input type="number" id="pin-input" placeholder="····" maxlength="4"
+      oninput="if(this.value.length>4)this.value=this.value.slice(0,4)"
+      onkeydown="if(event.key==='Enter')checkPin()">
+    <div id="pin-error" class="error-msg" style="display:none;">비밀번호가 틀렸습니다</div>
+    <div class="btn-row">
+      <button class="btn-primary" style="font-size:14px;" onclick="checkPin()">확인</button>
+      <button class="btn-secondary" onclick="closePinModal()">취소</button>
+    </div>
+  </div>
+</div>
+
+
+<script>
+/* ══════════════════════════════════════════════
+   ★ 1. Firebase 설정 — 아래 값만 교체하면 됩니다
+   ══════════════════════════════════════════════ */
+const FIREBASE_CONFIG = {
+  apiKey:            "AIzaSyCGUwhWXTgc09ghEtOcvinpQKrr577zAhM",
+  authDomain:        "catholic-6c7d8.firebaseapp.com",
+  projectId:         "catholic-6c7d8",
+  storageBucket:     "catholic-6c7d8.firebasestorage.app",
+  messagingSenderId: "952327785327",
+  appId:             "1:952327785327:web:1576bc6d678ba42f8a369a"
+};
+
+/* ★ 2. 관리자 비밀번호 (상봉님만 아는 숫자/문자) */
+const ADMIN_PASSWORD = "bong0219";
+
+/* ══════════════════════════════════════════════ */
+
+firebase.initializeApp(FIREBASE_CONFIG);
+const db = firebase.firestore();
+const COL = db.collection("qa_posts");
+
+/* ─── 상수 ─── */
+const CATEGORIES  = ["문의","수정제안","개선건의","칭찬"];
+const ANON_NAMES  = ["익명의 순례자","익명의 신자","익명의 형제","익명의 자매","익명의 교우","익명의 성도"];
+const FILTERS     = ["전체", ...CATEGORIES];
+
+/* ─── 상태 ─── */
+let currentFilter  = "전체";
+let currentPost    = null;
+let pinPendingPost = null;
+let unlockedSet    = new Set();       // 이 세션에서 PIN 통과한 doc ID
+let selectedCat    = "문의";
+let adminUnlocked  = false;
+let unsubscribe    = null;
+
+/* ═══════════════════ 뷰 전환 ═══════════════════ */
+function showView(id) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  const el = document.getElementById(id);
+  if (el) el.classList.add('active');
+
+  const isList   = id === 'list-view';
+  const isDetail = id === 'detail-view-wrap';
+  const isWrite  = id === 'write-view';
+
+  document.getElementById('back-btn').classList.toggle('show', !isList);
+  document.getElementById('write-btn').style.display = isList ? '' : 'none';
+  document.getElementById('success-view').style.display = 'none';
+
+  const titles = { 'list-view':'문의 · 건의', 'detail-view-wrap':'상세보기', 'write-view':'글 작성' };
+  document.getElementById('header-title').textContent = titles[id] || '문의 · 건의';
+}
+
+function goList()   { showView('list-view');  adminUnlocked = false; }
+function goWrite()  {
+  resetForm();
+  showView('write-view');
+}
+function goDetail() { showView('detail-view-wrap'); }
+
+/* ═══════════════════ 필터 바 ═══════════════════ */
+function buildFilterBar() {
+  const bar = document.getElementById('filter-bar');
+  bar.innerHTML = '';
+  FILTERS.forEach(f => {
+    const btn = document.createElement('button');
+    btn.className = 'filter-btn' + (f === currentFilter ? ' active' : '');
+    btn.textContent = f;
+    btn.onclick = () => { currentFilter = f; buildFilterBar(); renderList(window._cachedPosts || []); };
+    bar.appendChild(btn);
+  });
+}
+
+/* ═══════════════════ 목록 렌더링 ═══════════════════ */
+window._cachedPosts = [];
+
+function renderList(posts) {
+  window._cachedPosts = posts;
+  const filtered = currentFilter === '전체' ? posts : posts.filter(p => p.category === currentFilter);
+  const container = document.getElementById('post-list');
+
+  if (filtered.length === 0) {
+    container.innerHTML = '<div class="loading-box" style="color:#94A3B8;">게시글이 없습니다.</div>';
+    return;
+  }
+
+  container.innerHTML = filtered.map((p, i) => {
+    const isSecret  = p.secret && !unlockedSet.has(p.id);
+    const titleHTML = isSecret
+      ? '<span style="color:#9CA3AF">비밀글입니다 · 비밀번호를 입력해주세요</span>'
+      : escHtml(p.title);
+    const statusBadge = p.answered
+      ? '<span class="badge badge-done">✓ 답변완료</span>'
+      : '<span class="badge badge-wait">⏳ 답변대기</span>';
+
+    return `
+      <div class="card" style="animation-delay:${i*0.04}s" onclick="openPost('${p.id}')">
+        <div class="card-top">
+          <span class="badge badge-${p.category}">${p.category}</span>
+          ${p.secret ? '<span class="badge badge-lock">🔒 비밀글</span>' : ''}
+          ${statusBadge}
+          <span class="card-date">${p.date}</span>
+        </div>
+        <div class="card-title">${titleHTML}</div>
+        <div class="card-meta">${escHtml(p.author)}</div>
+      </div>`;
+  }).join('');
+}
+
+/* ═══════════════════ 실시간 구독 ═══════════════════ */
+function subscribeList() {
+  if (unsubscribe) unsubscribe();
+  document.getElementById('post-list').innerHTML =
+    '<div class="loading-box"><div class="spinner"></div>불러오는 중…</div>';
+
+  unsubscribe = COL
+    .orderBy('createdAt', 'desc')
+    .onSnapshot(snap => {
+      const posts = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      renderList(posts);
+    }, err => {
+      console.error(err);
+      document.getElementById('post-list').innerHTML =
+        '<div class="loading-box">데이터를 불러오지 못했습니다.<br>Firebase 설정을 확인해주세요.</div>';
+    });
+}
+
+/* ═══════════════════ 게시글 열기 ═══════════════════ */
+function openPost(id) {
+  const post = window._cachedPosts.find(p => p.id === id);
+  if (!post) return;
+
+  if (post.secret && !unlockedSet.has(id)) {
+    pinPendingPost = post;
+    document.getElementById('pin-input').value = '';
+    document.getElementById('pin-error').style.display = 'none';
+    document.getElementById('pin-modal').classList.add('show');
+    setTimeout(() => document.getElementById('pin-input').focus(), 100);
+  } else {
+    showDetailView(post);
+  }
+}
+
+function showDetailView(post) {
+  currentPost   = post;
+  adminUnlocked = false;
+
+  const isSecret = post.secret && !unlockedSet.has(post.id);
+  const contentHTML = isSecret ? '' : escHtml(post.content);
+
+  document.getElementById('detail-view').innerHTML = `
+    <div style="padding:16px;">
+      <div class="detail-head">
+        <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+          <span class="badge badge-${post.category}">${post.category}</span>
+          ${post.secret ? '<span class="badge badge-lock">🔒 비밀글</span>' : ''}
+          ${post.answered
+            ? '<span class="badge badge-done">✓ 답변완료</span>'
+            : '<span class="badge badge-wait">⏳ 답변대기</span>'}
+        </div>
+        <div class="detail-title">${escHtml(post.title)}</div>
+        <div class="detail-meta">${escHtml(post.author)} · ${post.date}</div>
+      </div>
+
+      <div class="detail-body">${contentHTML}</div>
+
+      ${post.answered && post.answer ? `
+        <div class="answer-box">
+          <div class="answer-label">🙏 운영자 답변</div>
+          <div class="answer-text">${escHtml(post.answer)}</div>
+        </div>` : `
+        <div class="pending-box">⏳ 답변을 준비 중입니다. 잠시 기다려 주세요.</div>`}
+
+      <div class="admin-area">
+        <button id="admin-toggle-btn" onclick="toggleAdminArea()">🔧 관리자 답변 달기</button>
+        <div id="admin-form" style="display:none;">
+          <div style="font-size:13px;font-weight:700;color:#92400E;margin-bottom:10px;">관리자 인증 후 답변 작성</div>
+          <div class="admin-pin-row" id="admin-pin-row">
+            <input type="password" id="admin-pin-input" placeholder="관리자 비밀번호" style="flex:1;">
+            <button id="admin-pin-check" onclick="verifyAdmin()">확인</button>
+          </div>
+          <div id="admin-write-area" style="display:none;">
+            <textarea id="answer-textarea" rows="4" placeholder="답변을 입력하세요…">${escHtml(post.answer || '')}</textarea>
+            <div class="btn-row">
+              <button class="btn-primary" style="font-size:14px;" onclick="submitAnswer()">답변 등록</button>
+              <button class="btn-secondary" onclick="toggleAdminArea()">취소</button>
+            </div>
+          </div>
+          <div id="admin-error" class="error-msg" style="display:none;margin-top:8px;"></div>
+        </div>
+      </div>
+    </div>`;
+
+  goDetail();
+}
+
+/* ═══════════════════ PIN 모달 ═══════════════════ */
+function checkPin() {
+  const val = document.getElementById('pin-input').value;
+  if (val === pinPendingPost.pin) {
+    unlockedSet.add(pinPendingPost.id);
+    closePinModal();
+    showDetailView(pinPendingPost);
+  } else {
+    document.getElementById('pin-error').style.display = 'block';
+    document.getElementById('pin-input').value = '';
+    document.getElementById('pin-input').focus();
+  }
+}
+function closePinModal() {
+  document.getElementById('pin-modal').classList.remove('show');
+  pinPendingPost = null;
+}
+
+/* ═══════════════════ 관리자 ═══════════════════ */
+function toggleAdminArea() {
+  const form = document.getElementById('admin-form');
+  form.style.display = form.style.display === 'none' ? 'block' : 'none';
+}
+function verifyAdmin() {
+  const pw = document.getElementById('admin-pin-input').value;
+  if (pw === ADMIN_PASSWORD) {
+    document.getElementById('admin-pin-row').style.display = 'none';
+    document.getElementById('admin-write-area').style.display = 'block';
+    document.getElementById('admin-error').style.display = 'none';
+    adminUnlocked = true;
+  } else {
+    document.getElementById('admin-error').textContent = '비밀번호가 틀렸습니다.';
+    document.getElementById('admin-error').style.display = 'block';
+  }
+}
+async function submitAnswer() {
+  if (!adminUnlocked) return;
+  const text = document.getElementById('answer-textarea').value.trim();
+  if (!text) return;
+  try {
+    await COL.doc(currentPost.id).update({ answer: text, answered: true });
+    currentPost = { ...currentPost, answer: text, answered: true };
+    alert('답변이 등록되었습니다.');
+    showDetailView(currentPost);
+  } catch(e) {
+    alert('저장 실패: ' + e.message);
+  }
+}
+
+/* ═══════════════════ 글쓰기 ═══════════════════ */
+function buildCatRow() {
+  const row = document.getElementById('cat-row');
+  row.innerHTML = '';
+  CATEGORIES.forEach(c => {
+    const btn = document.createElement('button');
+    btn.className = 'cat-opt' + (c === selectedCat ? ` active-${c}` : '');
+    btn.textContent = c;
+    btn.onclick = () => { selectedCat = c; buildCatRow(); };
+    row.appendChild(btn);
+  });
+}
+function togglePinField(on) {
+  document.getElementById('pin-field').style.display = on ? 'block' : 'none';
+  if (!on) document.getElementById('f-pin').value = '';
+}
+function resetForm() {
+  selectedCat = '문의';
+  buildCatRow();
+  document.getElementById('f-title').value   = '';
+  document.getElementById('f-content').value = '';
+  document.getElementById('f-secret').checked = false;
+  document.getElementById('f-pin').value    = '';
+  document.getElementById('pin-field').style.display = 'none';
+  document.getElementById('char-cnt').textContent = '0';
+  document.getElementById('form-error').style.display = 'none';
+}
+
+async function submitPost() {
+  const title   = document.getElementById('f-title').value.trim();
+  const content = document.getElementById('f-content').value.trim();
+  const secret  = document.getElementById('f-secret').checked;
+  const pin     = document.getElementById('f-pin').value;
+  const errEl   = document.getElementById('form-error');
+
+  if (!title || !content) {
+    errEl.textContent = '제목과 내용을 입력해주세요.'; errEl.style.display = 'block'; return;
+  }
+  if (secret && pin.length < 4) {
+    errEl.textContent = '비밀번호는 4자리 숫자로 입력해주세요.'; errEl.style.display = 'block'; return;
+  }
+  errEl.style.display = 'none';
+
+  const author = ANON_NAMES[Math.floor(Math.random() * ANON_NAMES.length)];
+  const today  = new Date().toISOString().slice(0, 10);
+
+  const data = {
+    category: selectedCat, title, content, author, date: today,
+    secret, pin: secret ? pin : null,
+    answer: null, answered: false,
+    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+  };
+
+  try {
+    const ref = await COL.add(data);
+    if (secret) unlockedSet.add(ref.id);   // 본인은 바로 열람 가능
+    showView('list-view');
+    document.getElementById('success-view').style.display = 'block';
+    document.getElementById('list-view').style.display = 'none';
+    document.getElementById('header-title').textContent = '접수 완료';
+    document.getElementById('back-btn').classList.add('show');
+  } catch(e) {
+    errEl.textContent = '저장 실패: ' + e.message; errEl.style.display = 'block';
+  }
+}
+
+/* ═══════════════════ 유틸 ═══════════════════ */
+function escHtml(str) {
+  return (str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;').replace(/\n/g,'<br>');
+}
+
+/* ═══════════════════ 초기화 ═══════════════════ */
+buildFilterBar();
+buildCatRow();
+subscribeList();
+</script>
+</body>
+</html>
