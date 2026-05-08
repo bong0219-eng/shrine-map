@@ -6,7 +6,7 @@
   'use strict';
   if(window.__APP_CACHE_LIFECYCLE_GUARD__) return;
   window.__APP_CACHE_LIFECYCLE_GUARD__ = true;
-  var APP_VERSION = '20260508-v5-1';
+  var APP_VERSION = '20260508-v5-2';
   window.APP_VERSION = APP_VERSION;
 
   function now(){ return Date.now ? Date.now() : new Date().getTime(); }
