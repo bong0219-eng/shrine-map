@@ -464,7 +464,7 @@
 })();
 
 (function(){
-  var QA_URL='qa-firebase.html?v=20260508-v4';
+  var QA_URL='qa-firebase.html?v=20260508-v3-2';
   function bindQnaButton(){
     var btn=document.getElementById('qna-cover-btn');
     if(btn){ btn.onclick=function(){ if(typeof oaiSmoothNavigate==='function') oaiSmoothNavigate(QA_URL, 'qna', '문의·건의로 이동 중입니다'); else location.href=QA_URL; }; }
@@ -805,7 +805,7 @@
     if(!cover) return;
     var btn=$('qna-cover-btn');
     if(!btn){btn=document.createElement('button');btn.id='qna-cover-btn';btn.type='button';btn.setAttribute('aria-label','문의·건의');btn.textContent='💬 문의·건의';cover.appendChild(btn);}
-    btn.onclick=function(ev){if(ev) ev.preventDefault();if(typeof window.openQnaView === 'function') window.openQnaView();else if(typeof oaiSmoothNavigate==='function') oaiSmoothNavigate('qa-firebase.html?v=20260508-v4','qna','문의·건의로 이동 중입니다');else location.href='qa-firebase.html?v=20260508-v4';};
+    btn.onclick=function(ev){if(ev) ev.preventDefault();if(typeof window.openQnaView === 'function') window.openQnaView();else if(typeof oaiSmoothNavigate==='function') oaiSmoothNavigate('qa-firebase.html?v=20260508-v3-2','qna','문의·건의로 이동 중입니다');else location.href='qa-firebase.html?v=20260508-v3-2';};
   }
   function removeMissaPopupState(){var mv=$('missa-view');if(mv) mv.classList.remove('open');}
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', function(){restoreQnaButton();removeMissaPopupState();});
