@@ -197,7 +197,7 @@
     var px=parseInt(localStorage.getItem(key)||base,10);
     if(!px || px<15 || px>28) px=base;
     document.documentElement.classList.add('oai-font-global');
-    document.documentElement.style.setProperty('--app-font-scale', String(px/base));
+    document.documentElement.style.setProperty('--app-font-scale', String(Math.max(1, px/base)));
   }catch(e){
     document.documentElement.classList.add('oai-font-global');
     document.documentElement.style.setProperty('--app-font-scale','1');
@@ -300,7 +300,7 @@
   function applyStableScale(){
     var scale=currentPx()/BASE;
     document.documentElement.classList.add('oai-font-global');
-    document.documentElement.style.setProperty('--app-font-scale', String(scale));
+    document.documentElement.style.setProperty('--app-font-scale', String(Math.max(1, scale)));
     var pv=document.getElementById('prayer-view');
     if(pv){
       pv.style.setProperty('--pr-item-fs', currentPx()+'px');
@@ -424,7 +424,7 @@
   function el(id){return document.getElementById(id)}
   function getPx(){var px=parseInt(localStorage.getItem(FONT_KEY)||BASE,10);return (px>=15&&px<=28)?px:BASE;}
   function setPx(px){px=parseInt(px,10)||BASE;var best=SIZES[0],diff=999;SIZES.forEach(function(v){var d=Math.abs(v-px);if(d<diff){diff=d;best=v;}});try{localStorage.setItem(FONT_KEY,String(best));}catch(_){ console.warn("[클로드정리] silent catch"); }return best;}
-  function applyScale(){var scale=getPx()/BASE;document.documentElement.classList.add('oai-font-global');document.documentElement.style.setProperty('--app-font-scale',String(scale));var pv=el('prayer-view');if(pv){pv.style.setProperty('--pr-item-fs',getPx()+'px');pv.style.setProperty('--pr-body-fs',getPx()+'px');pv.style.setProperty('--pr-detail-fs',(getPx()+1)+'px')}}
+  function applyScale(){var scale=getPx()/BASE;document.documentElement.classList.add('oai-font-global');document.documentElement.style.setProperty('--app-font-scale',String(Math.max(1, scale)));var pv=el('prayer-view');if(pv){pv.style.setProperty('--pr-item-fs',getPx()+'px');pv.style.setProperty('--pr-body-fs',getPx()+'px');pv.style.setProperty('--pr-detail-fs',(getPx()+1)+'px')}}
   window.__APP_applyGlobalFont=applyScale;
   window.prAdjustFont=function(delta){var cur=getPx(),i=SIZES.indexOf(cur);if(i<0)i=SIZES.indexOf(BASE);i+=(delta>0?1:-1);if(i<0)i=0;if(i>=SIZES.length)i=SIZES.length-1;setPx(SIZES[i]);applyScale();setTimeout(applyScale,80);setTimeout(applyScale,220);};
   function ensureCoverControls(){var cover=el('cover');if(!cover)return;var box=el('cover-font-controls');if(!box){box=document.createElement('div');box.id='cover-font-controls';cover.appendChild(box);}box.className='pr-font-ctrl';box.innerHTML='<button class="pr-font-btn pr-sm" type="button" aria-label="글자 작게">가</button><div class="pr-font-divider"></div><button class="pr-font-btn pr-lg" type="button" aria-label="글자 크게">가</button>';var sm=box.querySelector('.pr-sm'),lg=box.querySelector('.pr-lg');if(sm)sm.onclick=function(e){e.preventDefault();e.stopPropagation();window.prAdjustFont(-1)};if(lg)lg.onclick=function(e){e.preventDefault();e.stopPropagation();window.prAdjustFont(1)};}
@@ -449,7 +449,7 @@
   function apply(){
     try{
       document.documentElement.classList.add('oai-font-global');
-      document.documentElement.style.setProperty('--app-font-scale',String(px()/BASE));
+      document.documentElement.style.setProperty('--app-font-scale',String(Math.max(1, px()/BASE)));
     }catch(e){ console.warn("[클로드정리]", e); }
   }
   if(typeof window.prAdjustFont!=='function'){
