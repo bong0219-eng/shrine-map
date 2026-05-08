@@ -547,7 +547,7 @@ html.retreat-mode .region-item .nearby-num{background:#4f46e5!important}
 .sheet.from-right.open,.sheet.from-left.open{transform:translate(0,0)!important;transition:transform .28s cubic-bezier(.4,0,.2,1)}
 .sheet.exit-left{transform:translateX(-100%)}
 .sheet.exit-right{transform:translateX(100%)}
-#diocese-view{display:none;position:fixed;inset:0;z-index:10000;background:#EDE8E0;flex-direction:column}
+#diocese-view{display:none;position:fixed;inset:0;z-index:10000;background:#F8F6F2;flex-direction:column}
 #diocese-view.open{display:flex}
 #diocese-bar{background:linear-gradient(135deg,#1f2a44,#2f4167);padding:env(safe-area-inset-top,0) 14px 0;display:flex;align-items:center;justify-content:space-between;min-height:calc(52px + env(safe-area-inset-top,0));flex-shrink:0;border-bottom:2px solid var(--gold)}
 #diocese-bar-title{font-size:16px;font-weight:700;color:var(--gold);letter-spacing:.05em}
@@ -923,7 +923,7 @@ html.oai-font-global .lv-rg,html.oai-font-global .lv-det,html.oai-font-global .l
 html:not(.app-active) #cover{position:fixed;inset:0;z-index:9999;background:#f4efe4;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:env(safe-area-inset-top,0) 0 env(safe-area-inset-bottom,0);overflow:hidden;overflow-y:hidden;background-color:var(--bg-color);color:var(--text-main);font-family:'Apple SD Gothic Neo','Malgun Gothic',sans-serif;transition:none;padding-top:calc(5vh + env(safe-area-inset-top,0px));padding-bottom:0}
 #cover .cover-name{margin:0;font-size:calc(16px * var(--app-font-scale,1));line-height:1.22;font-weight:850;letter-spacing:-.02em}
 /* 커버 글자크기 버튼: 주요기도문 글자크기 버튼과 동일 계열 */
-#cover-font-controls{position:absolute;right:max(24px, calc((100vw - min(440px, calc(100vw - 32px))) / 2 + 18px))!important;top:calc(env(safe-area-inset-top,0px) + clamp(8px, 2vh, 14px))!important;z-index:80;display:flex!important;align-items:center!important;gap:0!important;background:#fffbf2!important;border:1.5px solid #ddd5c8!important;border-radius:9px!important;padding:2px 3px!important;height:36px!important;box-shadow:0 6px 14px rgba(31,42,68,.10)!important}
+#cover-font-controls{position:absolute;right:12px!important;top:calc(env(safe-area-inset-top,0px) + 12px)!important;z-index:80;display:flex!important;align-items:center!important;gap:0!important;background:#fffbf2!important;border:1.5px solid #ddd5c8!important;border-radius:9px!important;padding:2px 3px!important;height:36px!important;box-shadow:0 6px 14px rgba(31,42,68,.10)!important}
 #cover-font-controls .pr-font-btn,
 #cover-font-controls button{background:none!important;border:none!important;width:34px!important;height:28px!important;border-radius:7px!important;display:flex!important;align-items:center!important;justify-content:center;color:#5b4636!important;font-family:inherit!important;font-weight:900!important;line-height:1!important;cursor:pointer}
 #cover-font-controls .pr-sm{font-size:13px}
@@ -1036,7 +1036,7 @@ html.retreat-mode #srch-modal .sm-filter{background:linear-gradient(135deg,#3f7e
   55%      { transform: translateY(-5px); }
 }
 /* 매일미사 외부 iframe 제거 안내 패널 */
-#missa-external-panel{flex:1;display:flex;align-items:flex-start;justify-content:center;background:#EDE8E0;padding:42px 18px 18px;overflow-y:auto}
+#missa-external-panel{flex:1;display:flex;align-items:flex-start;justify-content:center;background:#F8F6F2;padding:42px 18px 18px;overflow-y:auto}
 .missa-external-card{width:min(420px,100%);background:#fff;border:1px solid #E5DED3;border-radius:18px;padding:28px 20px;text-align:center;box-shadow:0 8px 26px rgba(14,21,53,.08)}
 .missa-external-icon{width:54px;height:54px;margin:0 auto 14px;border-radius:16px;background:#F5EFE4;color:#B7791F;display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:900}
 .missa-external-title{font-size:18px;font-weight:800;color:#1F2937;line-height:1.35;margin-bottom:10px}
@@ -1365,9 +1365,9 @@ html.retreat-mode #sm-tab-bar .sm-tab.active{
 }
 
 /* [3] 문의·건의 플로팅 버튼 크기 */
-#diocese-view{background:#EDE8E0;flex-direction:column}
+#diocese-view{background:#F8F6F2;flex-direction:column}
 #diocese-view .module-bar{background:linear-gradient(135deg,#1f2a44,#31446c);flex-shrink:0}
-#diocese-loading{position:absolute;left:0;right:0;bottom:0;top:calc(var(--oai-std-header-h,70px) + env(safe-area-inset-top,0px));display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:60px 20px 0;background:#EDE8E0;z-index:1;pointer-events:none;box-sizing:border-box}
+#diocese-loading{position:absolute;left:0;right:0;bottom:0;top:calc(var(--oai-std-header-h,70px) + env(safe-area-inset-top,0px));display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:60px 20px 0;background:#F8F6F2;z-index:1;pointer-events:none;box-sizing:border-box}
 #diocese-view iframe{flex:1 1 auto!important;min-height:0!important}
 #qna-cover-btn{min-height:52px!important;padding:0 22px!important;font-size:15px!important;font-weight:900!important;gap:9px!important;border-radius:999px!important}
 
@@ -1511,7 +1511,7 @@ html.retreat-mode #sm-tab-bar .sm-tab.active{
   visibility:visible;
   pointer-events:auto;
 }
-#diocese-frame{flex:1 1 auto!important;min-height:0!important;width:100%!important;border:0!important;background:#EDE8E0!important;}
+#diocese-frame{flex:1 1 auto!important;min-height:0!important;width:100%!important;border:0!important;background:#F8F6F2!important;}
 
 
 /* 화면 이동과 첫 진입 표시를 본문 스타일에 통합 */
@@ -2122,7 +2122,7 @@ html:not(.app-active) #cover {
   height         : 100dvh !important;
   min-height     : 100dvh !important;
   max-height     : 100dvh !important;
-  padding-top    : calc(clamp(24px, 5vh, 48px) + env(safe-area-inset-top,0px)) !important;
+  padding-top    : calc(10vh + env(safe-area-inset-top,0px)) !important;
   padding-bottom : 0 !important;
   padding-left   : 0 !important;
   padding-right  : 0 !important;
@@ -2150,7 +2150,7 @@ html.app-active #cover {
   width       : 100% !important;
   max-width   : min(440px, calc(100vw - 32px)) !important;
   margin      : 0 auto !important;
-  padding     : 0 16px calc(clamp(56px, 12vh, 104px) + env(safe-area-inset-bottom,0px)) !important;
+  padding     : 0 16px calc(7vh + env(safe-area-inset-bottom,0px)) !important;
   display     : flex !important;
   flex-direction: column ;
   align-items : stretch !important;
@@ -2224,7 +2224,7 @@ html.app-active #qna-cover-btn { display: none !important; }
 
 /* 작은 화면 보정 */
 @media (max-height:650px) {
-  #cover { padding-top: calc(clamp(20px, 5vh, 42px) + env(safe-area-inset-top,0px)) !important; }
+  #cover { padding-top: calc(10vh + env(safe-area-inset-top,0px)) !important; }
   #cover .cover-header { padding-bottom: 4px !important; }
   #cover .cover-header .cover-title { font-size: clamp(18px,5vw,24px) !important; }
   #cover .cover-header .cover-subtitle { font-size: 10px !important; }
@@ -2234,7 +2234,7 @@ html.app-active #qna-cover-btn { display: none !important; }
   #cover .cover-name,#cover .cv-btn-label { font-size: 12px !important; }
   #cover #qna-cover-btn { min-height: 34px !important; font-size: 11px !important; }
   #cover-main-block {
-    padding-bottom: calc(clamp(48px, 10vh, 88px) + env(safe-area-inset-bottom,0px)) !important;
+    padding-bottom: calc(7vh + env(safe-area-inset-bottom,0px)) !important;
   }
 }
 /* 7. 하단 안내 문구 — 레이아웃 계산에서 제외하고 화면 하단에 고정 */
