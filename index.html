@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="ko" class="oai-font-global">
+<head>
+
+<script>
+(function(){
+  var ua = navigator.userAgent.toLowerCase();
+  if(ua.indexOf('kakaotalk') > -1 && ua.indexOf('android') > -1){
+    var url = location.href;
+    location.href = 'intent://' + url.replace(/https?:\/\//i,'') + '#Intent;scheme=https;package=com.android.chrome;end';
+  }
+})();
+</script>
+<script src="parishes.js?v=20260508-v4"></script>
+<script>
+/* ⚠️ 레포를 반드시 Private으로 설정하세요 */
+window.APP_CONFIG = {
+  KAKAO_JS_KEY:   '07f7989e29fdfb425fff924f36fb3ec0',
+  KAKAO_REST_KEY: '86a3b86e6c1b0210b8e4aba5f6c83b00',
+};
+</script>
+
+<meta charset="UTF-8">
+<meta http-equiv="Cache-Control" content="no-cache, max-age=0, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover,interactive-widget=resizes-visual">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="가톨릭길동무">
+<meta name="application-name" content="가톨릭길동무">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#0e1535">
+<link rel="manifest" href="manifest.json?v=20260508-v4">
+<link rel="apple-touch-icon" href="icon-192x192.png?v=20260508-v4">
+<meta name="format-detection" content="telephone=no">
+<meta name="description" content="가톨릭길동무 - 가톨릭 신앙생활 종합 앱">
+<title>가톨릭길동무</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Crect width=%2232%22 height=%2232%22 fill=%22%230e1535%22/%3E%3Ctext x=%226%22 y=%2226%22 font-size=%2224%22 fill=%22%23d4aa6a%22%3E%E2%9C%9D%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="style.css?v=20260508-v4">
+</head>
+<body>
+<div id="oai-build-marker" aria-label="수정 단계 표시" style="position:fixed!important;top:calc(env(safe-area-inset-top,0px) + 8px)!important;left:8px!important;z-index:2147483647!important;display:flex!important;align-items:center!important;justify-content:center!important;min-width:42px!important;height:34px!important;padding:0 10px!important;border-radius:999px!important;background:#D7263D!important;color:#fff!important;border:3px solid #fff!important;font-size:17px!important;font-weight:900!important;line-height:1!important;text-align:center!important;box-shadow:0 4px 18px rgba(0,0,0,.38)!important;pointer-events:none!important;opacity:1!important;visibility:visible!important;transform:none!important;">4</div>
+<div id="missa-view" role="dialog" aria-modal="true" aria-label="매일미사">
+  <div id="missa-bar">
+    <button id="missa-close" aria-label="매일미사 닫기"><i class="fa-solid fa-arrow-left"></i></button>
+    <span id="missa-bar-title">✝ 매일미사</span>
+  </div>
+</div>
+<div id="exit-dlg"><div class="exit-box"><h3>앱을 종료할까요?</h3><p>성지순례 앱을 종료합니다.</p><div class="exit-btns"><button id="exit-cancel-btn" class="exit-cancel">취소</button><button id="exit-ok-btn" class="exit-ok">종료</button></div></div>
+</div>
+<div id="diocese-view" role="dialog" aria-modal="true" aria-label="관구·교구 지도">
+  <div class="module-bar" id="diocese-module-bar">
+    <div class="module-bar-main">
+      <div class="module-bar-ico">✝</div>
+      <div class="module-bar-txt">
+        <div class="module-bar-title">관구·교구 지도</div>
+        <div class="module-bar-sub">한국천주교 3개관구.16개교구</div>
+      </div>
+    </div>
+    <button id="diocese-close-btn" class="module-close" aria-label="교구 지도 닫기">×</button>
+  </div>
+  <div id="diocese-loading">
+    <div class="missa-spinner"></div>
+    <div class="missa-loading-txt">교구 지도를 불러오는 중…</div>
+  </div>
+  <iframe id="diocese-frame" src="about:blank" style="flex:1;width:100%;border:none;background:#F8F6F2;"></iframe>
+</div>
+<div id="prayer-view" role="dialog" aria-modal="true" aria-label="기도문">
+  <div id="prayer-bar" class="module-bar">
+    <div class="module-bar-main">
+      <div class="module-bar-ico">✝</div>
+      <div class="module-bar-txt">
+        <div id="prayer-bar-ttl" class="module-bar-title">주요 기도문</div>
+        <div id="prayer-bar-sub" class="module-bar-sub">CATHOLIC PRAYERS</div>
+      </div>
+    </div>
+    <a id="goodnews-prayer-btn" href="https://maria.catholic.or.kr/mobile/prayer/" target="_blank" rel="noopener" aria-label="굿뉴스 기도문 바로가기">굿뉴스기도문</a>
+    <button id="prayer-close" class="module-close" aria-label="닫기">×</button>
+  </div>
+  <div id="prayer-tabs"></div>
+  <div id="prayer-search-bar">
+    <div id="prayer-search-wrap">
+      <i class="fa-solid fa-magnifying-glass" id="prayer-search-ico"></i>
+      <input type="text" id="prayer-search-inp" placeholder="기도문 검색" aria-label="기도문 검색" autocomplete="off" autocorrect="off" spellcheck="false">
+    </div>
+    <div class="pr-font-ctrl">
+      <button id="pr-sm-btn-1" class="pr-font-btn pr-sm">가</button>
+      <div class="pr-font-divider"></div>
+      <button id="pr-lg-btn-1" class="pr-font-btn pr-lg">가</button>
+    </div>
+  </div>
+  <div id="prayer-list-view">
+    <ul class="pr-list" id="pr-list-ul"></ul>
+  </div>
+  <div id="prayer-detail">
+    <div id="prayer-detail-hd">
+      <div id="prayer-detail-ttl">기도문</div>
+      <div class="pr-font-ctrl" style="margin-left:auto;">
+        <button id="pr-sm-btn-2" class="pr-font-btn pr-sm">가</button>
+        <div class="pr-font-divider"></div>
+        <button id="pr-lg-btn-2" class="pr-font-btn pr-lg">가</button>
+      </div>
+      <button id="pr-detail-star" class="pr-star" aria-label="즐겨찾기" style="margin-left:6px;font-size:20px;width:34px;height:34px;display:flex;align-items:center;justify-content:center;"><i class="fa-solid fa-star"></i></button>
+      <button id="pr-back-btn" class="pr-back" aria-label="닫기" style="margin-left:4px;font-size:20px;font-weight:900;color:#8a7a66;">×</button>
+    </div>
+    <div id="prayer-detail-body">
+      <div class="pr-content-card" id="prayer-detail-content"></div>
+    </div>
+  </div>
+</div>
+<div id="cover">
+  <div id="cv-pull-modern" aria-hidden="true">
+  <div class="cv-pull-ring">
+    <svg viewBox="0 0 24 24" class="cv-pull-icon">
+      <path d="M20 12a8 8 0 1 1-2.34-5.66" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+      <path d="M20 4v6h-6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </div>
+</div>
+    <div class="cover-header">
+        <div class="cover-subtitle">신앙의 모든 여정을 함께합니다.</div>
+        <h1 class="cover-title">보편 교회 가톨릭</h1>
+    </div>
+    <div id="cover-font-controls" class="pr-font-ctrl" aria-label="글자 크기 조절">
+      <button type="button" id="cover-sm-btn" class="pr-font-btn pr-sm">가</button>
+      <div class="pr-font-divider"></div>
+      <button type="button" id="cover-lg-btn" class="pr-font-btn pr-lg">가</button>
+    </div>
+    <div id="cover-main-block">
+      <div class="cover-grid">
+          <button id="cc-1" class="cover-card">
+              <div class="cover-icon-wrap"><span class="cover-emoji" aria-hidden="true">✝️</span></div>
+              <span class="cover-name">매일미사</span>
+          </button>
+          <button id="cc-2" class="cover-card">
+              <div class="cover-icon-wrap"><span class="cover-emoji" aria-hidden="true">📖</span></div>
+              <span class="cover-name">주요기도문</span>
+          </button>
+          <button id="cc-3" class="cover-card">
+              <div class="cover-icon-wrap"><span class="cover-emoji" aria-hidden="true">🙏</span></div>
+              <span class="cover-name">성지순례 167곳</span>
+          </button>
+          <button id="cc-4" class="cover-card">
+              <div class="cover-icon-wrap"><span class="cover-emoji" aria-hidden="true">⛪</span></div>
+              <span class="cover-name">내 주변 성당찾기</span>
+          </button>
+          <button id="cc-5" class="cover-card">
+              <div class="cover-icon-wrap"><span class="cover-emoji" aria-hidden="true">🌿</span></div>
+              <span class="cover-name oai-retreat-cover-label">피정의집찾기</span>
+          </button>
+          <button id="cc-6" class="cover-card">
+              <div class="cover-icon-wrap"><span class="cover-emoji" aria-hidden="true">🥾</span></div>
+              <span class="cover-name">가톨릭 순례길</span>
+          </button>
+          <button id="cc-7" class="cover-card">
+              <div class="cover-icon-wrap"><span class="cover-emoji" aria-hidden="true">🌐</span></div>
+              <span class="cover-name">가톨릭 웹사이트</span>
+          </button>
+          <button id="cc-8" class="cover-card">
+              <div class="cover-icon-wrap"><span class="cover-emoji" aria-hidden="true">🧭</span></div>
+              <span class="cover-name">관구·교구 알아보기</span>
+          </button>
+      </div>
+      <!-- 문의·건의 버튼 — 그리드와 한 몸체 -->
+      <button id="qna-cover-btn" type="button" aria-label="문의·건의">
+        💬 문의·건의
+      </button>
+    </div>
+
+<!-- 커버 하단 안내문구 — 제일 아래 -->
+<div id="cover-bottom-note" aria-label="앱 안내문구">
+  본 앱은 가톨릭 신자들의 신앙생활을 돕기 위해 만든 비공식 개인 앱입니다.<br>
+  정보는 CBCK, 굿뉴스 및 각 교구 홈페이지를 참고했습니다.
+</div>
+
+<!-- PWA 설치 버튼 (커버 전용) -->
+<button id="pwa-install-btn" aria-label="앱 설치하기">
+  📲 홈 화면에 앱 설치하기
+</button>
+</div>
+<script src="app.js?v=20260508-v4"></script>
+<div id="oai-category-entry-veil" aria-hidden="true"></div>
+<div id="app"><div id="tabbar"><button id="tab-btn-nearby" class="tab-btn" data-tab="nearby"><span class="tab-icon">📍</span><span id="tab-nearby-lbl">내주변</span></button><button id="tab-btn-list" class="tab-btn" data-tab="list"><span class="tab-icon">📋</span><span id="tab-list-lbl">목록</span></button><button id="tab-btn-region" class="tab-btn" data-tab="region"><span class="tab-icon">🔍</span>지역검색
+    </button><button id="tab-btn-route" class="tab-btn" data-tab="route"><span class="tab-icon">🧭</span>길찾기
+    </button></div><div id="map-wrap"><div id="map"></div><button id="loc-btn">📍<span style="font-size:12px">내위치</span></button><div id="legend"><div class="leg-row"><div class="leg-dot" style="background:var(--shrine)"></div><span>성지</span></div><div class="leg-row"><div class="leg-dot" style="background:var(--pilgrim)"></div><span>순례지</span></div><div class="leg-row"><div class="leg-dot" style="background:var(--martyr)"></div><span>순교사적지</span></div></div><div id="route-guide"></div></div><div class="sheet" id="sheet-nearby"><div class="sheet-body" id="nearby-body"><div class="empty-msg">📍 위치를 확인하는 중...</div></div></div><div class="sheet" id="sheet-list"><div class="srch-bar"><div class="srch-inner"><span style="font-size:14px;opacity:.5;margin-right:8px;color:#fff">🔍</span><input type="text" id="list-srch-inp" placeholder="이름, 주소 검색" aria-label="이름, 주소 검색"
+          autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"><button class="srch-x" id="list-srch-x" aria-label="검색어 지우기">×</button></div></div><div class="filter-bar" id="list-filter-bar"></div><div class="sheet-body" id="list-body"></div></div><div class="sheet" id="sheet-region"><div class="region-wrap"><div class="region-row"><div class="srch-inner" style="flex:1"><span style="font-size:14px;opacity:.4;margin-right:8px;color:#fff">🔍</span><input type="text" id="region-inp" aria-label="지역 검색"
+            placeholder="지역명 또는 장소명 입력"
+            style="flex:1;background:none;border:none;outline:none;font-size:13px;color:#fff;font-family:inherit"
+            autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></div><button id="region-search-btn" class="region-search-btn">검색</button></div></div><div class="sheet-body" id="region-body"><div class="empty-msg">
+        🏞 여행지나 숙박 지역을 검색하면<br>근처 성지/성당 목록이 나타납니다
+      </div></div></div><div class="sheet" id="sheet-route"><div id="rs-top" style="padding:12px 14px 0;flex-shrink:0;"><div style="display:flex;align-items:stretch;gap:0;"><div style="flex:1;display:flex;flex-direction:column;gap:6px;"><div id="rs-start-box" class="rs-start-box"><div class="rs-dot" style="background:#1565c0;"></div><span class="rs-lbl empty" id="rs-start-lbl">출발지를 선택하세요</span><button id="rs-myloc-btn" class="rs-myloc"
+              style="flex-shrink:0;">📍 현위치</button></div><div id="rs-end-box" class="rs-end-box"><div class="rs-dot" style="background:#e53935;"></div><span class="rs-lbl empty" id="rs-end-lbl">도착지를 선택하세요</span><button class="rs-x" id="rs-end-x"
+              style="display:none" aria-label="도착지 지우기">×</button></div></div><div style="display:flex;align-items:center;padding-left:10px;"><button id="rs-swap-btn" class="rs-swap-btn" aria-label="출발지·도착지 바꾸기">⇅</button></div></div><button id="rs-search-btn">
+        🔍 경로 검색
+      </button></div><div id="rs-bottom" style="padding:10px 14px 14px;"><div id="rs-result" style="display:none;"><div class="rs-result"><div class="rs-stats"><div class="rs-stat"><div class="rs-stat-lbl">🛣 도로 거리</div><div class="rs-stat-val"><span id="rs-km">—</span><span class="rs-stat-unit"> km</span></div></div><div class="rs-stat"><div class="rs-stat-lbl">🚗 소요시간</div><div class="rs-stat-val"><span id="rs-time">—</span></div></div></div><div class="rs-note" id="rs-note"></div><div class="route-btns"><button id="rs-kakao-btn" class="btn-kakao-route">🗺 카카오내비</button><button id="rs-reset-btn" class="btn-route-reset">↩ 다시선택</button></div></div></div><div class="rs-hint" id="rs-hint">출발·도착을 탭하거나<br>지도에서 마커를 직접 탭하세요</div></div></div><div id="info-card"><div class="ic-header"><div class="ic-name" id="ic-name"></div><button id="ic-close-btn" class="ic-close-btn" aria-label="닫기">×</button></div><div class="ic-body"><div class="ic-meta"><span class="ic-sub" id="ic-sub"></span><span class="ic-type-badge" id="ic-type"></span></div><div class="ic-addr-row"><div class="ic-addr-left"><div class="ic-addr-lbl">주소</div><div class="ic-addr-val" id="ic-addr"></div></div><div class="ic-dist-col" id="ic-dist-col"><div class="ic-dist-lbl">내위치에서 거리</div><div class="ic-dist-box" id="ic-dist"></div></div></div><div class="ic-btn-row"><a class="ic-tel-btn" id="ic-tel-link" href="#" style="display:none"><span class="ic-tel-icon">📞</span><span class="ic-tel" id="ic-tel"></span></a><button id="ic-route-btn" class="ic-route-btn">길찾기</button></div><div class="ic-links" id="ic-links-row" style="display:none;padding:7px 14px 0;"><a class="ic-link-btn ic-hp-btn" id="ic-hp" href="#" target="_blank" style="display:none">🌐 홈페이지</a><button class="ic-link-btn ic-guide-btn" id="ic-guide" style="display:none">✝ 성지 상세페이지</button></div><div style="padding:7px 14px 0;"><button class="btn-kakao-nav" id="ic-kakao-nav">🗺️ 카카오내비</button></div></div></div><div id="srch-modal" role="dialog" aria-modal="true" aria-label="장소 검색"><div class="sm-inner"><div class="sm-hd"><span class="sm-title" id="sm-title">성지 검색</span><button id="sm-close-btn" class="sm-x" aria-label="검색 닫기">×</button></div><div class="sm-filter" id="sm-filter-bar"></div><div class="sm-srch"><div class="sm-si"><span>🔍</span><input type="text" id="sm-inp" placeholder="이름 또는 장소 입력" aria-label="장소 이름 입력"
+            autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></div></div><div style="display:flex;border-bottom:1px solid #eee;flex-shrink:0;background:#f8f9fc;" id="sm-tab-bar"><button class="sm-tab active" id="sm-tab-cat">📋 성지/성당/피정</button><button class="sm-tab" id="sm-tab-place">🔍 일반장소</button></div><div class="sm-body" id="sm-body"></div><div class="sm-body" id="sm-body-place" style="display:none;"></div></div></div></div>
+<div id="web-view" role="dialog" aria-modal="true" aria-label="가톨릭 웹사이트" class="module-view">
+  <div class="module-bar web">
+    <div class="module-bar-main">
+      <div class="module-bar-ico">🌐</div>
+      <div class="module-bar-txt">
+        <div class="module-bar-title">가톨릭 주요 웹사이트 <span class="module-count" id="web-count">28개</span></div>
+        <div class="module-bar-sub">가톨릭 신앙과 정보를 한곳에서 만나보세요</div>
+      </div>
+    </div>
+    <button id="web-close-btn" class="module-close" aria-label="웹사이트 닫기">×</button>
+  </div>
+  <div class="web-body">
+    <div class="web-cats" id="web-cats"></div>
+    <div class="web-list" id="web-list"><div class="web-empty" id="web-empty"><div style="font-size:40px">🔍</div><div>해당 항목이 없습니다.</div></div></div>
+  </div>
+</div>
+<div id="trail-view" role="dialog" aria-modal="true" aria-label="가톨릭 순례길" class="module-view">
+  <div class="module-bar trail">
+    <div class="module-bar-main">
+      <div class="module-bar-ico">✝</div>
+      <div class="module-bar-txt">
+        <div class="module-bar-title">전국 순례길 <span class="module-count" id="trail-count">11개</span></div>
+        <div class="module-bar-sub">CATHOLIC PILGRIMAGE</div>
+      </div>
+    </div>
+    <button id="trail-close-btn" class="module-close" aria-label="순례길 닫기">×</button>
+  </div>
+  <div class="trail-body">
+    <div class="trail-tabs">
+      <button class="trail-tab on" id="trail-tab-map">🗺 지도</button>
+      <button class="trail-tab" id="trail-tab-list">☰ 목록</button>
+    </div>
+    <div class="trail-panel on" id="trail-panel-map">
+      <div id="trail-map"></div>
+      <div class="trail-sheet" id="trail-sheet">
+        <div class="trail-sh-handle"></div>
+        <button id="trail-sh-close-btn" class="trail-sh-close" aria-label="닫기">✕</button>
+        <div class="trail-sh-top">
+          <span class="trail-sh-bdg" id="trail-sh-bdg"></span>
+          <span class="trail-sh-region" id="trail-sh-region"></span>
+        </div>
+        <div class="trail-sh-body" id="trail-sh-body">
+          <div class="trail-sh-ico" id="trail-sh-ico"></div>
+          <div class="trail-sh-info">
+            <div class="trail-sh-name" id="trail-sh-name"></div>
+            <div class="trail-sh-sub" id="trail-sh-sub"></div>
+          </div>
+        </div>
+        <div class="trail-sh-foot" id="trail-sh-foot">
+          <span class="trail-sh-url" id="trail-sh-url"></span>
+          <span class="trail-sh-arr">›</span>
+        </div>
+      </div>
+      <button id="trail-loc-btn" class="trail-loc-btn">📍 내 위치</button>
+    </div>
+    <div class="trail-panel" id="trail-panel-list">
+      <div id="trail-list"></div>
+    </div>
+  </div>
+</div>
+<script src="web.js?v=20260508-v4"></script>
+<script src="prayer.js?v=20260508-v4"></script>
+
+<div id="qna-view" role="dialog" aria-modal="true" aria-label="문의·건의" class="module-view"><div class="module-bar qna"><div class="module-bar-main"><div class="module-bar-ico">✝</div><div class="module-bar-txt"><div class="module-bar-title">문의·건의 / Q&A</div><div class="module-bar-sub">질문, 오류, 수정요청을 남기고 답변을 확인하세요</div></div></div><button id="qna-close-btn" class="module-close" aria-label="문의·건의 닫기">×</button></div><div class="qna-body"><div class="qna-tabs"><button id="qna-tab-write" class="qna-tab on" type="button">작성</button><button id="qna-tab-answers" class="qna-tab" type="button">답변</button></div><div class="qna-list" id="qna-list"></div></div></div>
+
+<script src="patches.js?v=20260508-v4"></script>
+
+<script src="sw-update.js?v=20260508-v4"></script>
+
+
+
+
+
+
+
+
+
+</body>
+</html>
