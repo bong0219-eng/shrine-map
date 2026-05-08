@@ -451,9 +451,10 @@ window.prCloseDetail = window.prCloseDetail;
   var el = document.getElementById('prayer-list-view');
   if (!el) return;
   var sx = 0, sy = 0;
-  var THRESHOLD = 55;
-  var HORIZONTAL_RATIO = 1.2;
-  var SWIPE_BLOCK_MS = 650;
+  var THRESHOLD = 38;
+  var HORIZONTAL_RATIO = 1.04;
+  var SWIPE_BLOCK_MS = 700;
+  var horizontalLocked = false;
 
   function getIdx(cat) { return PR_CATS.indexOf(cat); }
   function blockFavAfterSwipe(){ prSwipeBlockUntil = Date.now() + SWIPE_BLOCK_MS; }
@@ -477,18 +478,23 @@ window.prCloseDetail = window.prCloseDetail;
     if(!e.touches || !e.touches[0]) return;
     sx = e.touches[0].clientX;
     sy = e.touches[0].clientY;
+    horizontalLocked = false;
   }, { passive: true });
   el.addEventListener('touchmove', function(e) {
     if(!e.touches || !e.touches[0]) return;
     var dx = e.touches[0].clientX - sx;
     var dy = e.touches[0].clientY - sy;
-    if(Math.abs(dx) > 10 && Math.abs(dx) > Math.abs(dy) * 1.15) blockFavAfterSwipe();
-  }, { passive: true });
+    if(Math.abs(dx) > 7 && Math.abs(dx) > Math.abs(dy) * 1.03){
+      horizontalLocked = true;
+      blockFavAfterSwipe();
+      if(e.cancelable) e.preventDefault();
+    }
+  }, { passive: false });
   el.addEventListener('touchend', function(e) {
     if (!e.changedTouches || !e.changedTouches[0]) return;
     var dx = e.changedTouches[0].clientX - sx;
     var dy = e.changedTouches[0].clientY - sy;
-    if(Math.abs(dx) > 18 && Math.abs(dx) > Math.abs(dy) * 1.1) blockFavAfterSwipe();
+    if(Math.abs(dx) > 10 && Math.abs(dx) > Math.abs(dy) * 1.02) blockFavAfterSwipe();
     if (!isHorizontalSwipe(dx, dy)) return;
     if (dx < 0) goNext(); else goPrev();
   }, { passive: true });
