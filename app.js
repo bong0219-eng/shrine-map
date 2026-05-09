@@ -23,7 +23,7 @@ function hideCoverAndRun(callback) {
 
 
 function markExternalReturnStabilize(kind){
-  // V13: 외부 사이트 이동은 브라우저 기본 동작에 맡긴다.
+  // V15: 외부 사이트 이동은 브라우저 기본 동작에 맡긴다.
   // 이전 버전 호환을 위해 함수명만 유지하고, 이동 상태는 저장하지 않는다.
 }
 
@@ -43,7 +43,7 @@ function oaiClearExternalNavigationState(){
 }
 
 function oaiSmoothNavigate(url, kind){
-  // V13: 호환용 함수. 보호막/지연/전역 가로채기 없이 즉시 이동한다.
+  // V15: 호환용 함수. 보호막/지연/전역 가로채기 없이 즉시 이동한다.
   if(!url) return;
   try{ document.activeElement && document.activeElement.blur && document.activeElement.blur(); }catch(e){ console.warn("[가톨릭길동무]", e); }
   try{ oaiClearExternalNavigationState(); }catch(e){ console.warn("[가톨릭길동무]", e); }
@@ -51,7 +51,7 @@ function oaiSmoothNavigate(url, kind){
 }
 
 function applyExternalReturnStabilize(){
-  // V13: 복귀 시 화면을 재계산하지 않고, 예전 이동중 잔여 상태만 제거한다.
+  // V15: 복귀 시 화면을 재계산하지 않고, 예전 이동중 잔여 상태만 제거한다.
   try{ oaiClearExternalNavigationState(); }catch(e){ console.warn("[가톨릭길동무]", e); }
 }
 window.addEventListener('pageshow', applyExternalReturnStabilize, true);
@@ -106,7 +106,7 @@ function syncCoverUpdateVersionState(){
     var box = document.getElementById('cover-update-box');
     var marker = document.getElementById('oai-build-marker');
     if(!btn || !box) return;
-    var target = btn.getAttribute('data-target-version') || 'V13';
+    var target = btn.getAttribute('data-target-version') || 'V15';
     var current = '';
     if(window.APP_VERSION) current = String(window.APP_VERSION).trim();
     if(!current && marker) current = String(marker.textContent || '').trim();
@@ -125,7 +125,7 @@ document.addEventListener('DOMContentLoaded', function(){
 }, true);
 window.addEventListener('load', syncCoverUpdateVersionState, true);
 
-// V13: 커버 전용 주요 기능 안내. 별도 파일 없이 작은 자동 안내 + 자세한 카드형 팝업을 제공한다.
+// V15: 커버 전용 주요 기능 안내. 별도 파일 없이 작은 자동 안내 + 자세한 카드형 팝업을 제공한다.
 (function(){
   'use strict';
   var HIDE_DAYS = 7;
@@ -283,7 +283,7 @@ function openDioceseView(opts){
       if(!restore) try{ frame.contentWindow && frame.contentWindow.resetDioceseFirstPage && frame.contentWindow.resetDioceseFirstPage(); }catch(e){ console.warn("[가톨릭길동무]", e); }
       if(typeof dioceseLoaded==='function') dioceseLoaded();
     };
-    frame.src='diocese.html?v=V13';
+    frame.src='diocese.html?v=V15';
   }else if(!restore){
     try{ frame.contentWindow && frame.contentWindow.resetDioceseFirstPage && frame.contentWindow.resetDioceseFirstPage(); }catch(e){ console.warn("[가톨릭길동무]", e); }
   }
@@ -409,7 +409,7 @@ function restoreCoreReturnState(){
     _loadMap();
   }
   const restoreDelay = needMapLoad ? 650 : 30;
-  // V13: 외부사이트 복귀 시 지도 중심을 두 단계로 움직이지 않는다.
+  // V15: 외부사이트 복귀 시 지도 중심을 두 단계로 움직이지 않는다.
   // 인포카드가 있었던 경우에는 처음부터 인포카드 기준 중심으로 복원한다.
   setTimeout(()=>{
     _restoreMapMarkers();
@@ -1027,7 +1027,8 @@ function _onMapReady(){
   _map=new kakao.maps.Map($('map'),{
   center:new _LL(36.2,127.9),level:8
   });
-  _map.addControl(new kakao.maps.ZoomControl(),kakao.maps.ControlPosition.RIGHT);
+  // 지도 확대/축소 버튼은 map-wrap 안의 커스텀 컨트롤로 사용한다.
+  // 카테고리 종료 X와 겹치지 않도록 기본 카카오 줌 컨트롤은 추가하지 않는다.
   kakao.maps.event.addListener(_map,'click',()=>{
   closeInfoCard();
   document.activeElement?.blur();
@@ -1083,6 +1084,16 @@ function closeCategoryToCoverFromMap(){
   _blurAll && _blurAll();
   if(typeof goToCover === 'function') goToCover();
 }
+
+function zoomCategoryMap(delta){
+  if(!_map || typeof _map.getLevel !== 'function' || typeof _map.setLevel !== 'function') return;
+  try{
+    const cur = _map.getLevel();
+    const next = Math.max(1, Math.min(14, cur + delta));
+    if(next !== cur) _map.setLevel(next);
+  }catch(e){ console.warn('[가톨릭길동무]', e); }
+}
+
 
 function openTab(name){
   if(_activeTab===name) return;
@@ -1257,7 +1268,7 @@ function _updateTabBtns(active){
 }
 
 function _getInfoCardCenterTargetY(mapH){
-  // V13: 성지·성당·피정 지도 중심은 항상 인포카드가 올라왔을 때의 기준으로 통일한다.
+  // V15: 성지·성당·피정 지도 중심은 항상 인포카드가 올라왔을 때의 기준으로 통일한다.
   // 실제 인포카드가 아직 없거나 목록 시트만 떠 있어도 같은 시각 중심을 사용해 덜컹거림을 줄인다.
   return Math.round((mapH || 700) * 0.34);
 }
@@ -1440,8 +1451,8 @@ function closeInfoCard(opts){
   else {
     if(_paSelMkr){try{_paSelMkr.setMap(null);}catch(e){ console.warn("[가톨릭길동무]", e); }  _paSelMkr=null;}
   }
-  // V13: 시트 전환으로 닫을 때는 지도 중심을 다시 움직이지 않는다.
-  // 사용자가 X/지도 터치로 인포카드만 닫을 때는 기존 V13 기준 중심을 유지한다.
+  // V15: 시트 전환으로 닫을 때는 지도 중심을 다시 움직이지 않는다.
+  // 사용자가 X/지도 터치로 인포카드만 닫을 때는 기존 V15 기준 중심을 유지한다.
   if(!opts.keepMap && wasItem && wasItem.item && wasItem.item.lat && _map){
     try{ _focusMarkerAboveInfoCard(wasItem.item); }catch(e){ console.warn("[가톨릭길동무]", e); }
   }
@@ -1723,7 +1734,7 @@ function _fitParishNearbyBounds(items, lat, lng){
 function _showParishNearbyMarkersOnMap(items, lat, lng, phase){
   if(_mode!=='parish' || !_map || !Array.isArray(items) || !items.length || typeof _LL==='undefined') return;
   try{
-    /* V13
+    /* V15
        성당 카테고리 첫 진입/내주변 목록에서는 지도에 10개 주변 마커만 올리지 않는다.
        목록은 지금처럼 현재 위치 주변 10곳을 보여주고, 지도에는 그 주변 성당 중
        가장 가까운 성당이 속한 교구의 성당 마커 전체를 표시한다.
@@ -1775,6 +1786,39 @@ function _showItemsOnMap(items){
   }else{
     try{_map.setBounds(bounds,60,60,60,60);}catch(e){ console.warn("[가톨릭길동무]", e); }
   }
+}
+
+function _showAllShrinesOnMapWithNearbyBounds(items, lat, lng){
+  if(_mode!=='shrine' || !_map) return;
+  try{
+    _clearShrineMarkerSel();
+    // 성지 내주변 화면은 목록은 가까운 10곳만 보여 주되, 지도에는 전체 성지 마커를 유지한다.
+    // 줌/중심만 내주변 10곳 기준으로 맞춰서 처음 화면이 너무 넓어지지 않게 한다.
+    _markers.forEach(function(m){
+      if(!m || !m.marker || !m.shrine) return;
+      const s=m.shrine;
+      const valid=s.lat&&s.lng&&s.lat>=33&&s.lat<=38&&s.lng>=124&&s.lng<=132;
+      m.marker.setMap(valid?_map:null);
+      if(valid){
+        m.marker.setImage(_mkrImg(_typeColor(s.type),false));
+        m.marker.setZIndex(1);
+      }
+    });
+
+    if(!Array.isArray(items) || !items.length || typeof _LB==='undefined' || typeof _LL==='undefined') return;
+    const bounds=new _LB();
+    let count=0;
+    if(lat && lng){ bounds.extend(new _LL(lat,lng)); count++; }
+    items.forEach(function(s){
+      if(!s || !s.lat || !s.lng) return;
+      bounds.extend(new _LL(s.lat,s.lng));
+      count++;
+    });
+    if(count>1){
+      if(typeof _setBoundsByInfoCardStandard==='function') _setBoundsByInfoCardStandard(bounds,60,60,142,60);
+      else _map.setBounds(bounds,60,60,142,60);
+    }
+  }catch(e){ console.warn('[가톨릭길동무]', e); }
 }
 function _selectParishMarker(p){
   if(_paSelMkr){try{_paSelMkr.setMap(null);}catch(e){ console.warn("[가톨릭길동무]", e); }  _paSelMkr=null;}
@@ -1892,7 +1936,7 @@ function _focusParishPointAround(lat, lng, opts){
         _map.setLevel(targetLevel);
       }
     }
-    // V13: 현재 위치/내 주변/선택 성당 모두 인포카드 기준 중심으로 통일한다.
+    // V15: 현재 위치/내 주변/선택 성당 모두 인포카드 기준 중심으로 통일한다.
     if(typeof _setMapCenterByInfoCardStandard==='function'){
       return _setMapCenterByInfoCardStandard(pos);
     }
@@ -2301,7 +2345,7 @@ function _loadNearbyWithDist(lat,lng,items,getIdx,getColor,getLabel){
 function _renderNearbyDone(prelim,results,getIdx,getColor,getLabel,phase){
   const sorted=prelim.map((x,i)=>({x,r:results[i]||{km:x.d*1.35,dur:null}})).sort((a,b)=>a.r.km-b.r.km).slice(0,10);
   _nearbyCache=sorted.map(o=>o.x.p);
-  if(phase==='final'&&_mode==='shrine'&&_map) _showItemsOnMap(_nearbyCache);
+  if(phase==='final'&&_mode==='shrine'&&_map) _showAllShrinesOnMapWithNearbyBounds(_nearbyCache,_myLat,_myLng);
   if(phase==='final'&&_mode==='parish'&&_map) _showParishNearbyMarkersOnMap(_nearbyCache,_myLat,_myLng,phase);
   const body=$('nearby-body');
   if(!body) return;
@@ -3280,6 +3324,8 @@ document.addEventListener('DOMContentLoaded', function bindEvents() {
   on('region-close-btn', 'click', function(e) { e.stopPropagation(); closeSheetPanelOnly('region'); });
   on('route-close-btn',  'click', function(e) { e.stopPropagation(); closeRouteSheetByX(); });
   on('map-category-close-btn', 'click', function(e) { e.stopPropagation(); closeCategoryToCoverFromMap(); });
+  on('map-zoom-in',  'click', function(e) { e.stopPropagation(); zoomCategoryMap(-1); });
+  on('map-zoom-out', 'click', function(e) { e.stopPropagation(); zoomCategoryMap(1); });
 
   // ── 내 위치 ──
   on('loc-btn', 'click', function() { goMyLoc(); });

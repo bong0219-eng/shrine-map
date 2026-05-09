@@ -164,6 +164,10 @@ html.retreat-mode .tab-btn.active{color:#fff;background:var(--retreat-active, #0
 #route-guide.on{display:block}
 .map-category-close{position:absolute;top:12px;right:12px;z-index:650;width:34px;height:34px;border-radius:50%;border:1px solid rgba(31,42,68,.22);background:rgba(31,42,68,.88);color:#fff;font-size:22px;font-weight:900;line-height:1;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 12px rgba(0,0,0,.22);cursor:pointer;font-family:inherit}
 .map-category-close:active{transform:scale(.96)}
+.map-zoom-controls{position:absolute;top:58px;right:12px;z-index:620;display:flex;flex-direction:column;border-radius:10px;overflow:hidden;border:1px solid rgba(31,42,68,.18);box-shadow:0 3px 12px rgba(0,0,0,.18);background:rgba(255,255,255,.96)}
+.map-zoom-controls button{width:34px;height:34px;border:0;border-bottom:1px solid rgba(31,42,68,.12);background:#fff;color:#1f2a44;font-size:21px;font-weight:900;line-height:1;display:flex;align-items:center;justify-content:center;cursor:pointer;font-family:inherit;padding:0}
+.map-zoom-controls button:last-child{border-bottom:0}
+.map-zoom-controls button:active{background:#eef1f4}
 .sheet{position:fixed;top:calc(var(--tab-h) + env(safe-area-inset-top,0));left:0;right:0;bottom:0;background:linear-gradient(180deg,#fbf7f1 0%,#f4efe6 100%);z-index:800;display:flex;flex-direction:column;transform:translateY(100%);transition:transform .25s cubic-bezier(.4,0,.2,1);overflow:hidden;will-change:transform}
 .sheet.open{transform:translate(0,0)}
 .sheet-hd{background:var(--navy);padding:13px 16px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
@@ -1499,6 +1503,8 @@ html.retreat-mode #sm-tab-bar .sm-tab.active{
 .sheet-x,
 .route-sheet-x,
 .map-category-close,
+.map-zoom-controls,
+.map-zoom-controls button,
 .ic-close-btn,
 .pr-back{
   display:flex!important;
@@ -1611,7 +1617,7 @@ html.retreat-mode #sm-tab-bar .sm-tab.active{
   box-shadow:none!important;
 }
 
-/* V13: 외부 복귀/화면 진입 CSS 정리
+/* V15: 외부 복귀/화면 진입 CSS 정리
    외부 이동 보호막을 제거한 현재 구조에서는 복귀 전용 강제 고정 CSS를 두지 않는다.
    화면 진입 중 필요한 최소 전환만 유지하고, app/viewport 전체를 흔드는 전역 보정은 금지한다. */
 html:not(.app-active),html:not(.app-active) body{scroll-behavior:auto!important;}
@@ -1696,7 +1702,7 @@ html.retreat-mode #region-body .nearby-dist span{
   margin-left:4px!important;
 }
 
-/* 커버 전용 당겨서 새로고침 — V13 단일 기준 */
+/* 커버 전용 당겨서 새로고침 — V15 단일 기준 */
 #cover{
   overscroll-behavior-y:contain!important;
 }
@@ -2025,7 +2031,7 @@ html.app-active #cv-pull-modern{
 #qna-view  .qna-tab.on        { background: var(--navy, #0e1535) !important; }
 
 /* ── 6. 헤더 배경색 (모듈별) ─────────────────────────────────────── */
-/* V13: 기도문 헤더를 기준으로 주요 모듈 헤더 단색 통일 */
+/* V15: 기도문 헤더를 기준으로 주요 모듈 헤더 단색 통일 */
 #prayer-bar,
 #trail-view .module-bar,
 #web-view .module-bar,
@@ -2290,7 +2296,7 @@ html.oai-font-global #cover #cover-bottom-note,
 }
 
 
-/* V13: 출발 검색 모달 색상 기준 재정리
+/* V15: 출발 검색 모달 색상 기준 재정리
    - 성지/성당/피정 + 일반장소 탭: 활성은 금색, 비활성은 고유색 배경 위의 은은한 반투명 버튼
    - 검색창을 감싸는 영역은 성지/성당/피정 각 카테고리 고유색으로 통일
    - 실제 검색 입력창(.sm-si)은 기존 아이보리 계열 유지 */
@@ -2361,7 +2367,7 @@ html.retreat-mode #srch-modal #sm-tab-bar .sm-tab:not(.active){
 html #srch-modal #sm-tab-bar .sm-tab.active,
 html.parish-mode #srch-modal #sm-tab-bar .sm-tab.active,
 html.retreat-mode #srch-modal #sm-tab-bar .sm-tab.active{
-  /* V13: 바로 위 교구 활성화 버튼(.sm-fb.on)과 같은 금색 기준 사용 */
+  /* V15: 바로 위 교구 활성화 버튼(.sm-fb.on)과 같은 금색 기준 사용 */
   background:var(--gold,#d4aa6a)!important;
   background-image:none!important;
   color:#1F2937!important;
@@ -2373,7 +2379,7 @@ html.retreat-mode #srch-modal #sm-tab-bar .sm-tab.active{
 
 
 /* ══════════════════════════════════════════════════════════════════
-   V13 모듈 표준화
+   V15 모듈 표준화
    - 헤더: 기도문 헤더 기준 단색 네이비(그라데이션 제거)
    - 탭바/탭버튼: 관구·교구 탭 기준 높이·형태 통일
    - 활성 탭의 고유 색상은 각 모듈 기존 색상을 유지
@@ -2457,7 +2463,7 @@ html.oai-font-global #trail-view .trail-tab{
 }
 
 /* ══════════════════════════════════════════════════════════════════
-   V13 주요 기능 안내 — 커버 전용, 별도 파일 없음
+   V15 주요 기능 안내 — 커버 전용, 별도 파일 없음
    ══════════════════════════════════════════════════════════════════ */
 #cover #cover-guide-btn{
   position:absolute;
