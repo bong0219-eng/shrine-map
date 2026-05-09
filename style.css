@@ -575,8 +575,8 @@ html.retreat-mode .region-item .nearby-num{background:#4f46e5!important}
 #prayer-search-inp::placeholder{color:#8a7d6d;font-size:13px;font-weight:500}
 .pr-font-ctrl{display:flex;align-items:center;gap:0;background:#fffbf2;border:1.5px solid #ddd5c8;border-radius:9px;padding:2px 3px;height:36px}
 .pr-font-btn{background:none;border:none;width:34px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-weight:800;font-family:inherit;cursor:pointer;line-height:1;padding:0}
-.pr-font-btn.pr-sm{font-size:12px;color:#1565C0}
-.pr-font-btn.pr-lg{font-size:18px;color:#C85A00}
+.pr-font-btn.pr-sm{font-size:11px!important;color:#1565C0}
+.pr-font-btn.pr-lg{font-size:22px!important;color:#C85A00}
 .pr-font-divider{width:1px;height:16px;background:#ddd5c8;margin:0 2px}
 #prayer-list-view{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:10px 12px calc(24px + env(safe-area-inset-bottom,0));background:#EDE8E0;position:relative;transform:none!important;animation:none;will-change:auto;touch-action:pan-y!important}
 .pr-list{list-style:none;display:flex;flex-direction:column;gap:4px}
@@ -927,8 +927,8 @@ html:not(.app-active) #cover{position:fixed;inset:0;z-index:9999;background:#f4e
 #cover-font-controls{position:absolute;right:12px!important;top:calc(env(safe-area-inset-top,0px) + 12px)!important;z-index:80;display:flex!important;align-items:center!important;gap:0!important;background:#fffbf2!important;border:1.5px solid #ddd5c8!important;border-radius:9px!important;padding:2px 3px!important;height:36px!important;box-shadow:0 6px 14px rgba(31,42,68,.10)!important}
 #cover-font-controls .pr-font-btn,
 #cover-font-controls button{background:none!important;border:none!important;width:34px!important;height:28px!important;border-radius:7px!important;display:flex!important;align-items:center!important;justify-content:center;color:#5b4636!important;font-family:inherit!important;font-weight:900!important;line-height:1!important;cursor:pointer}
-#cover-font-controls #cover-sm-btn{font-size:12px!important;}
-#cover-font-controls #cover-lg-btn{font-size:20px!important;}
+#cover-font-controls #cover-sm-btn{font-size:11px!important;}
+#cover-font-controls #cover-lg-btn{font-size:22px!important;}
 /* 커버도 글자크기 조절과 연결 */
 html.oai-font-global #cover .cover-emoji{font-size:calc(34px * var(--app-font-scale,1))!important;background:transparent!important;box-shadow:none!important}
 @media (max-height:720px){
@@ -1600,7 +1600,7 @@ html.retreat-mode #sm-tab-bar .sm-tab.active{
   box-shadow:none!important;
 }
 
-/* V18: 외부 복귀/화면 진입 CSS 정리
+/* V21: 외부 복귀/화면 진입 CSS 정리
    외부 이동 보호막을 제거한 현재 구조에서는 복귀 전용 강제 고정 CSS를 두지 않는다.
    화면 진입 중 필요한 최소 전환만 유지하고, app/viewport 전체를 흔드는 전역 보정은 금지한다. */
 html:not(.app-active),html:not(.app-active) body{scroll-behavior:auto!important;}
@@ -1685,7 +1685,7 @@ html.retreat-mode #region-body .nearby-dist span{
   margin-left:4px!important;
 }
 
-/* 커버 전용 당겨서 새로고침 — V18 단일 기준 */
+/* 커버 전용 당겨서 새로고침 — V21 단일 기준 */
 #cover{
   overscroll-behavior-y:contain!important;
 }
@@ -2014,7 +2014,7 @@ html.app-active #cv-pull-modern{
 #qna-view  .qna-tab.on        { background: var(--navy, #0e1535) !important; }
 
 /* ── 6. 헤더 배경색 (모듈별) ─────────────────────────────────────── */
-/* V18: 기도문 헤더를 기준으로 주요 모듈 헤더 단색 통일 */
+/* V21: 기도문 헤더를 기준으로 주요 모듈 헤더 단색 통일 */
 #prayer-bar,
 #trail-view .module-bar,
 #web-view .module-bar,
@@ -2170,25 +2170,33 @@ html.app-active #cover {
   background     : rgba(31,42,68,.10) !important;
   color          : #1f2a44 !important;
   font-family    : inherit !important;
-  font-size      : 12px !important;
+  font-size      : 12.5px !important;
   font-weight    : 900 !important;
   line-height    : 1 !important;
-  min-height     : 32px !important;
-  padding        : 0 12px !important;
+  min-height     : 40px !important;
+  height         : 40px !important;
+  padding        : 0 14px !important;
   box-shadow     : inset 0 0 0 1px rgba(31,42,68,.16) !important;
   cursor         : pointer;
+}
+#cover #cover-update-box.update-needed #cover-update-btn {
+  background     : #dc2626 !important;
+  color          : #fff !important;
+  box-shadow     : 0 10px 24px rgba(220,38,38,.22) !important;
 }
 #cover #cover-update-btn:active { transform: scale(.985); }
 #cover #cover-update-btn:disabled { opacity:.62; }
 #cover #cover-update-hint {
+  display        : none !important;
   margin-top     : 4px !important;
   padding-left   : 2px !important;
-  color          : rgba(31,42,68,.58) !important;
+  color          : #dc2626 !important;
   font-size      : 9.5px !important;
-  font-weight    : 700 !important;
+  font-weight    : 800 !important;
   line-height    : 1.15 !important;
   white-space    : nowrap !important;
 }
+#cover #cover-update-box.update-needed #cover-update-hint { display:block !important; }
 #cover #qna-cover-btn {
   position       : relative ;
   right          : auto !important;
@@ -2231,7 +2239,7 @@ html.app-active #qna-cover-btn, html.app-active #cover-action-row { display: non
   #cover .cover-emoji { font-size: 18px !important; }
   #cover .cover-name,#cover .cv-btn-label { font-size: 12px !important; }
   #cover #qna-cover-btn { min-height: 34px !important; font-size: 11px !important; }
-  #cover #cover-update-btn { min-height: 28px !important; font-size: 10.5px !important; padding:0 10px!important; }
+  #cover #cover-update-btn { min-height: 34px !important; height:34px !important; font-size: 11px !important; padding:0 12px!important; }
   #cover #cover-update-hint { font-size:8.5px!important; }
   #cover-main-block {
     padding-bottom: calc(7vh + env(safe-area-inset-bottom,0px)) !important;
@@ -2266,7 +2274,7 @@ html.oai-font-global #cover #cover-bottom-note,
   z-index:5;
 }
 
-/* V18: 출발 검색 모달 색상 기준 재정리
+/* V21: 출발 검색 모달 색상 기준 재정리
    - 성지/성당/피정 + 일반장소 탭: 활성은 금색, 비활성은 고유색 배경 위의 은은한 반투명 버튼
    - 검색창을 감싸는 영역은 성지/성당/피정 각 카테고리 고유색으로 통일
    - 실제 검색 입력창(.sm-si)은 기존 아이보리 계열 유지 */
@@ -2337,7 +2345,7 @@ html.retreat-mode #srch-modal #sm-tab-bar .sm-tab:not(.active){
 html #srch-modal #sm-tab-bar .sm-tab.active,
 html.parish-mode #srch-modal #sm-tab-bar .sm-tab.active,
 html.retreat-mode #srch-modal #sm-tab-bar .sm-tab.active{
-  /* V18: 바로 위 교구 활성화 버튼(.sm-fb.on)과 같은 금색 기준 사용 */
+  /* V21: 바로 위 교구 활성화 버튼(.sm-fb.on)과 같은 금색 기준 사용 */
   background:var(--gold,#d4aa6a)!important;
   background-image:none!important;
   color:#1F2937!important;
@@ -2349,7 +2357,7 @@ html.retreat-mode #srch-modal #sm-tab-bar .sm-tab.active{
 
 
 /* ══════════════════════════════════════════════════════════════════
-   V18 모듈 표준화
+   V21 모듈 표준화
    - 헤더: 기도문 헤더 기준 단색 네이비(그라데이션 제거)
    - 탭바/탭버튼: 관구·교구 탭 기준 높이·형태 통일
    - 활성 탭의 고유 색상은 각 모듈 기존 색상을 유지
