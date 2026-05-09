@@ -20,12 +20,12 @@
       if(document.getElementById('srch-modal') && document.getElementById('srch-modal').classList.contains('open')) return true;
       if(document.getElementById('sheet-route') && document.getElementById('sheet-route').classList.contains('open')) return true;
       if(document.getElementById('missa-view') && document.getElementById('missa-view').classList.contains('open')) return true;
-    }catch(e){ console.warn("[가톨릭 앱]", e); }
+    }catch(e){ console.warn("[가톨릭길동무]", e); }
     return false;
   }
   function stableReload(reason){
-    try{ if(isTypingTarget(document.activeElement) || isTransientOpen()) return false; }catch(e){ console.warn("[가톨릭 앱]", e); }
-    try{ sessionStorage.setItem('oai_stable_auto_reload_reason', reason || 'maintenance'); }catch(e){ console.warn("[가톨릭 앱]", e); }
+    try{ if(isTypingTarget(document.activeElement) || isTransientOpen()) return false; }catch(e){ console.warn("[가톨릭길동무]", e); }
+    try{ sessionStorage.setItem('oai_stable_auto_reload_reason', reason || 'maintenance'); }catch(e){ console.warn("[가톨릭길동무]", e); }
     try{ location.reload(); }catch(e){ location.href = location.href; }
     return true;
   }
@@ -36,12 +36,12 @@
   document.addEventListener('visibilitychange', function(){
     if(document.visibilityState === 'hidden'){
       hiddenAt = now();
-      try{ sessionStorage.setItem('oai_hidden_at', String(hiddenAt)); }catch(e){ console.warn("[가톨릭 앱]", e); }
+      try{ sessionStorage.setItem('oai_hidden_at', String(hiddenAt)); }catch(e){ console.warn("[가톨릭길동무]", e); }
       return;
     }
     if(document.visibilityState === 'visible'){
       var last = hiddenAt;
-      try{ last = Math.max(last, parseInt(sessionStorage.getItem('oai_hidden_at') || '0', 10) || 0); }catch(e){ console.warn("[가톨릭 앱]", e); }
+      try{ last = Math.max(last, parseInt(sessionStorage.getItem('oai_hidden_at') || '0', 10) || 0); }catch(e){ console.warn("[가톨릭길동무]", e); }
       if(last && now() - last >= BACKGROUND_RELOAD_AFTER){
         setTimeout(function(){ stableReload('background-return'); }, 350);
       }
@@ -53,9 +53,9 @@
     if(!('serviceWorker' in navigator)) return;
     try{
       navigator.serviceWorker.register('./sw.js?v=' + encodeURIComponent(APP_VERSION))
-        .then(function(reg){ try{ reg.update(); }catch(e){ console.warn("[가톨릭 앱]", e); } })
+        .then(function(reg){ try{ reg.update(); }catch(e){ console.warn("[가톨릭길동무]", e); } })
         .catch(function(){});
-    }catch(e){ console.warn("[가톨릭 앱]", e); }
+    }catch(e){ console.warn("[가톨릭길동무]", e); }
   }
   if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', registerServiceWorker, {once:true});
   else registerServiceWorker();
