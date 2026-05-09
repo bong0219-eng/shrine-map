@@ -467,7 +467,7 @@ html.retreat-mode .sm-tab.active{color:#ffffff!important;border-bottom-color:var
 .trail-card{border-radius:18px;border:1px solid #e4e9f2;box-shadow:0 14px 30px rgba(24,32,51,.06)}
 .web-card{border-radius:14px!important;border:1px solid #DDD5C8!important;box-shadow:0 1px 8px rgba(0,0,0,.06)!important}
 #cover::before,#cover::after,.cv-orbit,.cv-orbit-a,.cv-orbit-b{display:none!important;content:none}
-.cv-shell-stage{position:relative;z-index:2;display:flex;flex-direction:column;justify-content:flex-start;align-items:center;gap:10px;width:min(100%,560px);height:100dvh;min-height:100dvh;padding:calc(env(safe-area-inset-top,0) + 7vh) 0 calc(12vh + env(safe-area-inset-bottom,0));margin:0 auto;box-sizing:border-box}
+.cv-shell-stage{position:relative;z-index:2;display:flex;flex-direction:column;justify-content:flex-start;align-items:center;gap:10px;width:min(100%,560px);height:100dvh;min-height:100dvh;padding:calc(env(safe-area-inset-top,0) + 9vh) 0 calc(14vh + env(safe-area-inset-bottom,0));margin:0 auto;box-sizing:border-box}
 .cv-stage{position:relative;align-self:center;width:min(100%,calc((100dvh - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px) - 124px) * .5625));aspect-ratio:9 / 16;min-height:0}
 .cv-stage-art{display:block;width:100%;height:100%;object-fit:contain;border-radius:22px;box-shadow:0 12px 30px rgba(140,112,71,.16);user-select:none;-webkit-user-drag:none;pointer-events:none}
 .cv-hotspot{position:absolute;border:none;background:transparent;border-radius:22px;cursor:pointer;z-index:2;outline:none}
@@ -489,8 +489,8 @@ html.retreat-mode .sm-tab.active{color:#ffffff!important;border-bottom-color:var
 .cv-extra-btn.cv-btn-diocese{background:linear-gradient(135deg,#dce7f1,#c5d6e6);color:#26384d}
 .cv-extra-btn.cv-btn-web .cv-btn-icon{background:rgba(255,255,255,.34);color:#5a4026}
 .cv-extra-btn.cv-btn-diocese .cv-btn-icon{background:rgba(255,255,255,.34);color:#334c6a}
-@media (max-width:420px){#cover{position:fixed;inset:0;z-index:9999;background:#f4efe4;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:env(safe-area-inset-top,0) 0 env(safe-area-inset-bottom,0);overflow:hidden;overflow-y:hidden;background-color:var(--bg-color);color:var(--text-main);font-family:'Apple SD Gothic Neo','Malgun Gothic',sans-serif;transition:none;padding-top:calc(5vh + env(safe-area-inset-top,0px));padding-bottom:0}.cv-shell-stage{position:relative;z-index:2;display:flex;flex-direction:column;justify-content:flex-start;align-items:center;gap:10px;width:min(100%,560px);height:100dvh;min-height:100dvh;padding:calc(env(safe-area-inset-top,0) + 7vh) 0 calc(12vh + env(safe-area-inset-bottom,0));margin:0 auto;box-sizing:border-box}.cv-stage,.cv-extra-row{width:min(100%,calc((100dvh - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px) - 112px) * .5625))}.cv-extra-row{gap:8px}.cv-extra-btn{min-height:78px;border-radius:18px;padding:8px 7px;gap:5px}.cv-extra-btn::before{inset:3px;border-radius:14px}.cv-extra-btn .cv-btn-icon{width:32px;height:32px;font-size:16px;border-radius:11px}.cv-extra-btn .cv-btn-label{font-size:10.4px}}
-@media (max-height:760px){.cv-shell-stage{position:relative;z-index:2;display:flex;flex-direction:column;justify-content:flex-start;align-items:center;gap:10px;width:min(100%,560px);height:100dvh;min-height:100dvh;padding:calc(env(safe-area-inset-top,0) + 7vh) 0 calc(12vh + env(safe-area-inset-bottom,0));margin:0 auto;box-sizing:border-box}.cv-stage,.cv-extra-row{width:min(100%,calc((100dvh - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px) - 98px) * .5625))}.cv-extra-row{gap:7px}.cv-extra-btn{min-height:70px;border-radius:16px;padding:7px 6px;gap:4px}.cv-extra-btn::before{inset:3px;border-radius:13px}.cv-extra-btn .cv-btn-icon{width:28px;height:28px;font-size:14px;border-radius:10px}.cv-extra-btn .cv-btn-label{font-size:9.6px;line-height:1.06}}
+@media (max-width:420px){#cover{position:fixed;inset:0;z-index:9999;background:#f4efe4;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:env(safe-area-inset-top,0) 0 env(safe-area-inset-bottom,0);overflow:hidden;overflow-y:hidden;background-color:var(--bg-color);color:var(--text-main);font-family:'Apple SD Gothic Neo','Malgun Gothic',sans-serif;transition:none;padding-top:calc(5vh + env(safe-area-inset-top,0px));padding-bottom:0}.cv-shell-stage{position:relative;z-index:2;display:flex;flex-direction:column;justify-content:flex-start;align-items:center;gap:10px;width:min(100%,560px);height:100dvh;min-height:100dvh;padding:calc(env(safe-area-inset-top,0) + 9vh) 0 calc(14vh + env(safe-area-inset-bottom,0));margin:0 auto;box-sizing:border-box}.cv-stage,.cv-extra-row{width:min(100%,calc((100dvh - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px) - 112px) * .5625))}.cv-extra-row{gap:8px}.cv-extra-btn{min-height:78px;border-radius:18px;padding:8px 7px;gap:5px}.cv-extra-btn::before{inset:3px;border-radius:14px}.cv-extra-btn .cv-btn-icon{width:32px;height:32px;font-size:16px;border-radius:11px}.cv-extra-btn .cv-btn-label{font-size:10.4px}}
+@media (max-height:760px){.cv-shell-stage{position:relative;z-index:2;display:flex;flex-direction:column;justify-content:flex-start;align-items:center;gap:10px;width:min(100%,560px);height:100dvh;min-height:100dvh;padding:calc(env(safe-area-inset-top,0) + 9vh) 0 calc(14vh + env(safe-area-inset-bottom,0));margin:0 auto;box-sizing:border-box}.cv-stage,.cv-extra-row{width:min(100%,calc((100dvh - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px) - 98px) * .5625))}.cv-extra-row{gap:7px}.cv-extra-btn{min-height:70px;border-radius:16px;padding:7px 6px;gap:4px}.cv-extra-btn::before{inset:3px;border-radius:13px}.cv-extra-btn .cv-btn-icon{width:28px;height:28px;font-size:14px;border-radius:10px}.cv-extra-btn .cv-btn-label{font-size:9.6px;line-height:1.06}}
 html.parish-mode .srch-bar,html.parish-mode .filter-bar,html.parish-mode .sheet-hd{background:#355c7d!important}
 html.parish-mode .ric-lbl,html.parish-mode .region-list-hd{color:#466b92!important}
 html.parish-mode .dio-hd{color:#355c7d!important;background:#f0f6fb!important}
@@ -874,7 +874,7 @@ html.retreat-mode .nearby-type,html.retreat-mode .li-badge,html.retreat-mode .ic
 #cover .cover-icon-wrap svg{width:25px!important;height:25px!important;display:none!important}
 #cover .cover-name,#cover .cv-btn-label{font-size:16px;line-height:1.18;font-weight:850;letter-spacing:-.02em;text-align:center}
 #cover .cv-btn-meta,#cover .cv-btn-desc{font-size:10px!important;line-height:1.1!important;display:none!important}
-#cover .cv-shell,#cover .cv-shell-stage{position:relative;z-index:2;display:flex;flex-direction:column;justify-content:flex-start;align-items:center;gap:10px;width:min(100%,560px);height:100dvh;min-height:100dvh;padding:calc(env(safe-area-inset-top,0) + 7vh) 0 calc(12vh + env(safe-area-inset-bottom,0));margin:0 auto;box-sizing:border-box}
+#cover .cv-shell,#cover .cv-shell-stage{position:relative;z-index:2;display:flex;flex-direction:column;justify-content:flex-start;align-items:center;gap:10px;width:min(100%,560px);height:100dvh;min-height:100dvh;padding:calc(env(safe-area-inset-top,0) + 9vh) 0 calc(14vh + env(safe-area-inset-bottom,0));margin:0 auto;box-sizing:border-box}
 #cover .cv-stats{padding:5px 8px;margin:0!important;font-size:10px!important;line-height:1.15!important}
 /* cover never follows zoom */
 html.oai-font-global #cover,html.oai-font-global #cover *{font-size:inherit}
@@ -1600,7 +1600,7 @@ html.retreat-mode #sm-tab-bar .sm-tab.active{
   box-shadow:none!important;
 }
 
-/* V23: 외부 복귀/화면 진입 CSS 정리
+/* V24: 외부 복귀/화면 진입 CSS 정리
    외부 이동 보호막을 제거한 현재 구조에서는 복귀 전용 강제 고정 CSS를 두지 않는다.
    화면 진입 중 필요한 최소 전환만 유지하고, app/viewport 전체를 흔드는 전역 보정은 금지한다. */
 html:not(.app-active),html:not(.app-active) body{scroll-behavior:auto!important;}
@@ -1685,7 +1685,7 @@ html.retreat-mode #region-body .nearby-dist span{
   margin-left:4px!important;
 }
 
-/* 커버 전용 당겨서 새로고침 — V23 단일 기준 */
+/* 커버 전용 당겨서 새로고침 — V24 단일 기준 */
 #cover{
   overscroll-behavior-y:contain!important;
 }
@@ -2014,7 +2014,7 @@ html.app-active #cv-pull-modern{
 #qna-view  .qna-tab.on        { background: var(--navy, #0e1535) !important; }
 
 /* ── 6. 헤더 배경색 (모듈별) ─────────────────────────────────────── */
-/* V23: 기도문 헤더를 기준으로 주요 모듈 헤더 단색 통일 */
+/* V24: 기도문 헤더를 기준으로 주요 모듈 헤더 단색 통일 */
 #prayer-bar,
 #trail-view .module-bar,
 #web-view .module-bar,
@@ -2078,7 +2078,7 @@ html:not(.app-active) #cover {
   height         : 100dvh !important;
   min-height     : 100dvh !important;
   max-height     : 100dvh !important;
-  padding-top    : calc(7vh + env(safe-area-inset-top,0px)) !important;
+  padding-top    : calc(9vh + env(safe-area-inset-top,0px)) !important;
   padding-bottom : 0 !important;
   padding-left   : 0 !important;
   padding-right  : 0 !important;
@@ -2106,7 +2106,7 @@ html.app-active #cover {
   width       : 100% !important;
   max-width   : min(440px, calc(100vw - 32px)) !important;
   margin      : 0 auto !important;
-  padding     : 0 16px calc(7vh + env(safe-area-inset-bottom,0px)) !important;
+  padding     : 0 16px calc(14vh + env(safe-area-inset-bottom,0px)) !important;
   display     : flex !important;
   flex-direction: column ;
   align-items : stretch !important;
@@ -2230,7 +2230,7 @@ html.app-active #qna-cover-btn, html.app-active #cover-action-row { display: non
 
 /* 작은 화면 보정 */
 @media (max-height:650px) {
-  #cover { padding-top: calc(7vh + env(safe-area-inset-top,0px)) !important; }
+  #cover { padding-top: calc(9vh + env(safe-area-inset-top,0px)) !important; }
   #cover .cover-header { padding-bottom: 4px !important; }
   #cover .cover-header .cover-title { font-size: clamp(18px,5vw,24px) !important; }
   #cover .cover-header .cover-subtitle { font-size: 10px !important; }
@@ -2242,7 +2242,7 @@ html.app-active #qna-cover-btn, html.app-active #cover-action-row { display: non
   #cover #cover-update-btn { min-height: 34px !important; height:34px !important; font-size: calc(10.5px * var(--app-font-scale,1)) !important; padding:0 12px!important; }
   #cover #cover-update-hint { font-size:8.5px!important; }
   #cover-main-block {
-    padding-bottom: calc(7vh + env(safe-area-inset-bottom,0px)) !important;
+    padding-bottom: calc(14vh + env(safe-area-inset-bottom,0px)) !important;
   }
 }
 /* 7. 하단 안내 문구 — 레이아웃 계산에서 제외하고 화면 하단에 고정 */
@@ -2274,7 +2274,7 @@ html.oai-font-global #cover #cover-bottom-note,
   z-index:5;
 }
 
-/* V23: 출발 검색 모달 색상 기준 재정리
+/* V24: 출발 검색 모달 색상 기준 재정리
    - 성지/성당/피정 + 일반장소 탭: 활성은 금색, 비활성은 고유색 배경 위의 은은한 반투명 버튼
    - 검색창을 감싸는 영역은 성지/성당/피정 각 카테고리 고유색으로 통일
    - 실제 검색 입력창(.sm-si)은 기존 아이보리 계열 유지 */
@@ -2345,7 +2345,7 @@ html.retreat-mode #srch-modal #sm-tab-bar .sm-tab:not(.active){
 html #srch-modal #sm-tab-bar .sm-tab.active,
 html.parish-mode #srch-modal #sm-tab-bar .sm-tab.active,
 html.retreat-mode #srch-modal #sm-tab-bar .sm-tab.active{
-  /* V23: 바로 위 교구 활성화 버튼(.sm-fb.on)과 같은 금색 기준 사용 */
+  /* V24: 바로 위 교구 활성화 버튼(.sm-fb.on)과 같은 금색 기준 사용 */
   background:var(--gold,#d4aa6a)!important;
   background-image:none!important;
   color:#1F2937!important;
@@ -2357,7 +2357,7 @@ html.retreat-mode #srch-modal #sm-tab-bar .sm-tab.active{
 
 
 /* ══════════════════════════════════════════════════════════════════
-   V23 모듈 표준화
+   V24 모듈 표준화
    - 헤더: 기도문 헤더 기준 단색 네이비(그라데이션 제거)
    - 탭바/탭버튼: 관구·교구 탭 기준 높이·형태 통일
    - 활성 탭의 고유 색상은 각 모듈 기존 색상을 유지
