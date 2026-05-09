@@ -23,7 +23,7 @@ function hideCoverAndRun(callback) {
 
 
 function markExternalReturnStabilize(kind){
-  // V27: 외부 사이트 이동은 브라우저 기본 동작에 맡긴다.
+  // V28: 외부 사이트 이동은 브라우저 기본 동작에 맡긴다.
   // 이전 버전 호환을 위해 함수명만 유지하고, 이동 상태는 저장하지 않는다.
 }
 
@@ -43,7 +43,7 @@ function oaiClearExternalNavigationState(){
 }
 
 function oaiSmoothNavigate(url, kind){
-  // V27: 호환용 함수. 보호막/지연/전역 가로채기 없이 즉시 이동한다.
+  // V28: 호환용 함수. 보호막/지연/전역 가로채기 없이 즉시 이동한다.
   if(!url) return;
   try{ document.activeElement && document.activeElement.blur && document.activeElement.blur(); }catch(e){ console.warn("[가톨릭길동무]", e); }
   try{ oaiClearExternalNavigationState(); }catch(e){ console.warn("[가톨릭길동무]", e); }
@@ -51,7 +51,7 @@ function oaiSmoothNavigate(url, kind){
 }
 
 function applyExternalReturnStabilize(){
-  // V27: 복귀 시 화면을 재계산하지 않고, 예전 이동중 잔여 상태만 제거한다.
+  // V28: 복귀 시 화면을 재계산하지 않고, 예전 이동중 잔여 상태만 제거한다.
   try{ oaiClearExternalNavigationState(); }catch(e){ console.warn("[가톨릭길동무]", e); }
 }
 window.addEventListener('pageshow', applyExternalReturnStabilize, true);
@@ -106,7 +106,7 @@ function syncCoverUpdateVersionState(){
     var box = document.getElementById('cover-update-box');
     var marker = document.getElementById('oai-build-marker');
     if(!btn || !box) return;
-    var target = btn.getAttribute('data-target-version') || 'V27';
+    var target = btn.getAttribute('data-target-version') || 'V28';
     var current = '';
     if(window.APP_VERSION) current = String(window.APP_VERSION).trim();
     if(!current && marker) current = String(marker.textContent || '').trim();
@@ -179,7 +179,7 @@ function openDioceseView(opts){
       if(!restore) try{ frame.contentWindow && frame.contentWindow.resetDioceseFirstPage && frame.contentWindow.resetDioceseFirstPage(); }catch(e){ console.warn("[가톨릭길동무]", e); }
       if(typeof dioceseLoaded==='function') dioceseLoaded();
     };
-    frame.src='diocese.html?v=V27';
+    frame.src='diocese.html?v=V28';
   }else if(!restore){
     try{ frame.contentWindow && frame.contentWindow.resetDioceseFirstPage && frame.contentWindow.resetDioceseFirstPage(); }catch(e){ console.warn("[가톨릭길동무]", e); }
   }
@@ -305,7 +305,7 @@ function restoreCoreReturnState(){
     _loadMap();
   }
   const restoreDelay = needMapLoad ? 650 : 30;
-  // V27: 외부사이트 복귀 시 지도 중심을 두 단계로 움직이지 않는다.
+  // V28: 외부사이트 복귀 시 지도 중심을 두 단계로 움직이지 않는다.
   // 인포카드가 있었던 경우에는 처음부터 인포카드 기준 중심으로 복원한다.
   setTimeout(()=>{
     _restoreMapMarkers();
@@ -542,6 +542,7 @@ const AppState = {
 
   // ── 내주변 ──
   nearbyCache: [],       // 내주변 결과 캐시
+  nearbyParishMarkers: [], // 성당 첫 진입/내주변 10곳 전용 마커
 
   // ── 길찾기 ──
   routeMode:        false,
@@ -861,6 +862,7 @@ function _resetMapState(){
   _parishDioProgrammaticMoveUntil=0;
   if(_parishIdleListener){ try{kakao.maps.event.removeListener(_parishIdleListener);}catch(e){ console.warn('[가톨릭길동무]',e); } _parishIdleListener=null; }
   _paSelMkr=null;
+  try{ _clearParishNearbyMarkers(); }catch(e){ console.warn('[가톨릭길동무]',e); }
   _myMkr=null;
   _myLat=null; _myLng=null;
   // 지도 DOM 초기화
@@ -877,6 +879,7 @@ function goToCover(){
   _retreatMarkers.forEach(o=>{try{o.marker.setMap(null);}catch(e){ console.warn("[가톨릭길동무]", e); }});
   Object.values(_dioMkrs).forEach(arr=>arr.forEach(mk=>{try{mk.setMap(null);}catch(e){ console.warn("[가톨릭길동무]", e); }}));
   if(_paSelMkr){try{_paSelMkr.setMap(null);}catch(e){ console.warn("[가톨릭길동무]", e); } _paSelMkr=null;}
+  try{ _clearParishNearbyMarkers(); }catch(e){ console.warn('[가톨릭길동무]',e); }
   if(_myMkr){try{_myMkr.setMap(null);}catch(e){ console.warn("[가톨릭길동무]", e); } _myMkr=null;}
   _screen='cover';
   document.documentElement.classList.remove('app-active','parish-mode','retreat-mode');
@@ -933,7 +936,7 @@ function _onMapReady(){
   }
   renderList();
   _autoLocate();
-  if(_mode==='parish') { _buildParishDioSystem(); setTimeout(_showCurrentParishDioIfIdle, 120); }
+  if(_mode==='parish') { _buildParishDioSystem(); }
   else if(_mode==='retreat') _buildRetreatMarkers();
   // _noAutoNearby 플래그: 복귀 시 내주변 탭 자동 열기 방지
   if(!window._noAutoNearby) openTab('nearby');
@@ -969,7 +972,8 @@ function openTab(name){
   _curFromRegion=false;
   if(name!=='route') resetRoute();
   _exitRouteMode();
-  _restoreMapMarkers();
+  if(!(_mode==='parish' && name==='nearby')) _restoreMapMarkers();
+  else { try{ _clearParishNearbyMarkers(); }catch(e){ console.warn('[가톨릭길동무]',e); } }
   _resetTabWork(name);
   _activeTab=name;
 
@@ -1258,7 +1262,7 @@ function closeInfoCard(){
   else {
     if(_paSelMkr){try{_paSelMkr.setMap(null);}catch(e){ console.warn("[가톨릭길동무]", e); }  _paSelMkr=null;}
   }
-  // V27: 인포카드 닫힘/열림에 따라 지도 중심 기준이 달라지지 않게 같은 기준을 유지한다.
+  // V28: 인포카드 닫힘/열림에 따라 지도 중심 기준이 달라지지 않게 같은 기준을 유지한다.
   if(wasItem && wasItem.item && wasItem.item.lat && _map){
     try{ _focusMarkerAboveInfoCard(wasItem.item); }catch(e){ console.warn("[가톨릭길동무]", e); }
   }
@@ -1427,6 +1431,7 @@ function _clearShrineMarkers(){
 
 function _restoreMapMarkers(){
   if(_mode==='parish'){
+    try{ _clearParishNearbyMarkers(); }catch(e){ console.warn('[가톨릭길동무]',e); }
     if(_activeDio){_hideParishDioMkrs(_activeDio);_activeDio=null;}
     document.querySelectorAll('.dio-label').forEach(e=>{e.style.transform='';e.style.display='';});
     if(_parishSysInited) _showDioOverlays();
@@ -1491,6 +1496,59 @@ function _clearShrineMarkerSel(){
   _markers[_selIdx].marker.setZIndex(1);
   }
   _selIdx=-1;
+}
+
+
+function _clearParishNearbyMarkers(){
+  try{
+    const arr=(AppState && AppState.nearbyParishMarkers) || [];
+    arr.forEach(function(mk){ try{ mk.setMap(null); }catch(e){ console.warn('[가톨릭길동무]',e); } });
+    if(AppState) AppState.nearbyParishMarkers=[];
+  }catch(e){ console.warn('[가톨릭길동무]',e); }
+}
+
+function _showParishNearbyMarkersOnMap(items, lat, lng){
+  if(_mode!=='parish' || !_map || !Array.isArray(items) || !items.length || typeof _LL==='undefined') return;
+  try{
+    if(_activeDio){ _hideParishDioMkrs(_activeDio); _activeDio=null; }
+    _hideDioOverlays();
+    if(_paSelMkr){ try{ _paSelMkr.setMap(null); }catch(e){ console.warn('[가톨릭길동무]',e); } _paSelMkr=null; }
+    _clearParishNearbyMarkers();
+    const bounds = new _LB();
+    let count=0;
+    if(lat && lng){ try{ bounds.extend(new _LL(lat,lng)); }catch(e){} }
+    const made=[];
+    items.forEach(function(p){
+      if(!p || !p.lat || !p.lng || p.lat===0 || p.lng===0) return;
+      const pos=new _LL(p.lat,p.lng);
+      const mk=new _MM({
+        position:pos,
+        image:_mkrImg('#8b5e3c',false),
+        title:p.name,
+        zIndex:70
+      });
+      kakao.maps.event.addListener(mk,'click',function(){
+        const idx=PARISHES.indexOf(p);
+        if(idx>=0){
+          if(_routeMode) _selectRouteItem(idx);
+          else selectItem(idx,{fromNearby:true});
+        }
+      });
+      mk.setMap(_map);
+      made.push(mk);
+      bounds.extend(pos);
+      count++;
+    });
+    if(AppState) AppState.nearbyParishMarkers=made;
+    if(count>1){
+      _markParishDioProgrammaticMove(1200);
+      try{ _map.setBounds(bounds, 82, 56, 210, 56); }
+      catch(e1){ try{ _map.setBounds(bounds); }catch(e2){ console.warn('[가톨릭길동무]',e2); } }
+    }else if(count===1){
+      const p=items.find(function(x){ return x&&x.lat&&x.lng; });
+      if(p){ _focusParishPointAround(p.lat,p.lng,{level:6}); }
+    }
+  }catch(e){ console.warn('[가톨릭길동무]',e); }
 }
 
 function _showItemsOnMap(items){
@@ -1912,6 +1970,7 @@ function _nearestDioCode(lat,lng){
   return best;
 }
 function _showCurrentParishDioIfIdle(){
+  if(_activeTab==='nearby' || (_nearbyCache && _nearbyCache.length)) return;
   if(_mode!=='parish'||!_map||!_myLat||!_myLng||_paSelMkr||_routeMode||_rS||_rE) return;
   if(!_parishSysInited) return;
   const code=_nearestDioCode(_myLat,_myLng);
@@ -2028,6 +2087,7 @@ function _renderNearbyDone(prelim,results,getIdx,getColor,getLabel,phase){
   const sorted=prelim.map((x,i)=>({x,r:results[i]||{km:x.d*1.35,dur:null}})).sort((a,b)=>a.r.km-b.r.km).slice(0,10);
   _nearbyCache=sorted.map(o=>o.x.p);
   if(phase==='final'&&_mode==='shrine'&&_map) _showItemsOnMap(_nearbyCache);
+  if(phase==='final'&&_mode==='parish'&&_map) _showParishNearbyMarkersOnMap(_nearbyCache,_myLat,_myLng);
   const body=$('nearby-body');
   const scrollTop=body.scrollTop||0;
   body.innerHTML=sorted.map((o,i)=>{
