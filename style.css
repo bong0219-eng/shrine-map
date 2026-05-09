@@ -2268,5 +2268,3 @@ html.oai-font-global #cover #cover-bottom-note,
   z-index:5;
 }
 
-/* 커버 전용 버전 표시 */
-#cover-version{display:block!important;visibility:visible!important;opacity:1!important;margin-top:2px;font-size:9px!important;font-weight:700!important;line-height:1.2!important;letter-spacing:.02em;color:rgba(96,86,76,.72)!important;}
