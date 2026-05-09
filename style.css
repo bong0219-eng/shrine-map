@@ -927,8 +927,8 @@ html:not(.app-active) #cover{position:fixed;inset:0;z-index:9999;background:#f4e
 #cover-font-controls{position:absolute;right:12px!important;top:calc(env(safe-area-inset-top,0px) + 12px)!important;z-index:80;display:flex!important;align-items:center!important;gap:0!important;background:#fffbf2!important;border:1.5px solid #ddd5c8!important;border-radius:9px!important;padding:2px 3px!important;height:36px!important;box-shadow:0 6px 14px rgba(31,42,68,.10)!important}
 #cover-font-controls .pr-font-btn,
 #cover-font-controls button{background:none!important;border:none!important;width:34px!important;height:28px!important;border-radius:7px!important;display:flex!important;align-items:center!important;justify-content:center;color:#5b4636!important;font-family:inherit!important;font-weight:900!important;line-height:1!important;cursor:pointer}
-#cover-font-controls .pr-sm{font-size:13px}
-#cover-font-controls .pr-lg{font-size:17px}
+#cover-font-controls #cover-sm-btn{font-size:12px!important;}
+#cover-font-controls #cover-lg-btn{font-size:20px!important;}
 /* 커버도 글자크기 조절과 연결 */
 html.oai-font-global #cover .cover-emoji{font-size:calc(34px * var(--app-font-scale,1))!important;background:transparent!important;box-shadow:none!important}
 @media (max-height:720px){
@@ -1600,7 +1600,7 @@ html.retreat-mode #sm-tab-bar .sm-tab.active{
   box-shadow:none!important;
 }
 
-/* V16: 외부 복귀/화면 진입 CSS 정리
+/* V17: 외부 복귀/화면 진입 CSS 정리
    외부 이동 보호막을 제거한 현재 구조에서는 복귀 전용 강제 고정 CSS를 두지 않는다.
    화면 진입 중 필요한 최소 전환만 유지하고, app/viewport 전체를 흔드는 전역 보정은 금지한다. */
 html:not(.app-active),html:not(.app-active) body{scroll-behavior:auto!important;}
@@ -1685,7 +1685,7 @@ html.retreat-mode #region-body .nearby-dist span{
   margin-left:4px!important;
 }
 
-/* 커버 전용 당겨서 새로고침 — V16 단일 기준 */
+/* 커버 전용 당겨서 새로고침 — V17 단일 기준 */
 #cover{
   overscroll-behavior-y:contain!important;
 }
@@ -2014,7 +2014,7 @@ html.app-active #cv-pull-modern{
 #qna-view  .qna-tab.on        { background: var(--navy, #0e1535) !important; }
 
 /* ── 6. 헤더 배경색 (모듈별) ─────────────────────────────────────── */
-/* V16: 기도문 헤더를 기준으로 주요 모듈 헤더 단색 통일 */
+/* V17: 기도문 헤더를 기준으로 주요 모듈 헤더 단색 통일 */
 #prayer-bar,
 #trail-view .module-bar,
 #web-view .module-bar,
@@ -2146,14 +2146,56 @@ html.app-active #cover {
   box-sizing     : border-box ;
 }
 
-/* 6. 문의·건의 버튼 — 그리드 바로 아래, 오른쪽 정렬 */
+/* 6. 커버 보조 기능줄 — 왼쪽 업데이트, 오른쪽 문의·건의 */
+#cover #cover-action-row {
+  width          : 100% !important;
+  margin         : 8px 0 0 !important;
+  display        : flex !important;
+  align-items    : center !important;
+  justify-content: space-between !important;
+  gap            : 8px !important;
+  z-index        : 10;
+  flex-shrink    : 0;
+}
+#cover #cover-update-box {
+  display        : flex !important;
+  flex-direction : column !important;
+  align-items    : flex-start !important;
+  justify-content: center !important;
+  min-width      : 0;
+}
+#cover #cover-update-btn {
+  border         : 0 !important;
+  border-radius  : 999px !important;
+  background     : rgba(31,42,68,.10) !important;
+  color          : #1f2a44 !important;
+  font-family    : inherit !important;
+  font-size      : 12px !important;
+  font-weight    : 900 !important;
+  line-height    : 1 !important;
+  min-height     : 32px !important;
+  padding        : 0 12px !important;
+  box-shadow     : inset 0 0 0 1px rgba(31,42,68,.16) !important;
+  cursor         : pointer;
+}
+#cover #cover-update-btn:active { transform: scale(.985); }
+#cover #cover-update-btn:disabled { opacity:.62; }
+#cover #cover-update-hint {
+  margin-top     : 4px !important;
+  padding-left   : 2px !important;
+  color          : rgba(31,42,68,.58) !important;
+  font-size      : 9.5px !important;
+  font-weight    : 700 !important;
+  line-height    : 1.15 !important;
+  white-space    : nowrap !important;
+}
 #cover #qna-cover-btn {
   position       : relative ;
   right          : auto !important;
   bottom         : auto !important;
   flex-shrink    : 0 ;
-  align-self     : flex-end ;
-  margin         : 8px 0 0 !important;
+  align-self     : center ;
+  margin         : 0 !important;
   z-index        : 10 ;
   display        : flex !important;
   align-items    : center !important;
@@ -2176,7 +2218,7 @@ html.app-active #cover {
 
 /* 7. 하단 안내 문구 — 레이아웃 계산에서 제외하고 화면 하단에 고정 */
 /* app-active 시 qna-cover-btn 숨김 */
-html.app-active #qna-cover-btn { display: none !important; }
+html.app-active #qna-cover-btn, html.app-active #cover-action-row { display: none !important; }
 
 /* 작은 화면 보정 */
 @media (max-height:650px) {
@@ -2189,6 +2231,8 @@ html.app-active #qna-cover-btn { display: none !important; }
   #cover .cover-emoji { font-size: 18px !important; }
   #cover .cover-name,#cover .cv-btn-label { font-size: 12px !important; }
   #cover #qna-cover-btn { min-height: 34px !important; font-size: 11px !important; }
+  #cover #cover-update-btn { min-height: 28px !important; font-size: 10.5px !important; padding:0 10px!important; }
+  #cover #cover-update-hint { font-size:8.5px!important; }
   #cover-main-block {
     padding-bottom: calc(7vh + env(safe-area-inset-bottom,0px)) !important;
   }
@@ -2222,7 +2266,7 @@ html.oai-font-global #cover #cover-bottom-note,
   z-index:5;
 }
 
-/* V16: 출발 검색 모달 색상 기준 재정리
+/* V17: 출발 검색 모달 색상 기준 재정리
    - 성지/성당/피정 + 일반장소 탭: 활성은 금색, 비활성은 고유색 배경 위의 은은한 반투명 버튼
    - 검색창을 감싸는 영역은 성지/성당/피정 각 카테고리 고유색으로 통일
    - 실제 검색 입력창(.sm-si)은 기존 아이보리 계열 유지 */
@@ -2293,7 +2337,7 @@ html.retreat-mode #srch-modal #sm-tab-bar .sm-tab:not(.active){
 html #srch-modal #sm-tab-bar .sm-tab.active,
 html.parish-mode #srch-modal #sm-tab-bar .sm-tab.active,
 html.retreat-mode #srch-modal #sm-tab-bar .sm-tab.active{
-  /* V16: 바로 위 교구 활성화 버튼(.sm-fb.on)과 같은 금색 기준 사용 */
+  /* V17: 바로 위 교구 활성화 버튼(.sm-fb.on)과 같은 금색 기준 사용 */
   background:var(--gold,#d4aa6a)!important;
   background-image:none!important;
   color:#1F2937!important;
@@ -2305,7 +2349,7 @@ html.retreat-mode #srch-modal #sm-tab-bar .sm-tab.active{
 
 
 /* ══════════════════════════════════════════════════════════════════
-   V16 모듈 표준화
+   V17 모듈 표준화
    - 헤더: 기도문 헤더 기준 단색 네이비(그라데이션 제거)
    - 탭바/탭버튼: 관구·교구 탭 기준 높이·형태 통일
    - 활성 탭의 고유 색상은 각 모듈 기존 색상을 유지

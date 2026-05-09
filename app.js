@@ -23,7 +23,7 @@ function hideCoverAndRun(callback) {
 
 
 function markExternalReturnStabilize(kind){
-  // V16: 외부 사이트 이동은 브라우저 기본 동작에 맡긴다.
+  // V17: 외부 사이트 이동은 브라우저 기본 동작에 맡긴다.
   // 이전 버전 호환을 위해 함수명만 유지하고, 이동 상태는 저장하지 않는다.
 }
 
@@ -43,7 +43,7 @@ function oaiClearExternalNavigationState(){
 }
 
 function oaiSmoothNavigate(url, kind){
-  // V16: 호환용 함수. 보호막/지연/전역 가로채기 없이 즉시 이동한다.
+  // V17: 호환용 함수. 보호막/지연/전역 가로채기 없이 즉시 이동한다.
   if(!url) return;
   try{ document.activeElement && document.activeElement.blur && document.activeElement.blur(); }catch(e){ console.warn("[가톨릭길동무]", e); }
   try{ oaiClearExternalNavigationState(); }catch(e){ console.warn("[가톨릭길동무]", e); }
@@ -51,7 +51,7 @@ function oaiSmoothNavigate(url, kind){
 }
 
 function applyExternalReturnStabilize(){
-  // V16: 복귀 시 화면을 재계산하지 않고, 예전 이동중 잔여 상태만 제거한다.
+  // V17: 복귀 시 화면을 재계산하지 않고, 예전 이동중 잔여 상태만 제거한다.
   try{ oaiClearExternalNavigationState(); }catch(e){ console.warn("[가톨릭길동무]", e); }
 }
 window.addEventListener('pageshow', applyExternalReturnStabilize, true);
@@ -71,6 +71,35 @@ function openMissa(){
   /* 외부 브라우저로 이동 — 화면 전환 페이드 후 location.href 방식 유지 */
   location.href = url;
 }
+
+// 앱 파일 캐시만 삭제하고 최신 파일을 다시 받는다. 즐겨찾기/localStorage는 건드리지 않는다.
+async function refreshAppFilesOnly(){
+  var msg = '앱 파일 캐시를 삭제하고 최신 버전으로 다시 불러올까요?\n즐겨찾기와 글자 크기 설정은 삭제되지 않습니다.';
+  if(!window.confirm(msg)) return;
+  var btn = document.getElementById('cover-update-btn');
+  try{
+    if(btn){ btn.disabled = true; btn.textContent = '새로 받는 중'; }
+    if(window.caches && caches.keys){
+      var keys = await caches.keys();
+      await Promise.all(keys.map(function(k){ return caches.delete(k); }));
+    }
+    if(navigator.serviceWorker && navigator.serviceWorker.getRegistrations){
+      var regs = await navigator.serviceWorker.getRegistrations();
+      await Promise.all(regs.map(function(r){ return r.unregister(); }));
+    }
+  }catch(e){
+    console.warn('[가톨릭길동무]', e);
+  }
+  try{
+    var url = new URL(location.href);
+    url.searchParams.set('refresh', String(Date.now ? Date.now() : new Date().getTime()));
+    location.replace(url.toString());
+  }catch(e){
+    location.reload();
+  }
+}
+window.refreshAppFilesOnly = refreshAppFilesOnly;
+
 function closeMissa(){
   const view=$('missa-view');
   if(view) view.classList.remove('open');
@@ -125,7 +154,7 @@ function openDioceseView(opts){
       if(!restore) try{ frame.contentWindow && frame.contentWindow.resetDioceseFirstPage && frame.contentWindow.resetDioceseFirstPage(); }catch(e){ console.warn("[가톨릭길동무]", e); }
       if(typeof dioceseLoaded==='function') dioceseLoaded();
     };
-    frame.src='diocese.html?v=V16';
+    frame.src='diocese.html?v=V17';
   }else if(!restore){
     try{ frame.contentWindow && frame.contentWindow.resetDioceseFirstPage && frame.contentWindow.resetDioceseFirstPage(); }catch(e){ console.warn("[가톨릭길동무]", e); }
   }
@@ -251,7 +280,7 @@ function restoreCoreReturnState(){
     _loadMap();
   }
   const restoreDelay = needMapLoad ? 650 : 30;
-  // V16: 외부사이트 복귀 시 지도 중심을 두 단계로 움직이지 않는다.
+  // V17: 외부사이트 복귀 시 지도 중심을 두 단계로 움직이지 않는다.
   // 인포카드가 있었던 경우에는 처음부터 인포카드 기준 중심으로 복원한다.
   setTimeout(()=>{
     _restoreMapMarkers();
@@ -1204,7 +1233,7 @@ function closeInfoCard(){
   else {
     if(_paSelMkr){try{_paSelMkr.setMap(null);}catch(e){ console.warn("[가톨릭길동무]", e); }  _paSelMkr=null;}
   }
-  // V16: 인포카드 닫힘/열림에 따라 지도 중심 기준이 달라지지 않게 같은 기준을 유지한다.
+  // V17: 인포카드 닫힘/열림에 따라 지도 중심 기준이 달라지지 않게 같은 기준을 유지한다.
   if(wasItem && wasItem.item && wasItem.item.lat && _map){
     try{ _focusMarkerAboveInfoCard(wasItem.item); }catch(e){ console.warn("[가톨릭길동무]", e); }
   }
@@ -2924,6 +2953,7 @@ document.addEventListener('DOMContentLoaded', function bindEvents() {
   on('cc-8', 'click', function() { hideCoverAndRun(function() { openDioceseView(); }); });
 
   // ── 커버 기타 ──
+  on('cover-update-btn','click', function(e) { e.stopPropagation(); refreshAppFilesOnly(); });
   on('qna-cover-btn',  'click', function() { openQnaView(); });
   on('pwa-install-btn','click', function() { triggerPwaInstall(); });
 
