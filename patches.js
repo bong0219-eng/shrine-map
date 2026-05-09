@@ -419,7 +419,8 @@
 (function(){
   if(window.__APP_FONT_SCALE_GUARD__) return;
   window.__APP_FONT_SCALE_GUARD__=true;
-  var SHEET_URL="https://docs.google.com/spreadsheets/d/1tWqNO_rnYSE8NIyl1j2Nl7SwxqgRPe80-8CyPPuJsxU/edit?gid=0#gid=0";
+  // v1-4: 문의·건의는 Google Sheet 임시 연결을 쓰지 않고 qa-firebase.html 한 경로로만 통일한다.
+  var QA_URL="qa-firebase.html?v=v1-4";
   var FONT_KEY='prayer_font_size', BASE=16, SIZES=[15,16,17,18,19,20,21,22,24,26,28];
   function el(id){return document.getElementById(id)}
   function getPx(){var px=parseInt(localStorage.getItem(FONT_KEY)||BASE,10);return (px>=15&&px<=28)?px:BASE;}
@@ -430,8 +431,16 @@
   function ensureCoverControls(){var cover=el('cover');if(!cover)return;var box=el('cover-font-controls');if(!box){box=document.createElement('div');box.id='cover-font-controls';cover.appendChild(box);}box.className='pr-font-ctrl';box.innerHTML='<button class="pr-font-btn pr-sm" type="button" aria-label="글자 작게">가</button><div class="pr-font-divider"></div><button class="pr-font-btn pr-lg" type="button" aria-label="글자 크게">가</button>';var sm=box.querySelector('.pr-sm'),lg=box.querySelector('.pr-lg');if(sm)sm.onclick=function(e){e.preventDefault();e.stopPropagation();window.prAdjustFont(-1)};if(lg)lg.onclick=function(e){e.preventDefault();e.stopPropagation();window.prAdjustFont(1)};}
   function setEmojiIcons(){var icons={'cc-1':'✝️','cc-2':'📖','cc-3':'🙏','cc-4':'⛪','cc-5':'🌿','cc-6':'🥾','cc-7':'🌐','cc-8':'🧭'};Object.keys(icons).forEach(function(id){var btn=el(id);if(!btn)return;var wrap=btn.querySelector('.cover-icon-wrap');if(wrap)wrap.innerHTML='<span class="cover-emoji" aria-hidden="true">'+icons[id]+'</span>';});}
   function normalizeLabels(root){root=root||document;try{root.querySelectorAll('button,a,span,div').forEach(function(n){if(!n||!n.childNodes||n.childNodes.length!==1||n.childNodes[0].nodeType!==3)return;var t=n.textContent,nt=t;nt=nt.replace(/카카오\s*맵/g,'카카오내비').replace(/카카오\s*나비/g,'카카오내비').replace(/Kakao\s*Map/gi,'카카오내비').replace(/Kakao\s*Navi/gi,'카카오내비');nt=nt.replace(/상장예식\s*\(\s*위령기도1\s*\)/g,'위령기도1(상장예식)').replace(/^위령기도1$/g,'위령기도1(상장예식)').replace(/Memorial Prayer 1\s*\(\s*Courting Ceremony\s*\)/gi,'위령기도1(상장예식)');nt=nt.replace(/위령\s*기도2\s*\(\s*짧은\s*위령기도\s*\)/g,'위령기도2 (짧은 위령기도)').replace(/^위령기도2$/g,'위령기도2 (짧은 위령기도)').replace(/Memorial Prayer 2\s*\(\s*short Memorial Prayer\s*\)/gi,'위령기도2 (짧은 위령기도)');if(nt!==t)n.textContent=nt;});}catch(e){ console.warn("[가톨릭길동무]", e); }}
-  function configureQna(){window.QNA_FORM_URL=SHEET_URL;window.QNA_ANSWER_URL=SHEET_URL;var q=el('qna-list');if(q&&q.innerHTML.indexOf('Google Form')>=0){q.innerHTML='<div class="qna-card"><div class="qna-kicker">문의 · 수정건의</div><div class="qna-title">Google Sheet 연결</div><div class="qna-text">문의와 수정건의는 연결된 Google Sheet에 남길 수 있습니다. 비밀 작성은 시트 권한 설정 또는 Google Form/Apps Script 연결이 필요합니다.</div><div class="qna-actions"><button class="primary" type="button" onclick="qnaOpenFormUrl()">문의 작성하기</button><button type="button" onclick="qnaOpenAnswerUrl()">답변 보기</button></div></div>';}}
-  window.qnaOpenFormUrl=function(){try{var w=window.open(SHEET_URL,'_blank','noopener'); if(w)return;}catch(_){ console.warn("[가톨릭길동무] silent catch"); } alert('새창 열기가 차단되었습니다. 브라우저의 팝업 허용을 확인해 주세요.');};window.qnaOpenAnswerUrl=function(){try{var w=window.open(SHEET_URL,'_blank','noopener'); if(w)return;}catch(_){ console.warn("[가톨릭길동무] silent catch"); } alert('새창 열기가 차단되었습니다. 브라우저의 팝업 허용을 확인해 주세요.');};
+  function configureQna(){
+    window.QNA_FORM_URL=QA_URL;
+    window.QNA_ANSWER_URL=QA_URL;
+    var q=el('qna-list');
+    if(q&&q.innerHTML.indexOf('Google Form')>=0){
+      q.innerHTML='<div class="qna-card"><div class="qna-kicker">문의 · 수정건의</div><div class="qna-title">문의·건의 페이지 연결</div><div class="qna-text">문의와 수정건의는 가톨릭길동무 문의·건의 페이지에서 작성하고 확인합니다.</div><div class="qna-actions"><button class="primary" type="button" onclick="goQaFirebase()">문의 작성하기</button><button type="button" onclick="goQaFirebase()">답변 보기</button></div></div>';
+    }
+  }
+  window.qnaOpenFormUrl=function(){ if(typeof window.goQaFirebase==='function') window.goQaFirebase(); else location.href=QA_URL; };
+  window.qnaOpenAnswerUrl=function(){ if(typeof window.goQaFirebase==='function') window.goQaFirebase(); else location.href=QA_URL; };
   function ll(lat,lng){try{if(typeof _LL==='function')return new _LL(lat,lng);}catch(e){ console.warn("[가톨릭길동무]", e); }try{if(window.kakao&&kakao.maps)return new kakao.maps.LatLng(lat,lng);}catch(e){ console.warn("[가톨릭길동무]", e); }return null;}
   function getMap(){try{if(typeof _map!=='undefined'&&_map)return _map;}catch(e){ console.warn("[가톨릭길동무]", e); }return window._map||null;}
   function getLatLng(item){if(!item)return null;var lat=item.lat,lng=item.lng;if((lat==null||lng==null)&&item.coords){lat=item.coords.latitude||item.coords.lat;lng=item.coords.longitude||item.coords.lng;}lat=Number(lat);lng=Number(lng);return(isFinite(lat)&&isFinite(lng))?{lat:lat,lng:lng}:null;}
@@ -464,7 +473,7 @@
 })();
 
 (function(){
-  var QA_URL='qa-firebase.html?v=v1-1';
+  var QA_URL='qa-firebase.html?v=v1-4';
   function bindQnaButton(){
     var btn=document.getElementById('qna-cover-btn');
     if(btn){ btn.onclick=function(){ if(typeof oaiSmoothNavigate==='function') oaiSmoothNavigate(QA_URL, 'qna', '문의·건의로 이동 중입니다'); else location.href=QA_URL; }; }
@@ -809,13 +818,14 @@
   };
 })();
 (function(){
+  // v1-4: 아래 블록은 버튼이 사라진 경우만 복원하고, 실제 이동은 openQnaView 한 경로로 위임한다.
   function $(id){return document.getElementById(id);}
   function restoreQnaButton(){
     var cover=$('cover');
     if(!cover) return;
     var btn=$('qna-cover-btn');
     if(!btn){btn=document.createElement('button');btn.id='qna-cover-btn';btn.type='button';btn.setAttribute('aria-label','문의·건의');btn.textContent='💬 문의·건의';cover.appendChild(btn);}
-    btn.onclick=function(ev){if(ev) ev.preventDefault();if(typeof window.openQnaView === 'function') window.openQnaView();else if(typeof oaiSmoothNavigate==='function') oaiSmoothNavigate('qa-firebase.html?v=v1-1','qna','문의·건의로 이동 중입니다');else location.href='qa-firebase.html?v=v1-1';};
+    btn.onclick=function(ev){if(ev) ev.preventDefault();if(typeof window.openQnaView === 'function') window.openQnaView();else if(typeof oaiSmoothNavigate==='function') oaiSmoothNavigate('qa-firebase.html?v=v1-4','qna','문의·건의로 이동 중입니다');else location.href='qa-firebase.html?v=v1-4';};
   }
   function removeMissaPopupState(){var mv=$('missa-view');if(mv) mv.classList.remove('open');}
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', function(){restoreQnaButton();removeMissaPopupState();});

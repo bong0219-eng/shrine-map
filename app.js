@@ -129,6 +129,54 @@ window.addEventListener('focus', function(){
   }catch(e){ console.warn("[가톨릭길동무]", e); }
 }, true);
 
+
+// v1-4: 외부 링크 이동 경로를 한 곳으로 모아 PWA 복귀 안정화 흐름을 타게 한다.
+// 디자인/데이터는 건드리지 않고, 기존 target="_blank" 링크 클릭만 부드러운 이동으로 위임한다.
+function oaiBindExternalLinkGuard(){
+  if(window.__OAI_EXTERNAL_LINK_GUARD_V14__) return;
+  window.__OAI_EXTERNAL_LINK_GUARD_V14__ = true;
+  document.addEventListener('click', function(e){
+    var a = null;
+    try{ a = e.target && e.target.closest ? e.target.closest('a[href]') : null; }catch(err){ a = null; }
+    if(!a) return;
+
+    // 전화/문자/메일/앱스킴은 브라우저 기본 동작 유지
+    var raw = (a.getAttribute('href') || '').trim();
+    if(!raw || raw === '#') return;
+    if(/^(tel:|mailto:|sms:|kakaomap:|kakaonavi:|intent:|javascript:)/i.test(raw)) return;
+
+    // 앱 내부 파일 이동은 기본 동작 유지
+    if(/^(index\.html|\.\/index\.html|qa-firebase\.html|\.\/qa-firebase\.html|diocese\.html|\.\/diocese\.html)(\?|#|$)/i.test(raw)) return;
+
+    // 실제 외부 URL만 통합 이동 처리
+    var url = raw;
+    try{ url = new URL(raw, location.href).href; }catch(err){ return; }
+    try{ if(new URL(url).origin === location.origin && !/^https?:\/\//i.test(raw)) return; }catch(err){}
+
+    var shouldHandle = false;
+    try{
+      shouldHandle = !!(
+        a.id === 'goodnews-prayer-btn' ||
+        a.classList.contains('ric-map-link') ||
+        a.closest('#prayer-detail-content') ||
+        a.closest('#prayer-view') ||
+        a.closest('#info-card')
+      );
+    }catch(err){ shouldHandle = false; }
+    if(!shouldHandle) return;
+
+    try{ e.preventDefault(); e.stopPropagation(); }catch(err){}
+    var label = '외부 사이트로 이동 중입니다';
+    var kind = 'external';
+    if(a.id === 'goodnews-prayer-btn' || (a.closest && a.closest('#prayer-view'))) { kind = 'prayer'; label = '기도문 외부 사이트로 이동 중입니다'; }
+    else if(a.classList && a.classList.contains('ric-map-link')) { kind = 'map'; label = '지도 사이트로 이동 중입니다'; }
+    if(typeof oaiSmoothNavigate === 'function') oaiSmoothNavigate(url, kind, label);
+    else location.href = url;
+  }, true);
+}
+if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', oaiBindExternalLinkGuard, {once:true});
+else oaiBindExternalLinkGuard();
+
 /* ── 뒤로가기 핸들러는 principle-back-controller-20260424 에서 통합 관리 ── */
 
 /* OAI removed old pull-to-refresh handler: unified final handler below */
@@ -199,7 +247,7 @@ function openDioceseView(opts){
       if(!restore) try{ frame.contentWindow && frame.contentWindow.resetDioceseFirstPage && frame.contentWindow.resetDioceseFirstPage(); }catch(e){ console.warn("[가톨릭길동무]", e); }
       if(typeof dioceseLoaded==='function') dioceseLoaded();
     };
-    frame.src='diocese.html?v=v1-1';
+    frame.src='diocese.html?v=v1-4';
   }else if(!restore){
     try{ frame.contentWindow && frame.contentWindow.resetDioceseFirstPage && frame.contentWindow.resetDioceseFirstPage(); }catch(e){ console.warn("[가톨릭길동무]", e); }
   }

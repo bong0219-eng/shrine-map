@@ -1362,21 +1362,27 @@ svg.addEventListener('wheel',e=>{
   _zoomRAF=requestAnimationFrame(()=>{ _applyZoom(nw,nh,mx,my,rx,ry); _zoomRAF=null; });
 },{passive:false});
 let t0=null,t1=null,dpTap=null;
+let dioSuppressClickUntil=0;
 const DIO_TAP_LIMIT_PX=14;
 const DIO_PAN_START_PX=8;
 const DIO_PAN_DAMPING=.82;
 function clearDioTouch(){ t0=null; t1=null; dpTap=null; }
+svg.addEventListener('click',e=>{
+  if(dioSuppressClickUntil && Date.now()<dioSuppressClickUntil){
+    e.preventDefault();
+    e.stopImmediatePropagation();
+  }
+},true);
 svg.addEventListener('touchstart',e=>{
   e.preventDefault();
-  if(e.touches.length===1 && e.target && e.target.classList && e.target.classList.contains('dp')){
-    const t=e.touches[0];
-    dpTap={el:e.target,x:t.clientX,y:t.clientY,moved:false};
-    dragging=false; t0=null; t1=null;
-    return;
-  }
   dpTap=null;
   if(e.touches.length===1){
-    t0={x:e.touches[0].clientX,y:e.touches[0].clientY,vx,vy,started:false};
+    const t=e.touches[0];
+    if(e.target && e.target.classList && e.target.classList.contains('dp')){
+      dpTap={el:e.target,x:t.clientX,y:t.clientY,moved:false};
+    }
+    dragging=false;
+    t0={x:t.clientX,y:t.clientY,vx,vy,started:false};
     t1=null;
   }
   if(e.touches.length===2){
@@ -1398,18 +1404,20 @@ svg.addEventListener('touchmove',e=>{
   if(dpTap && e.touches.length===1){
     const dx=e.touches[0].clientX-dpTap.x, dy=e.touches[0].clientY-dpTap.y;
     if(Math.hypot(dx,dy)>DIO_TAP_LIMIT_PX) dpTap.moved=true;
-    return;
   }
   if(e.touches.length===1&&t0){
     const dx=e.touches[0].clientX-t0.x, dy=e.touches[0].clientY-t0.y;
     if(!t0.started && Math.hypot(dx,dy)<DIO_PAN_START_PX) return;
     t0.started=true;
+    if(dpTap) dpTap.moved=true;
+    dioSuppressClickUntil=Date.now()+450;
     const sx=vw/rect.width,sy=vh/rect.height;
     vx=t0.vx-(dx*DIO_PAN_DAMPING)*sx;
     vy=t0.vy-(dy*DIO_PAN_DAMPING)*sy;
     setVB();
   }
   if(e.touches.length===2&&t1){
+    dioSuppressClickUntil=Date.now()+450;
     const d=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);
     const f=t1.d/d; // d 작아지면 f>1 → 축소
     const nw=Math.max(80,Math.min(1800,t1.vw*f));
