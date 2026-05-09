@@ -927,7 +927,7 @@ html.oai-font-global .lv-rg,html.oai-font-global .lv-det,html.oai-font-global .l
 @media (max-height:720px){#cover{position:fixed;inset:0;z-index:9999;background:#f4efe4;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:env(safe-area-inset-top,0) 0 env(safe-area-inset-bottom,0);overflow:hidden;overflow-y:hidden;background-color:var(--bg-color);color:var(--text-main);font-family:'Apple SD Gothic Neo','Malgun Gothic',sans-serif;transition:none;padding-top:calc(5vh + env(safe-area-inset-top,0px));padding-bottom:0}#cover .cover-icon-wrap{background:transparent!important;background-color:transparent!important;box-shadow:none!important;border:none!important}#cover .cover-emoji{font-size:22px;}}
 /* 기존 커버 1개만 보정: 카테고리 onclick은 건드리지 않음 */
 html:not(.app-active) #cover{position:fixed;inset:0;z-index:9999;background:#f4efe4;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:env(safe-area-inset-top,0) 0 env(safe-area-inset-bottom,0);overflow:hidden;overflow-y:hidden;background-color:var(--bg-color);color:var(--text-main);font-family:'Apple SD Gothic Neo','Malgun Gothic',sans-serif;transition:none;padding-top:calc(5vh + env(safe-area-inset-top,0px));padding-bottom:0}
-#cover .cover-name{margin:0;font-size:calc(15px * var(--app-font-scale,1));line-height:1.22;font-weight:850;letter-spacing:-.02em}
+#cover .cover-name{margin:0;font-size:calc(16px * var(--app-font-scale,1));line-height:1.22;font-weight:850;letter-spacing:-.02em}
 /* 커버 글자크기 버튼: 주요기도문 글자크기 버튼과 동일 계열 */
 #cover-font-controls{position:absolute;right:12px!important;top:calc(env(safe-area-inset-top,0px) + 12px)!important;z-index:80;display:flex!important;align-items:center!important;gap:0!important;background:#fffbf2!important;border:1.5px solid #ddd5c8!important;border-radius:9px!important;padding:2px 3px!important;height:36px!important;box-shadow:0 6px 14px rgba(31,42,68,.10)!important}
 #cover-font-controls .pr-font-btn,
@@ -1611,7 +1611,7 @@ html.retreat-mode #sm-tab-bar .sm-tab.active{
   box-shadow:none!important;
 }
 
-/* V18F: 외부 복귀/화면 진입 CSS 정리
+/* V18: 외부 복귀/화면 진입 CSS 정리
    외부 이동 보호막을 제거한 현재 구조에서는 복귀 전용 강제 고정 CSS를 두지 않는다.
    화면 진입 중 필요한 최소 전환만 유지하고, app/viewport 전체를 흔드는 전역 보정은 금지한다. */
 html:not(.app-active),html:not(.app-active) body{scroll-behavior:auto!important;}
@@ -1696,7 +1696,7 @@ html.retreat-mode #region-body .nearby-dist span{
   margin-left:4px!important;
 }
 
-/* 커버 전용 당겨서 새로고침 — V18F 단일 기준 */
+/* 커버 전용 당겨서 새로고침 — V18 단일 기준 */
 #cover{
   overscroll-behavior-y:contain!important;
 }
@@ -2025,7 +2025,7 @@ html.app-active #cv-pull-modern{
 #qna-view  .qna-tab.on        { background: var(--navy, #0e1535) !important; }
 
 /* ── 6. 헤더 배경색 (모듈별) ─────────────────────────────────────── */
-/* V18F: 기도문 헤더를 기준으로 주요 모듈 헤더 단색 통일 */
+/* V18: 기도문 헤더를 기준으로 주요 모듈 헤더 단색 통일 */
 #prayer-bar,
 #trail-view .module-bar,
 #web-view .module-bar,
@@ -2108,7 +2108,6 @@ html.app-active #cover {
 
 /* 3. 메인 블록 (그리드 + 문의버튼 한 몸체) */
 #cover-main-block {
-  position    : relative ;
   flex        : 1 1 0 !important;
   min-height  : 0 !important;
   width       : 100% !important;
@@ -2236,96 +2235,60 @@ html.app-active #cover {
 }
 
 
-/* V18F: iPhone 카카오톡 인앱 브라우저 Safari 안내 배너 — 카테고리 위 대형 강조형 */
+/* V18: iPhone 카카오톡 인앱 브라우저 Safari 안내 배너 */
 #cover .ios-safari-banner{
   display:none;
 }
 html.ios-kakao-inapp #cover .ios-safari-banner{
-  position:absolute;
-  top:clamp(4px, 3.2vh, 28px);
-  left:0;
-  right:0;
-  z-index:90;
   display:flex;
-  flex-direction:column;
-  align-items:stretch;
-  justify-content:center;
-  gap:16px;
-  width:auto;
-  margin:0;
-  padding:24px 20px 22px;
-  border:3px solid #d4aa6a;
-  border-radius:24px;
-  background:linear-gradient(180deg,#fff7df 0%,#ffe6ad 100%);
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+  width:100%;
+  margin:8px 0 0;
+  padding:9px 10px;
+  border:1px solid rgba(212,170,106,.45);
+  border-radius:14px;
+  background:#fff8e8;
   color:#1f2a44;
-  box-shadow:0 28px 58px rgba(31,42,68,.32), 0 0 0 999px rgba(245,240,232,.46);
+  box-shadow:0 8px 18px rgba(31,42,68,.08);
   box-sizing:border-box;
   flex:0 0 auto;
 }
 #cover .ios-safari-banner[hidden]{display:none!important;}
-html.ios-kakao-inapp #cover .cover-grid{
-  opacity:.28;
-  pointer-events:none;
-  filter:saturate(.62);
-}
-html.ios-kakao-inapp #cover #cover-action-row{
-  opacity:.54;
-}
 #cover .ios-safari-banner-text{
   min-width:0;
   display:flex;
   flex-direction:column;
-  gap:8px;
-  line-height:1.24;
-  text-align:center;
+  gap:2px;
+  line-height:1.2;
 }
 #cover .ios-safari-banner-text strong{
-  font-size:calc(20px * var(--app-font-scale,1));
+  font-size:calc(11.5px * var(--app-font-scale,1));
   font-weight:900;
-  letter-spacing:-.05em;
-  color:#14213d;
+  letter-spacing:-.03em;
 }
 #cover .ios-safari-banner-text span{
-  font-size:calc(15px * var(--app-font-scale,1));
-  font-weight:900;
-  color:#2b3448;
+  font-size:calc(9.5px * var(--app-font-scale,1));
+  font-weight:700;
+  color:rgba(31,42,68,.68);
   word-break:keep-all;
 }
-#cover .ios-safari-banner-text em{
-  font-style:normal;
-  color:#b42318;
-}
-#cover .ios-safari-banner-text mark{
-  display:inline-block;
-  padding:0 .16em;
-  border-radius:.28em;
-  background:#fff1a8;
-  color:#0f766e;
-}
 #cover #ios-kakao-safari-help{
-  width:100%;
-  min-height:96px;
-  padding:0 22px;
+  flex:0 0 auto;
+  height:32px;
+  padding:0 10px;
   border:0;
-  border-radius:18px;
-  background:#b42318;
+  border-radius:999px;
+  background:#1f2a44;
   color:#fff;
   font-family:inherit;
-  font-size:calc(21px * var(--app-font-scale,1));
+  font-size:calc(10px * var(--app-font-scale,1));
   font-weight:900;
-  letter-spacing:-.04em;
-  white-space:normal;
-  line-height:1.16;
-  box-shadow:0 14px 28px rgba(180,35,24,.28);
+  white-space:nowrap;
+  box-shadow:0 6px 14px rgba(31,42,68,.18);
 }
-#cover #ios-kakao-safari-help::after{
-  content:'  ›';
-  font-size:1.14em;
-}
-#cover #ios-kakao-safari-help:active{
-  transform:scale(.982);
-  box-shadow:0 8px 18px rgba(180,35,24,.22);
-}
+#cover #ios-kakao-safari-help:active{transform:scale(.985);}
 .ios-safari-guide-panel .guide-lead{
   min-height:46px;
 }
@@ -2367,17 +2330,10 @@ html.ios-kakao-inapp #cover #cover-action-row{
   color:#3E362E;
   word-break:keep-all;
 }
-
-.ios-safari-guide-panel .guide-lead strong,
-.ios-safari-steps span strong{
-  color:#b42318;
-  font-weight:900;
-}
 @media (max-height:650px){
-  html.ios-kakao-inapp #cover .ios-safari-banner{top:clamp(4px,3vh,18px);padding:18px 14px;gap:12px;}
-  #cover .ios-safari-banner-text strong{font-size:calc(17px * var(--app-font-scale,1));}
-  #cover .ios-safari-banner-text span{font-size:calc(12.5px * var(--app-font-scale,1));}
-  #cover #ios-kakao-safari-help{min-height:78px;font-size:calc(18px * var(--app-font-scale,1));}
+  html.ios-kakao-inapp #cover .ios-safari-banner{padding:7px 9px;margin-top:6px;}
+  #cover .ios-safari-banner-text span{display:none;}
+  #cover #ios-kakao-safari-help{height:30px;padding:0 9px;}
 }
 
 /* 7. 하단 안내 문구 — 레이아웃 계산에서 제외하고 화면 하단에 고정 */
@@ -2439,7 +2395,7 @@ html.oai-font-global #cover #cover-bottom-note,
 }
 
 
-/* V18F: 출발 검색 모달 색상 기준 재정리
+/* V18: 출발 검색 모달 색상 기준 재정리
    - 성지/성당/피정 + 일반장소 탭: 활성은 금색, 비활성은 고유색 배경 위의 은은한 반투명 버튼
    - 검색창을 감싸는 영역은 성지/성당/피정 각 카테고리 고유색으로 통일
    - 실제 검색 입력창(.sm-si)은 기존 아이보리 계열 유지 */
@@ -2510,7 +2466,7 @@ html.retreat-mode #srch-modal #sm-tab-bar .sm-tab:not(.active){
 html #srch-modal #sm-tab-bar .sm-tab.active,
 html.parish-mode #srch-modal #sm-tab-bar .sm-tab.active,
 html.retreat-mode #srch-modal #sm-tab-bar .sm-tab.active{
-  /* V18F: 바로 위 교구 활성화 버튼(.sm-fb.on)과 같은 금색 기준 사용 */
+  /* V18: 바로 위 교구 활성화 버튼(.sm-fb.on)과 같은 금색 기준 사용 */
   background:var(--gold,#d4aa6a)!important;
   background-image:none!important;
   color:#1F2937!important;
@@ -2522,7 +2478,7 @@ html.retreat-mode #srch-modal #sm-tab-bar .sm-tab.active{
 
 
 /* ══════════════════════════════════════════════════════════════════
-   V18F 모듈 표준화
+   V18 모듈 표준화
    - 헤더: 기도문 헤더 기준 단색 네이비(그라데이션 제거)
    - 탭바/탭버튼: 관구·교구 탭 기준 높이·형태 통일
    - 활성 탭의 고유 색상은 각 모듈 기존 색상을 유지
@@ -2606,7 +2562,7 @@ html.oai-font-global #trail-view .trail-tab{
 }
 
 /* ══════════════════════════════════════════════════════════════════
-   V18F 주요 기능 안내 — 커버 전용, 별도 파일 없음
+   V18 주요 기능 안내 — 커버 전용, 별도 파일 없음
    ══════════════════════════════════════════════════════════════════ */
 #cover #cover-guide-btn{
   position:absolute;
