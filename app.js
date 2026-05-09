@@ -1,4 +1,4 @@
-/* app.js — 가톨릭 앱 핵심 로직
+/* app.js — 가톨릭길동무 핵심 로직
    지도, 마커, 탭, 경로, 인포카드, 지역검색
    이벤트 바인딩 (bindEvents) 포함 */
 
@@ -199,7 +199,7 @@ function openDioceseView(opts){
       if(!restore) try{ frame.contentWindow && frame.contentWindow.resetDioceseFirstPage && frame.contentWindow.resetDioceseFirstPage(); }catch(e){ console.warn("[가톨릭길동무]", e); }
       if(typeof dioceseLoaded==='function') dioceseLoaded();
     };
-    frame.src='diocese.html?v=20260508-v5-4';
+    frame.src='diocese.html?v=v1-1';
   }else if(!restore){
     try{ frame.contentWindow && frame.contentWindow.resetDioceseFirstPage && frame.contentWindow.resetDioceseFirstPage(); }catch(e){ console.warn("[가톨릭길동무]", e); }
   }

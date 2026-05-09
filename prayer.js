@@ -182,7 +182,7 @@ function prLoadPrefs(){
   const idx = PR_FONT_SIZES.indexOf(saved);
   prFontIdx = idx >= 0 ? idx : 3;
 }
-function prSaveFavorites(){ try{ localStorage.setItem('pr_favorites', JSON.stringify(prFavorites)); }catch(e){ console.warn("[클로드정리]", e); } }
+function prSaveFavorites(){ try{ localStorage.setItem('pr_favorites', JSON.stringify(prFavorites)); }catch(e){ console.warn("[가톨릭길동무]", e); } }
 
 function prApplyFont(){
   const px = PR_FONT_SIZES[prFontIdx];
@@ -193,7 +193,7 @@ function prApplyFont(){
   r.style.setProperty('--pr-detail-fs', (px+1)+'px');
   r.style.setProperty('--pr-icon-sz',   Math.max(34,Math.round(px*2.2))+'px');
   r.style.setProperty('--pr-icon-fs',   Math.max(17,Math.round(px*1.2))+'px');
-  try{ localStorage.setItem(PR_FONT_KEY, px); }catch(e){ console.warn("[클로드정리]", e); }
+  try{ localStorage.setItem(PR_FONT_KEY, px); }catch(e){ console.warn("[가톨릭길동무]", e); }
 }
 
 window.prAdjustFont = function(delta){

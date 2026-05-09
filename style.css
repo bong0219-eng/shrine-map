@@ -1,4 +1,4 @@
-/* style.css — 가톨릭 앱 전체 스타일
+/* style.css — 가톨릭길동무 전체 스타일
    공통 변수·레이아웃·성지·성당·피정·기도문·웹·순례길
    커버·탭바·인포카드·지도·모달 등 */
 
@@ -2267,3 +2267,6 @@ html.oai-font-global #cover #cover-bottom-note,
   pointer-events:none;
   z-index:5;
 }
+
+/* 커버 전용 버전 표시 */
+#cover-version{display:inline-block;margin-top:2px;font-size:8px;font-weight:600;letter-spacing:.02em;color:rgba(96,86,76,.55);}
