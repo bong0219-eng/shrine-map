@@ -1611,7 +1611,7 @@ html.retreat-mode #sm-tab-bar .sm-tab.active{
   box-shadow:none!important;
 }
 
-/* V18A: 외부 복귀/화면 진입 CSS 정리
+/* V18C: 외부 복귀/화면 진입 CSS 정리
    외부 이동 보호막을 제거한 현재 구조에서는 복귀 전용 강제 고정 CSS를 두지 않는다.
    화면 진입 중 필요한 최소 전환만 유지하고, app/viewport 전체를 흔드는 전역 보정은 금지한다. */
 html:not(.app-active),html:not(.app-active) body{scroll-behavior:auto!important;}
@@ -1696,7 +1696,7 @@ html.retreat-mode #region-body .nearby-dist span{
   margin-left:4px!important;
 }
 
-/* 커버 전용 당겨서 새로고침 — V18A 단일 기준 */
+/* 커버 전용 당겨서 새로고침 — V18C 단일 기준 */
 #cover{
   overscroll-behavior-y:contain!important;
 }
@@ -2025,7 +2025,7 @@ html.app-active #cv-pull-modern{
 #qna-view  .qna-tab.on        { background: var(--navy, #0e1535) !important; }
 
 /* ── 6. 헤더 배경색 (모듈별) ─────────────────────────────────────── */
-/* V18A: 기도문 헤더를 기준으로 주요 모듈 헤더 단색 통일 */
+/* V18C: 기도문 헤더를 기준으로 주요 모듈 헤더 단색 통일 */
 #prayer-bar,
 #trail-view .module-bar,
 #web-view .module-bar,
@@ -2235,23 +2235,24 @@ html.app-active #cover {
 }
 
 
-/* V18A: iPhone 카카오톡 인앱 브라우저 Safari 안내 배너 */
+/* V18C: iPhone 카카오톡 인앱 브라우저 Safari 안내 배너 */
 #cover .ios-safari-banner{
   display:none;
 }
 html.ios-kakao-inapp #cover .ios-safari-banner{
   display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:8px;
+  flex-direction:column;
+  align-items:stretch;
+  justify-content:center;
+  gap:12px;
   width:100%;
-  margin:8px 0 0;
-  padding:9px 10px;
-  border:1px solid rgba(212,170,106,.45);
-  border-radius:14px;
-  background:#fff8e8;
+  margin:12px 0 0;
+  padding:16px 15px 15px;
+  border:2px solid rgba(212,170,106,.78);
+  border-radius:18px;
+  background:#fff4d7;
   color:#1f2a44;
-  box-shadow:0 8px 18px rgba(31,42,68,.08);
+  box-shadow:0 14px 30px rgba(31,42,68,.16);
   box-sizing:border-box;
   flex:0 0 auto;
 }
@@ -2260,35 +2261,46 @@ html.ios-kakao-inapp #cover .ios-safari-banner{
   min-width:0;
   display:flex;
   flex-direction:column;
-  gap:2px;
-  line-height:1.2;
+  gap:5px;
+  line-height:1.22;
+  text-align:left;
 }
 #cover .ios-safari-banner-text strong{
-  font-size:calc(11.5px * var(--app-font-scale,1));
+  font-size:calc(17px * var(--app-font-scale,1));
   font-weight:900;
-  letter-spacing:-.03em;
+  letter-spacing:-.04em;
+  color:#1f2a44;
 }
 #cover .ios-safari-banner-text span{
-  font-size:calc(9.5px * var(--app-font-scale,1));
-  font-weight:700;
-  color:rgba(31,42,68,.68);
+  font-size:calc(13px * var(--app-font-scale,1));
+  font-weight:800;
+  color:rgba(31,42,68,.78);
   word-break:keep-all;
 }
 #cover #ios-kakao-safari-help{
-  flex:0 0 auto;
-  height:32px;
-  padding:0 10px;
+  width:100%;
+  min-height:58px;
+  padding:0 18px;
   border:0;
-  border-radius:999px;
+  border-radius:16px;
   background:#1f2a44;
   color:#fff;
   font-family:inherit;
-  font-size:calc(10px * var(--app-font-scale,1));
+  font-size:calc(17px * var(--app-font-scale,1));
   font-weight:900;
-  white-space:nowrap;
-  box-shadow:0 6px 14px rgba(31,42,68,.18);
+  letter-spacing:-.03em;
+  white-space:normal;
+  line-height:1.18;
+  box-shadow:0 10px 22px rgba(31,42,68,.24);
 }
-#cover #ios-kakao-safari-help:active{transform:scale(.985);}
+#cover #ios-kakao-safari-help::after{
+  content:'  ›';
+  font-size:1.08em;
+}
+#cover #ios-kakao-safari-help:active{
+  transform:scale(.985);
+  box-shadow:0 6px 14px rgba(31,42,68,.20);
+}
 .ios-safari-guide-panel .guide-lead{
   min-height:46px;
 }
@@ -2331,9 +2343,10 @@ html.ios-kakao-inapp #cover .ios-safari-banner{
   word-break:keep-all;
 }
 @media (max-height:650px){
-  html.ios-kakao-inapp #cover .ios-safari-banner{padding:7px 9px;margin-top:6px;}
-  #cover .ios-safari-banner-text span{display:none;}
-  #cover #ios-kakao-safari-help{height:30px;padding:0 9px;}
+  html.ios-kakao-inapp #cover .ios-safari-banner{padding:13px 12px;margin-top:8px;gap:9px;}
+  #cover .ios-safari-banner-text strong{font-size:calc(15px * var(--app-font-scale,1));}
+  #cover .ios-safari-banner-text span{font-size:calc(11.5px * var(--app-font-scale,1));}
+  #cover #ios-kakao-safari-help{min-height:50px;font-size:calc(15px * var(--app-font-scale,1));}
 }
 
 /* 7. 하단 안내 문구 — 레이아웃 계산에서 제외하고 화면 하단에 고정 */
@@ -2395,7 +2408,7 @@ html.oai-font-global #cover #cover-bottom-note,
 }
 
 
-/* V18A: 출발 검색 모달 색상 기준 재정리
+/* V18C: 출발 검색 모달 색상 기준 재정리
    - 성지/성당/피정 + 일반장소 탭: 활성은 금색, 비활성은 고유색 배경 위의 은은한 반투명 버튼
    - 검색창을 감싸는 영역은 성지/성당/피정 각 카테고리 고유색으로 통일
    - 실제 검색 입력창(.sm-si)은 기존 아이보리 계열 유지 */
@@ -2466,7 +2479,7 @@ html.retreat-mode #srch-modal #sm-tab-bar .sm-tab:not(.active){
 html #srch-modal #sm-tab-bar .sm-tab.active,
 html.parish-mode #srch-modal #sm-tab-bar .sm-tab.active,
 html.retreat-mode #srch-modal #sm-tab-bar .sm-tab.active{
-  /* V18A: 바로 위 교구 활성화 버튼(.sm-fb.on)과 같은 금색 기준 사용 */
+  /* V18C: 바로 위 교구 활성화 버튼(.sm-fb.on)과 같은 금색 기준 사용 */
   background:var(--gold,#d4aa6a)!important;
   background-image:none!important;
   color:#1F2937!important;
@@ -2478,7 +2491,7 @@ html.retreat-mode #srch-modal #sm-tab-bar .sm-tab.active{
 
 
 /* ══════════════════════════════════════════════════════════════════
-   V18A 모듈 표준화
+   V18C 모듈 표준화
    - 헤더: 기도문 헤더 기준 단색 네이비(그라데이션 제거)
    - 탭바/탭버튼: 관구·교구 탭 기준 높이·형태 통일
    - 활성 탭의 고유 색상은 각 모듈 기존 색상을 유지
@@ -2562,7 +2575,7 @@ html.oai-font-global #trail-view .trail-tab{
 }
 
 /* ══════════════════════════════════════════════════════════════════
-   V18A 주요 기능 안내 — 커버 전용, 별도 파일 없음
+   V18C 주요 기능 안내 — 커버 전용, 별도 파일 없음
    ══════════════════════════════════════════════════════════════════ */
 #cover #cover-guide-btn{
   position:absolute;
