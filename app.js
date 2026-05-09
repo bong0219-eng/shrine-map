@@ -180,7 +180,7 @@ function openDioceseView(opts){
       if(!restore) try{ frame.contentWindow && frame.contentWindow.resetDioceseFirstPage && frame.contentWindow.resetDioceseFirstPage(); }catch(e){ console.warn("[클로드정리]", e); }
       if(typeof dioceseLoaded==='function') dioceseLoaded();
     };
-    frame.src='diocese.html?v=20260508-v5-2';
+    frame.src='diocese.html?v=20260508-v5-3';
   }else if(!restore){
     try{ frame.contentWindow && frame.contentWindow.resetDioceseFirstPage && frame.contentWindow.resetDioceseFirstPage(); }catch(e){ console.warn("[클로드정리]", e); }
   }
@@ -1633,7 +1633,32 @@ function _toggleParishDio(code){
   _activeDio=code;
   const clickedEl=_dioOverlays[code]?.getContent?.();
   if(clickedEl){clickedEl.style.display='none';}
+  _focusParishDio(code);
   _showParishDioMkrs(code);
+}
+
+function _focusParishDio(code){
+  if(_mode!=='parish'||!_map||typeof _LB==='undefined'||typeof _LL==='undefined') return;
+  const parishes=_PA_BY_DIO[code]||[];
+  let bounds=null, count=0;
+  try{
+    parishes.forEach(function(p){
+      if(!p||!p.lat||!p.lng||p.lat===0||p.lng===0) return;
+      const pos=new _LL(p.lat,p.lng);
+      if(!bounds) bounds=new _LB();
+      bounds.extend(pos);
+      count++;
+    });
+    if(count>1 && bounds){
+      _map.setBounds(bounds);
+    }else if(count===1){
+      const only=parishes.find(function(p){return p&&p.lat&&p.lng&&p.lat!==0&&p.lng!==0;});
+      if(only){ _map.setCenter(new _LL(only.lat,only.lng)); _map.setLevel(7); }
+    }else{
+      const cfg=_DIO_CFG[code];
+      if(cfg){ _map.setCenter(new _LL(cfg.lat,cfg.lng)); _map.setLevel(8); }
+    }
+  }catch(e){ console.warn('[클로드정리]',e); }
 }
 
 function _ensureParishMarkerZoom(){
@@ -1643,6 +1668,8 @@ function _ensureParishMarkerZoom(){
   }catch(e){ console.warn('[클로드정리]',e); }
 }
 function _showParishDioMkrs(code){
+  // 교구를 선택했을 때는 해당 교구 성당 마커가 반드시 보이도록 한다.
+  // 지도 줌은 교구 범위 맞춤(_focusParishDio) 또는 현 위치/노란마커 기준을 우선한다.
   _ensureParishMarkerZoom();
   // ── 마커 객체 최초 1회 생성 (setMap 없이) ──
   if(!_dioMkrs[code]){
@@ -1678,24 +1705,16 @@ function _showParishDioMkrs(code){
   });
 }
 
-/* 현재 지도 뷰포트 안에 있는 성당 마커만 표시합니다.
-   성당 카테고리는 현재위치/노란마커/선택 교구 기준의 성당 마커가 보여야 하므로
-   레벨 9까지는 표시하고, 그보다 멀리 줌아웃한 경우만 숨깁니다. */
+/* 선택된 교구의 성당 마커를 표시합니다.
+   이전에는 현재 뷰포트 안의 성당만 표시해서, 성당 카테고리에서 교구명을 눌러도
+   지도 위치/줌에 따라 아무 마커도 보이지 않을 수 있었습니다.
+   이제 교구 선택 상태에서는 해당 교구 성당 마커를 전부 지도에 올리고,
+   교구 선택 시 _focusParishDio()가 지도를 해당 교구 범위로 맞춥니다. */
 function _updateParishViewport(code){
   const mkrs=_dioMkrs[code];
   if(!mkrs||!_map) return;
-  const lvl=_map.getLevel();
-  if(lvl>=10){
-    // 너무 멀리 줌아웃 → 마커 전부 숨김 (교구 레이블만 표시)
-    mkrs.forEach(mk=>{ try{mk.setMap(null);}catch(e){ console.warn('[클로드정리]',e); } });
-    return;
-  }
-  const bounds=_map.getBounds();
   mkrs.forEach(mk=>{
-    try{
-      if(bounds.contain(mk.getPosition())) mk.setMap(_map);
-      else mk.setMap(null);
-    }catch(e){ console.warn('[클로드정리]',e); }
+    try{ mk.setMap(_map); }catch(e){ console.warn('[클로드정리]',e); }
   });
 }
 

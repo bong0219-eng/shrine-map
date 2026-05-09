@@ -1362,27 +1362,22 @@ svg.addEventListener('wheel',e=>{
   _zoomRAF=requestAnimationFrame(()=>{ _applyZoom(nw,nh,mx,my,rx,ry); _zoomRAF=null; });
 },{passive:false});
 let t0=null,t1=null,dpTap=null;
-// 교구지도는 지도 이동이 우선입니다.
-// 아주 짧고 정확한 탭만 교구 선택으로 처리하고, 조금이라도 밀면 지도 이동으로 봅니다.
-const DIO_TAP_LIMIT_PX=4;
-const DIO_TAP_MAX_MS=260;
-const DIO_PAN_START_PX=3;
-const DIO_PAN_DAMPING=.92;
-let dioLastTouchCardAt=0;
-let dioLastTouchAt=0;
-let dioSuppressClickUntil=0;
+const DIO_TAP_LIMIT_PX=14;
+const DIO_PAN_START_PX=8;
+const DIO_PAN_DAMPING=.82;
 function clearDioTouch(){ t0=null; t1=null; dpTap=null; }
 svg.addEventListener('touchstart',e=>{
   e.preventDefault();
-  dioLastTouchAt=Date.now();
-  dioSuppressClickUntil=Date.now()+520;
-  if(e.touches.length===1){
+  if(e.touches.length===1 && e.target && e.target.classList && e.target.classList.contains('dp')){
     const t=e.touches[0];
-    const targetDp=(e.target && e.target.classList && e.target.classList.contains('dp')) ? e.target : null;
-    dpTap=targetDp ? {el:targetDp,x:t.clientX,y:t.clientY,at:Date.now(),moved:false} : null;
-    t0={x:t.clientX,y:t.clientY,vx,vy,started:false};
+    dpTap={el:e.target,x:t.clientX,y:t.clientY,moved:false};
+    dragging=false; t0=null; t1=null;
+    return;
+  }
+  dpTap=null;
+  if(e.touches.length===1){
+    t0={x:e.touches[0].clientX,y:e.touches[0].clientY,vx,vy,started:false};
     t1=null;
-    dragging=false;
   }
   if(e.touches.length===2){
     // 두 손가락 중심점 + 거리 저장
@@ -1400,17 +1395,15 @@ svg.addEventListener('touchstart',e=>{
 svg.addEventListener('touchmove',e=>{
   e.preventDefault();
   const rect=svg.getBoundingClientRect();
+  if(dpTap && e.touches.length===1){
+    const dx=e.touches[0].clientX-dpTap.x, dy=e.touches[0].clientY-dpTap.y;
+    if(Math.hypot(dx,dy)>DIO_TAP_LIMIT_PX) dpTap.moved=true;
+    return;
+  }
   if(e.touches.length===1&&t0){
     const dx=e.touches[0].clientX-t0.x, dy=e.touches[0].clientY-t0.y;
-    const dist=Math.hypot(dx,dy);
-    if(dist>DIO_TAP_LIMIT_PX){
-      dioSuppressClickUntil=Date.now()+700;
-      if(dpTap) dpTap.moved=true;
-    }
-    if(!t0.started && dist<DIO_PAN_START_PX) return;
+    if(!t0.started && Math.hypot(dx,dy)<DIO_PAN_START_PX) return;
     t0.started=true;
-    dioSuppressClickUntil=Date.now()+700;
-    if(dpTap) dpTap.moved=true;
     const sx=vw/rect.width,sy=vh/rect.height;
     vx=t0.vx-(dx*DIO_PAN_DAMPING)*sx;
     vy=t0.vy-(dy*DIO_PAN_DAMPING)*sy;
@@ -1430,16 +1423,8 @@ svg.addEventListener('touchmove',e=>{
 },{passive:false});
 svg.addEventListener('touchend',e=>{
   e.preventDefault();
-  const now=Date.now();
-  dioLastTouchAt=now;
-  dioSuppressClickUntil=now+700;
   if(dpTap && !dpTap.moved && e.touches.length===0){
-    const elapsed=now-(dpTap.at||0);
-    // 길게 누르기나 살짝 끌기는 선택이 아니라 지도 조작으로 간주합니다.
-    if(elapsed<=DIO_TAP_MAX_MS){
-      dioLastTouchCardAt=now;
-      showCard(dpTap.el);
-    }
+    showCard(dpTap.el);
   }
   if(e.touches.length===0) clearDioTouch();
 },{passive:false});
@@ -1598,16 +1583,7 @@ function darkText(hex){
   const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);
   return(r*.299+g*.587+b*.114)>155;
 }
-document.querySelectorAll('.dp').forEach(function(p){ p.removeAttribute('onclick'); });
 document.getElementById('map-svg').addEventListener('click',e=>{
-  const now=Date.now();
-  // 모바일 터치 뒤에 따라오는 synthetic click은 교구 선택으로 처리하지 않습니다.
-  // 터치 선택은 위 touchend의 엄격한 짧은 탭 판정에서만 처리합니다.
-  if(now<dioSuppressClickUntil || now-dioLastTouchAt<700 || now-dioLastTouchCardAt<700){
-    e.preventDefault();
-    e.stopPropagation();
-    return;
-  }
   if(e.target && e.target.classList && e.target.classList.contains('dp')){ showCard(e.target); return; }
   hideCard();
 });

@@ -2224,20 +2224,17 @@ html.app-active #qna-cover-btn { display: none !important; }
 
 /* 작은 화면 보정 */
 @media (max-height:650px) {
-  #cover { padding-top: calc(clamp(28px, 5.8vh, 46px) + env(safe-area-inset-top,0px)) !important; }
-  #cover .cover-header { padding-bottom: 6px !important; }
-  #cover .cover-header .cover-title { font-size: clamp(24px,6.8vw,30px) !important; }
-  #cover .cover-header .cover-subtitle { font-size: 11.5px !important; }
-  #cover .cover-grid,#cover .cv-grid { row-gap: clamp(4px,0.8vh,7px) !important; column-gap: clamp(5px,1.5vw,8px) !important; }
-  #cover .cover-card,#cover .cv-btn { padding: clamp(7px,1.1vh,11px) 7px !important; }
-  #cover .cover-emoji { font-size: 24px !important; }
-  #cover .cover-name,#cover .cv-btn-label { font-size: 15px !important; line-height:1.18!important; }
-  #cover #qna-cover-btn { min-height: 38px !important; font-size: 12px !important; }
+  #cover { padding-top: calc(10vh + env(safe-area-inset-top,0px)) !important; }
+  #cover .cover-header { padding-bottom: 4px !important; }
+  #cover .cover-header .cover-title { font-size: clamp(18px,5vw,24px) !important; }
+  #cover .cover-header .cover-subtitle { font-size: 10px !important; }
+  #cover .cover-grid,#cover .cv-grid { row-gap: clamp(2px,0.5vh,4px) !important; }
+  #cover .cover-card,#cover .cv-btn { padding: clamp(4px,0.8vh,8px) 6px !important; }
+  #cover .cover-emoji { font-size: 18px !important; }
+  #cover .cover-name,#cover .cv-btn-label { font-size: 12px !important; }
+  #cover #qna-cover-btn { min-height: 34px !important; font-size: 11px !important; }
   #cover-main-block {
-    max-width: min(456px, calc(100vw - 18px)) !important;
-    padding-left: 9px !important;
-    padding-right: 9px !important;
-    padding-bottom: calc(5.2vh + env(safe-area-inset-bottom,0px)) !important;
+    padding-bottom: calc(7vh + env(safe-area-inset-bottom,0px)) !important;
   }
 }
 /* 7. 하단 안내 문구 — 레이아웃 계산에서 제외하고 화면 하단에 고정 */
@@ -2267,85 +2264,4 @@ html.oai-font-global #cover #cover-bottom-note,
   color:rgba(96,86,76,.72);
   pointer-events:none;
   z-index:5;
-}
-
-/* ════════════════════════════════════════════════════════
-   작은 화면 전역 크기 기준 4-3
-   - 작은 폰에서 전체 앱의 글자/아이콘/헤더가 축소되어 보이는 문제 보정
-   - prayer_font_size를 줄여도 앱 전체 기준은 1배 미만으로 내려가지 않게 JS와 함께 사용
-════════════════════════════════════════════════════════ */
-@media (max-width:430px), (max-height:760px) {
-  html.oai-font-global #prayer-bar-ttl,
-  html.oai-font-global #prayer-bar .module-bar-title,
-  html.oai-font-global #web-view .module-bar-title,
-  html.oai-font-global #trail-view .module-bar-title,
-  html.oai-font-global #qna-view .module-bar-title,
-  html.oai-font-global #diocese-view .module-bar-title,
-  html.oai-font-global #diocese-bar-title,
-  html.oai-font-global .sheet-title,
-  html.oai-font-global .module-bar-title {
-    font-size:20px !important;
-    line-height:1.18 !important;
-  }
-  html.oai-font-global #prayer-bar-sub,
-  html.oai-font-global #prayer-bar .module-bar-sub,
-  html.oai-font-global #web-view .module-bar-sub,
-  html.oai-font-global #trail-view .module-bar-sub,
-  html.oai-font-global #qna-view .module-bar-sub,
-  html.oai-font-global #diocese-view .module-bar-sub,
-  html.oai-font-global .module-bar-sub {
-    font-size:11px !important;
-    line-height:1.25 !important;
-  }
-  html.oai-font-global #prayer-tabs .pr-tab,
-  html.oai-font-global #web-view .web-cat-btn,
-  html.oai-font-global #trail-view .trail-tab,
-  html.oai-font-global #qna-view .qna-tab,
-  html.oai-font-global .filter-btn,
-  html.oai-font-global .region-search-btn,
-  html.oai-font-global .sm-fb,
-  html.oai-font-global .sm-tab {
-    font-size:14px !important;
-  }
-  html.oai-font-global .nearby-name,
-  html.oai-font-global #region-body .nearby-name,
-  html.oai-font-global #region-body .li-name,
-  html.oai-font-global .region-item .nearby-name,
-  html.oai-font-global .li-name,
-  html.oai-font-global .sm-name,
-  html.oai-font-global .sm-place-name,
-  html.oai-font-global .web-card-name,
-  html.oai-font-global .trail-nm,
-  html.oai-font-global .trail-sh-name {
-    font-size:16px !important;
-    line-height:1.32 !important;
-  }
-  html.oai-font-global .nearby-addr,
-  html.oai-font-global #region-body .nearby-addr,
-  html.oai-font-global #region-body .li-sub,
-  html.oai-font-global .region-item .nearby-addr,
-  html.oai-font-global .li-sub,
-  html.oai-font-global .sm-sub,
-  html.oai-font-global .sm-place-addr,
-  html.oai-font-global .web-card-desc,
-  html.oai-font-global .trail-reg,
-  html.oai-font-global .trail-url,
-  html.oai-font-global .trail-sh-sub,
-  html.oai-font-global .trail-sh-url {
-    font-size:12.5px !important;
-    line-height:1.38 !important;
-  }
-  #tabbar .tab-btn {
-    font-size:13.5px !important;
-  }
-  #tabbar .tab-icon {
-    font-size:22px !important;
-  }
-  #cover .cover-emoji {
-    font-size:24px !important;
-  }
-  #cover .cover-name,
-  #cover .cv-btn-label {
-    font-size:15px !important;
-  }
 }
