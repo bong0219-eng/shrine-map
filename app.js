@@ -53,14 +53,14 @@ function setExternalNavVisualState(mode, label){
 
   if(mode === 'out'){
     html.classList.add('oai-navigating-out');
-    html.classList.remove('oai-external-return-stabilize','oai-missa-return-stabilize');
+    html.classList.remove('oai-external-return-prepaint','oai-external-return-stabilize','oai-missa-return-stabilize');
     veil.classList.remove('oai-return-veil');
     veil.classList.add('show');
   }else if(mode === 'return'){
     html.classList.remove('oai-navigating-out');
     veil.classList.add('oai-return-veil','show');
   }else{
-    html.classList.remove('oai-navigating-out','oai-external-return-stabilize','oai-missa-return-stabilize');
+    html.classList.remove('oai-navigating-out','oai-external-return-prepaint','oai-external-return-stabilize','oai-missa-return-stabilize');
     veil.classList.remove('show','oai-return-veil');
   }
   return veil;
@@ -126,7 +126,7 @@ function applyExternalReturnStabilize(forceKind){
 
   __oaiExternalReturnClearTimer = setTimeout(function(){
     try{
-      document.documentElement.classList.remove('oai-external-return-stabilize','oai-missa-return-stabilize');
+      document.documentElement.classList.remove('oai-external-return-prepaint','oai-external-return-stabilize','oai-missa-return-stabilize');
       var v = document.getElementById('oai-nav-veil');
       if(v) v.classList.remove('show','oai-return-veil');
       document.documentElement.style.scrollBehavior = '';
@@ -253,7 +253,7 @@ function openDioceseView(opts){
       if(!restore) try{ frame.contentWindow && frame.contentWindow.resetDioceseFirstPage && frame.contentWindow.resetDioceseFirstPage(); }catch(e){ console.warn("[가톨릭길동무]", e); }
       if(typeof dioceseLoaded==='function') dioceseLoaded();
     };
-    frame.src='diocese.html?v=v1-5';
+    frame.src='diocese.html?v=v1-6';
   }else if(!restore){
     try{ frame.contentWindow && frame.contentWindow.resetDioceseFirstPage && frame.contentWindow.resetDioceseFirstPage(); }catch(e){ console.warn("[가톨릭길동무]", e); }
   }

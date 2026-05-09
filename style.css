@@ -1515,6 +1515,19 @@ html.retreat-mode #sm-tab-bar .sm-tab.active{
 
 
 /* 외부 이동/복귀 표시: 한 흐름으로 통합 */
+
+html.oai-external-return-prepaint::before{
+  content:"";
+  position:fixed;
+  inset:-1px;
+  z-index:2147482999;
+  display:block;
+  background:#f5f0e8;
+  pointer-events:none;
+  transform:translate3d(0,0,0);
+  backface-visibility:hidden;
+}
+
 #oai-nav-veil{
   position:fixed;
   inset:-1px;
@@ -1544,6 +1557,8 @@ html.retreat-mode #sm-tab-bar .sm-tab.active{
 
 html.oai-navigating-out,
 html.oai-navigating-out body,
+html.oai-external-return-prepaint,
+html.oai-external-return-prepaint body,
 html.oai-external-return-stabilize,
 html.oai-external-return-stabilize body{
   background:#f5f0e8!important;
@@ -1553,7 +1568,14 @@ html.oai-external-return-stabilize body{
   overscroll-behavior-y:none!important;
 }
 html.oai-navigating-out body,
+html.oai-external-return-prepaint body,
 html.oai-external-return-stabilize body{min-height:100vh;min-height:100dvh}
+html.oai-external-return-prepaint #cover,
+html.oai-external-return-prepaint #app,
+html.oai-external-return-prepaint .module-view.open,
+html.oai-external-return-prepaint #prayer-view.open,
+html.oai-external-return-prepaint #diocese-view.open,
+html.oai-external-return-prepaint #missa-view.open,
 html.oai-navigating-out #cover,
 html.oai-navigating-out #app,
 html.oai-navigating-out #missa-view.open,
