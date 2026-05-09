@@ -23,7 +23,7 @@ function hideCoverAndRun(callback) {
 
 
 function markExternalReturnStabilize(kind){
-  // v1-11: 외부사이트 이동은 브라우저 기본 이동에 맡긴다.
+  // v1-12: 외부사이트 이동은 브라우저 기본 이동에 맡긴다.
   // 이동중 화면/상태를 저장하지 않는다.
 }
 
@@ -51,14 +51,14 @@ function oaiSmoothNavigate(url, kind){
 }
 
 function applyExternalReturnStabilize(){
-  // v1-11: 복귀 시 화면 재계산을 만들지 않고, 이전 버전 잔여 상태만 제거한다.
+  // v1-12: 복귀 시 화면 재계산을 만들지 않고, 이전 버전 잔여 상태만 제거한다.
   try{ oaiClearExternalNavigationState(); }catch(e){ console.warn("[가톨릭길동무]", e); }
 }
 
 window.addEventListener('pageshow', function(){ applyExternalReturnStabilize(); }, true);
 
 function oaiBindExternalLinkGuard(){
-  // v1-11: 외부 링크 전역 가로채기 제거. 브라우저 기본 이동을 사용한다.
+  // v1-12: 외부 링크 전역 가로채기 제거. 브라우저 기본 이동을 사용한다.
 }
 if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', oaiBindExternalLinkGuard, {once:true});
 else oaiBindExternalLinkGuard();
@@ -132,7 +132,7 @@ function openDioceseView(opts){
       if(!restore) try{ frame.contentWindow && frame.contentWindow.resetDioceseFirstPage && frame.contentWindow.resetDioceseFirstPage(); }catch(e){ console.warn("[가톨릭길동무]", e); }
       if(typeof dioceseLoaded==='function') dioceseLoaded();
     };
-    frame.src='diocese.html?v=v1-11';
+    frame.src='diocese.html?v=v1-12';
   }else if(!restore){
     try{ frame.contentWindow && frame.contentWindow.resetDioceseFirstPage && frame.contentWindow.resetDioceseFirstPage(); }catch(e){ console.warn("[가톨릭길동무]", e); }
   }

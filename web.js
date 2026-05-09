@@ -184,18 +184,23 @@
     if(!url) return;
 
     const payload = Object.assign({}, state||{});
-    if(payload.module==='trail' && trailState.map && window.kakao && window.kakao.maps){
-      try{
-        const center = trailState.map.getCenter();
-        payload.center = {lat:center.getLat(), lng:center.getLng()};
-        payload.level = trailState.map.getLevel();
-      }catch(e){ console.warn("[가톨릭길동무]", e); }
+
+    // v1-12: 웹사이트/교구 홈페이지는 브라우저의 기본 복귀(bfcache)에 맡긴다.
+    // sessionStorage 복원으로 다시 렌더링하면 복귀 순간 지도와 웹사이트 목록이 겹쳐 보이며 흔들린다.
+    // 순례길처럼 지도 상태가 필요한 경우만 최소 저장한다.
+    if(payload.module==='trail'){
+      if(trailState.map && window.kakao && window.kakao.maps){
+        try{
+          const center = trailState.map.getCenter();
+          payload.center = {lat:center.getLat(), lng:center.getLng()};
+          payload.level = trailState.map.getLevel();
+        }catch(e){ console.warn("[가톨릭길동무]", e); }
+      }
+      saveReturnState(payload);
+    }else{
+      try{ sessionStorage.removeItem(RETURN_KEY); }catch(e){ console.warn("[가톨릭길동무]", e); }
     }
-    if(payload.module==='web'){
-      payload.cat = payload.cat || webState.curCat || '⭐ 즐겨찾기';
-    }
-    saveReturnState(payload);
-    // location.href 방식: PWA/모바일 팝업 차단 우회, 뒤로가기로 복귀 가능
+
     location.href = url;
     return;
   }
@@ -278,17 +283,8 @@
     if(!state || !state.module) return;
 
     if(state.module === 'web'){
-      openWebView({restore:true});
-      initWebModule();
-      if(state.cat){ applyWebCatState(state.cat); renderWebList(); keepWebActiveCatVisible(state.cat, 'auto'); }
-      requestAnimationFrame(function(){
-        const list = ig$('web-list');
-        if(list){
-          list.style.scrollBehavior = 'auto';
-          list.scrollTop = Number(state.scroll||0);
-          list.style.scrollBehavior = '';
-        }
-      });
+      // v1-12: 웹사이트 화면은 브라우저가 돌아온 화면을 그대로 복원하게 둔다.
+      // 여기서 openWebView/renderWebList를 다시 호출하면 복귀 순간 배경 지도와 목록이 겹쳐 보인다.
       return;
     }
 
@@ -467,25 +463,12 @@
           if(webState.curCat==='⭐ 즐겨찾기') renderWebList();
           return;
         }
-        // 교구 카드도 openExternalUrl 로 통일.
-        // <a href target="_blank"> 방식은 PWA/Chrome Android에서
-        // 앱 내부 탐색으로 처리되어 사이트가 열리지 않는 경우가 있다.
+        // v1-12: 교구 카드도 저장/복원 없이 즉시 이동한다.
         if(isDioceseCard){
-          try{
-            saveReturnState({source:'web-diocese', module:'web', cat:webState.curCat, scroll:(ig$('web-list')?.scrollTop||0)});
-          }catch(e){ console.warn("[가톨릭길동무]", e); }
-          openExternalUrl(s.url, {
-            module:'web',
-            cat:webState.curCat,
-            scroll:(ig$('web-list')?.scrollTop||0)
-          });
+          openExternalUrl(s.url, { module:'web' });
           return;
         }
-        openExternalUrl(s.url, {
-          module:'web',
-          cat:webState.curCat,
-          scroll:(ig$('web-list')?.scrollTop||0)
-        });
+        openExternalUrl(s.url, { module:'web' });
       });
       wrap.appendChild(card);
     });

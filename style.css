@@ -1614,9 +1614,10 @@ html.retreat-mode #sm-tab-bar .sm-tab.active{
   box-shadow:none!important;
 }
 
-/* 외부링크 복귀 시 안드로이드 동적 viewport(100dvh) 재계산으로 전체가 아래→위로 밀리는 현상 완화 */
-
-html,body,#cover{position:fixed;inset:0;z-index:9999;background:#f4efe4;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:env(safe-area-inset-top,0) 0 env(safe-area-inset-bottom,0);overflow:hidden;overflow-y:hidden;background-color:var(--bg-color);color:var(--text-main);font-family:'Apple SD Gothic Neo','Malgun Gothic',sans-serif;transition:none;padding-top:calc(5vh + env(safe-area-inset-top,0px));padding-bottom:0}
+/* v1-12: 외부사이트 복귀 흔들림 원인 제거
+   이전 정리 과정에서 html/body까지 position:fixed로 묶던 보정 CSS가 남아
+   외부사이트 복귀 시 상단 주소창·지도·웹사이트 화면이 재계산되며 흔들렸다.
+   커버 스타일은 기존 #cover 규칙에서 이미 관리하므로 여기서는 전역 고정을 하지 않는다. */
 html:not(.app-active),html:not(.app-active) body{scroll-behavior:auto!important;}
 #web-view.module-view.open,
 #trail-view.module-view.open,
