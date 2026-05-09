@@ -27,11 +27,25 @@ html.oai-external-return-prepaint::before{
 </style>
 <script>
 (function(){
-  try{
-    if(sessionStorage.getItem('oai_external_return_stabilize')){
-      document.documentElement.classList.add('oai-external-return-prepaint');
-    }
-  }catch(e){}
+  function markReturnPrepaint(){
+    try{
+      if(!sessionStorage.getItem('oai_external_return_stabilize')) return;
+      var html = document.documentElement;
+      html.classList.remove('oai-navigating-out');
+      html.classList.add('oai-external-return-prepaint');
+      var veil = document.getElementById('oai-nav-veil');
+      if(veil){
+        veil.classList.add('show','oai-return-veil');
+        var txt = veil.querySelector('.oai-nav-text');
+        if(txt) txt.textContent = '화면을 복귀하는 중입니다';
+      }
+    }catch(e){}
+  }
+  markReturnPrepaint();
+  window.addEventListener('pageshow', markReturnPrepaint, true);
+  document.addEventListener('visibilitychange', function(){
+    if(document.visibilityState === 'visible') markReturnPrepaint();
+  }, true);
 })();
 </script>
 
@@ -44,7 +58,7 @@ html.oai-external-return-prepaint::before{
   }
 })();
 </script>
-<script src="parishes.js?v=v1-7"></script>
+<script src="parishes.js?v=v1-8"></script>
 <script>
 /* ⚠️ 레포를 반드시 Private으로 설정하세요 */
 window.APP_CONFIG = {
@@ -64,8 +78,8 @@ window.APP_CONFIG = {
 <meta name="application-name" content="가톨릭길동무">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#0e1535">
-<link rel="manifest" href="manifest.json?v=v1-7">
-<link rel="apple-touch-icon" href="icon-192x192.png?v=v1-7">
+<link rel="manifest" href="manifest.json?v=v1-8">
+<link rel="apple-touch-icon" href="icon-192x192.png?v=v1-8">
 <meta name="format-detection" content="telephone=no">
 <meta name="description" content="가톨릭길동무 - 가톨릭 신앙생활 종합 앱">
 <title>가톨릭길동무</title>
@@ -75,7 +89,7 @@ window.APP_CONFIG = {
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style id="oai-initial-bg">html,body{margin:0;background:#f5f0e8;}body{min-height:100vh;}#cover,#app{background:#f5f0e8;}</style>
-<link rel="stylesheet" href="style.css?v=v1-7">
+<link rel="stylesheet" href="style.css?v=v1-8">
 </head>
 <body>
 <div id="missa-view" role="dialog" aria-modal="true" aria-label="매일미사">
@@ -147,7 +161,7 @@ window.APP_CONFIG = {
   </div>
 </div>
 <div id="cover">
-<div id="oai-build-marker" aria-label="수정 단계 표시" style="position:absolute;right:8px;bottom:calc(env(safe-area-inset-bottom,0px) + 6px);z-index:120;display:inline-flex;align-items:center;justify-content:center;min-width:34px;height:18px;padding:0 6px;border-radius:999px;background:rgba(31,42,68,.72);color:#fff;font-size:9px;font-weight:800;line-height:1;pointer-events:none;opacity:.74;">v1-7</div>
+<div id="oai-build-marker" aria-label="수정 단계 표시" style="position:absolute;right:8px;bottom:calc(env(safe-area-inset-bottom,0px) + 6px);z-index:120;display:inline-flex;align-items:center;justify-content:center;min-width:34px;height:18px;padding:0 6px;border-radius:999px;background:rgba(31,42,68,.72);color:#fff;font-size:9px;font-weight:800;line-height:1;pointer-events:none;opacity:.74;">v1-8</div>
   <div id="cv-pull-modern" aria-hidden="true">
   <div class="cv-pull-ring">
     <svg viewBox="0 0 24 24" class="cv-pull-icon">
@@ -217,7 +231,7 @@ window.APP_CONFIG = {
   📲 홈 화면에 앱 설치하기
 </button>
 </div>
-<script src="app.js?v=v1-7"></script>
+<script src="app.js?v=v1-8"></script>
 <div id="oai-category-entry-veil" aria-hidden="true"></div>
 <div id="app"><div id="tabbar"><button id="tab-btn-nearby" class="tab-btn" data-tab="nearby"><span class="tab-icon">📍</span><span id="tab-nearby-lbl">내주변</span></button><button id="tab-btn-list" class="tab-btn" data-tab="list"><span class="tab-icon">📋</span><span id="tab-list-lbl">목록</span></button><button id="tab-btn-region" class="tab-btn" data-tab="region"><span class="tab-icon">🔍</span>지역검색
     </button><button id="tab-btn-route" class="tab-btn" data-tab="route"><span class="tab-icon">🧭</span>길찾기
@@ -293,14 +307,14 @@ window.APP_CONFIG = {
     </div>
   </div>
 </div>
-<script src="web.js?v=v1-7"></script>
-<script src="prayer.js?v=v1-7"></script>
+<script src="web.js?v=v1-8"></script>
+<script src="prayer.js?v=v1-8"></script>
 
 <div id="qna-view" role="dialog" aria-modal="true" aria-label="문의·건의" class="module-view"><div class="module-bar qna"><div class="module-bar-main"><div class="module-bar-ico">✝</div><div class="module-bar-txt"><div class="module-bar-title">문의·건의 / Q&A</div><div class="module-bar-sub">질문, 오류, 수정요청을 남기고 답변을 확인하세요</div></div></div><button id="qna-close-btn" class="module-close" aria-label="문의·건의 닫기">×</button></div><div class="qna-body"><div class="qna-tabs"><button id="qna-tab-write" class="qna-tab on" type="button">작성</button><button id="qna-tab-answers" class="qna-tab" type="button">답변</button></div><div class="qna-list" id="qna-list"></div></div></div>
 
-<script src="patches.js?v=v1-7"></script>
+<script src="patches.js?v=v1-8"></script>
 
-<script src="sw-update.js?v=v1-7"></script>
+<script src="sw-update.js?v=v1-8"></script>
 
 
 
