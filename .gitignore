@@ -1,0 +1,11 @@
+# OS / 에디터 자동 생성 파일
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/
+*.swp
+*.swo
+*.local
+.env
+.env.*
