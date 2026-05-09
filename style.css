@@ -769,8 +769,9 @@ html.retreat-mode .filter-btn.active,
 html.retreat-mode .sm-fb.on{background:var(--retreat-soft,#e8f3ec)!important;color:#4f7c67!important;border-color:#b8d2c2!important}
 /* 주요기도문 탭: 각 기도 분류 고유색 복구 */
 #prayer-tabs .pr-tab:not(.on){background:#fff!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.78)!important}
+#prayer-tabs .pr-tab[data-cat="favorites"]:not(.on){color:#1f2a44!important;border-color:rgba(31,42,68,.35)!important}
 #prayer-tabs .pr-tab.on{color:#fff!important;border-color:transparent!important;box-shadow:0 8px 18px rgba(15,23,42,.12)!important}
-#prayer-tabs .pr-tab.on[data-cat="favorites"]{background:#E8780C!important}
+#prayer-tabs .pr-tab.on[data-cat="favorites"]{background:#1f2a44!important}
 #prayer-tabs .pr-tab.on[data-cat="aim"]{background:#1565C0!important}
 #prayer-tabs .pr-tab.on[data-cat="basic"]{background:#1E40AF!important}
 #prayer-tabs .pr-tab.on[data-cat="special"]{background:#BE185D!important}
@@ -998,11 +999,11 @@ html.retreat-mode #srch-modal .sm-filter{background:linear-gradient(135deg,#3f7e
 .dio-tab.on,.tab.on{background:var(--d, #1F2A44)!important}
 /* 웹사이트 즐겨찾기 탭 스타일 - 기도문과 통일 */
 .web-cat-btn[data-web-cat="⭐ 즐겨찾기"].on,
-.web-cat-btn[data-web-cat="⭐ 즐겨찾기"]:focus{background:#E8780C!important;color:#fff!important;border-color:#E8780C!important}
-.web-cat-btn[data-web-cat="⭐ 즐겨찾기"]{color:#E8780C}
+.web-cat-btn[data-web-cat="⭐ 즐겨찾기"]:focus{background:#1f2a44!important;color:#fff!important;border-color:#1f2a44!important}
+.web-cat-btn[data-web-cat="⭐ 즐겨찾기"]{color:#1f2a44}
 /* pr-tab 활성 배경색 (prApplyTabColors → classList.on) */
 .pr-tab.on{background:var(--gold,#c9a227)!important}
-.pr-tab.on[data-cat="favorites"]{background:#E8780C!important}
+.pr-tab.on[data-cat="favorites"]{background:#1f2a44!important}
 .pr-tab.on[data-cat="aim"]{background:#1565C0!important}
 .pr-tab.on[data-cat="fasting"]{background:#6B48AD!important}
 .pr-tab.on[data-cat="liturgy"]{background:#7B2D8B!important}
@@ -1012,7 +1013,7 @@ html.retreat-mode #srch-modal .sm-filter{background:linear-gradient(135deg,#3f7e
 .pr-tab.on[data-cat="funeral"]{background:#546E7A!important}
 .pr-tab.on[data-cat="novena"]{background:#1565C0!important}
 /* pr-tab.on 카테고리별 배경 */
-.pr-tab.on[data-cat="favorites"]{background:#E8780C!important}
+.pr-tab.on[data-cat="favorites"]{background:#1f2a44!important}
 .pr-tab.on[data-cat="basic"]{background:#1E40AF!important}
 .pr-tab.on[data-cat="special"]{background:#BE185D!important}
 .pr-tab.on[data-cat="etc"]{background:#15803D!important}
@@ -1137,8 +1138,8 @@ html.app-active #pwa-install-btn{display:none}
 .web-fav-btn.on{color:#F59E0B}
 /* 웹사이트 즐겨찾기 탭 버튼 - 기도문 favorites 탭과 동일한 위치/스타일 */
 /* ⭐ 탭은 탭 행 맨 앞에 위치 (JS에서 cats 배열 앞에 push하도록 변경 필요시 CSS로 보완) */
-.web-cat-btn[data-web-cat="⭐ 즐겨찾기"]{order:-1;color:#E8780C!important;border-color:rgba(232,120,12,.35)!important;background:#fff8f0!important}
-.web-cat-btn[data-web-cat="⭐ 즐겨찾기"].on{background:#E8780C!important;color:#fff!important;border-color:#E8780C!important;box-shadow:0 4px 14px rgba(232,120,12,.35)!important}
+.web-cat-btn[data-web-cat="⭐ 즐겨찾기"]{order:-1;color:#1f2a44!important;border-color:rgba(31,42,68,.35)!important;background:#f4f6fb!important}
+.web-cat-btn[data-web-cat="⭐ 즐겨찾기"].on{background:#1f2a44!important;color:#fff!important;border-color:#1f2a44!important;box-shadow:0 4px 14px rgba(31,42,68,.28)!important}
 /* 굿뉴스기도문 링크 버튼 */
 #goodnews-prayer-btn{display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;margin-left:auto;margin-right:8px;max-width:112px;padding:8px 10px;background:linear-gradient(135deg, #FEE500, #FFD700);color:#3A1D1D;font-size:13px;font-weight:800;font-family:inherit;text-decoration:none;border-radius:12px;white-space:nowrap;line-height:1.2;gap:4px;box-shadow:0 3px 10px rgba(180,130,0,.30);-webkit-tap-highlight-color:transparent;border:1px solid rgba(180,130,0,.20);overflow:hidden;text-overflow:ellipsis}
 #goodnews-prayer-btn:active{opacity:0.82;transform:scale(0.97)}
@@ -1194,13 +1195,13 @@ html,body{overflow-x:hidden!important;overscroll-behavior-x:none!important}
 @keyframes oaiFinalSwipeFlash{0%{opacity:1}100%{opacity:1}}
 /* 웹사이트 즐겨찾기 탭: 기도문 즐겨찾기와 같은 주황색 */
 #web-view .web-cat-btn.on[data-web-cat="⭐ 즐겨찾기"],
-#web-view .web-cat-btn.on[data-cat-color="⭐ 즐겨찾기"]{background:#E8780C;color:#fff!important;border-color:#E8780C!important;box-shadow:0 8px 18px rgba(232,120,12,.18)!important}
-#web-view .web-cat-btn[data-web-cat="⭐ 즐겨찾기"]{color:#E8780C!important;border-color:rgba(232,120,12,.35)!important}
+#web-view .web-cat-btn.on[data-cat-color="⭐ 즐겨찾기"]{background:#1f2a44!important;color:#fff!important;border-color:#1f2a44!important;box-shadow:0 8px 18px rgba(31,42,68,.18)!important}
+#web-view .web-cat-btn[data-web-cat="⭐ 즐겨찾기"]{color:#1f2a44!important;border-color:rgba(31,42,68,.35)!important}
 #web-view .web-cat-btn.on[data-web-cat="⭐ 즐겨찾기"] .cnt{background:rgba(255,255,255,.22)!important;color:#fff!important}
 #prayer-view,#web-view{contain:layout paint!important;overflow:hidden!important;max-width:100vw!important}
 #prayer-list-view,#prayer-detail,#web-list,#web-view .web-body{max-width:100vw!important;overflow-x:hidden!important;overscroll-behavior-x:none!important}
-#web-cats .web-cat-btn.on[data-web-cat="⭐ 즐겨찾기"]{background:#E8780C!important;color:#fff!important;border-color:#E8780C!important;box-shadow:0 8px 18px rgba(232,120,12,.18)!important}
-#web-cats .web-cat-btn[data-web-cat="⭐ 즐겨찾기"]{color:#E8780C!important;border-color:rgba(232,120,12,.35)!important}
+#web-cats .web-cat-btn.on[data-web-cat="⭐ 즐겨찾기"]{background:#1f2a44!important;color:#fff!important;border-color:#1f2a44!important;box-shadow:0 8px 18px rgba(31,42,68,.18)!important}
+#web-cats .web-cat-btn[data-web-cat="⭐ 즐겨찾기"]{color:#1f2a44!important;border-color:rgba(31,42,68,.35)!important}
 /* 기도문·웹사이트 좌우 이동 액션: 화면 번쩍임 없이 금색 방향 하이라이트만 표시 */
 @keyframes oaiSwipeArrowPop20260502{
   0%{opacity:0;transform:translateY(-50%) scale(.86);}
@@ -1614,7 +1615,7 @@ html.retreat-mode #sm-tab-bar .sm-tab.active{
   box-shadow:none!important;
 }
 
-/* V14: 외부 복귀/화면 진입 CSS 정리
+/* V15: 외부 복귀/화면 진입 CSS 정리
    외부 이동 보호막을 제거한 현재 구조에서는 복귀 전용 강제 고정 CSS를 두지 않는다.
    화면 진입 중 필요한 최소 전환만 유지하고, app/viewport 전체를 흔드는 전역 보정은 금지한다. */
 html:not(.app-active),html:not(.app-active) body{scroll-behavior:auto!important;}
@@ -1998,7 +1999,7 @@ html.app-active #cv-pull-modern{
 #qna-view  .qna-tab.on        { background: var(--navy, #0e1535) !important; }
 
 /* ── 6. 헤더 배경색 (모듈별) ─────────────────────────────────────── */
-/* V14: 기도문 헤더를 기준으로 주요 모듈 헤더 단색 통일 */
+/* V15: 기도문 헤더를 기준으로 주요 모듈 헤더 단색 통일 */
 #prayer-bar,
 #trail-view .module-bar,
 #web-view .module-bar,
@@ -2206,7 +2207,7 @@ html.oai-font-global #cover #cover-bottom-note,
   z-index:5;
 }
 
-/* V14: 출발 검색 모달 색상 기준 재정리
+/* V15: 출발 검색 모달 색상 기준 재정리
    - 성지/성당/피정 + 일반장소 탭: 활성은 금색, 비활성은 고유색 배경 위의 은은한 반투명 버튼
    - 검색창을 감싸는 영역은 성지/성당/피정 각 카테고리 고유색으로 통일
    - 실제 검색 입력창(.sm-si)은 기존 아이보리 계열 유지 */
@@ -2277,7 +2278,7 @@ html.retreat-mode #srch-modal #sm-tab-bar .sm-tab:not(.active){
 html #srch-modal #sm-tab-bar .sm-tab.active,
 html.parish-mode #srch-modal #sm-tab-bar .sm-tab.active,
 html.retreat-mode #srch-modal #sm-tab-bar .sm-tab.active{
-  /* V14: 바로 위 교구 활성화 버튼(.sm-fb.on)과 같은 금색 기준 사용 */
+  /* V15: 바로 위 교구 활성화 버튼(.sm-fb.on)과 같은 금색 기준 사용 */
   background:var(--gold,#d4aa6a)!important;
   background-image:none!important;
   color:#1F2937!important;
@@ -2289,7 +2290,7 @@ html.retreat-mode #srch-modal #sm-tab-bar .sm-tab.active{
 
 
 /* ══════════════════════════════════════════════════════════════════
-   V14 모듈 표준화
+   V15 모듈 표준화
    - 헤더: 기도문 헤더 기준 단색 네이비(그라데이션 제거)
    - 탭바/탭버튼: 관구·교구 탭 기준 높이·형태 통일
    - 활성 탭의 고유 색상은 각 모듈 기존 색상을 유지
