@@ -11,7 +11,7 @@
   }
 })();
 </script>
-<script src="parishes.js?v=V30"></script>
+<script src="parishes.js?v=V32"></script>
 <script>
 /* ⚠️ 레포를 반드시 Private으로 설정하세요 */
 window.APP_CONFIG = {
@@ -31,8 +31,8 @@ window.APP_CONFIG = {
 <meta name="application-name" content="가톨릭길동무">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#0e1535">
-<link rel="manifest" href="manifest.json?v=V30">
-<link rel="apple-touch-icon" href="icon-192x192.png?v=V30">
+<link rel="manifest" href="manifest.json?v=V32">
+<link rel="apple-touch-icon" href="icon-192x192.png?v=V32">
 <meta name="format-detection" content="telephone=no">
 <meta name="description" content="가톨릭길동무 - 가톨릭 신앙생활 종합 앱">
 <title>가톨릭길동무</title>
@@ -42,7 +42,7 @@ window.APP_CONFIG = {
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style id="oai-initial-bg">html,body{margin:0;background:#f5f0e8;}body{min-height:100vh;}#cover,#app{background:#f5f0e8;}</style>
-<link rel="stylesheet" href="style.css?v=V30">
+<link rel="stylesheet" href="style.css?v=V32">
 </head>
 <body>
 <div id="missa-view" role="dialog" aria-modal="true" aria-label="매일미사">
@@ -114,7 +114,7 @@ window.APP_CONFIG = {
   </div>
 </div>
 <div id="cover">
-<div id="oai-build-marker" aria-label="수정 단계 표시" style="position:absolute;left:8px;bottom:calc(env(safe-area-inset-bottom,0px) + 6px);z-index:120;display:inline-flex;align-items:center;justify-content:center;min-width:34px;height:18px;padding:0 6px;border-radius:999px;background:rgba(31,42,68,.72);color:#fff;font-size:9px;font-weight:800;line-height:1;pointer-events:none;opacity:.74;">V30</div>
+<div id="oai-build-marker" aria-label="수정 단계 표시" style="position:absolute;left:8px;bottom:calc(env(safe-area-inset-bottom,0px) + 6px);z-index:120;display:inline-flex;align-items:center;justify-content:center;min-width:34px;height:18px;padding:0 6px;border-radius:999px;background:rgba(31,42,68,.72);color:#fff;font-size:9px;font-weight:800;line-height:1;pointer-events:none;opacity:.74;">V32</div>
   <div id="cv-pull-modern" aria-hidden="true">
   <div class="cv-pull-ring">
     <svg viewBox="0 0 24 24" class="cv-pull-icon">
@@ -132,6 +132,7 @@ window.APP_CONFIG = {
       <div class="pr-font-divider"></div>
       <button type="button" id="cover-lg-btn" class="pr-font-btn pr-lg">가</button>
     </div>
+    <button id="cover-guide-btn" type="button" aria-label="가톨릭길동무 사용법 보기">? 사용법</button>
     <div id="cover-main-block">
       <div class="cover-grid">
           <button id="cc-1" class="cover-card">
@@ -170,8 +171,8 @@ window.APP_CONFIG = {
       <!-- 커버 하단 작업줄: 새로고침 + 문의·건의 -->
       <div id="cover-action-row" aria-label="커버 보조 기능">
         <div id="cover-update-box">
-          <button id="cover-update-btn" type="button" data-target-version="V30" aria-label="앱 파일 캐시 삭제 후 최신 버전 다시 받기">
-            V30 새로고침
+          <button id="cover-update-btn" type="button" data-target-version="V32" aria-label="앱 파일 캐시 삭제 후 최신 버전 다시 받기">
+            V32 새로고침
           </button>
           <div id="cover-update-hint" aria-live="polite">아래 버전과 다릅니다. 눌러서 최신 파일을 다시 받아 주세요.</div>
         </div>
@@ -187,12 +188,77 @@ window.APP_CONFIG = {
   정보는 CBCK, 굿뉴스 및 각 교구 홈페이지를 참고했습니다.<br>
 </div>
 
+<!-- 사용법 안내 팝업 (커버 전용, 별도 파일 없음) -->
+<div id="guide-intro-modal" class="guide-modal" role="dialog" aria-modal="true" aria-labelledby="guide-intro-title" aria-hidden="true">
+  <div class="guide-backdrop" data-guide-close="intro"></div>
+  <div class="guide-panel guide-intro-panel">
+    <button class="guide-x" type="button" data-guide-close="intro" aria-label="사용 안내 닫기">×</button>
+    <div class="guide-badge">처음 사용 안내</div>
+    <h2 id="guide-intro-title">가톨릭길동무 사용 안내</h2>
+    <p class="guide-lead">처음 사용하신다면 주요 기능을 한 번 확인해 보세요.</p>
+    <p class="guide-intro-note">성당 찾기, 기도문, 성지·피정, 순례길, 웹사이트, 새로고침 기능을 더 쉽게 이용할 수 있습니다.</p>
+    <div class="guide-actions">
+      <button id="guide-open-detail-btn" type="button" class="guide-primary">사용법 보기</button>
+      <button id="guide-later-btn" type="button" class="guide-secondary">나중에</button>
+    </div>
+  </div>
+</div>
+
+<div id="guide-manual-modal" class="guide-modal" role="dialog" aria-modal="true" aria-labelledby="guide-manual-title" aria-hidden="true">
+  <div class="guide-backdrop" data-guide-close="manual"></div>
+  <div class="guide-panel guide-manual-panel">
+    <button class="guide-x" type="button" data-guide-close="manual" aria-label="사용법 닫기">×</button>
+    <div class="guide-badge">사용법</div>
+    <h2 id="guide-manual-title">가톨릭길동무 사용법</h2>
+    <p class="guide-lead">신앙생활에 필요한 미사, 기도문, 성지, 성당, 피정의 집, 순례길, 가톨릭 웹사이트를 한곳에서 이용할 수 있습니다.</p>
+    <div class="guide-card-list">
+      <section class="guide-card guide-card-main">
+        <div class="guide-icon">⛪</div>
+        <div class="guide-text">
+          <h3>성당 찾기</h3>
+          <dl class="guide-mini-list">
+            <dt>내 주변 성당</dt><dd>현재 위치 주변 성당 10곳을 지도와 목록으로 확인합니다.</dd>
+            <dt>지역·이름 검색</dt><dd>동네 이름이나 성당 이름으로 원하는 성당을 찾을 수 있습니다.</dd>
+            <dt>교구별 보기</dt><dd>교구를 선택해 해당 교구의 성당을 확인할 수 있습니다.</dd>
+            <dt>성당 정보</dt><dd>주소, 전화번호, 홈페이지, 길찾기를 정보카드에서 확인합니다.</dd>
+          </dl>
+        </div>
+      </section>
+      <section class="guide-card">
+        <div class="guide-icon">📍</div>
+        <div class="guide-text"><h3>성지 · 피정의 집</h3><p>가까운 성지와 피정의 집을 지도에서 찾을 수 있습니다. 마커나 목록을 누르면 정보카드가 열리고, 홈페이지 이동과 길찾기를 사용할 수 있습니다.</p></div>
+      </section>
+      <section class="guide-card">
+        <div class="guide-icon">🙏</div>
+        <div class="guide-text"><h3>주요 기도문</h3><p>자주 바치는 기도문을 읽고 즐겨찾기에 저장할 수 있습니다. 오른쪽 위 ‘가’ 버튼으로 글자 크기를 조절해 편하게 읽을 수 있습니다.</p></div>
+      </section>
+      <section class="guide-card">
+        <div class="guide-icon">🚶</div>
+        <div class="guide-text"><h3>순례길</h3><p>여러 순례길 정보를 확인하고 관련 외부 사이트로 이동할 수 있습니다. 외부 사이트를 다녀와도 앱 화면으로 자연스럽게 돌아올 수 있습니다.</p></div>
+      </section>
+      <section class="guide-card">
+        <div class="guide-icon">🌐</div>
+        <div class="guide-text"><h3>가톨릭 웹사이트</h3><p>주요 가톨릭 사이트와 교구 홈페이지를 모아 볼 수 있습니다. 자주 찾는 사이트는 즐겨찾기에 저장해 빠르게 다시 열 수 있습니다.</p></div>
+      </section>
+      <section class="guide-card">
+        <div class="guide-icon">🗺️</div>
+        <div class="guide-text"><h3>관구 · 교구</h3><p>한국 천주교 관구와 교구를 지도에서 확인할 수 있습니다. 지도를 한 손가락으로 움직이고, 교구를 누르면 자세한 정보를 볼 수 있습니다.</p></div>
+      </section>
+      <section class="guide-card">
+        <div class="guide-icon">🔄</div>
+        <div class="guide-text"><h3>새로고침</h3><p>앱 화면이 이상하거나 업데이트가 반영되지 않을 때 사용합니다. 앱 파일만 새로 받아오며, 기도문 즐겨찾기·웹사이트 즐겨찾기·글자 크기 설정은 삭제되지 않습니다.</p></div>
+      </section>
+    </div>
+    <button id="guide-ok-btn" type="button" class="guide-primary guide-ok">확인</button>
+  </div>
+</div>
+
 <!-- PWA 설치 버튼 (커버 전용) -->
 <button id="pwa-install-btn" aria-label="앱 설치하기">
   📲 홈 화면에 앱 설치하기
 </button>
 </div>
-<script src="app.js?v=V30"></script>
+<script src="app.js?v=V32"></script>
 <div id="oai-category-entry-veil" aria-hidden="true"></div>
 <div id="app"><div id="tabbar"><button id="tab-btn-nearby" class="tab-btn" data-tab="nearby"><span class="tab-icon">📍</span><span id="tab-nearby-lbl">내주변</span></button><button id="tab-btn-list" class="tab-btn" data-tab="list"><span class="tab-icon">📋</span><span id="tab-list-lbl">목록</span></button><button id="tab-btn-region" class="tab-btn" data-tab="region"><span class="tab-icon">🔍</span>지역검색
     </button><button id="tab-btn-route" class="tab-btn" data-tab="route"><span class="tab-icon">🧭</span>길찾기
@@ -268,14 +334,14 @@ window.APP_CONFIG = {
     </div>
   </div>
 </div>
-<script src="web.js?v=V30"></script>
-<script src="prayer.js?v=V30"></script>
+<script src="web.js?v=V32"></script>
+<script src="prayer.js?v=V32"></script>
 
 <div id="qna-view" role="dialog" aria-modal="true" aria-label="문의·건의" class="module-view"><div class="module-bar qna"><div class="module-bar-main"><div class="module-bar-ico">✝</div><div class="module-bar-txt"><div class="module-bar-title">문의·건의 / Q&A</div><div class="module-bar-sub">질문, 오류, 수정요청을 남기고 답변을 확인하세요</div></div></div><button id="qna-close-btn" class="module-close" aria-label="문의·건의 닫기">×</button></div><div class="qna-body"><div class="qna-tabs"><button id="qna-tab-write" class="qna-tab on" type="button">작성</button><button id="qna-tab-answers" class="qna-tab" type="button">답변</button></div><div class="qna-list" id="qna-list"></div></div></div>
 
-<script src="patches.js?v=V30"></script>
+<script src="patches.js?v=V32"></script>
 
-<script src="sw-update.js?v=V30"></script>
+<script src="sw-update.js?v=V32"></script>
 
 
 

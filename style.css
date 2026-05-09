@@ -1600,7 +1600,7 @@ html.retreat-mode #sm-tab-bar .sm-tab.active{
   box-shadow:none!important;
 }
 
-/* V30: 외부 복귀/화면 진입 CSS 정리
+/* V32: 외부 복귀/화면 진입 CSS 정리
    외부 이동 보호막을 제거한 현재 구조에서는 복귀 전용 강제 고정 CSS를 두지 않는다.
    화면 진입 중 필요한 최소 전환만 유지하고, app/viewport 전체를 흔드는 전역 보정은 금지한다. */
 html:not(.app-active),html:not(.app-active) body{scroll-behavior:auto!important;}
@@ -1685,7 +1685,7 @@ html.retreat-mode #region-body .nearby-dist span{
   margin-left:4px!important;
 }
 
-/* 커버 전용 당겨서 새로고침 — V30 단일 기준 */
+/* 커버 전용 당겨서 새로고침 — V32 단일 기준 */
 #cover{
   overscroll-behavior-y:contain!important;
 }
@@ -2014,7 +2014,7 @@ html.app-active #cv-pull-modern{
 #qna-view  .qna-tab.on        { background: var(--navy, #0e1535) !important; }
 
 /* ── 6. 헤더 배경색 (모듈별) ─────────────────────────────────────── */
-/* V30: 기도문 헤더를 기준으로 주요 모듈 헤더 단색 통일 */
+/* V32: 기도문 헤더를 기준으로 주요 모듈 헤더 단색 통일 */
 #prayer-bar,
 #trail-view .module-bar,
 #web-view .module-bar,
@@ -2270,7 +2270,7 @@ html.oai-font-global #cover #cover-bottom-note,
   z-index:5;
 }
 
-/* V30: 출발 검색 모달 색상 기준 재정리
+/* V32: 출발 검색 모달 색상 기준 재정리
    - 성지/성당/피정 + 일반장소 탭: 활성은 금색, 비활성은 고유색 배경 위의 은은한 반투명 버튼
    - 검색창을 감싸는 영역은 성지/성당/피정 각 카테고리 고유색으로 통일
    - 실제 검색 입력창(.sm-si)은 기존 아이보리 계열 유지 */
@@ -2341,7 +2341,7 @@ html.retreat-mode #srch-modal #sm-tab-bar .sm-tab:not(.active){
 html #srch-modal #sm-tab-bar .sm-tab.active,
 html.parish-mode #srch-modal #sm-tab-bar .sm-tab.active,
 html.retreat-mode #srch-modal #sm-tab-bar .sm-tab.active{
-  /* V30: 바로 위 교구 활성화 버튼(.sm-fb.on)과 같은 금색 기준 사용 */
+  /* V32: 바로 위 교구 활성화 버튼(.sm-fb.on)과 같은 금색 기준 사용 */
   background:var(--gold,#d4aa6a)!important;
   background-image:none!important;
   color:#1F2937!important;
@@ -2353,7 +2353,7 @@ html.retreat-mode #srch-modal #sm-tab-bar .sm-tab.active{
 
 
 /* ══════════════════════════════════════════════════════════════════
-   V30 모듈 표준화
+   V32 모듈 표준화
    - 헤더: 기도문 헤더 기준 단색 네이비(그라데이션 제거)
    - 탭바/탭버튼: 관구·교구 탭 기준 높이·형태 통일
    - 활성 탭의 고유 색상은 각 모듈 기존 색상을 유지
@@ -2434,4 +2434,236 @@ html.oai-font-global #prayer-tabs .pr-tab,
 html.oai-font-global #web-view .web-cat-btn,
 html.oai-font-global #trail-view .trail-tab{
   font-size:calc(15px * var(--app-font-scale,1))!important;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   V32 사용법 안내 — 커버 전용, 별도 파일 없음
+   ══════════════════════════════════════════════════════════════════ */
+#cover #cover-guide-btn{
+  position:absolute;
+  left:12px;
+  top:calc(env(safe-area-inset-top,0px) + 12px);
+  z-index:82;
+  height:36px;
+  min-height:36px;
+  padding:0 12px;
+  border:1.5px solid rgba(31,42,68,.16);
+  border-radius:999px;
+  background:#fffbf2;
+  color:#1f2a44;
+  font-family:inherit;
+  font-size:calc(12px * var(--app-font-scale,1));
+  font-weight:900;
+  line-height:1;
+  box-shadow:0 6px 14px rgba(31,42,68,.10);
+  cursor:pointer;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:4px;
+  -webkit-tap-highlight-color:transparent;
+}
+#cover #cover-guide-btn:active{ transform:scale(.985); }
+html.app-active #cover-guide-btn{ display:none!important; }
+
+.guide-modal{
+  position:fixed;
+  inset:0;
+  z-index:10050;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:calc(env(safe-area-inset-top,0px) + 14px) 18px calc(env(safe-area-inset-bottom,0px) + 18px);
+  box-sizing:border-box;
+  font-family:'Apple SD Gothic Neo','Noto Sans KR',sans-serif;
+}
+.guide-modal.show{ display:flex; }
+.guide-backdrop{
+  position:absolute;
+  inset:0;
+  background:rgba(31,42,68,.34);
+  backdrop-filter:blur(2px);
+}
+.guide-panel{
+  position:relative;
+  width:min(100%,430px);
+  max-height:min(82dvh,720px);
+  overflow:hidden;
+  border-radius:20px;
+  background:#fffdf8;
+  border:1px solid #e4d8c7;
+  box-shadow:0 22px 60px rgba(31,42,68,.24);
+  color:#1f2a44;
+  padding:20px 18px 18px;
+  box-sizing:border-box;
+}
+.guide-manual-panel{
+  display:flex;
+  flex-direction:column;
+  padding:20px 16px 16px;
+}
+.guide-x{
+  position:absolute;
+  right:10px;
+  top:10px;
+  width:30px;
+  height:30px;
+  border:0;
+  border-radius:50%;
+  background:rgba(31,42,68,.08);
+  color:#1f2a44;
+  font-size:18px;
+  font-weight:900;
+  line-height:1;
+  cursor:pointer;
+}
+.guide-badge{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  height:24px;
+  padding:0 10px;
+  border-radius:999px;
+  background:#efe4d2;
+  color:#7a5a2b;
+  font-size:11px;
+  font-weight:900;
+  margin-bottom:10px;
+}
+.guide-panel h2{
+  margin:0 34px 8px 0;
+  color:#1f2a44;
+  font-size:calc(20px * var(--app-font-scale,1));
+  line-height:1.22;
+  font-weight:900;
+  letter-spacing:-.03em;
+}
+.guide-lead{
+  margin:0 0 8px;
+  color:#4b5563;
+  font-size:calc(13.5px * var(--app-font-scale,1));
+  line-height:1.55;
+  font-weight:650;
+  word-break:keep-all;
+}
+.guide-intro-note{
+  margin:0;
+  color:#7a7065;
+  font-size:calc(12.5px * var(--app-font-scale,1));
+  line-height:1.55;
+  word-break:keep-all;
+}
+.guide-actions{
+  display:flex;
+  gap:8px;
+  margin-top:16px;
+}
+.guide-primary,.guide-secondary{
+  height:40px;
+  border:0;
+  border-radius:12px;
+  font-family:inherit;
+  font-size:calc(13px * var(--app-font-scale,1));
+  font-weight:900;
+  cursor:pointer;
+  flex:1;
+}
+.guide-primary{
+  background:#1f2a44;
+  color:#fff;
+  box-shadow:0 10px 22px rgba(31,42,68,.22);
+}
+.guide-secondary{
+  background:#f1eadf;
+  color:#5b4636;
+  box-shadow:inset 0 0 0 1px #e0d3c2;
+}
+.guide-card-list{
+  overflow-y:auto;
+  -webkit-overflow-scrolling:touch;
+  padding:2px 2px 4px;
+  margin-top:4px;
+  display:flex;
+  flex-direction:column;
+  gap:9px;
+}
+.guide-card{
+  display:flex;
+  gap:11px;
+  padding:12px 12px;
+  border-radius:16px;
+  background:#fbf6ed;
+  border:1px solid #eadfce;
+  box-shadow:0 1px 0 rgba(255,255,255,.7) inset;
+}
+.guide-card-main{
+  background:#f8f1e5;
+  border-color:#decbb0;
+}
+.guide-icon{
+  flex:0 0 34px;
+  width:34px;
+  height:34px;
+  border-radius:12px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#fffdf8;
+  box-shadow:inset 0 0 0 1px #eadfce;
+  font-size:18px;
+  line-height:1;
+}
+.guide-text{ min-width:0; flex:1; }
+.guide-text h3{
+  margin:0 0 5px;
+  font-size:calc(14.5px * var(--app-font-scale,1));
+  line-height:1.25;
+  color:#1f2a44;
+  font-weight:900;
+  letter-spacing:-.02em;
+}
+.guide-text p{
+  margin:0;
+  font-size:calc(12.4px * var(--app-font-scale,1));
+  line-height:1.55;
+  color:#5f6675;
+  font-weight:600;
+  word-break:keep-all;
+}
+.guide-mini-list{
+  margin:0;
+  display:grid;
+  grid-template-columns:72px 1fr;
+  row-gap:4px;
+  column-gap:8px;
+  font-size:calc(12.2px * var(--app-font-scale,1));
+  line-height:1.45;
+}
+.guide-mini-list dt{
+  color:#7a5a2b;
+  font-weight:900;
+}
+.guide-mini-list dd{
+  margin:0;
+  color:#5f6675;
+  font-weight:600;
+  word-break:keep-all;
+}
+.guide-ok{
+  flex:0 0 auto;
+  width:100%;
+  margin-top:12px;
+}
+
+@media (max-height:650px){
+  #cover #cover-guide-btn{
+    height:34px;
+    min-height:34px;
+    font-size:calc(10.5px * var(--app-font-scale,1));
+    padding:0 10px;
+  }
+  .guide-panel{ max-height:86dvh; padding:16px 14px 14px; }
+  .guide-card{ padding:10px; gap:9px; }
+  .guide-icon{ width:30px; height:30px; flex-basis:30px; font-size:16px; }
+  .guide-mini-list{ grid-template-columns:66px 1fr; }
 }
