@@ -180,7 +180,7 @@ function openDioceseView(opts){
       if(!restore) try{ frame.contentWindow && frame.contentWindow.resetDioceseFirstPage && frame.contentWindow.resetDioceseFirstPage(); }catch(e){ console.warn("[클로드정리]", e); }
       if(typeof dioceseLoaded==='function') dioceseLoaded();
     };
-    frame.src='diocese.html?v=20260508-v5-3';
+    frame.src='diocese.html?v=20260508-v5-4';
   }else if(!restore){
     try{ frame.contentWindow && frame.contentWindow.resetDioceseFirstPage && frame.contentWindow.resetDioceseFirstPage(); }catch(e){ console.warn("[클로드정리]", e); }
   }
@@ -1650,10 +1650,23 @@ function _focusParishDio(code){
       count++;
     });
     if(count>1 && bounds){
-      _map.setBounds(bounds);
+      /* 성당 카테고리에서 교구를 선택하면 해당 교구 전체 성당이 보이는 범위가 기준입니다.
+         이전 5-3에서는 setBounds 직후 _showParishDioMkrs()가 줌을 8로 강제해
+         넓은 교구의 일부 마커만 보이는 문제가 생겼습니다. 여기서는 bounds가 정한
+         중심/줌을 우선하고, 너무 과하게 확대된 경우에만 살짝 뒤로 물러납니다. */
+      try{ _map.setBounds(bounds, 78, 52, 78, 52); }
+      catch(e1){ _map.setBounds(bounds); }
+      setTimeout(function(){
+        try{
+          if(_mode==='parish' && _activeDio===code && typeof _map.getLevel==='function' && typeof _map.setLevel==='function'){
+            var lvl=_map.getLevel();
+            if(lvl<8) _map.setLevel(8);
+          }
+        }catch(e2){ console.warn('[클로드정리]',e2); }
+      }, 80);
     }else if(count===1){
       const only=parishes.find(function(p){return p&&p.lat&&p.lng&&p.lat!==0&&p.lng!==0;});
-      if(only){ _map.setCenter(new _LL(only.lat,only.lng)); _map.setLevel(7); }
+      if(only){ _map.setCenter(new _LL(only.lat,only.lng)); _map.setLevel(8); }
     }else{
       const cfg=_DIO_CFG[code];
       if(cfg){ _map.setCenter(new _LL(cfg.lat,cfg.lng)); _map.setLevel(8); }
@@ -1669,8 +1682,8 @@ function _ensureParishMarkerZoom(){
 }
 function _showParishDioMkrs(code){
   // 교구를 선택했을 때는 해당 교구 성당 마커가 반드시 보이도록 한다.
-  // 지도 줌은 교구 범위 맞춤(_focusParishDio) 또는 현 위치/노란마커 기준을 우선한다.
-  _ensureParishMarkerZoom();
+  // 지도 줌/중심은 _focusParishDio()의 교구 전체 bounds를 우선한다.
+  // 여기서 줌을 강제로 당기면 넓은 교구의 일부 마커만 보일 수 있으므로 건드리지 않는다.
   // ── 마커 객체 최초 1회 생성 (setMap 없이) ──
   if(!_dioMkrs[code]){
     const cfg=_DIO_CFG[code]||{c:'#555'};
