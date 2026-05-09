@@ -1517,13 +1517,15 @@ html.retreat-mode #sm-tab-bar .sm-tab.active{
 /* 화면 이동과 첫 진입 표시를 본문 스타일에 통합 */
 #oai-nav-veil{position:fixed;inset:0;z-index:2147483000;display:flex;align-items:center;justify-content:center;background:rgba(245,240,232,.72);opacity:0;pointer-events:none;transition:opacity .16s ease;-webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px);transform:translateZ(0)}
 #oai-nav-veil.show{opacity:1;pointer-events:auto}
+#oai-nav-veil.oai-return-veil{background:#f5f0e8;-webkit-backdrop-filter:none;backdrop-filter:none;transition:opacity .12s ease}
+#oai-nav-veil.oai-return-veil .oai-nav-card{box-shadow:0 8px 22px rgba(15,23,42,.10)}
 .oai-nav-card{display:flex;align-items:center;gap:10px;background:#fffaf2;border:1px solid #ddd5c8;border-radius:999px;padding:12px 18px;box-shadow:0 10px 26px rgba(15,23,42,.14);color:#1f2a44;font-size:14px;font-weight:800;letter-spacing:-.02em}
 .oai-nav-spinner{width:16px;height:16px;border-radius:50%;border:2px solid rgba(31,42,68,.18);border-top-color:#d4aa6a;animation:oaiNavSpin .75s linear infinite;flex-shrink:0}
 @keyframes oaiNavSpin{to{transform:rotate(360deg)}}
 html.oai-navigating-out #cover,html.oai-navigating-out #app,html.oai-navigating-out .module-view.open,html.oai-navigating-out #prayer-view.open,html.oai-navigating-out #diocese-view.open{transform:translateZ(0);backface-visibility:hidden;overflow:hidden!important}
 @supports (height:100dvh){#cover,#app,.module-view,#prayer-view,#diocese-view,#missa-view{min-height:100dvh}}
 .module-view.open,#prayer-view.open,#diocese-view.open,#app{contain:layout paint style}
-html.oai-external-return-stabilize #oai-nav-veil{display:none!important}
+html.oai-external-return-stabilize #oai-nav-veil.oai-return-veil{display:flex}
 .app-pressing{transition:transform .16s ease,filter .16s ease;will-change:transform}
 .app-touchable{transition:transform .16s ease,filter .16s ease;will-change:transform}
 .tab.on,.tab.on:active{transform:none}

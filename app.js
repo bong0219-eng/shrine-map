@@ -79,8 +79,20 @@ function applyExternalReturnStabilize(forceKind){
     }
   }catch(e){ console.warn("[클로드정리]", e); }
 
-  // 이동 중 베일 정리는 가볍게 항상 수행하되, 실제 화면 안정화는 복귀 표시가 있을 때만 1회 실행한다.
-  try{ document.documentElement.classList.remove('oai-navigating-out'); var v=document.getElementById('oai-nav-veil'); if(v) v.classList.remove('show'); }catch(e){ console.warn("[클로드정리]", e); }
+  // 이동 중 베일 정리는 가볍게 수행하되, 외부 복귀 표시가 있으면 크림색 베일을 잠시 유지해 흰 화면 노출을 막는다.
+  try{
+    document.documentElement.classList.remove('oai-navigating-out');
+    var v=document.getElementById('oai-nav-veil');
+    if(v){
+      if(kind){
+        v.classList.add('oai-return-veil','show');
+        var txt=v.querySelector('.oai-nav-text');
+        if(txt) txt.textContent='화면을 복귀하는 중입니다';
+      }else{
+        v.classList.remove('show','oai-return-veil');
+      }
+    }
+  }catch(e){ console.warn("[클로드정리]", e); }
   if(!kind) return;
   if(!forceKind && now < __oaiExternalReturnLockUntil) return;
   __oaiExternalReturnLockUntil = now + 1600;
@@ -96,8 +108,15 @@ function applyExternalReturnStabilize(forceKind){
   }catch(e){ console.warn("[클로드정리]", e); }
   __oaiExternalReturnClearTimer = setTimeout(function(){
     try{ document.documentElement.classList.remove('oai-external-return-stabilize','oai-missa-return-stabilize'); }catch(e){ console.warn("[클로드정리]", e); }
+    try{
+      var v=document.getElementById('oai-nav-veil');
+      if(v){
+        v.classList.remove('show');
+        setTimeout(function(){ try{ v.classList.remove('oai-return-veil'); }catch(e){} }, 180);
+      }
+    }catch(e){ console.warn("[클로드정리]", e); }
     try{ document.documentElement.style.scrollBehavior=''; document.body.style.scrollBehavior=''; }catch(e){ console.warn("[클로드정리]", e); }
-  }, 900);
+  }, 520);
 }
 window.addEventListener('pageshow', function(){ applyExternalReturnStabilize(); }, true);
 document.addEventListener('visibilitychange', function(){
