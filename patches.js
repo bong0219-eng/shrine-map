@@ -419,8 +419,8 @@
 (function(){
   if(window.__APP_FONT_SCALE_GUARD__) return;
   window.__APP_FONT_SCALE_GUARD__=true;
-  // V32: 문의·건의는 Google Sheet 임시 연결을 쓰지 않고 qa-firebase.html 한 경로로만 통일한다.
-  var QA_URL="qa-firebase.html?v=V32";
+  // V33: 문의·건의는 Google Sheet 임시 연결을 쓰지 않고 qa-firebase.html 한 경로로만 통일한다.
+  var QA_URL="qa-firebase.html?v=V33";
   var FONT_KEY='prayer_font_size', BASE=16, SIZES=[15,16,17,18,19,20,21,22,24,26,28];
   function el(id){return document.getElementById(id)}
   function getPx(){var px=parseInt(localStorage.getItem(FONT_KEY)||BASE,10);return (px>=15&&px<=28)?px:BASE;}
@@ -473,7 +473,7 @@
 })();
 
 (function(){
-  var QA_URL='qa-firebase.html?v=V32';
+  var QA_URL='qa-firebase.html?v=V33';
   function bindQnaButton(){
     var btn=document.getElementById('qna-cover-btn');
     if(btn){ btn.onclick=function(){ location.href=QA_URL; }; }
@@ -817,14 +817,14 @@
   };
 })();
 (function(){
-  // V32: 아래 블록은 버튼이 사라진 경우만 복원하고, 실제 이동은 openQnaView 한 경로로 위임한다.
+  // V33: 아래 블록은 버튼이 사라진 경우만 복원하고, 실제 이동은 openQnaView 한 경로로 위임한다.
   function $(id){return document.getElementById(id);}
   function restoreQnaButton(){
     var cover=$('cover');
     if(!cover) return;
     var btn=$('qna-cover-btn');
     if(!btn){btn=document.createElement('button');btn.id='qna-cover-btn';btn.type='button';btn.setAttribute('aria-label','문의·건의');btn.textContent='💬 문의·건의';cover.appendChild(btn);}
-    btn.onclick=function(ev){if(ev) ev.preventDefault(); if(typeof window.openQnaView === 'function') window.openQnaView(); else location.href='qa-firebase.html?v=V32';};
+    btn.onclick=function(ev){if(ev) ev.preventDefault(); if(typeof window.openQnaView === 'function') window.openQnaView(); else location.href='qa-firebase.html?v=V33';};
   }
   function removeMissaPopupState(){var mv=$('missa-view');if(mv) mv.classList.remove('open');}
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', function(){restoreQnaButton();removeMissaPopupState();});
@@ -833,8 +833,8 @@
 })();
 (function(){
   'use strict';
-  if(window.__APP_PULL_REFRESH_CLEAN_V32__) return;
-  window.__APP_PULL_REFRESH_CLEAN_V32__ = true;
+  if(window.__APP_PULL_REFRESH_CLEAN_V33__) return;
+  window.__APP_PULL_REFRESH_CLEAN_V33__ = true;
 
   function $(id){ return document.getElementById(id); }
   function isTypingTarget(el){
@@ -853,6 +853,19 @@
       });
     }catch(e){ console.warn('[가톨릭길동무]', e); }
   }
+  function isGuideModalOpen(){
+    try{ return !!document.querySelector('.guide-modal.show'); }catch(e){ return false; }
+  }
+  function closeGuideModals(){
+    try{
+      document.querySelectorAll('.guide-modal.show').forEach(function(el){
+        el.classList.remove('show');
+        el.setAttribute('aria-hidden','true');
+      });
+      if(typeof window.resetGuideManualScroll === 'function') window.resetGuideManualScroll();
+    }catch(e){ console.warn('[가톨릭길동무]', e); }
+  }
+
   function hideIndicator(ind){
     if(!ind) return;
     ind.classList.remove('show','ready','refreshing');
@@ -873,6 +886,7 @@
     try{
       document.documentElement.classList.remove('app-active','parish-mode','retreat-mode','oai-returning');
       closeTransientViews();
+      closeGuideModals();
       if(cover){
         cover.style.display='';
         cover.style.opacity='';
@@ -887,15 +901,15 @@
 
   function installPullRefresh(){
     var cover=$('cover'), ind=$('cv-pull-modern');
-    if(!cover || !ind || cover.__oaiPullRefreshCleanV32) return;
-    cover.__oaiPullRefreshCleanV32 = true;
+    if(!cover || !ind || cover.__oaiPullRefreshCleanV33) return;
+    cover.__oaiPullRefreshCleanV33 = true;
 
     var sx=0, sy=0, active=false, ready=false, refreshing=false;
     var THRESHOLD=74;
     var MAX=112;
 
     cover.addEventListener('touchstart', function(e){
-      if(refreshing || !isCoverVisible() || isTypingTarget(document.activeElement) || cover.scrollTop > 0 || !e.touches || !e.touches[0]) return;
+      if(refreshing || isGuideModalOpen() || !isCoverVisible() || isTypingTarget(document.activeElement) || cover.scrollTop > 0 || !e.touches || !e.touches[0]) return;
       sx=e.touches[0].clientX;
       sy=e.touches[0].clientY;
       active=true;
@@ -904,7 +918,7 @@
     }, {passive:true, capture:true});
 
     cover.addEventListener('touchmove', function(e){
-      if(!active || refreshing || !e.touches || !e.touches[0]) return;
+      if(!active || refreshing || isGuideModalOpen() || !e.touches || !e.touches[0]){ active=false; ready=false; hideIndicator(ind); return; }
       var dx=e.touches[0].clientX - sx;
       var dy=e.touches[0].clientY - sy;
       if(Math.abs(dx) > Math.abs(dy) * 1.15){ active=false; hideIndicator(ind); return; }
