@@ -23,7 +23,7 @@ function hideCoverAndRun(callback) {
 
 
 function markExternalReturnStabilize(kind){
-  // V20-10: 외부 사이트 이동은 브라우저 기본 동작에 맡긴다.
+  // V20-11: 외부 사이트 이동은 브라우저 기본 동작에 맡긴다.
   // 이전 버전 호환을 위해 함수명만 유지하고, 이동 상태는 저장하지 않는다.
 }
 
@@ -43,7 +43,7 @@ function oaiClearExternalNavigationState(){
 }
 
 function oaiSmoothNavigate(url, kind){
-  // V20-10: 호환용 함수. 보호막/지연/전역 가로채기 없이 즉시 이동한다.
+  // V20-11: 호환용 함수. 보호막/지연/전역 가로채기 없이 즉시 이동한다.
   if(!url) return;
   try{ document.activeElement && document.activeElement.blur && document.activeElement.blur(); }catch(e){ console.warn("[가톨릭길동무]", e); }
   try{ oaiClearExternalNavigationState(); }catch(e){ console.warn("[가톨릭길동무]", e); }
@@ -51,7 +51,7 @@ function oaiSmoothNavigate(url, kind){
 }
 
 function applyExternalReturnStabilize(){
-  // V20-10: 복귀 시 화면을 재계산하지 않고, 예전 이동중 잔여 상태만 제거한다.
+  // V20-11: 복귀 시 화면을 재계산하지 않고, 예전 이동중 잔여 상태만 제거한다.
   try{ oaiClearExternalNavigationState(); }catch(e){ console.warn("[가톨릭길동무]", e); }
 }
 window.addEventListener('pageshow', applyExternalReturnStabilize, true);
@@ -190,7 +190,7 @@ function syncCoverUpdateVersionState(){
     var box = document.getElementById('cover-update-box');
     var marker = document.getElementById('oai-build-marker');
     if(!btn || !box) return;
-    var target = btn.getAttribute('data-target-version') || 'V20-10';
+    var target = btn.getAttribute('data-target-version') || 'V20-11';
     var current = '';
     if(window.APP_VERSION) current = String(window.APP_VERSION).trim();
     if(!current && marker) current = String(marker.textContent || '').trim();
@@ -209,7 +209,7 @@ document.addEventListener('DOMContentLoaded', function(){
 }, true);
 window.addEventListener('load', syncCoverUpdateVersionState, true);
 
-// V20-10: 커버 전용 주요 기능 안내. 별도 파일 없이 작은 자동 안내 + 자세한 카드형 팝업을 제공한다.
+// V20-11: 커버 전용 주요 기능 안내. 별도 파일 없이 작은 자동 안내 + 자세한 카드형 팝업을 제공한다.
 (function(){
   'use strict';
   var HIDE_DAYS = 7;
@@ -354,7 +354,7 @@ function _closePrayerAndReturn(){
 
 
 
-// V20-10: 확인용 임시 설정. 이번 버전에서만 Android에서도 iPhone Safari 설치 안내 배너를 표시한다.
+// V20-11: 확인용 임시 설정. 이번 버전에서만 Android에서도 iPhone Safari 설치 안내 배너를 표시한다.
 // Android 카카오톡 Chrome intent 흐름은 건드리지 않는다.
 (function(){
   'use strict';
@@ -370,7 +370,7 @@ function _closePrayerAndReturn(){
     return false;
   }
   function shouldShow(){
-    // V20-10 확인용: 원래 조건(iPhone + Kakao + 홈화면 앱 아님)에 Android 브라우저를 임시로 포함한다.
+    // V20-11 확인용: 원래 조건(iPhone + Kakao + 홈화면 앱 아님)에 Android 브라우저를 임시로 포함한다.
     var isAndroid = ua().indexOf('android') > -1;
     return ((isIOS() && isKakao()) || isAndroid) && !isStandalone();
   }
@@ -441,7 +441,7 @@ function openDioceseView(opts){
       if(!restore) try{ frame.contentWindow && frame.contentWindow.resetDioceseFirstPage && frame.contentWindow.resetDioceseFirstPage(); }catch(e){ console.warn("[가톨릭길동무]", e); }
       if(typeof dioceseLoaded==='function') dioceseLoaded();
     };
-    frame.src='diocese.html?v=V20-10';
+    frame.src='diocese.html?v=V20-11';
   }else if(!restore){
     try{ frame.contentWindow && frame.contentWindow.resetDioceseFirstPage && frame.contentWindow.resetDioceseFirstPage(); }catch(e){ console.warn("[가톨릭길동무]", e); }
   }
@@ -567,7 +567,7 @@ function restoreCoreReturnState(){
     _loadMap();
   }
   const restoreDelay = needMapLoad ? 650 : 30;
-  // V20-10: 외부사이트 복귀 시 지도 중심을 두 단계로 움직이지 않는다.
+  // V20-11: 외부사이트 복귀 시 지도 중심을 두 단계로 움직이지 않는다.
   // 인포카드가 있었던 경우에는 처음부터 인포카드 기준 중심으로 복원한다.
   setTimeout(()=>{
     _restoreMapMarkers();
@@ -1426,7 +1426,7 @@ function _updateTabBtns(active){
 }
 
 function _getInfoCardCenterTargetY(mapH){
-  // V20-10: 성지·성당·피정 지도 중심은 항상 인포카드가 올라왔을 때의 기준으로 통일한다.
+  // V20-11: 성지·성당·피정 지도 중심은 항상 인포카드가 올라왔을 때의 기준으로 통일한다.
   // 실제 인포카드가 아직 없거나 목록 시트만 떠 있어도 같은 시각 중심을 사용해 덜컹거림을 줄인다.
   return Math.round((mapH || 700) * 0.34);
 }
@@ -1609,8 +1609,8 @@ function closeInfoCard(opts){
   else {
     if(_paSelMkr){try{_paSelMkr.setMap(null);}catch(e){ console.warn("[가톨릭길동무]", e); }  _paSelMkr=null;}
   }
-  // V20-10: 시트 전환으로 닫을 때는 지도 중심을 다시 움직이지 않는다.
-  // 사용자가 X/지도 터치로 인포카드만 닫을 때는 기존 V20-10 기준 중심을 유지한다.
+  // V20-11: 시트 전환으로 닫을 때는 지도 중심을 다시 움직이지 않는다.
+  // 사용자가 X/지도 터치로 인포카드만 닫을 때는 기존 V20-11 기준 중심을 유지한다.
   if(!opts.keepMap && wasItem && wasItem.item && wasItem.item.lat && _map){
     try{ _focusMarkerAboveInfoCard(wasItem.item); }catch(e){ console.warn("[가톨릭길동무]", e); }
   }
@@ -1892,7 +1892,7 @@ function _fitParishNearbyBounds(items, lat, lng){
 function _showParishNearbyMarkersOnMap(items, lat, lng, phase){
   if(_mode!=='parish' || !_map || !Array.isArray(items) || !items.length || typeof _LL==='undefined') return;
   try{
-    /* V20-10
+    /* V20-11
        성당 카테고리 첫 진입/내주변 목록에서는 지도에 10개 주변 마커만 올리지 않는다.
        목록은 지금처럼 현재 위치 주변 10곳을 보여주고, 지도에는 그 주변 성당 중
        가장 가까운 성당이 속한 교구의 성당 마커 전체를 표시한다.
@@ -2094,7 +2094,7 @@ function _focusParishPointAround(lat, lng, opts){
         _map.setLevel(targetLevel);
       }
     }
-    // V20-10: 현재 위치/내 주변/선택 성당 모두 인포카드 기준 중심으로 통일한다.
+    // V20-11: 현재 위치/내 주변/선택 성당 모두 인포카드 기준 중심으로 통일한다.
     if(typeof _setMapCenterByInfoCardStandard==='function'){
       return _setMapCenterByInfoCardStandard(pos);
     }
