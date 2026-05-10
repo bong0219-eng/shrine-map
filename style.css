@@ -1686,7 +1686,7 @@ html.retreat-mode #sm-tab-bar .sm-tab.active{
   box-shadow:none!important;
 }
 
-/* V20-13: 외부 복귀/화면 진입 CSS 정리
+/* V20-14: 외부 복귀/화면 진입 CSS 정리
    외부 이동 보호막을 제거한 현재 구조에서는 복귀 전용 강제 고정 CSS를 두지 않는다.
    화면 진입 중 필요한 최소 전환만 유지하고, app/viewport 전체를 흔드는 전역 보정은 금지한다. */
 html:not(.app-active),html:not(.app-active) body{scroll-behavior:auto!important;}
@@ -1771,7 +1771,7 @@ html.retreat-mode #region-body .nearby-dist span{
   margin-left:4px!important;
 }
 
-/* 커버 전용 당겨서 새로고침 — V20-13 단일 기준 */
+/* 커버 전용 당겨서 새로고침 — V20-14 단일 기준 */
 #cover{
   overscroll-behavior-y:contain!important;
 }
@@ -2100,7 +2100,7 @@ html.app-active #cv-pull-modern{
 #qna-view  .qna-tab.on        { background: var(--navy, #0e1535) !important; }
 
 /* ── 6. 헤더 배경색 (모듈별) ─────────────────────────────────────── */
-/* V20-13: 기도문 헤더를 기준으로 주요 모듈 헤더 단색 통일 */
+/* V20-14: 기도문 헤더를 기준으로 주요 모듈 헤더 단색 통일 */
 #prayer-bar,
 #trail-view .module-bar,
 #web-view .module-bar,
@@ -2143,7 +2143,7 @@ html.oai-font-global #qna-view  .qna-tab {
 
 
 /* ══════════════════════════════════════════════════════════════════
-   V20-13 커버 레이아웃 안정 기준
+   V20-14 커버 레이아웃 안정 기준
    구조: #cover > cover-header / #cover-main-block / #cover-bottom-note
    #cover-main-block: cover-grid + qna-cover-btn 한 몸체
    완료 기준 커버 배치를 기준으로 복원
@@ -2209,7 +2209,7 @@ html.app-active #cover {
   display              : grid !important;
   grid-template-columns: repeat(2, minmax(0,1fr)) !important;
   grid-template-rows   : none !important;
-  /* V20-13: 새로고침 전후 dvh 재계산으로 카드가 아래로 처지는 현상을 줄이기 위해 세로 기준(dvh) 대신 가로폭 기준으로 행 높이를 고정한다. */
+  /* V20-14: 새로고침 전후 dvh 재계산으로 카드가 아래로 처지는 현상을 줄이기 위해 세로 기준(dvh) 대신 가로폭 기준으로 행 높이를 고정한다. */
   grid-auto-rows       : clamp(106px, 29vw, 118px) !important;
   row-gap              : clamp(5px, 1.2vw, 7px) !important;
   column-gap           : clamp(4px, 1.2vw, 8px) !important;
@@ -2315,7 +2315,7 @@ html.app-active #cover {
 }
 
 
-/* V20-13: iPhone 카카오톡 인앱 브라우저 Safari 설치 안내
+/* V20-14: iPhone 카카오톡 인앱 브라우저 Safari 설치 안내
    - 커버 레이아웃을 밀지 않고, 커버 위 레이어로 표시한다.
    - 카테고리를 일부 가려도 Safari 설치 안내가 먼저 보이도록 한다. */
 #cover .ios-safari-banner{
@@ -2527,7 +2527,7 @@ html.oai-font-global #cover #cover-bottom-note,
   width:100%;
   max-width:720px;
   margin:0 auto;
-  padding:4px 22px calc(10px + env(safe-area-inset-bottom, 0px)) 60px;
+  padding:4px 22px calc(3vh + env(safe-area-inset-bottom, 0px)) 60px;
   text-align:center;
   font-size:9px !important;
   font-weight:500 !important;
@@ -2541,15 +2541,15 @@ html.oai-font-global #cover #cover-bottom-note,
 #cover #oai-build-marker{
   position:fixed !important;
   left:8px !important;
-  bottom:calc(env(safe-area-inset-bottom,0px) + 8px) !important;
+  bottom:calc(3vh + env(safe-area-inset-bottom,0px) + 2px) !important;
   z-index:120 !important;
 }
 @media (max-height:650px){
-  #cover #oai-build-marker{bottom:calc(env(safe-area-inset-bottom,0px) + 8px) !important;}
+  #cover #oai-build-marker{bottom:calc(3vh + env(safe-area-inset-bottom,0px) + 2px) !important;}
 }
 
 
-/* V20-13: 출발 검색 모달 색상 기준 재정리
+/* V20-14: 출발 검색 모달 색상 기준 재정리
    - 성지/성당/피정 + 일반장소 탭: 활성은 금색, 비활성은 고유색 배경 위의 은은한 반투명 버튼
    - 검색창을 감싸는 영역은 성지/성당/피정 각 카테고리 고유색으로 통일
    - 실제 검색 입력창(.sm-si)은 기존 아이보리 계열 유지 */
@@ -2620,7 +2620,7 @@ html.retreat-mode #srch-modal #sm-tab-bar .sm-tab:not(.active){
 html #srch-modal #sm-tab-bar .sm-tab.active,
 html.parish-mode #srch-modal #sm-tab-bar .sm-tab.active,
 html.retreat-mode #srch-modal #sm-tab-bar .sm-tab.active{
-  /* V20-13: 바로 위 교구 활성화 버튼(.sm-fb.on)과 같은 금색 기준 사용 */
+  /* V20-14: 바로 위 교구 활성화 버튼(.sm-fb.on)과 같은 금색 기준 사용 */
   background:var(--gold,#d4aa6a)!important;
   background-image:none!important;
   color:#1F2937!important;
@@ -2632,7 +2632,7 @@ html.retreat-mode #srch-modal #sm-tab-bar .sm-tab.active{
 
 
 /* ══════════════════════════════════════════════════════════════════
-   V20-13 모듈 표준화
+   V20-14 모듈 표준화
    - 헤더: 기도문 헤더 기준 단색 네이비(그라데이션 제거)
    - 탭바/탭버튼: 관구·교구 탭 기준 높이·형태 통일
    - 활성 탭의 고유 색상은 각 모듈 기존 색상을 유지
@@ -2716,7 +2716,7 @@ html.oai-font-global #trail-view .trail-tab{
 }
 
 /* ══════════════════════════════════════════════════════════════════
-   V20-13 주요 기능 안내 — 커버 전용, 별도 파일 없음
+   V20-14 주요 기능 안내 — 커버 전용, 별도 파일 없음
    ══════════════════════════════════════════════════════════════════ */
 #cover #cover-guide-btn{
   position:absolute;
@@ -2977,280 +2977,4 @@ html.app-active #cover-guide-btn{ display:none!important; }
   .guide-card-head{ gap:9px; margin-bottom:6px; }
   .guide-icon{ width:30px; height:30px; flex-basis:30px; font-size:16px; }
   .guide-mini-list{ grid-template-columns:66px 1fr; }
-}
-
-
-/* ══════════════════════════════════════════════════════════════════
-   V20-13 커버 흔들림/하단 여백 최종 보정
-   - 새로고침 전후 viewport 재계산에 따라 카드가 아래로 처지는 것을 줄이기 위해
-     커버 높이는 작은 viewport 기준으로 고정한다.
-   - 커버 카드/이모지/글자는 transition/transform/animation을 제거해
-     새로고침 직후 십자선처럼 흔들려 보이는 현상을 막는다.
-   - iPhone 설치 배너, 설치 안내 이미지, 내부 기능 흐름은 건드리지 않는다.
-   ══════════════════════════════════════════════════════════════════ */
-#cover,
-html:not(.app-active) #cover{
-  height:100svh!important;
-  min-height:100svh!important;
-  max-height:100svh!important;
-  padding-top:calc(7.2vh + env(safe-area-inset-top,0px))!important;
-  padding-bottom:calc(1vh + env(safe-area-inset-bottom,0px))!important;
-}
-#cover-main-block{
-  padding-bottom:2px!important;
-}
-#cover .cover-grid,
-#cover .cv-grid{
-  grid-auto-rows:clamp(101px,27.5vw,112px)!important;
-  row-gap:5px!important;
-  column-gap:6px!important;
-  align-content:start!important;
-}
-#cover .cover-card,
-#cover .cv-btn{
-  padding:7px 7px!important;
-  gap:8px!important;
-  transition:none!important;
-  animation:none!important;
-  transform:none!important;
-  will-change:auto!important;
-  backface-visibility:hidden!important;
-  -webkit-font-smoothing:antialiased;
-}
-#cover .cover-card *,
-#cover .cv-btn *{
-  transition:none!important;
-  animation:none!important;
-  transform:none!important;
-  will-change:auto!important;
-}
-#cover .cover-icon-wrap{
-  width:34px!important;
-  height:34px!important;
-  min-width:34px!important;
-  flex:0 0 34px!important;
-  display:flex!important;
-  align-items:center!important;
-  justify-content:center!important;
-  margin:0!important;
-  padding:0!important;
-  line-height:1!important;
-  background:transparent!important;
-  border:0!important;
-  box-shadow:none!important;
-}
-#cover .cover-emoji{
-  display:flex!important;
-  align-items:center!important;
-  justify-content:center!important;
-  width:34px!important;
-  height:34px!important;
-  font-size:30px!important;
-  line-height:1!important;
-  margin:0!important;
-  padding:0!important;
-  background:transparent!important;
-  box-shadow:none!important;
-  transform:none!important;
-}
-html.oai-font-global #cover .cover-emoji,
-html.oai-font-global #cover .cover-icon-wrap{
-  font-size:30px!important;
-}
-#cover .cover-name,
-#cover .cv-btn-label{
-  font-size:15px!important;
-  line-height:1.18!important;
-  font-weight:850!important;
-  margin:0!important;
-  padding:0!important;
-  transform:none!important;
-  transition:none!important;
-}
-html.oai-font-global #cover .cover-name,
-html.oai-font-global #cover .cv-btn-label{
-  font-size:15px!important;
-}
-#cover #cover-action-row{
-  margin:4px 0 0!important;
-}
-#cover #cover-update-btn,
-#cover #qna-cover-btn{
-  min-height:38px!important;
-  height:38px!important;
-}
-@media (max-height:650px){
-  #cover,
-  html:not(.app-active) #cover{
-    height:100svh!important;
-    min-height:100svh!important;
-    max-height:100svh!important;
-    padding-top:calc(6.6vh + env(safe-area-inset-top,0px))!important;
-    padding-bottom:calc(0.5vh + env(safe-area-inset-bottom,0px))!important;
-  }
-  #cover .cover-grid,
-  #cover .cv-grid{
-    grid-auto-rows:clamp(94px,26.5vw,104px)!important;
-    row-gap:4px!important;
-  }
-  #cover .cover-card,
-  #cover .cv-btn{gap:6px!important;padding:5px 6px!important;}
-  #cover .cover-icon-wrap{width:30px!important;height:30px!important;min-width:30px!important;flex-basis:30px!important;}
-  #cover .cover-emoji{width:30px!important;height:30px!important;font-size:26px!important;}
-  html.oai-font-global #cover .cover-emoji,
-  html.oai-font-global #cover .cover-icon-wrap{font-size:26px!important;}
-  #cover .cover-name,
-  #cover .cv-btn-label{font-size:13px!important;line-height:1.16!important;}
-  html.oai-font-global #cover .cover-name,
-  html.oai-font-global #cover .cv-btn-label{font-size:13px!important;}
-  #cover #cover-action-row{margin-top:3px!important;}
-}
-
-/* ══════════════════════════════════════════════════════════════════
-   V20-13 커버 최종 안정화
-   - 새로고침 후 팝업이 안내 모달로 복구되어도 커버 레이아웃은 움직이지 않게 고정
-   - 100svh/100dvh 차이로 하단 바깥 배경이 보이는 문제를 막기 위해 fixed inset 기준 사용
-   - 하단 여백은 카드/버튼 영역만 좁게 정리하고, 배너/설치 안내/지도 데이터는 건드리지 않음
-   ══════════════════════════════════════════════════════════════════ */
-html, body{
-  background:var(--bg-color,#f4efe4)!important;
-  overscroll-behavior-y:none;
-}
-#cover,
-html:not(.app-active) #cover{
-  position:fixed!important;
-  inset:0!important;
-  width:100vw!important;
-  height:auto!important;
-  min-height:0!important;
-  max-height:none!important;
-  background:var(--bg-color,#f4efe4)!important;
-  padding-top:calc(7vh + env(safe-area-inset-top,0px))!important;
-  padding-bottom:calc(env(safe-area-inset-bottom,0px) + 0px)!important;
-  overflow:hidden!important;
-  overflow-y:hidden!important;
-}
-#cover-main-block{
-  flex:0 0 auto!important;
-  margin:0 auto!important;
-  padding:0 16px 0!important;
-}
-#cover .cover-grid,
-#cover .cv-grid{
-  flex:0 0 auto!important;
-  grid-template-rows:none!important;
-  grid-auto-rows:clamp(98px,27vw,108px)!important;
-  row-gap:4px!important;
-  column-gap:6px!important;
-  align-content:start!important;
-  margin:0!important;
-  padding:0!important;
-}
-#cover .cover-card,
-#cover .cv-btn{
-  gap:7px!important;
-  padding:6px 7px!important;
-  min-height:0!important;
-  height:100%!important;
-  transition:none!important;
-  animation:none!important;
-  transform:none!important;
-  will-change:auto!important;
-}
-#cover .cover-icon-wrap{
-  width:33px!important;
-  height:33px!important;
-  min-width:33px!important;
-  flex:0 0 33px!important;
-}
-#cover .cover-emoji{
-  width:33px!important;
-  height:33px!important;
-  font-size:29px!important;
-}
-html.oai-font-global #cover .cover-emoji,
-html.oai-font-global #cover .cover-icon-wrap{
-  font-size:29px!important;
-}
-#cover .cover-name,
-#cover .cv-btn-label{
-  font-size:15px!important;
-  line-height:1.17!important;
-  transform:none!important;
-  transition:none!important;
-}
-html.oai-font-global #cover .cover-name,
-html.oai-font-global #cover .cv-btn-label{
-  font-size:15px!important;
-}
-#cover #cover-action-row{
-  margin:2px 0 0!important;
-  padding:0!important;
-}
-#cover #cover-update-btn,
-#cover #qna-cover-btn{
-  height:36px!important;
-  min-height:36px!important;
-}
-#cover #cover-bottom-note,
-#cover-bottom-note{
-  bottom:0!important;
-  background:transparent!important;
-  padding-top:2px!important;
-  padding-bottom:calc(6px + env(safe-area-inset-bottom,0px))!important;
-}
-#cover #oai-build-marker{
-  bottom:calc(env(safe-area-inset-bottom,0px) + 6px)!important;
-}
-@media (max-height:650px){
-  #cover,
-  html:not(.app-active) #cover{
-    padding-top:calc(6.2vh + env(safe-area-inset-top,0px))!important;
-    padding-bottom:env(safe-area-inset-bottom,0px)!important;
-  }
-  #cover .cover-grid,
-  #cover .cv-grid{
-    grid-auto-rows:clamp(92px,26vw,101px)!important;
-    row-gap:3px!important;
-  }
-  #cover .cover-card,
-  #cover .cv-btn{gap:5px!important;padding:5px 6px!important;}
-  #cover .cover-icon-wrap{width:29px!important;height:29px!important;min-width:29px!important;flex-basis:29px!important;}
-  #cover .cover-emoji{width:29px!important;height:29px!important;font-size:25px!important;}
-  html.oai-font-global #cover .cover-emoji,
-  html.oai-font-global #cover .cover-icon-wrap{font-size:25px!important;}
-  #cover .cover-name,
-  #cover .cv-btn-label{font-size:13px!important;line-height:1.15!important;}
-  html.oai-font-global #cover .cover-name,
-  html.oai-font-global #cover .cv-btn-label{font-size:13px!important;}
-  #cover #cover-action-row{margin-top:2px!important;}
-  #cover #cover-update-btn,
-  #cover #qna-cover-btn{height:34px!important;min-height:34px!important;}
-  #cover #cover-bottom-note,
-  #cover-bottom-note{padding-bottom:calc(5px + env(safe-area-inset-bottom,0px))!important;}
-}
-
-
-/* ══════════════════════════════════════════════════════════════════
-   V20-13 커버 하단 문구 아래 여백 고정
-   - 하단 안내문구 자체를 화면 아래에서 3vh 위로 고정한다.
-   - 커버 카드/배너/새로고침 흐름은 건드리지 않는다.
-   ══════════════════════════════════════════════════════════════════ */
-#cover #cover-bottom-note,
-#cover-bottom-note{
-  bottom:calc(3vh + env(safe-area-inset-bottom,0px))!important;
-  padding-bottom:0!important;
-}
-#cover #oai-build-marker{
-  bottom:calc(3vh + env(safe-area-inset-bottom,0px) + 2px)!important;
-}
-@media (max-height:650px){
-  #cover #cover-bottom-note,
-  #cover-bottom-note{
-    bottom:calc(3vh + env(safe-area-inset-bottom,0px))!important;
-    padding-bottom:0!important;
-  }
-  #cover #oai-build-marker{
-    bottom:calc(3vh + env(safe-area-inset-bottom,0px) + 2px)!important;
-  }
 }
