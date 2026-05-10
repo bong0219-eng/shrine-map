@@ -1686,7 +1686,7 @@ html.retreat-mode #sm-tab-bar .sm-tab.active{
   box-shadow:none!important;
 }
 
-/* V20-18: 외부 복귀/화면 진입 CSS 정리
+/* V20-19: 외부 복귀/화면 진입 CSS 정리
    외부 이동 보호막을 제거한 현재 구조에서는 복귀 전용 강제 고정 CSS를 두지 않는다.
    화면 진입 중 필요한 최소 전환만 유지하고, app/viewport 전체를 흔드는 전역 보정은 금지한다. */
 html:not(.app-active),html:not(.app-active) body{scroll-behavior:auto!important;}
@@ -1771,7 +1771,7 @@ html.retreat-mode #region-body .nearby-dist span{
   margin-left:4px!important;
 }
 
-/* 커버 전용 당겨서 새로고침 — V20-18 단일 기준 */
+/* 커버 전용 당겨서 새로고침 — V20-19 단일 기준 */
 #cover{
   overscroll-behavior-y:contain!important;
 }
@@ -2100,7 +2100,7 @@ html.app-active #cv-pull-modern{
 #qna-view  .qna-tab.on        { background: var(--navy, #0e1535) !important; }
 
 /* ── 6. 헤더 배경색 (모듈별) ─────────────────────────────────────── */
-/* V20-18: 기도문 헤더를 기준으로 주요 모듈 헤더 단색 통일 */
+/* V20-19: 기도문 헤더를 기준으로 주요 모듈 헤더 단색 통일 */
 #prayer-bar,
 #trail-view .module-bar,
 #web-view .module-bar,
@@ -2143,7 +2143,7 @@ html.oai-font-global #qna-view  .qna-tab {
 
 
 /* ══════════════════════════════════════════════════════════════════
-   V20-18 커버 레이아웃 안정 복원
+   V20-19 커버 레이아웃 안정 복원
    구조: #cover > cover-header / #cover-main-block / #cover-bottom-note
    #cover-main-block: cover-grid + cover-action-row 한 몸체
    V19 완료 기준 커버 구조로 복원
@@ -2158,11 +2158,11 @@ html:not(.app-active) #cover {
   justify-content: flex-start ;
   overflow       : hidden !important;
   overflow-y     : hidden !important;
-  height         : 100dvh !important;
-  min-height     : 100dvh !important;
-  max-height     : 100dvh !important;
-  padding-top    : calc(8vh + env(safe-area-inset-top,0px)) !important;
-  padding-bottom : calc(3vh + env(safe-area-inset-bottom,0px)) !important;
+  height         : calc(var(--cover-vh, 1dvh) * 100) !important;
+  min-height     : calc(var(--cover-vh, 1dvh) * 100) !important;
+  max-height     : calc(var(--cover-vh, 1dvh) * 100) !important;
+  padding-top    : calc((var(--cover-vh, 1vh) * 8) + env(safe-area-inset-top,0px)) !important;
+  padding-bottom : calc((var(--cover-vh, 1vh) * 3) + env(safe-area-inset-bottom,0px)) !important;
   padding-left   : 0 !important;
   padding-right  : 0 !important;
   box-sizing     : border-box ;
@@ -2185,7 +2185,7 @@ html.app-active #cover {
 /* 3. 메인 블록 (그리드 + 문의버튼 한 몸체) */
 #cover-main-block {
   flex        : 0 1 auto !important;
-  height      : calc(100dvh - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px) - 222px) !important;
+  height      : calc((var(--cover-vh, 1dvh) * 100) - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px) - 222px) !important;
   max-height  : 620px !important;
   min-height  : 0 !important;
   width       : 100% !important;
@@ -2209,7 +2209,7 @@ html.app-active #cover {
   display              : grid !important;
   grid-template-columns: repeat(2, minmax(0,1fr)) !important;
   grid-template-rows   : repeat(4, 1fr) !important;
-  row-gap              : clamp(3px, 0.7vh, 6px) !important;
+  row-gap              : clamp(3px, calc(var(--cover-vh, 1vh) * 0.7), 6px) !important;
   column-gap           : clamp(4px, 1.2vw, 8px) !important;
   align-content        : stretch ;
   box-sizing           : border-box ;
@@ -2222,7 +2222,7 @@ html.app-active #cover {
   height         : 100% !important;
   min-height     : 0 !important;
   max-height     : none !important;
-  padding        : clamp(6px,1.4vh,14px) 8px !important;
+  padding        : clamp(6px, calc(var(--cover-vh, 1vh) * 1.4), 14px) 8px !important;
   flex           : unset !important;
   display        : flex !important;
   flex-direction : column ;
@@ -2313,7 +2313,7 @@ html.app-active #cover {
 }
 
 
-/* V20-18: iPhone 카카오톡 인앱 브라우저 Safari 설치 안내
+/* V20-19: iPhone 카카오톡 인앱 브라우저 Safari 설치 안내
    - 커버 레이아웃을 밀지 않고, 커버 위 레이어로 표시한다.
    - 카테고리를 일부 가려도 Safari 설치 안내가 먼저 보이도록 한다. */
 #cover .ios-safari-banner{
@@ -2490,12 +2490,12 @@ html.app-active #qna-cover-btn, html.app-active #cover-action-row { display: non
 
 /* 작은 화면 보정 */
 @media (max-height:650px) {
-  #cover { padding-top: calc(8vh + env(safe-area-inset-top,0px)) !important; padding-bottom: calc(3vh + env(safe-area-inset-bottom,0px)) !important; }
+  #cover { padding-top: calc((var(--cover-vh, 1vh) * 8) + env(safe-area-inset-top,0px)) !important; padding-bottom: calc((var(--cover-vh, 1vh) * 3) + env(safe-area-inset-bottom,0px)) !important; }
   #cover .cover-header { padding-bottom: 12px !important; }
   #cover .cover-header .cover-title { font-size: clamp(18px,5vw,24px) !important; }
   #cover .cover-header .cover-subtitle { font-size: 10px !important; }
-  #cover .cover-grid,#cover .cv-grid { row-gap: clamp(2px,0.5vh,4px) !important; }
-  #cover .cover-card,#cover .cv-btn { padding: clamp(4px,0.8vh,8px) 6px !important; }
+  #cover .cover-grid,#cover .cv-grid { row-gap: clamp(2px, calc(var(--cover-vh, 1vh) * 0.5), 4px) !important; }
+  #cover .cover-card,#cover .cv-btn { padding: clamp(4px, calc(var(--cover-vh, 1vh) * 0.8), 8px) 6px !important; }
   #cover .cover-emoji { font-size: 18px !important; }
   #cover .cover-name,#cover .cv-btn-label { font-size: 12px !important; }
   #cover #qna-cover-btn { min-height: 34px !important; font-size: calc(10.5px * var(--app-font-scale,1)) !important; }
@@ -2546,7 +2546,7 @@ html.oai-font-global #cover #cover-bottom-note,
 }
 
 
-/* V20-18: 출발 검색 모달 색상 기준 재정리
+/* V20-19: 출발 검색 모달 색상 기준 재정리
    - 성지/성당/피정 + 일반장소 탭: 활성은 금색, 비활성은 고유색 배경 위의 은은한 반투명 버튼
    - 검색창을 감싸는 영역은 성지/성당/피정 각 카테고리 고유색으로 통일
    - 실제 검색 입력창(.sm-si)은 기존 아이보리 계열 유지 */
@@ -2617,7 +2617,7 @@ html.retreat-mode #srch-modal #sm-tab-bar .sm-tab:not(.active){
 html #srch-modal #sm-tab-bar .sm-tab.active,
 html.parish-mode #srch-modal #sm-tab-bar .sm-tab.active,
 html.retreat-mode #srch-modal #sm-tab-bar .sm-tab.active{
-  /* V20-18: 바로 위 교구 활성화 버튼(.sm-fb.on)과 같은 금색 기준 사용 */
+  /* V20-19: 바로 위 교구 활성화 버튼(.sm-fb.on)과 같은 금색 기준 사용 */
   background:var(--gold,#d4aa6a)!important;
   background-image:none!important;
   color:#1F2937!important;
@@ -2629,7 +2629,7 @@ html.retreat-mode #srch-modal #sm-tab-bar .sm-tab.active{
 
 
 /* ══════════════════════════════════════════════════════════════════
-   V20-18 모듈 표준화
+   V20-19 모듈 표준화
    - 헤더: 기도문 헤더 기준 단색 네이비(그라데이션 제거)
    - 탭바/탭버튼: 관구·교구 탭 기준 높이·형태 통일
    - 활성 탭의 고유 색상은 각 모듈 기존 색상을 유지
@@ -2713,7 +2713,7 @@ html.oai-font-global #trail-view .trail-tab{
 }
 
 /* ══════════════════════════════════════════════════════════════════
-   V20-18 주요 기능 안내 — 커버 전용, 별도 파일 없음
+   V20-19 주요 기능 안내 — 커버 전용, 별도 파일 없음
    ══════════════════════════════════════════════════════════════════ */
 #cover #cover-guide-btn{
   position:absolute;
