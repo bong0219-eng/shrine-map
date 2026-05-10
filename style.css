@@ -2085,8 +2085,8 @@ html:not(.app-active) #cover {
   height         : 100dvh !important;
   min-height     : 100dvh !important;
   max-height     : 100dvh !important;
-  padding-top    : calc(4.5vh + env(safe-area-inset-top,0px)) !important;
-  padding-bottom : calc(104px + env(safe-area-inset-bottom,0px)) !important;
+  padding-top    : calc(9vh + env(safe-area-inset-top,0px)) !important;
+  padding-bottom : 0 !important;
   padding-left   : 0 !important;
   padding-right  : 0 !important;
   box-sizing     : border-box ;
@@ -2113,7 +2113,7 @@ html.app-active #cover {
   width       : 100% !important;
   max-width   : min(440px, calc(100vw - 32px)) !important;
   margin      : 0 auto !important;
-  padding     : 0 16px 0 !important;
+  padding     : 0 16px 10px !important;
   display     : flex !important;
   flex-direction: column ;
   align-items : stretch !important;
@@ -2155,20 +2155,14 @@ html.app-active #cover {
 
 /* 6. 커버 보조 기능줄 — 왼쪽 업데이트, 오른쪽 문의·건의 */
 #cover #cover-action-row {
-  position       : fixed !important;
-  left           : 50% !important;
-  bottom         : calc(12px + env(safe-area-inset-bottom,0px)) !important;
-  transform      : translateX(-50%) !important;
-  width          : min(440px, calc(100vw - 32px)) !important;
-  margin         : 0 !important;
-  padding-left   : 54px !important;
+  width          : 100% !important;
+  margin         : 8px 0 0 !important;
   display        : flex !important;
-  align-items    : center !important;
+  align-items    : flex-end !important;
   justify-content: space-between !important;
   gap            : 8px !important;
-  z-index        : 110 !important;
+  z-index        : 10;
   flex-shrink    : 0;
-  box-sizing     : border-box;
 }
 #cover #cover-update-box {
   display        : flex !important;
@@ -2241,24 +2235,23 @@ html.app-active #cover {
 }
 
 
-/* V19: Safari 안내 배너 — iPhone 카카오톡 인앱 브라우저 전용 */
+/* V19: iPhone 카카오톡 인앱 브라우저 Safari 안내 배너 */
 #cover .ios-safari-banner{
   display:none;
 }
 html.ios-kakao-inapp #cover .ios-safari-banner{
   display:flex;
-  flex-direction:column;
-  align-items:stretch;
-  justify-content:center;
-  gap:12px;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
   width:100%;
-  margin:14px 0 0;
-  padding:18px 16px;
-  border:2px solid rgba(212,170,106,.62);
-  border-radius:20px;
+  margin:8px 0 0;
+  padding:9px 10px;
+  border:1px solid rgba(212,170,106,.45);
+  border-radius:14px;
   background:#fff8e8;
   color:#1f2a44;
-  box-shadow:0 14px 30px rgba(31,42,68,.14);
+  box-shadow:0 8px 18px rgba(31,42,68,.08);
   box-sizing:border-box;
   flex:0 0 auto;
 }
@@ -2267,39 +2260,33 @@ html.ios-kakao-inapp #cover .ios-safari-banner{
   min-width:0;
   display:flex;
   flex-direction:column;
-  align-items:center;
-  gap:6px;
-  text-align:center;
-  line-height:1.28;
+  gap:2px;
+  line-height:1.2;
 }
 #cover .ios-safari-banner-text strong{
-  font-size:calc(22px * var(--app-font-scale,1));
+  font-size:calc(11.5px * var(--app-font-scale,1));
   font-weight:900;
-  letter-spacing:-.04em;
+  letter-spacing:-.03em;
 }
 #cover .ios-safari-banner-text span{
-  font-size:calc(15px * var(--app-font-scale,1));
-  font-weight:800;
-  color:rgba(31,42,68,.72);
+  font-size:calc(9.5px * var(--app-font-scale,1));
+  font-weight:700;
+  color:rgba(31,42,68,.68);
   word-break:keep-all;
 }
 #cover #ios-kakao-safari-help{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  width:100%;
-  min-height:66px;
-  padding:0 18px;
+  flex:0 0 auto;
+  height:32px;
+  padding:0 10px;
   border:0;
-  border-radius:18px;
+  border-radius:999px;
   background:#1f2a44;
   color:#fff;
   font-family:inherit;
-  font-size:calc(21px * var(--app-font-scale,1));
+  font-size:calc(10px * var(--app-font-scale,1));
   font-weight:900;
-  line-height:1.25;
-  white-space:normal;
-  box-shadow:0 10px 22px rgba(31,42,68,.25);
+  white-space:nowrap;
+  box-shadow:0 6px 14px rgba(31,42,68,.18);
 }
 #cover #ios-kakao-safari-help:active{transform:scale(.985);}
 .ios-safari-guide-panel .guide-lead{
@@ -2344,10 +2331,9 @@ html.ios-kakao-inapp #cover .ios-safari-banner{
   word-break:keep-all;
 }
 @media (max-height:650px){
-  html.ios-kakao-inapp #cover .ios-safari-banner{padding:14px 12px;margin-top:10px;gap:10px;}
-  #cover .ios-safari-banner-text strong{font-size:calc(19px * var(--app-font-scale,1));}
-  #cover .ios-safari-banner-text span{font-size:calc(13px * var(--app-font-scale,1));}
-  #cover #ios-kakao-safari-help{min-height:58px;padding:0 14px;font-size:calc(18px * var(--app-font-scale,1));}
+  html.ios-kakao-inapp #cover .ios-safari-banner{padding:7px 9px;margin-top:6px;}
+  #cover .ios-safari-banner-text span{display:none;}
+  #cover #ios-kakao-safari-help{height:30px;padding:0 9px;}
 }
 
 /* 7. 하단 안내 문구 — 레이아웃 계산에서 제외하고 화면 하단에 고정 */
@@ -2356,7 +2342,7 @@ html.app-active #qna-cover-btn, html.app-active #cover-action-row { display: non
 
 /* 작은 화면 보정 */
 @media (max-height:650px) {
-  #cover { padding-top: calc(3vh + env(safe-area-inset-top,0px)) !important; padding-bottom:calc(92px + env(safe-area-inset-bottom,0px)) !important; }
+  #cover { padding-top: calc(9vh + env(safe-area-inset-top,0px)) !important; }
   #cover .cover-header { padding-bottom: 4px !important; }
   #cover .cover-header .cover-title { font-size: clamp(18px,5vw,24px) !important; }
   #cover .cover-header .cover-subtitle { font-size: 10px !important; }
@@ -2368,11 +2354,7 @@ html.app-active #qna-cover-btn, html.app-active #cover-action-row { display: non
   #cover #cover-update-btn { min-height: 34px !important; height:34px !important; font-size: calc(10.5px * var(--app-font-scale,1)) !important; padding:0 12px!important; }
   #cover #cover-update-hint { font-size:8.5px!important; }
   #cover-main-block {
-    padding-bottom:0 !important;
-  }
-  #cover #cover-action-row{
-    bottom:calc(10px + env(safe-area-inset-bottom,0px))!important;
-    padding-left:50px!important;
+    padding-bottom: 8px !important;
   }
 }
 /* 7. 하단 안내 문구 — 레이아웃 계산에서 제외하고 화면 하단에 고정 */
@@ -2380,26 +2362,26 @@ html.app-active #qna-cover-btn, html.app-active #cover-action-row { display: non
 
 /* 커버 하단 안내문구 — 짧은 2줄, 화면 하단 고정 */
 
-/* 커버 하단 안내문구 — 하단 버튼 위 고정 */
+/* 커버 하단 안내문구 — 사진 기준 자연스러운 2줄 */
+
+/* 커버 하단 안내문구 — 사진처럼 작고 자연스럽게 고정 */
 html.oai-font-global #cover #cover-bottom-note,
 #cover #cover-bottom-note,
 #cover-bottom-note{
-  position:fixed !important;
-  left:50% !important;
-  bottom:calc(62px + env(safe-area-inset-bottom, 0px)) !important;
-  transform:translateX(-50%) !important;
+  position:relative;
+  flex:0 0 auto;
   width:100%;
   max-width:720px;
   margin:0 auto;
-  padding:0 22px 0 72px;
+  padding:4px 22px calc(12px + env(safe-area-inset-bottom, 0px)) 60px;
   text-align:center;
-  font-size:8.5px !important;
+  font-size:9px !important;
   font-weight:500 !important;
-  line-height:1.25 !important;
+  line-height:1.35 !important;
   letter-spacing:-0.02em;
-  color:rgba(96,86,76,.62);
+  color:rgba(96,86,76,.72);
   pointer-events:none;
-  z-index:90;
+  z-index:5;
   box-sizing:border-box;
 }
 #cover #oai-build-marker{
