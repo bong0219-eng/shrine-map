@@ -1611,7 +1611,7 @@ html.retreat-mode #sm-tab-bar .sm-tab.active{
   box-shadow:none!important;
 }
 
-/* V18H: 외부 복귀/화면 진입 CSS 정리
+/* V18I: 외부 복귀/화면 진입 CSS 정리
    외부 이동 보호막을 제거한 현재 구조에서는 복귀 전용 강제 고정 CSS를 두지 않는다.
    화면 진입 중 필요한 최소 전환만 유지하고, app/viewport 전체를 흔드는 전역 보정은 금지한다. */
 html:not(.app-active),html:not(.app-active) body{scroll-behavior:auto!important;}
@@ -1696,7 +1696,7 @@ html.retreat-mode #region-body .nearby-dist span{
   margin-left:4px!important;
 }
 
-/* 커버 전용 당겨서 새로고침 — V18H 단일 기준 */
+/* 커버 전용 당겨서 새로고침 — V18I 단일 기준 */
 #cover{
   overscroll-behavior-y:contain!important;
 }
@@ -2025,7 +2025,7 @@ html.app-active #cv-pull-modern{
 #qna-view  .qna-tab.on        { background: var(--navy, #0e1535) !important; }
 
 /* ── 6. 헤더 배경색 (모듈별) ─────────────────────────────────────── */
-/* V18H: 기도문 헤더를 기준으로 주요 모듈 헤더 단색 통일 */
+/* V18I: 기도문 헤더를 기준으로 주요 모듈 헤더 단색 통일 */
 #prayer-bar,
 #trail-view .module-bar,
 #web-view .module-bar,
@@ -2235,17 +2235,17 @@ html.app-active #cover {
 }
 
 
-/* V18H: iPhone 카카오톡 인앱 브라우저 Safari 안내 배너 */
+/* V18I: iPhone 카카오톡 인앱 브라우저 Safari 안내 배너 */
 #cover .ios-safari-banner{
   display:none;
 }
 html.ios-kakao-inapp #cover .ios-safari-banner{
-  position:fixed;
+  position:absolute;
   left:12px;
   right:12px;
-  bottom:calc(58px + env(safe-area-inset-bottom,0px));
-  z-index:110;
-  display:flex;
+  bottom:calc(76px + env(safe-area-inset-bottom,0px));
+  z-index:350;
+  display:flex !important;
   align-items:center;
   justify-content:space-between;
   gap:8px;
@@ -2260,8 +2260,9 @@ html.ios-kakao-inapp #cover .ios-safari-banner{
   box-shadow:0 8px 18px rgba(31,42,68,.12);
   box-sizing:border-box;
   pointer-events:auto;
+  visibility:visible !important;
+  opacity:1 !important;
 }
-#cover .ios-safari-banner[hidden]{display:none!important;}
 #cover .ios-safari-banner-text{
   min-width:0;
   display:flex;
@@ -2282,7 +2283,7 @@ html.ios-kakao-inapp #cover .ios-safari-banner{
 }
 #cover #ios-kakao-safari-help{
   flex:0 0 auto;
-  display:flex;
+  display:flex !important;
   align-items:center;
   justify-content:center;
   min-width:124px;
@@ -2298,8 +2299,21 @@ html.ios-kakao-inapp #cover .ios-safari-banner{
   line-height:1.1;
   white-space:nowrap;
   box-shadow:0 6px 14px rgba(31,42,68,.18);
+  visibility:visible !important;
+  opacity:1 !important;
 }
 #cover #ios-kakao-safari-help:active{transform:scale(.985);}
+@media (max-width:360px){
+  html.ios-kakao-inapp #cover .ios-safari-banner{left:8px;right:8px;gap:6px;padding:7px 8px;}
+  #cover .ios-safari-banner-text span{display:none;}
+  #cover #ios-kakao-safari-help{min-width:116px;height:30px;padding:0 8px;font-size:calc(9.2px * var(--app-font-scale,1));}
+}
+@media (max-height:650px){
+  html.ios-kakao-inapp #cover .ios-safari-banner{bottom:calc(68px + env(safe-area-inset-bottom,0px));padding:7px 8px;}
+  #cover .ios-safari-banner-text span{display:none;}
+  #cover #ios-kakao-safari-help{height:30px;padding:0 8px;}
+}
+
 .ios-safari-guide-panel .guide-lead{
   min-height:46px;
 }
@@ -2411,7 +2425,7 @@ html.oai-font-global #cover #cover-bottom-note,
 }
 
 
-/* V18H: 출발 검색 모달 색상 기준 재정리
+/* V18I: 출발 검색 모달 색상 기준 재정리
    - 성지/성당/피정 + 일반장소 탭: 활성은 금색, 비활성은 고유색 배경 위의 은은한 반투명 버튼
    - 검색창을 감싸는 영역은 성지/성당/피정 각 카테고리 고유색으로 통일
    - 실제 검색 입력창(.sm-si)은 기존 아이보리 계열 유지 */
@@ -2482,7 +2496,7 @@ html.retreat-mode #srch-modal #sm-tab-bar .sm-tab:not(.active){
 html #srch-modal #sm-tab-bar .sm-tab.active,
 html.parish-mode #srch-modal #sm-tab-bar .sm-tab.active,
 html.retreat-mode #srch-modal #sm-tab-bar .sm-tab.active{
-  /* V18H: 바로 위 교구 활성화 버튼(.sm-fb.on)과 같은 금색 기준 사용 */
+  /* V18I: 바로 위 교구 활성화 버튼(.sm-fb.on)과 같은 금색 기준 사용 */
   background:var(--gold,#d4aa6a)!important;
   background-image:none!important;
   color:#1F2937!important;
@@ -2494,7 +2508,7 @@ html.retreat-mode #srch-modal #sm-tab-bar .sm-tab.active{
 
 
 /* ══════════════════════════════════════════════════════════════════
-   V18H 모듈 표준화
+   V18I 모듈 표준화
    - 헤더: 기도문 헤더 기준 단색 네이비(그라데이션 제거)
    - 탭바/탭버튼: 관구·교구 탭 기준 높이·형태 통일
    - 활성 탭의 고유 색상은 각 모듈 기존 색상을 유지
@@ -2578,7 +2592,7 @@ html.oai-font-global #trail-view .trail-tab{
 }
 
 /* ══════════════════════════════════════════════════════════════════
-   V18H 주요 기능 안내 — 커버 전용, 별도 파일 없음
+   V18I 주요 기능 안내 — 커버 전용, 별도 파일 없음
    ══════════════════════════════════════════════════════════════════ */
 #cover #cover-guide-btn{
   position:absolute;
