@@ -1686,7 +1686,7 @@ html.retreat-mode #sm-tab-bar .sm-tab.active{
   box-shadow:none!important;
 }
 
-/* V20-7: 외부 복귀/화면 진입 CSS 정리
+/* V20-8: 외부 복귀/화면 진입 CSS 정리
    외부 이동 보호막을 제거한 현재 구조에서는 복귀 전용 강제 고정 CSS를 두지 않는다.
    화면 진입 중 필요한 최소 전환만 유지하고, app/viewport 전체를 흔드는 전역 보정은 금지한다. */
 html:not(.app-active),html:not(.app-active) body{scroll-behavior:auto!important;}
@@ -1771,7 +1771,7 @@ html.retreat-mode #region-body .nearby-dist span{
   margin-left:4px!important;
 }
 
-/* 커버 전용 당겨서 새로고침 — V20-7 단일 기준 */
+/* 커버 전용 당겨서 새로고침 — V20-8 단일 기준 */
 #cover{
   overscroll-behavior-y:contain!important;
 }
@@ -2100,7 +2100,7 @@ html.app-active #cv-pull-modern{
 #qna-view  .qna-tab.on        { background: var(--navy, #0e1535) !important; }
 
 /* ── 6. 헤더 배경색 (모듈별) ─────────────────────────────────────── */
-/* V20-7: 기도문 헤더를 기준으로 주요 모듈 헤더 단색 통일 */
+/* V20-8: 기도문 헤더를 기준으로 주요 모듈 헤더 단색 통일 */
 #prayer-bar,
 #trail-view .module-bar,
 #web-view .module-bar,
@@ -2143,112 +2143,95 @@ html.oai-font-global #qna-view  .qna-tab {
 
 
 /* ══════════════════════════════════════════════════════════════════
-   V20-7 커버 레이아웃 단일 기준
-   - 완료된 안정 커버 배치를 유지한다.
-   - 새로고침 후 모바일 브라우저의 100dvh 재계산으로 아래로 처지는 문제를 막기 위해
-     커버 높이는 100svh 기준으로 고정한다.
-   - #cover-main-block에서 100dvh 기반 height 재계산을 제거하고 flex 남은 공간만 사용한다.
-   - iPhone 설치 배너는 아래 별도 fixed 레이어로만 표시되며, 커버 공간 계산에 참여하지 않는다.
+   V20-8 커버 레이아웃 안정 기준
+   구조: #cover > cover-header / #cover-main-block / #cover-bottom-note
+   #cover-main-block: cover-grid + qna-cover-btn 한 몸체
+   완료 기준 커버 배치를 기준으로 복원
    ══════════════════════════════════════════════════════════════════ */
 
+/* 1. #cover — flex column, 스크롤 없음 */
 #cover,
 html:not(.app-active) #cover {
-  position      : fixed !important;
-  inset          : 0 !important;
   display        : flex !important;
-  flex-direction : column !important;
+  flex-direction : column ;
   align-items    : center !important;
-  justify-content: flex-start !important;
+  justify-content: flex-start ;
   overflow       : hidden !important;
   overflow-y     : hidden !important;
-  height         : 100svh !important;
-  min-height     : 100svh !important;
-  max-height     : 100svh !important;
-  padding-top    : calc(8svh + env(safe-area-inset-top,0px)) !important;
-  padding-bottom : calc(3svh + env(safe-area-inset-bottom,0px)) !important;
+  height         : 100dvh !important;
+  min-height     : 100dvh !important;
+  max-height     : 100dvh !important;
+  padding-top    : calc(8vh + env(safe-area-inset-top,0px)) !important;
+  padding-bottom : calc(3vh + env(safe-area-inset-bottom,0px)) !important;
   padding-left   : 0 !important;
   padding-right  : 0 !important;
-  box-sizing     : border-box !important;
+  box-sizing     : border-box ;
 }
-@supports not (height: 100svh) {
-  #cover,
-  html:not(.app-active) #cover {
-    height         : 100vh !important;
-    min-height     : 100vh !important;
-    max-height     : 100vh !important;
-    padding-top    : calc(8vh + env(safe-area-inset-top,0px)) !important;
-    padding-bottom : calc(3vh + env(safe-area-inset-bottom,0px)) !important;
-  }
-}
-html.app-active #cover { display:none !important; }
 
+html.app-active #cover {
+  display: none !important;
+}
+
+/* 2. 헤더 */
 #cover .cover-header {
-  flex-shrink : 0 !important;
+  flex-shrink : 0 ;
   width       : 100% !important;
-  padding     : 0 18px clamp(18px,2.4svh,24px) !important;
+  padding     : 0 18px 20px !important;
   margin      : 0 !important;
   text-align  : center !important;
-  box-sizing  : border-box !important;
-}
-@supports not (height: 100svh) {
-  #cover .cover-header { padding-bottom:clamp(18px,2.4vh,24px) !important; }
+  box-sizing  : border-box ;
 }
 
+/* 3. 메인 블록 (그리드 + 문의버튼 한 몸체) */
 #cover-main-block {
-  flex          : 1 1 auto !important;
-  height        : auto !important;
-  min-height    : 0 !important;
-  max-height    : none !important;
-  width         : 100% !important;
-  max-width     : min(440px, calc(100vw - 32px)) !important;
-  margin        : 0 auto !important;
-  padding       : 0 16px calc(22px + env(safe-area-inset-bottom,0px)) !important;
-  display       : flex !important;
-  flex-direction: column !important;
-  align-items   : stretch !important;
-  box-sizing    : border-box !important;
+  flex        : 0 1 auto !important;
+  height      : calc(100dvh - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px) - 222px) !important;
+  max-height  : 620px !important;
+  min-height  : 0 !important;
+  width       : 100% !important;
+  max-width   : min(440px, calc(100vw - 32px)) !important;
+  margin      : 0 auto !important;
+  padding     : 0 16px 8px !important;
+  display     : flex !important;
+  flex-direction: column ;
+  align-items : stretch !important;
+  box-sizing  : border-box ;
 }
 
+/* 4. 그리드 — 메인블록 안에서 남은 공간 전부 */
 #cover .cover-grid,
 #cover .cv-grid {
-  flex                 : 1 1 auto !important;
+  flex                 : 1 1 0 !important;
   min-height           : 0 !important;
   width                : 100% !important;
   padding              : 0 !important;
   margin               : 0 !important;
   display              : grid !important;
   grid-template-columns: repeat(2, minmax(0,1fr)) !important;
-  grid-template-rows   : repeat(4, minmax(0,1fr)) !important;
-  row-gap              : clamp(3px, 0.7svh, 6px) !important;
+  grid-template-rows   : repeat(4, 1fr) !important;
+  row-gap              : clamp(3px, 0.7vh, 6px) !important;
   column-gap           : clamp(4px, 1.2vw, 8px) !important;
-  align-content        : stretch !important;
-  box-sizing           : border-box !important;
+  align-content        : stretch ;
+  box-sizing           : border-box ;
 }
-@supports not (height: 100svh) {
-  #cover .cover-grid,
-  #cover .cv-grid { row-gap:clamp(3px,0.7vh,6px) !important; }
-}
-#cover .cover-card-wide { grid-column:1 / -1 !important; }
 
+/* 5. 카드 */
 #cover .cover-card,
 #cover .cv-btn {
   width          : 100% !important;
   height         : 100% !important;
   min-height     : 0 !important;
   max-height     : none !important;
-  padding        : clamp(6px,1.25svh,12px) 8px !important;
+  padding        : clamp(6px,1.4vh,14px) 8px !important;
   flex           : unset !important;
   display        : flex !important;
-  flex-direction : column !important;
+  flex-direction : column ;
   align-items    : center !important;
-  justify-content: center !important;
-  box-sizing     : border-box !important;
-}
-@supports not (height: 100svh) {
-  #cover .cover-card,
-  #cover .cv-btn { padding:clamp(6px,1.25vh,12px) 8px !important; }
+  justify-content: center ;
+  box-sizing     : border-box ;
 }
 
+/* 6. 커버 보조 기능줄 — 왼쪽 업데이트, 오른쪽 문의·건의 */
 #cover #cover-action-row {
   width          : 100% !important;
   margin         : 7px 0 0 !important;
@@ -2256,17 +2239,16 @@ html.app-active #cover { display:none !important; }
   align-items    : flex-end !important;
   justify-content: space-between !important;
   gap            : 8px !important;
-  z-index        : 10 !important;
-  flex-shrink    : 0 !important;
-  box-sizing     : border-box !important;
+  z-index        : 10;
+  flex-shrink    : 0;
 }
 #cover #cover-update-box {
   display        : flex !important;
   flex-direction : column !important;
   align-items    : flex-start !important;
   justify-content: center !important;
-  min-width      : 0 !important;
-  max-width      : calc(100% - 128px) !important;
+  min-width      : 0;
+  max-width      : calc(100% - 128px);
 }
 #cover #cover-update-btn {
   border         : 0 !important;
@@ -2288,7 +2270,7 @@ html.app-active #cover { display:none !important; }
   color          : #fff !important;
   box-shadow     : 0 10px 24px rgba(220,38,38,.22) !important;
 }
-#cover #cover-update-btn:active { transform:scale(.985); }
+#cover #cover-update-btn:active { transform: scale(.985); }
 #cover #cover-update-btn:disabled { opacity:.62; }
 #cover #cover-update-hint {
   display        : none !important;
@@ -2299,21 +2281,21 @@ html.app-active #cover { display:none !important; }
   font-weight    : 800 !important;
   line-height    : 1.15 !important;
   white-space    : normal !important;
-  max-width      : 100% !important;
-  word-break     : keep-all !important;
+  max-width      : 100%;
+  word-break     : keep-all;
 }
 #cover #cover-update-box.update-needed #cover-update-hint { display:block !important; }
 #cover #qna-cover-btn {
-  position       : relative !important;
+  position       : relative ;
   right          : auto !important;
   bottom         : auto !important;
-  flex-shrink    : 0 !important;
-  align-self     : center !important;
+  flex-shrink    : 0 ;
+  align-self     : center ;
   margin         : 0 !important;
-  z-index        : 10 !important;
+  z-index        : 10 ;
   display        : flex !important;
   align-items    : center !important;
-  justify-content: center !important;
+  justify-content: center ;
   min-height     : 40px !important;
   padding        : 0 14px !important;
   border         : 0 !important;
@@ -2325,12 +2307,13 @@ html.app-active #cover { display:none !important; }
   font-weight    : 900 !important;
   line-height    : 1 !important;
   box-shadow     : 0 10px 24px rgba(31,42,68,.25) !important;
-  pointer-events : auto !important;
-  visibility     : visible !important;
-  opacity        : 1 !important;
+  pointer-events : auto ;
+  visibility     : visible ;
+  opacity        : 1 ;
 }
 
-/* V20-7: iPhone 카카오톡 인앱 브라우저 Safari 설치 안내
+
+/* V20-8: iPhone 카카오톡 인앱 브라우저 Safari 설치 안내
    - 커버 레이아웃을 밀지 않고, 커버 위 레이어로 표시한다.
    - 카테고리를 일부 가려도 Safari 설치 안내가 먼저 보이도록 한다. */
 #cover .ios-safari-banner{
@@ -2564,7 +2547,7 @@ html.oai-font-global #cover #cover-bottom-note,
 }
 
 
-/* V20-7: 출발 검색 모달 색상 기준 재정리
+/* V20-8: 출발 검색 모달 색상 기준 재정리
    - 성지/성당/피정 + 일반장소 탭: 활성은 금색, 비활성은 고유색 배경 위의 은은한 반투명 버튼
    - 검색창을 감싸는 영역은 성지/성당/피정 각 카테고리 고유색으로 통일
    - 실제 검색 입력창(.sm-si)은 기존 아이보리 계열 유지 */
@@ -2635,7 +2618,7 @@ html.retreat-mode #srch-modal #sm-tab-bar .sm-tab:not(.active){
 html #srch-modal #sm-tab-bar .sm-tab.active,
 html.parish-mode #srch-modal #sm-tab-bar .sm-tab.active,
 html.retreat-mode #srch-modal #sm-tab-bar .sm-tab.active{
-  /* V20-7: 바로 위 교구 활성화 버튼(.sm-fb.on)과 같은 금색 기준 사용 */
+  /* V20-8: 바로 위 교구 활성화 버튼(.sm-fb.on)과 같은 금색 기준 사용 */
   background:var(--gold,#d4aa6a)!important;
   background-image:none!important;
   color:#1F2937!important;
@@ -2647,7 +2630,7 @@ html.retreat-mode #srch-modal #sm-tab-bar .sm-tab.active{
 
 
 /* ══════════════════════════════════════════════════════════════════
-   V20-7 모듈 표준화
+   V20-8 모듈 표준화
    - 헤더: 기도문 헤더 기준 단색 네이비(그라데이션 제거)
    - 탭바/탭버튼: 관구·교구 탭 기준 높이·형태 통일
    - 활성 탭의 고유 색상은 각 모듈 기존 색상을 유지
@@ -2731,7 +2714,7 @@ html.oai-font-global #trail-view .trail-tab{
 }
 
 /* ══════════════════════════════════════════════════════════════════
-   V20-7 주요 기능 안내 — 커버 전용, 별도 파일 없음
+   V20-8 주요 기능 안내 — 커버 전용, 별도 파일 없음
    ══════════════════════════════════════════════════════════════════ */
 #cover #cover-guide-btn{
   position:absolute;
