@@ -1051,16 +1051,19 @@ html.retreat-mode #srch-modal .sm-filter{background:linear-gradient(135deg,#3f7e
 
 
 /* 미사·기도·성가 빠른 메뉴: 커버 위에만 뜨는 내부 선택창 */
-.mass-quick-panel{width:min(430px,calc(100vw - 30px));padding:30px 20px 22px;border-radius:24px;text-align:center;background:#fffaf1;border:1px solid #e5ded3;box-shadow:0 18px 50px rgba(31,42,68,.22)}
-.mass-quick-panel h2{margin:6px 0 8px;font-size:24px;line-height:1.2;font-weight:900;color:#1f2a44;letter-spacing:-.04em}
-.mass-quick-lead{margin:0 0 16px;font-size:14px;font-weight:650;line-height:1.55;color:#6b7280;word-break:keep-all}
-.mass-quick-actions{display:flex;flex-direction:column;gap:10px;width:100%}
-.mass-quick-btn{width:100%;min-height:72px;border:1px solid #e6dccd;border-radius:16px;background:#fff;color:#1f2937;display:grid;grid-template-columns:40px 1fr;grid-template-rows:auto auto;align-items:center;text-align:left;padding:10px 13px;box-shadow:0 5px 14px rgba(31,42,68,.07);font-family:inherit;cursor:pointer}
-.mass-quick-btn span{grid-row:1/3;width:34px;height:34px;border-radius:12px;background:#f5efe4;display:flex;align-items:center;justify-content:center;font-size:20px}
-.mass-quick-btn strong{font-size:16px;line-height:1.25;font-weight:900;letter-spacing:-.03em}
-.mass-quick-btn em{font-style:normal;font-size:12px;line-height:1.35;font-weight:650;color:#6b7280;margin-top:2px}
+.mass-quick-panel{width:min(560px,calc(100vw - 20px));padding:38px 24px 28px;border-radius:30px;text-align:center;background:#fffaf1;border:1px solid #e5ded3;box-shadow:0 24px 68px rgba(31,42,68,.26);max-height:min(88dvh,760px)}
+.mass-quick-panel h2{display:none!important}
+.mass-quick-lead{display:none!important}
+.mass-quick-actions{display:flex;flex-direction:column;gap:14px;width:100%;margin-top:4px}
+.mass-quick-btn{width:100%;min-height:92px;border:1px solid #e6dccd;border-radius:20px;background:#fff;color:#1f2937;display:grid;grid-template-columns:52px 1fr;grid-template-rows:auto auto;align-items:center;text-align:left;padding:16px 17px;box-shadow:0 8px 20px rgba(31,42,68,.09);font-family:inherit;cursor:pointer}
+.mass-quick-btn span{grid-row:1/3;width:44px;height:44px;border-radius:15px;background:#f5efe4;display:flex;align-items:center;justify-content:center;font-size:24px}
+.mass-quick-btn strong{font-size:20px;line-height:1.25;font-weight:900;letter-spacing:-.04em}
+.mass-quick-btn em{font-style:normal;font-size:14px;line-height:1.35;font-weight:650;color:#6b7280;margin-top:3px}
 .mass-quick-primary{border-color:#d6b06c;background:#fff8e8}
-@media (max-height:680px){.mass-quick-panel{padding:22px 16px 16px}.mass-quick-panel h2{font-size:22px}.mass-quick-btn{min-height:62px}}
+@media (max-height:680px){.mass-quick-panel{padding:28px 18px 20px}.mass-quick-btn{min-height:78px}.mass-quick-btn strong{font-size:18px}.mass-quick-btn em{font-size:13px}}
+
+
+.mass-quick-panel .guide-badge{min-height:42px;padding:8px 18px;margin-bottom:18px;border-radius:16px;font-size:20px;line-height:1.25;font-weight:900;letter-spacing:-.04em;background:#efe4d2;color:#6f4f23;}
 
 /* 카테고리 내부 리스트 글자 규격 통일 */
 .list-item,.nearby-item,.region-item,.sm-item,.sm-place-item{align-items:center;box-sizing:border-box}
@@ -1233,13 +1236,13 @@ html,body{overflow-x:hidden!important;overscroll-behavior-x:none!important}
 #trail-list.oai-swipe-left,#trail-list.oai-swipe-right,
 .sheet-body.oai-swipe-left,.sheet-body.oai-swipe-right{animation:none}
 #prayer-view,#web-view,#trail-view,.sheet{overflow-x:hidden}
-#cover #qna-cover-btn{position:relative;right:auto;bottom:auto;z-index:10;display:flex;align-items:center;justify-content:center;min-height:40px;padding:0 14px;border:0;border-radius:999px;background:linear-gradient(135deg,#1f2a44,#31446c);color:#fff;font-family:inherit;font-size:12.5px;font-weight:900;line-height:1;box-shadow:0 10px 24px rgba(31,42,68,.25);opacity:1;visibility:visible;pointer-events:auto;align-self:flex-end;margin-top:8px;margin-bottom:calc(5vh + env(safe-area-inset-bottom,0px))}
+#cover #qna-cover-btn{position:relative;right:auto;bottom:auto;z-index:10;display:flex;align-items:center;justify-content:center;min-height:40px;padding:0 14px;border:0;border-radius:999px;background:linear-gradient(135deg,#1f2a44,#31446c);color:#fff;font-family:inherit;font-size:12.5px;font-weight:900;line-height:1;box-shadow:0 10px 24px rgba(31,42,68,.25);opacity:1;visibility:visible;pointer-events:auto;align-self:flex-end;margin-top:8px;margin-bottom:calc(3vh + env(safe-area-inset-bottom,0px))}
 html.app-active
 #cover #pwa-install-btn{left:12px;right:auto;bottom:calc(50px + env(safe-area-inset-bottom,0px));z-index:10020}
 @media (max-width:380px){#cover .cover-grid{max-width:calc(100vw - 34px);}
-#cover #qna-cover-btn{position:relative;right:auto;bottom:auto;z-index:10;display:flex;align-items:center;justify-content:center;min-height:40px;padding:0 14px;border:0;border-radius:999px;background:linear-gradient(135deg,#1f2a44,#31446c);color:#fff;font-family:inherit;font-size:12.5px;font-weight:900;line-height:1;box-shadow:0 10px 24px rgba(31,42,68,.25);opacity:1;visibility:visible;pointer-events:auto;align-self:flex-end;margin-top:8px;margin-bottom:calc(5vh + env(safe-area-inset-bottom,0px))}#cover #pwa-install-btn{left:12px;right:auto;bottom:calc(50px + env(safe-area-inset-bottom,0px));z-index:10020}}
+#cover #qna-cover-btn{position:relative;right:auto;bottom:auto;z-index:10;display:flex;align-items:center;justify-content:center;min-height:40px;padding:0 14px;border:0;border-radius:999px;background:linear-gradient(135deg,#1f2a44,#31446c);color:#fff;font-family:inherit;font-size:12.5px;font-weight:900;line-height:1;box-shadow:0 10px 24px rgba(31,42,68,.25);opacity:1;visibility:visible;pointer-events:auto;align-self:flex-end;margin-top:8px;margin-bottom:calc(3vh + env(safe-area-inset-bottom,0px))}#cover #pwa-install-btn{left:12px;right:auto;bottom:calc(50px + env(safe-area-inset-bottom,0px));z-index:10020}}
 @media (max-height:720px){
-#cover #qna-cover-btn{position:relative;right:auto;bottom:auto;z-index:10;display:flex;align-items:center;justify-content:center;min-height:40px;padding:0 14px;border:0;border-radius:999px;background:linear-gradient(135deg,#1f2a44,#31446c);color:#fff;font-family:inherit;font-size:12.5px;font-weight:900;line-height:1;box-shadow:0 10px 24px rgba(31,42,68,.25);opacity:1;visibility:visible;pointer-events:auto;align-self:flex-end;margin-top:8px;margin-bottom:calc(5vh + env(safe-area-inset-bottom,0px))}#cover #pwa-install-btn{left:12px;right:auto;bottom:calc(50px + env(safe-area-inset-bottom,0px));z-index:10020}}
+#cover #qna-cover-btn{position:relative;right:auto;bottom:auto;z-index:10;display:flex;align-items:center;justify-content:center;min-height:40px;padding:0 14px;border:0;border-radius:999px;background:linear-gradient(135deg,#1f2a44,#31446c);color:#fff;font-family:inherit;font-size:12.5px;font-weight:900;line-height:1;box-shadow:0 10px 24px rgba(31,42,68,.25);opacity:1;visibility:visible;pointer-events:auto;align-self:flex-end;margin-top:8px;margin-bottom:calc(3vh + env(safe-area-inset-bottom,0px))}#cover #pwa-install-btn{left:12px;right:auto;bottom:calc(50px + env(safe-area-inset-bottom,0px));z-index:10020}}
 .li-info,.nearby-info,.sm-info,.sm-place-info,.region-item .li-info,.list-item .li-info{min-width:0!important;overflow:visible!important}
 .li-name,.li-sub,.nearby-name,.nearby-addr,.sm-name,.sm-sub,.sm-place-name,.sm-place-addr,.region-item .li-name,.region-item .li-sub,.list-item .li-name,.list-item .li-sub{white-space:normal;overflow:visible!important;text-overflow:clip;display:block!important;-webkit-line-clamp:unset!important;-webkit-box-orient:unset!important;word-break:keep-all;overflow-wrap:anywhere!important;line-height:1.38!important;max-height:none!important}
 .nearby-item,.list-item,.region-item,.sm-item,.sm-place-item{align-items:flex-start!important}
@@ -1625,7 +1628,7 @@ html.retreat-mode #sm-tab-bar .sm-tab.active{
   box-shadow:none!important;
 }
 
-/* V19-7: 외부 복귀/화면 진입 CSS 정리
+/* V19-8: 외부 복귀/화면 진입 CSS 정리
    외부 이동 보호막을 제거한 현재 구조에서는 복귀 전용 강제 고정 CSS를 두지 않는다.
    화면 진입 중 필요한 최소 전환만 유지하고, app/viewport 전체를 흔드는 전역 보정은 금지한다. */
 html:not(.app-active),html:not(.app-active) body{scroll-behavior:auto!important;}
@@ -1710,7 +1713,7 @@ html.retreat-mode #region-body .nearby-dist span{
   margin-left:4px!important;
 }
 
-/* 커버 전용 당겨서 새로고침 — V19-7 단일 기준 */
+/* 커버 전용 당겨서 새로고침 — V19-8 단일 기준 */
 #cover{
   overscroll-behavior-y:contain!important;
 }
@@ -2039,7 +2042,7 @@ html.app-active #cv-pull-modern{
 #qna-view  .qna-tab.on        { background: var(--navy, #0e1535) !important; }
 
 /* ── 6. 헤더 배경색 (모듈별) ─────────────────────────────────────── */
-/* V19-7: 기도문 헤더를 기준으로 주요 모듈 헤더 단색 통일 */
+/* V19-8: 기도문 헤더를 기준으로 주요 모듈 헤더 단색 통일 */
 #prayer-bar,
 #trail-view .module-bar,
 #web-view .module-bar,
@@ -2100,7 +2103,7 @@ html:not(.app-active) #cover {
   min-height     : 100dvh !important;
   max-height     : 100dvh !important;
   padding-top    : calc(8vh + env(safe-area-inset-top,0px)) !important;
-  padding-bottom : calc(5vh + env(safe-area-inset-bottom,0px)) !important;
+  padding-bottom : calc(3vh + env(safe-area-inset-bottom,0px)) !important;
   padding-left   : 0 !important;
   padding-right  : 0 !important;
   box-sizing     : border-box ;
@@ -2251,7 +2254,7 @@ html.app-active #cover {
 }
 
 
-/* V19-7: iPhone 카카오톡 인앱 브라우저 Safari 안내 배너 */
+/* V19-8: iPhone 카카오톡 인앱 브라우저 Safari 안내 배너 */
 #cover .ios-safari-banner{
   display:none;
 }
@@ -2366,7 +2369,7 @@ html.app-active #qna-cover-btn, html.app-active #cover-action-row { display: non
 
 /* 작은 화면 보정 */
 @media (max-height:650px) {
-  #cover { padding-top: calc(8vh + env(safe-area-inset-top,0px)) !important; padding-bottom: calc(5vh + env(safe-area-inset-bottom,0px)) !important; }
+  #cover { padding-top: calc(8vh + env(safe-area-inset-top,0px)) !important; padding-bottom: calc(3vh + env(safe-area-inset-bottom,0px)) !important; }
   #cover .cover-header { padding-bottom: 4px !important; }
   #cover .cover-header .cover-title { font-size: clamp(18px,5vw,24px) !important; }
   #cover .cover-header .cover-subtitle { font-size: 10px !important; }
@@ -2422,7 +2425,7 @@ html.oai-font-global #cover #cover-bottom-note,
 }
 
 
-/* V19-7: 출발 검색 모달 색상 기준 재정리
+/* V19-8: 출발 검색 모달 색상 기준 재정리
    - 성지/성당/피정 + 일반장소 탭: 활성은 금색, 비활성은 고유색 배경 위의 은은한 반투명 버튼
    - 검색창을 감싸는 영역은 성지/성당/피정 각 카테고리 고유색으로 통일
    - 실제 검색 입력창(.sm-si)은 기존 아이보리 계열 유지 */
@@ -2493,7 +2496,7 @@ html.retreat-mode #srch-modal #sm-tab-bar .sm-tab:not(.active){
 html #srch-modal #sm-tab-bar .sm-tab.active,
 html.parish-mode #srch-modal #sm-tab-bar .sm-tab.active,
 html.retreat-mode #srch-modal #sm-tab-bar .sm-tab.active{
-  /* V19-7: 바로 위 교구 활성화 버튼(.sm-fb.on)과 같은 금색 기준 사용 */
+  /* V19-8: 바로 위 교구 활성화 버튼(.sm-fb.on)과 같은 금색 기준 사용 */
   background:var(--gold,#d4aa6a)!important;
   background-image:none!important;
   color:#1F2937!important;
@@ -2505,7 +2508,7 @@ html.retreat-mode #srch-modal #sm-tab-bar .sm-tab.active{
 
 
 /* ══════════════════════════════════════════════════════════════════
-   V19-7 모듈 표준화
+   V19-8 모듈 표준화
    - 헤더: 기도문 헤더 기준 단색 네이비(그라데이션 제거)
    - 탭바/탭버튼: 관구·교구 탭 기준 높이·형태 통일
    - 활성 탭의 고유 색상은 각 모듈 기존 색상을 유지
@@ -2589,7 +2592,7 @@ html.oai-font-global #trail-view .trail-tab{
 }
 
 /* ══════════════════════════════════════════════════════════════════
-   V19-7 주요 기능 안내 — 커버 전용, 별도 파일 없음
+   V19-8 주요 기능 안내 — 커버 전용, 별도 파일 없음
    ══════════════════════════════════════════════════════════════════ */
 #cover #cover-guide-btn{
   position:absolute;
