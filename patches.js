@@ -448,8 +448,8 @@
 (function(){
   if(window.__APP_FONT_SCALE_GUARD__) return;
   window.__APP_FONT_SCALE_GUARD__=true;
-  // V22: 문의·건의는 Google Sheet 임시 연결을 쓰지 않고 qa-firebase.html 한 경로로만 통일한다.
-  var QA_URL="qa-firebase.html?v=V22";
+  // V23: 문의·건의는 Google Sheet 임시 연결을 쓰지 않고 qa-firebase.html 한 경로로만 통일한다.
+  var QA_URL="qa-firebase.html?v=V23";
   var FONT_KEY='prayer_font_size', BASE=16, SIZES=[15,16,17,18,19,20,21,22,24,26,28];
   function el(id){return document.getElementById(id)}
   function getPx(){var px=parseInt(localStorage.getItem(FONT_KEY)||BASE,10);return (px>=15&&px<=28)?px:BASE;}
@@ -458,7 +458,7 @@
   window.__APP_applyGlobalFont=applyScale;
   window.prAdjustFont=function(delta){var cur=getPx(),i=SIZES.indexOf(cur);if(i<0)i=SIZES.indexOf(BASE);i+=(delta>0?1:-1);if(i<0)i=0;if(i>=SIZES.length)i=SIZES.length-1;setPx(SIZES[i]);applyScale();setTimeout(applyScale,80);setTimeout(applyScale,220);};
   function ensureCoverControls(){var cover=el('cover');if(!cover)return;var box=el('cover-font-controls');if(!box){box=document.createElement('div');box.id='cover-font-controls';cover.appendChild(box);}box.className='pr-font-ctrl';box.innerHTML='<button class="pr-font-btn pr-sm" type="button" aria-label="글자 작게">가</button><div class="pr-font-divider"></div><button class="pr-font-btn pr-lg" type="button" aria-label="글자 크게">가</button>';var sm=box.querySelector('.pr-sm'),lg=box.querySelector('.pr-lg');if(sm)sm.onclick=function(e){e.preventDefault();e.stopPropagation();window.prAdjustFont(-1)};if(lg)lg.onclick=function(e){e.preventDefault();e.stopPropagation();window.prAdjustFont(1)};}
-  function setEmojiIcons(){var icons={'cc-1':'✝️','cc-2':'📖','cc-3':'🙏','cc-4':'⛪','cc-5':'🌿','cc-6':'🥾','cc-7':'🌐','cc-8':'🧭'};Object.keys(icons).forEach(function(id){var btn=el(id);if(!btn)return;var wrap=btn.querySelector('.cover-icon-wrap');if(wrap)wrap.innerHTML='<span class="cover-emoji" aria-hidden="true">'+icons[id]+'</span>';});}
+  function setEmojiIcons(){var icons={'cc-1':'✝️','cc-2':'⛪','cc-3':'🙏','cc-4':'🌿','cc-5':'🥾','cc-6':'🌐','cc-7':'🧭'};Object.keys(icons).forEach(function(id){var btn=el(id);if(!btn)return;var wrap=btn.querySelector('.cover-icon-wrap');if(wrap)wrap.innerHTML='<span class="cover-emoji" aria-hidden="true">'+icons[id]+'</span>';});}
   function normalizeLabels(root){root=root||document;try{root.querySelectorAll('button,a,span,div').forEach(function(n){if(!n||!n.childNodes||n.childNodes.length!==1||n.childNodes[0].nodeType!==3)return;var t=n.textContent,nt=t;nt=nt.replace(/카카오\s*맵/g,'카카오내비').replace(/카카오\s*나비/g,'카카오내비').replace(/Kakao\s*Map/gi,'카카오내비').replace(/Kakao\s*Navi/gi,'카카오내비');nt=nt.replace(/상장예식\s*\(\s*위령기도1\s*\)/g,'위령기도1(상장예식)').replace(/^위령기도1$/g,'위령기도1(상장예식)').replace(/Memorial Prayer 1\s*\(\s*Courting Ceremony\s*\)/gi,'위령기도1(상장예식)');nt=nt.replace(/위령\s*기도2\s*\(\s*짧은\s*위령기도\s*\)/g,'위령기도2 (짧은 위령기도)').replace(/^위령기도2$/g,'위령기도2 (짧은 위령기도)').replace(/Memorial Prayer 2\s*\(\s*short Memorial Prayer\s*\)/gi,'위령기도2 (짧은 위령기도)');if(nt!==t)n.textContent=nt;});}catch(e){ console.warn("[가톨릭길동무]", e); }}
   function configureQna(){
     window.QNA_FORM_URL=QA_URL;
@@ -502,7 +502,7 @@
 })();
 
 (function(){
-  var QA_URL='qa-firebase.html?v=V22';
+  var QA_URL='qa-firebase.html?v=V23';
   function bindQnaButton(){
     var btn=document.getElementById('qna-cover-btn');
     if(btn){ btn.onclick=function(){ location.href=QA_URL; }; }
@@ -846,14 +846,14 @@
   };
 })();
 (function(){
-  // V22: 아래 블록은 버튼이 사라진 경우만 복원하고, 실제 이동은 openQnaView 한 경로로 위임한다.
+  // V23: 아래 블록은 버튼이 사라진 경우만 복원하고, 실제 이동은 openQnaView 한 경로로 위임한다.
   function $(id){return document.getElementById(id);}
   function restoreQnaButton(){
     var cover=$('cover');
     if(!cover) return;
     var btn=$('qna-cover-btn');
     if(!btn){btn=document.createElement('button');btn.id='qna-cover-btn';btn.type='button';btn.setAttribute('aria-label','문의·건의');btn.textContent='💬 문의·건의';cover.appendChild(btn);}
-    btn.onclick=function(ev){if(ev) ev.preventDefault(); if(typeof window.openQnaView === 'function') window.openQnaView(); else location.href='qa-firebase.html?v=V22';};
+    btn.onclick=function(ev){if(ev) ev.preventDefault(); if(typeof window.openQnaView === 'function') window.openQnaView(); else location.href='qa-firebase.html?v=V23';};
   }
   function removeMissaPopupState(){var mv=$('missa-view');if(mv) mv.classList.remove('open');}
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', function(){restoreQnaButton();removeMissaPopupState();});
@@ -1006,8 +1006,13 @@
     if(lbl && document.documentElement.classList.contains('retreat-mode')) lbl.textContent='피정의집 찾기';
   }
   function normalizeAll(){
-    normalizeCoverIcon('cc-2','📖');
+    normalizeCoverIcon('cc-1','✝️');
+    normalizeCoverIcon('cc-2','⛪');
     normalizeCoverIcon('cc-3','🙏');
+    normalizeCoverIcon('cc-4','🌿');
+    normalizeCoverIcon('cc-5','🥾');
+    normalizeCoverIcon('cc-6','🌐');
+    normalizeCoverIcon('cc-7','🧭');
     fixRetreatTabLabel();
     document.querySelectorAll('#tabbar .tab-btn').forEach(function(btn){
       btn.style.whiteSpace='nowrap';
