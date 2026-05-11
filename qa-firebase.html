@@ -30,6 +30,8 @@
     --gray-400:#94A3B8; --gray-500:#64748B; --gray-700:#374151;
     --gray-900:#0F172A;
     --radius: 14px; --shadow: 0 2px 12px rgba(0,0,0,0.08);
+    --qa-header-h: calc(70px + env(safe-area-inset-top, 0px));
+    --qa-filter-h: 50px;
   }
   body {
     font-family: 'Noto Sans KR', sans-serif;
@@ -44,12 +46,11 @@
 
   /* ── 헤더 ── */
   #header {
-    width: 100%; max-width: none; box-sizing: border-box;
+    width: 100%; max-width: 720px; box-sizing: border-box;
     background: #0e1535; color: #fff;
-    height: calc(70px + env(safe-area-inset-top, 0px)); min-height: calc(70px + env(safe-area-inset-top, 0px)); padding: env(safe-area-inset-top, 0px) 16px 10px;
+    height: var(--qa-header-h); min-height: var(--qa-header-h); padding: env(safe-area-inset-top, 0px) 16px 10px;
     display: flex; align-items: center; gap: 12px;
     position: fixed; top: 0; left: 50%; transform: translateX(-50%); z-index: 100;
-    max-width: 720px;
     border-radius: 0; border-bottom: 2px solid var(--gold); box-shadow: 0 12px 28px rgba(18,24,38,.18);
   }
   #qna-cross-icon {
@@ -89,22 +90,22 @@
   #write-btn:active { transform: scale(.97); }
 
   /* ── 뷰 전환 ── */
-  .view { display: none; padding: 0 0 80px; }
+  .view { display: none; padding: var(--qa-header-h) 0 80px; }
   .view.active { display: block; }
-  #list-view { padding-top: calc(120px + env(safe-area-inset-top, 0px)); }
-  #detail-view-wrap, #write-view { padding-top: calc(84px + env(safe-area-inset-top, 0px)); }
+  #list-view { padding-top: calc(var(--qa-header-h) + var(--qa-filter-h)); }
 
   /* ── 필터 ── */
   #filter-bar {
-    position: fixed; top: calc(70px + env(safe-area-inset-top, 0px)); left: 50%; transform: translateX(-50%); z-index: 90;
+    position: fixed; top: var(--qa-header-h); left: 50%; transform: translateX(-50%); z-index: 90;
     width: 100%; max-width: 720px;
-    height: 50px; min-height: 50px; max-height: 50px;
+    height: var(--qa-filter-h); min-height: var(--qa-filter-h); max-height: var(--qa-filter-h);
     display: flex; align-items: center; gap: 5px; padding: 7px 8px;
     background: rgba(255,255,255,.96);
     border-bottom: 1px solid rgba(0,0,0,.08);
     overflow: hidden; scrollbar-width: none;
     box-sizing: border-box;
-    touch-action: pan-y;
+    touch-action: pan-x;
+    overscroll-behavior: contain;
   }
   #filter-bar::-webkit-scrollbar { display: none; }
   .filter-btn {
@@ -249,7 +250,7 @@
   .view { padding-bottom: calc(92px + env(safe-area-inset-bottom, 0px)); }
   #post-list, #write-view, #detail-view { width: 100%; max-width: 680px; margin: 0 auto; }
   @media (min-width: 600px) {
-    #filter-bar { max-width: 680px; margin: 0 auto; width: 100%; }
+    #filter-bar { max-width: 680px; }
     .card { padding: 16px 18px; }
   }
   @media (min-width: 720px) {
@@ -460,19 +461,31 @@ function bindFilterBarSwipe() {
   bar.__filterSwipeBound = true;
   let sx = 0;
   let sy = 0;
+  let horizontal = false;
   bar.addEventListener('touchstart', function(e){
     const t = e.touches && e.touches[0];
     if(!t) return;
     sx = t.clientX;
     sy = t.clientY;
+    horizontal = false;
   }, {passive:true});
+  bar.addEventListener('touchmove', function(e){
+    const t = e.touches && e.touches[0];
+    if(!t) return;
+    const dx = t.clientX - sx;
+    const dy = t.clientY - sy;
+    if(Math.abs(dx) > 10 && Math.abs(dx) > Math.abs(dy)){
+      horizontal = true;
+      e.preventDefault();
+    }
+  }, {passive:false});
   bar.addEventListener('touchend', function(e){
     const t = e.changedTouches && e.changedTouches[0];
     if(!t) return;
     const dx = t.clientX - sx;
     const dy = t.clientY - sy;
-    if(Math.abs(dx) < 38) return;
-    if(Math.abs(dx) < Math.abs(dy) * 1.5) return;
+    if(Math.abs(dx) < 34) return;
+    if(!horizontal && Math.abs(dx) < Math.abs(dy)) return;
     const cur = Math.max(0, FILTERS.indexOf(currentFilter));
     const next = Math.max(0, Math.min(FILTERS.length - 1, cur + (dx < 0 ? 1 : -1)));
     if(next === cur) return;
@@ -575,7 +588,7 @@ function showDetailView(post) {
 }
 
 /* ═══════════════════ 운영자 답변 관리 ═══════════════════
-   V24: 공개 HTML 안의 운영자 인증/답변/삭제 기능 제거.
+   V23: 공개 HTML 안의 운영자 인증/답변/삭제 기능 제거.
    답변과 삭제는 Firebase 콘솔 또는 별도 서버 인증 관리자 도구에서 처리합니다.
 */
 
@@ -677,10 +690,10 @@ showView('list-view', { historyMode:'replace' });
 subscribeList();
 </script>
 
-<script id="oai-cache-lifecycle-V24">
+<script id="oai-cache-lifecycle-V23">
 (function(){
   'use strict';
-  var APP_VERSION = 'V24';
+  var APP_VERSION = 'V23';
   if('serviceWorker' in navigator){
     try{ navigator.serviceWorker.register('./sw.js?v=' + encodeURIComponent(APP_VERSION)).then(function(reg){try{reg.update();}catch(e){}}).catch(function(){}); }catch(e){}
   }

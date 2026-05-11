@@ -75,12 +75,15 @@
   }
 
   function callGTC(){
+    resetExitToast();
     if(typeof window.goToCover === 'function') window.goToCover();
     else {
       document.documentElement.classList.remove('app-active','parish-mode','retreat-mode');
       var cv = $b('cover'); if(cv) cv.style.display = '';
     }
-    setTimeout(rearmCoverTrap, 60);
+    resetExitToast();
+    rearmCoverTrap();
+    setTimeout(function(){ resetExitToast(); rearmCoverTrap(); }, 80);
   }
 
   /* ── 외부·모듈 뷰 닫기 (닫으면 항상 goToCover) ── */
@@ -101,10 +104,15 @@
         prayerDetail.classList.remove('show');
         return true;
       }
-      try{ if(typeof window._clearMassQuickReturnForReload === 'function') window._clearMassQuickReturnForReload(); }catch(e){ console.warn("[가톨릭길동무]", e); }
-      if(typeof window.closePrayerView === 'function') window.closePrayerView();
-      else prayer.classList.remove('open');
-      callGTC();
+      if(typeof window._returnToMassQuickMenu === 'function') window._returnToMassQuickMenu();
+      else {
+        if(typeof window.closePrayerView === 'function') window.closePrayerView();
+        else prayer.classList.remove('open');
+        callGTC();
+        if(typeof window.openMassQuickMenu === 'function'){
+          setTimeout(function(){ window.openMassQuickMenu({keepReturn:true}); }, 40);
+        }
+      }
       return true;
     }
     /* 교구지도 */
@@ -185,12 +193,15 @@
   }
 
   /* ── popstate 핸들러 ── */
+  var _restoring = false;
+
   window.addEventListener('popstate', function(){
     if(window._appExiting) return;
+    if(_restoring){ _restoring = false; return; }
 
     if(isGuideModalOpen()){
       closeGuideModals();
-      try{ history.pushState({_p:1}, '', location.href.split('#')[0]); }catch(e){ console.warn("[가톨릭길동무]", e); }
+      try{ history.pushState({_p:1}, '', _href); }catch(e){ console.warn("[가톨릭길동무]", e); }
       return;
     }
 
@@ -202,14 +213,17 @@
       }
       var exiting = false;
       if(typeof window._showBackToast==='function') exiting = window._showBackToast() === true;
-      if(!exiting){ try{ history.pushState({_p:1}, '', location.href.split('#')[0]); }catch(e){ console.warn("[가톨릭길동무]", e); } }
+      if(!exiting){ try{ history.pushState({_p:1}, '', _href); }catch(e){ console.warn("[가톨릭길동무]", e); } }
       return;
     }
 
-    /* 앱 활성: 현재 화면을 먼저 닫고, 커버/앱 안에 남을 때는 즉시 트랩을 다시 세운다. */
-    if(closeExtOrModule()){ rearmCoverTrap(); return; }
-    if(closeLayer()){ try{ history.pushState({_p:1}, '', location.href.split('#')[0]); }catch(e){ console.warn("[가톨릭길동무]", e); } return; }
-    callGTC();
+    /* 앱 활성: go(1) 복원 후 처리 */
+    _restoring = true;
+    history.go(1);
+
+    if(closeExtOrModule()) return;  /* 닫으면서 goToCover() 이미 호출됨 */
+    if(closeLayer()) return;        /* 레이어만 닫기, 앱 유지 */
+    callGTC();                      /* 아무것도 없으면 커버로 */
   }, false);
 
   /* Cordova 물리 백버튼 */
@@ -223,8 +237,8 @@
       if(typeof window._showBackToast==='function') window._showBackToast();
       return;
     }
-    if(closeExtOrModule()){ rearmCoverTrap(); return; }
-    if(closeLayer()){ rearmCoverTrap(); return; }
+    if(closeExtOrModule()) return;
+    if(closeLayer()) return;
     callGTC();
   }, false);
 
@@ -468,8 +482,8 @@
 (function(){
   if(window.__APP_FONT_SCALE_GUARD__) return;
   window.__APP_FONT_SCALE_GUARD__=true;
-  // V24: 문의·건의는 qa-firebase.html 한 경로로만 통일한다.
-  var QA_URL="qa-firebase.html?v=V24";
+  // V23: 문의·건의는 qa-firebase.html 한 경로로만 통일한다.
+  var QA_URL="qa-firebase.html?v=V23";
   var FONT_KEY='prayer_font_size', BASE=16, SIZES=[15,16,17,18,19,20,21,22,24,26,28];
   function el(id){return document.getElementById(id)}
   function getPx(){var px=parseInt(localStorage.getItem(FONT_KEY)||BASE,10);return (px>=15&&px<=28)?px:BASE;}
@@ -841,8 +855,8 @@
 })();
 (function(){
   'use strict';
-  if(window.__APP_PULL_REFRESH_CLEAN_V24_8__) return;
-  window.__APP_PULL_REFRESH_CLEAN_V24_8__ = true;
+  if(window.__APP_PULL_REFRESH_CLEAN_V23_8__) return;
+  window.__APP_PULL_REFRESH_CLEAN_V23_8__ = true;
 
   function $(id){ return document.getElementById(id); }
   function isTypingTarget(el){
@@ -910,8 +924,8 @@
 
   function installPullRefresh(){
     var cover=$('cover'), ind=$('cv-pull-modern');
-    if(!cover || !ind || cover.__oaiPullRefreshCleanV24_8) return;
-    cover.__oaiPullRefreshCleanV24_8 = true;
+    if(!cover || !ind || cover.__oaiPullRefreshCleanV23_8) return;
+    cover.__oaiPullRefreshCleanV23_8 = true;
 
     var sx=0, sy=0, active=false, ready=false, refreshing=false;
     var THRESHOLD=74;
