@@ -273,6 +273,120 @@
   will-change:transform;
 }
 </style>
+
+<style id="oai-v39-qa-tab-style">
+  /* V20: 문의·건의 탭을 관구·교구 화면과 비슷한 높이/색감으로 통일 */
+  .qa-tabs,
+  #qa-tabs,
+  .tabs,
+  .tab-bar {
+    min-height: 72px !important;
+    height: 72px !important;
+    padding: 10px 18px !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    background: #F8F6F2 !important;
+    border-bottom: 1px solid rgba(31,42,68,.14) !important;
+    box-sizing: border-box !important;
+    -webkit-overflow-scrolling: touch !important;
+    scroll-snap-type: x proximity !important;
+  }
+  .qa-tabs::-webkit-scrollbar,
+  #qa-tabs::-webkit-scrollbar,
+  .tabs::-webkit-scrollbar,
+  .tab-bar::-webkit-scrollbar {
+    display: none;
+  }
+  .qa-tab,
+  .tab-btn,
+  .qa-tabs button,
+  #qa-tabs button,
+  .tabs button,
+  .tab-bar button {
+    min-height: 48px !important;
+    height: 48px !important;
+    padding: 0 22px !important;
+    border-radius: 14px !important;
+    border: 2px solid #1F2A44 !important;
+    background: #F8F6F2 !important;
+    color: #1F2A44 !important;
+    font-size: 18px !important;
+    font-weight: 800 !important;
+    white-space: nowrap !important;
+    flex: 0 0 auto !important;
+    scroll-snap-align: start !important;
+    box-sizing: border-box !important;
+  }
+  .qa-tab.active,
+  .tab-btn.active,
+  .qa-tabs button.active,
+  #qa-tabs button.active,
+  .tabs button.active,
+  .tab-bar button.active,
+  .qa-tabs button[aria-selected="true"],
+  #qa-tabs button[aria-selected="true"],
+  .tabs button[aria-selected="true"],
+  .tab-bar button[aria-selected="true"] {
+    background: #1F2A44 !important;
+    color: #FFFFFF !important;
+    border-color: #1F2A44 !important;
+    box-shadow: 0 6px 14px rgba(31,42,68,.16) !important;
+  }
+</style>
+
+
+<style id="oai-v40-qa-tabs-final-style">
+  /* V20: 문의·건의 탭바를 관구·교구 느낌으로 정리 */
+  .qa-cat-row, .qa-tabs, #qa-tabs, .tab-bar, .tabs, .category-tabs, .filter-tabs {
+    height: 72px !important;
+    min-height: 72px !important;
+    padding: 10px 16px !important;
+    box-sizing: border-box !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    background: #F8F6F2 !important;
+    border-bottom: 1px solid rgba(31,42,68,.14) !important;
+    -webkit-overflow-scrolling: touch !important;
+    scroll-snap-type: x proximity !important;
+    touch-action: pan-y !important;
+  }
+  .qa-cat-row::-webkit-scrollbar, .qa-tabs::-webkit-scrollbar, #qa-tabs::-webkit-scrollbar,
+  .tab-bar::-webkit-scrollbar, .tabs::-webkit-scrollbar, .category-tabs::-webkit-scrollbar,
+  .filter-tabs::-webkit-scrollbar { display:none; }
+  .qa-cat-row button, .qa-tabs button, #qa-tabs button, .tab-bar button, .tabs button,
+  .category-tabs button, .filter-tabs button,
+  .qa-cat-btn, .qa-tab, .filter-btn, .tab-btn {
+    height: 48px !important;
+    min-height: 48px !important;
+    padding: 0 20px !important;
+    border-radius: 14px !important;
+    border: 2px solid #1F2A44 !important;
+    background: #F8F6F2 !important;
+    color: #1F2A44 !important;
+    font-size: 17px !important;
+    font-weight: 800 !important;
+    white-space: nowrap !important;
+    flex: 0 0 auto !important;
+    scroll-snap-align: center !important;
+    box-sizing: border-box !important;
+  }
+  .qa-cat-row button.active, .qa-tabs button.active, #qa-tabs button.active,
+  .tab-bar button.active, .tabs button.active, .category-tabs button.active,
+  .filter-tabs button.active, .qa-cat-btn.active, .qa-tab.active, .filter-btn.active,
+  .tab-btn.active, button[aria-selected="true"] {
+    background: #1F2A44 !important;
+    color: #fff !important;
+    border-color: #1F2A44 !important;
+    box-shadow: 0 6px 14px rgba(31,42,68,.16) !important;
+  }
+</style>
+
 </head>
 <body>
 
@@ -534,7 +648,7 @@ function showDetailView(post) {
 }
 
 /* ═══════════════════ 운영자 답변 관리 ═══════════════════
-   V38: 공개 HTML 안의 운영자 인증/답변/삭제 기능 제거.
+   V20: 공개 HTML 안의 운영자 인증/답변/삭제 기능 제거.
    답변과 삭제는 Firebase 콘솔 또는 별도 서버 인증 관리자 도구에서 처리합니다.
 */
 
@@ -639,7 +753,7 @@ subscribeList();
 <script id="oai-cache-lifecycle-V23">
 (function(){
   'use strict';
-  var APP_VERSION = 'V38';
+  var APP_VERSION = 'V20';
   if('serviceWorker' in navigator){
     try{ navigator.serviceWorker.register('./sw.js?v=' + encodeURIComponent(APP_VERSION)).then(function(reg){try{reg.update();}catch(e){}}).catch(function(){}); }catch(e){}
   }
@@ -740,5 +854,177 @@ subscribeList();
   }catch(e){}
 })();
 </script>
+
+<script id="oai-v39-qa-tab-swipe">
+(function(){
+  'use strict';
+  if(window.__OAI_QA_TAB_SWIPE_V20__) return;
+  window.__OAI_QA_TAB_SWIPE_V20__ = true;
+
+  function getTabBar(){
+    return document.querySelector('.qa-tabs, #qa-tabs, .tab-bar, .tabs');
+  }
+  function getButtons(bar){
+    if(!bar) return [];
+    return Array.prototype.slice.call(bar.querySelectorAll('button, .qa-tab, .tab-btn'))
+      .filter(function(el){ return el.offsetParent !== null; });
+  }
+  function isActive(el){
+    return el.classList.contains('active') || el.getAttribute('aria-selected') === 'true';
+  }
+  function activeIndex(btns){
+    var idx = btns.findIndex(isActive);
+    return idx >= 0 ? idx : 0;
+  }
+  function moveTab(dir){
+    var bar = getTabBar();
+    var btns = getButtons(bar);
+    if(btns.length < 2) return false;
+    var idx = activeIndex(btns);
+    var next = Math.max(0, Math.min(btns.length - 1, idx + dir));
+    if(next === idx) return false;
+    try{ btns[next].click(); }catch(e){ console.warn('[가톨릭길동무]', e); }
+    try{ btns[next].scrollIntoView({behavior:'smooth', inline:'center', block:'nearest'}); }catch(e){}
+    return true;
+  }
+
+  var sx = 0, sy = 0, tracking = false, moved = false;
+  document.addEventListener('touchstart', function(e){
+    var bar = getTabBar();
+    if(!bar) return;
+    var t = e.touches && e.touches[0];
+    if(!t) return;
+    sx = t.clientX; sy = t.clientY; tracking = true; moved = false;
+  }, {passive:true});
+
+  document.addEventListener('touchmove', function(e){
+    if(!tracking) return;
+    var t = e.touches && e.touches[0];
+    if(!t) return;
+    var dx = t.clientX - sx;
+    var dy = t.clientY - sy;
+    if(Math.abs(dx) > 30 && Math.abs(dx) > Math.abs(dy) * 1.4) moved = true;
+  }, {passive:true});
+
+  document.addEventListener('touchend', function(e){
+    if(!tracking) return;
+    tracking = false;
+    var t = (e.changedTouches && e.changedTouches[0]) || null;
+    if(!t) return;
+    var dx = t.clientX - sx;
+    var dy = t.clientY - sy;
+    if(!moved || Math.abs(dx) < 55 || Math.abs(dx) < Math.abs(dy) * 1.4) return;
+    if(dx < 0) moveTab(1);
+    else moveTab(-1);
+  }, {passive:true});
+})();
+</script>
+
+
+<script id="oai-v40-qa-swipe-final">
+(function(){
+  'use strict';
+  if(window.__OAI_V20_QA_SWIPE_FINAL__) return;
+  window.__OAI_V20_QA_SWIPE_FINAL__ = true;
+
+  function visible(el){
+    if(!el) return false;
+    var r = el.getBoundingClientRect();
+    return r.width > 0 && r.height > 0;
+  }
+
+  function findBars(){
+    var selectors = [
+      '.qa-cat-row', '.qa-tabs', '#qa-tabs', '.tab-bar', '.tabs',
+      '.category-tabs', '.filter-tabs', '[role="tablist"]'
+    ];
+    var bars = [];
+    selectors.forEach(function(sel){
+      document.querySelectorAll(sel).forEach(function(el){
+        if(visible(el) && bars.indexOf(el) < 0) bars.push(el);
+      });
+    });
+    // fallback: find a horizontal container with several buttons near top
+    if(!bars.length){
+      Array.prototype.slice.call(document.querySelectorAll('div, nav, section')).forEach(function(el){
+        if(!visible(el)) return;
+        var btns = Array.prototype.slice.call(el.querySelectorAll(':scope > button, :scope > .qa-tab, :scope > .tab-btn, :scope > .filter-btn'));
+        if(btns.length >= 2) bars.push(el);
+      });
+    }
+    return bars;
+  }
+
+  function buttonsOf(bar){
+    if(!bar) return [];
+    return Array.prototype.slice.call(bar.querySelectorAll('button, .qa-tab, .tab-btn, .filter-btn, [role="tab"]')).filter(visible);
+  }
+
+  function isActive(btn){
+    return btn.classList.contains('active') ||
+           btn.classList.contains('selected') ||
+           btn.getAttribute('aria-selected') === 'true' ||
+           btn.getAttribute('data-active') === 'true';
+  }
+
+  function currentIndex(btns){
+    var i = btns.findIndex(isActive);
+    return i >= 0 ? i : 0;
+  }
+
+  function move(bar, dir){
+    var btns = buttonsOf(bar);
+    if(btns.length < 2) return false;
+    var idx = currentIndex(btns);
+    var next = Math.max(0, Math.min(btns.length - 1, idx + dir));
+    if(next === idx) return false;
+    try{ btns[next].click(); }catch(e){ console.warn('[가톨릭길동무]', e); }
+    try{ btns[next].scrollIntoView({behavior:'smooth', inline:'center', block:'nearest'}); }catch(e){}
+    return true;
+  }
+
+  function bindOne(bar){
+    if(!bar || bar.__oaiV20SwipeBound) return;
+    bar.__oaiV20SwipeBound = true;
+    var sx=0, sy=0, lx=0, tracking=false;
+
+    bar.addEventListener('touchstart', function(e){
+      var t = e.touches && e.touches[0];
+      if(!t) return;
+      sx=t.clientX; sy=t.clientY; lx=sx; tracking=true;
+    }, {passive:true});
+
+    bar.addEventListener('touchmove', function(e){
+      var t = e.touches && e.touches[0];
+      if(t) lx=t.clientX;
+    }, {passive:true});
+
+    bar.addEventListener('touchend', function(e){
+      if(!tracking) return;
+      tracking=false;
+      var t = (e.changedTouches && e.changedTouches[0]) || null;
+      var ex = t ? t.clientX : lx;
+      var ey = t ? t.clientY : sy;
+      var dx = ex - sx;
+      var dy = ey - sy;
+      if(Math.abs(dx) < 45 || Math.abs(dx) < Math.abs(dy) * 1.25) return;
+      if(dx < 0) move(bar, 1);
+      else move(bar, -1);
+    }, {passive:true});
+  }
+
+  function init(){
+    findBars().forEach(bindOne);
+  }
+
+  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init, {once:true});
+  else init();
+  window.addEventListener('load', init, {once:true});
+  window.addEventListener('pageshow', init);
+  setTimeout(init, 300);
+  setTimeout(init, 1200);
+})();
+</script>
+
 </body>
 </html>

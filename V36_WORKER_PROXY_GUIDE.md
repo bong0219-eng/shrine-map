@@ -1,6 +1,6 @@
-# V37 Cloudflare Worker 연동 안내
+# V20 Cloudflare Worker 연동 안내
 
-## 이번 V37 변경
+## 이번 V20 변경
 - 사용자가 새로 올린 index.html / app.js / patches.js / sw-update.js를 기준으로 다시 적용했습니다.
 - 공개 앱 코드에서 카카오 REST API 키를 제거했습니다.
 - 카카오 REST API 호출은 Cloudflare Worker 주소로 보냅니다.
