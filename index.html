@@ -58,10 +58,14 @@
 </script>
 <script src="parishes.js?v=V33"></script>
 <script>
-/* ⚠️ 레포를 반드시 Private으로 설정하세요 */
+/* 공개 코드에는 Kakao JavaScript 키와 REST 프록시 주소만 둡니다.
+   - Kakao JavaScript 키는 Kakao Developers에서 웹 도메인 제한을 반드시 적용하세요.
+   - REST API 키는 Cloudflare Worker 또는 서버 환경변수에만 보관하세요.
+   - KAKAO_REST_PROXY_URL에는 Worker의 공개 프록시 주소를 넣으세요.
+*/
 window.APP_CONFIG = {
-  KAKAO_JS_KEY:   '07f7989e29fdfb425fff924f36fb3ec0',
-  KAKAO_REST_KEY: '86a3b86e6c1b0210b8e4aba5f6c83b00',
+  KAKAO_JS_KEY: '07f7989e29fdfb425fff924f36fb3ec0',
+  KAKAO_REST_PROXY_URL: 'https://kakao-rest-proxy.bong0219.workers.dev'
 };
 </script>
 

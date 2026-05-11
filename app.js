@@ -724,19 +724,39 @@ function _getRetreatColor(item){const codeMap={'서울대교구':'SE','인천교
 function _getModeMarkerColor(item){return _mode==='shrine'?(TC[item.type]||'#555'):(_mode==='retreat'?_getRetreatColor(item):'#8b5e3c');}
 function _getRouteGuideTarget(){return _mode==='shrine'?'성지':(_mode==='retreat'?'피정의 집':'성당');}
 
-// ─── API 키: config.js 에서 로드 ─────────────────────────────────────
-// config.js 가 없거나 키가 비어있으면 콘솔에 경고가 표시됩니다.
-// 배포 전 Kakao Developers 콘솔에서 플랫폼 > 웹 도메인을 반드시 등록하세요.
-const REST  = (window.APP_CONFIG && window.APP_CONFIG.KAKAO_REST_KEY) || '';
-const JSKEY = (window.APP_CONFIG && window.APP_CONFIG.KAKAO_JS_KEY)  || '';
+// ─── Kakao 공개 설정: index.html 의 window.APP_CONFIG 에서 로드 ────────
+// 공개 코드에는 Kakao JavaScript 키와 REST 프록시 주소만 둡니다.
+// REST API 키는 Cloudflare Worker 또는 서버 환경변수에만 보관하세요.
+const JSKEY = (window.APP_CONFIG && window.APP_CONFIG.KAKAO_JS_KEY) || '';
+const KAKAO_REST_PROXY_URL = (window.APP_CONFIG && window.APP_CONFIG.KAKAO_REST_PROXY_URL) || '';
 (function(){
-  if(!REST || !JSKEY){
+  if(!JSKEY || !KAKAO_REST_PROXY_URL){
     console.warn(
-      '[가톨릭길동무] config.js 가 로드되지 않았거나 API 키가 비어 있습니다.\n' +
-      '  config.sample.js 를 복사해 config.js 를 만들고 키를 입력하세요.'
+      '[가톨릭길동무] Kakao 설정이 비어 있습니다.\n' +
+      '  JS 키는 도메인 제한 후 공개 코드에 둘 수 있고, REST 호출은 Worker 프록시 URL로 연결해야 합니다.'
     );
   }
 })();
+function _appendQueryToUrl(url, params){
+  const qs = new URLSearchParams(params || {}).toString();
+  if(!qs) return url;
+  return url + (url.indexOf('?') >= 0 ? '&' : '?') + qs;
+}
+function _kakaoRestProxyUrl(endpoint, params){
+  if(!KAKAO_REST_PROXY_URL) return '';
+  return _appendQueryToUrl(KAKAO_REST_PROXY_URL, Object.assign({ endpoint: endpoint }, params || {}));
+}
+function _kakaoRestFetch(endpoint, params){
+  const url = _kakaoRestProxyUrl(endpoint, params);
+  if(!url) return Promise.reject(new Error('missing kakao rest proxy url'));
+  return fetch(url, { method:'GET', credentials:'omit', cache:'no-store' });
+}
+function _kakaoDirectionsFetch(origin, destination){
+  return _kakaoRestFetch('directions', { origin: origin, destination: destination, priority:'RECOMMEND' });
+}
+function _kakaoKeywordFetch(query, size){
+  return _kakaoRestFetch('keyword', { query: query, size: String(size || 10) });
+}
 const TC    = {'성지':'#c0392b','순례지':'#1565c0','순교 사적지':'#1b7a3e'};
 const _DIOS=[['all','전체'],['서울대교구','서울'],['인천교구','인천'],['수원교구','수원'],['의정부교구','의정부'],['춘천교구','춘천'],['원주교구','원주'],['대전교구','대전'],['청주교구','청주'],['대구대교구','대구'],['안동교구','안동'],['부산교구','부산'],['마산교구','마산'],['광주대교구','광주'],['전주교구','전주'],['제주교구','제주']];
 
@@ -746,9 +766,6 @@ SHRINES.forEach(s=>{
   if(s.hp&&_URL_T[s.hp.slice(0,2)]) s.hp=_URL_T[s.hp.slice(0,2)]+s.hp.slice(2);
   else if(s.hp&&_URL_T[s.hp[0]]) s.hp=_URL_T[s.hp[0]]+s.hp.slice(1);
 });
-const _NAV='https://apis-navi.kakaomobility.com/v1/directions';
-const _AH={headers:{Authorization:'KakaoAK '+REST}};
-const _ACH={headers:{Authorization:'KakaoAK '+REST,'Content-Type':'application/json'}};
 
 /* ── Mobility API 동시 호출 제한 + 결과 캐시 ──────────────────────
    - 동시 최대 5개 fetch (카카오 무료 쿼터 보호)
@@ -765,7 +782,7 @@ function _navFetch(origin, dest) {
   return new Promise((resolve) => {
     function run() {
       _navActive++;
-      fetch(`${_NAV}?origin=${origin}&destination=${dest}&priority=RECOMMEND`, _AH)
+      _kakaoDirectionsFetch(origin, dest)
         .then(r => r.json())
         .then(data => {
           const route = data.routes?.[0];
@@ -1589,9 +1606,7 @@ function _showInfoCard(item, idx){
   const _snap=item;
   (async()=>{
    try{
-    const res=await fetch(
-     `https://apis-navi.kakaomobility.com/v1/directions?origin=${_myLng},${_myLat}&destination=${_snap.lng},${_snap.lat}&priority=RECOMMEND`,
-     _AH);
+    const res=await _kakaoDirectionsFetch(`${_myLng},${_myLat}`, `${_snap.lng},${_snap.lat}`);
     if(!res.ok) throw new Error('fail');
     const data=await res.json();
     const route=data.routes?.[0];
@@ -2705,7 +2720,7 @@ function doRegionSearch(){
   inp.blur();
   const body=$('region-body');
   body.innerHTML='<div class="empty-msg">🔍 장소 검색 중...</div>';
-  fetch(`https://dapi.kakao.com/v2/local/search/keyword.json?query=${_EC(q)}&size=8`,_AH)
+  _kakaoKeywordFetch(q, 8)
   .then(r=>r.json()).then(data=>{
     const docs=data.documents||[];
     if(!docs.length){ _showRegionFallback(q); return; }
@@ -3050,9 +3065,7 @@ async function _calcRoute(){
   _drawLine(_rS, navDest, null);
 
   try{
-  const res=await fetch(
-   `https://apis-navi.kakaomobility.com/v1/directions?origin=${_rS.lng},${_rS.lat}&destination=${navDest.lng},${navDest.lat}&priority=RECOMMEND`,
-   _ACH);
+  const res=await _kakaoDirectionsFetch(`${_rS.lng},${_rS.lat}`, `${navDest.lng},${navDest.lat}`);
   if(!res.ok) throw new Error(res.status);
   const data=await res.json();
   const route=data.routes?.[0];
@@ -3191,7 +3204,7 @@ function onSmInp(v){
 }
 
 function _searchKakaoPlace(q){
-  fetch(`https://dapi.kakao.com/v2/local/search/keyword.json?query=${_EC(q)}&size=10`,_AH)
+  _kakaoKeywordFetch(q, 10)
   .then(r=>r.json()).then(data=>{
     const docs=data.documents||[];
     const body=$('sm-body-place');
