@@ -6,7 +6,7 @@
   'use strict';
   if(window.__APP_CACHE_LIFECYCLE_GUARD__) return;
   window.__APP_CACHE_LIFECYCLE_GUARD__ = true;
-  var APP_VERSION = 'V37';
+  var APP_VERSION = 'V33';
   window.APP_VERSION = APP_VERSION;
 
   function now(){ return Date.now ? Date.now() : new Date().getTime(); }
@@ -19,6 +19,7 @@
     try{
       if(document.getElementById('srch-modal') && document.getElementById('srch-modal').classList.contains('open')) return true;
       if(document.getElementById('sheet-route') && document.getElementById('sheet-route').classList.contains('open')) return true;
+      if(document.getElementById('missa-view') && document.getElementById('missa-view').classList.contains('open')) return true;
     }catch(e){ console.warn("[가톨릭길동무]", e); }
     return false;
   }

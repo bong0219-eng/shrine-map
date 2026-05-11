@@ -23,7 +23,7 @@ function hideCoverAndRun(callback) {
 
 
 function markExternalReturnStabilize(kind){
-  // V37: 외부 사이트 이동은 브라우저 기본 동작에 맡긴다.
+  // V33: 외부 사이트 이동은 브라우저 기본 동작에 맡긴다.
   // 이전 버전 호환을 위해 함수명만 유지하고, 이동 상태는 저장하지 않는다.
 }
 
@@ -43,7 +43,7 @@ function oaiClearExternalNavigationState(){
 }
 
 function oaiSmoothNavigate(url, kind){
-  // V37: 호환용 함수. 보호막/지연/전역 가로채기 없이 즉시 이동한다.
+  // V33: 호환용 함수. 보호막/지연/전역 가로채기 없이 즉시 이동한다.
   if(!url) return;
   try{ document.activeElement && document.activeElement.blur && document.activeElement.blur(); }catch(e){ console.warn("[가톨릭길동무]", e); }
   try{ oaiClearExternalNavigationState(); }catch(e){ console.warn("[가톨릭길동무]", e); }
@@ -51,7 +51,7 @@ function oaiSmoothNavigate(url, kind){
 }
 
 function applyExternalReturnStabilize(){
-  // V37: 복귀 시 화면을 재계산하지 않고, 예전 이동중 잔여 상태만 제거한다.
+  // V33: 복귀 시 화면을 재계산하지 않고, 예전 이동중 잔여 상태만 제거한다.
   try{ oaiClearExternalNavigationState(); }catch(e){ console.warn("[가톨릭길동무]", e); }
 }
 window.addEventListener('pageshow', applyExternalReturnStabilize, true);
@@ -150,7 +150,7 @@ function refreshAppFilesOnly(){
       btn.textContent = '새로고침 중';
     }
     if(document.activeElement && document.activeElement.blur) document.activeElement.blur();
-    // V37: 새로고침 전에는 레이아웃/스크롤/모달 DOM을 건드리지 않고,
+    // V33: 새로고침 전에는 레이아웃/스크롤/모달 DOM을 건드리지 않고,
     // 복귀 상태값만 정리한다. 화면 흔들림은 주로 reload 직전 DOM 조작에서 발생했다.
     sessionStorage.setItem('oai_soft_refresh_requested', String(Date.now ? Date.now() : new Date().getTime()));
     try{ _clearMassQuickReturnForReload(); }catch(_e){}
@@ -198,7 +198,7 @@ function syncCoverUpdateVersionState(){
     var box = document.getElementById('cover-update-box');
     var marker = document.getElementById('oai-build-marker');
     if(!btn || !box) return;
-    var target = btn.getAttribute('data-target-version') || 'V37';
+    var target = btn.getAttribute('data-target-version') || 'V33';
     var current = '';
     if(window.APP_VERSION) current = String(window.APP_VERSION).trim();
     if(!current && marker) current = String(marker.textContent || '').trim();
@@ -217,7 +217,7 @@ document.addEventListener('DOMContentLoaded', function(){
 }, true);
 window.addEventListener('load', syncCoverUpdateVersionState, true);
 
-// V37: 커버 전용 주요 기능 안내. 별도 파일 없이 작은 자동 안내 + 자세한 카드형 팝업을 제공한다.
+// V33: 커버 전용 주요 기능 안내. 별도 파일 없이 작은 자동 안내 + 자세한 카드형 팝업을 제공한다.
 (function(){
   'use strict';
   var HIDE_DAYS = 7;
@@ -303,7 +303,7 @@ window.addEventListener('load', syncCoverUpdateVersionState, true);
   function maybeShowIntro(){
     var forceRefresh = hasRecentSoftRefreshRequest();
     if(forceRefresh){
-      // V37: 안정형 새로고침 뒤에는 어떤 커버 팝업도 자동으로 다시 띄우지 않는다.
+      // V33: 안정형 새로고침 뒤에는 어떤 커버 팝업도 자동으로 다시 띄우지 않는다.
       try{ if(typeof closeMassQuickMenu === 'function') closeMassQuickMenu(); }catch(e){ console.warn('[가톨릭길동무]', e); }
       try{ hideModal('guide-intro-modal'); hideModal('guide-manual-modal'); }catch(e){ console.warn('[가톨릭길동무]', e); }
       try{ var ios=document.getElementById('ios-safari-guide-modal'); if(ios){ ios.classList.remove('show'); ios.setAttribute('aria-hidden','true'); } }catch(e){ console.warn('[가톨릭길동무]', e); }
@@ -384,7 +384,7 @@ function _closePrayerAndReturn(){
 
 
 
-// V37: iPhone 카카오톡 인앱 브라우저에서만 Safari 설치 안내 배너를 표시한다.
+// V33: iPhone 카카오톡 인앱 브라우저에서만 Safari 설치 안내 배너를 표시한다.
 (function(){
   'use strict';
   function ua(){ return (navigator.userAgent || '').toLowerCase(); }
@@ -469,7 +469,7 @@ function openDioceseView(opts){
       if(!restore) try{ frame.contentWindow && frame.contentWindow.resetDioceseFirstPage && frame.contentWindow.resetDioceseFirstPage(); }catch(e){ console.warn("[가톨릭길동무]", e); }
       if(typeof dioceseLoaded==='function') dioceseLoaded();
     };
-    frame.src='diocese.html?v=V37';
+    frame.src='diocese.html?v=V33';
   }else if(!restore){
     try{ frame.contentWindow && frame.contentWindow.resetDioceseFirstPage && frame.contentWindow.resetDioceseFirstPage(); }catch(e){ console.warn("[가톨릭길동무]", e); }
   }
@@ -596,7 +596,7 @@ function restoreCoreReturnState(){
     _loadMap();
   }
   const restoreDelay = needMapLoad ? 650 : 30;
-  // V37: 외부사이트 복귀 시 지도 중심을 두 단계로 움직이지 않는다.
+  // V33: 외부사이트 복귀 시 지도 중심을 두 단계로 움직이지 않는다.
   // 인포카드가 있었던 경우에는 처음부터 인포카드 기준 중심으로 복원한다.
   setTimeout(()=>{
     _restoreMapMarkers();
@@ -724,33 +724,19 @@ function _getRetreatColor(item){const codeMap={'서울대교구':'SE','인천교
 function _getModeMarkerColor(item){return _mode==='shrine'?(TC[item.type]||'#555'):(_mode==='retreat'?_getRetreatColor(item):'#8b5e3c');}
 function _getRouteGuideTarget(){return _mode==='shrine'?'성지':(_mode==='retreat'?'피정의 집':'성당');}
 
-// ─── API 키 및 REST 프록시 설정 ─────────────────────────────────────
-// V37: 카카오 REST 호출은 Cloudflare Worker 프록시를 사용합니다.
-// JavaScript Key는 지도 SDK 로딩에 필요하므로 앱에 남기고, 카카오 개발자센터에서 도메인 제한을 걸어야 합니다.
-const JSKEY = (window.APP_CONFIG && window.APP_CONFIG.KAKAO_JS_KEY) || '';
-const REST_PROXY = (window.APP_CONFIG && window.APP_CONFIG.KAKAO_REST_PROXY_URL) || '';
-
+// ─── API 키: config.js 에서 로드 ─────────────────────────────────────
+// config.js 가 없거나 키가 비어있으면 콘솔에 경고가 표시됩니다.
+// 배포 전 Kakao Developers 콘솔에서 플랫폼 > 웹 도메인을 반드시 등록하세요.
+const REST  = (window.APP_CONFIG && window.APP_CONFIG.KAKAO_REST_KEY) || '';
+const JSKEY = (window.APP_CONFIG && window.APP_CONFIG.KAKAO_JS_KEY)  || '';
 (function(){
-  if(!JSKEY || !REST_PROXY){
-    console.warn('[가톨릭길동무] KAKAO_JS_KEY 또는 KAKAO_REST_PROXY_URL이 비어 있습니다. 카카오 JavaScript 키와 Cloudflare Worker 주소를 확인하세요.');
+  if(!REST || !JSKEY){
+    console.warn(
+      '[가톨릭길동무] config.js 가 로드되지 않았거나 API 키가 비어 있습니다.\n' +
+      '  config.sample.js 를 복사해 config.js 를 만들고 키를 입력하세요.'
+    );
   }
 })();
-
-function _kakaoProxyUrl(target, params){
-  if(!REST_PROXY) throw new Error('KAKAO_REST_PROXY_URL missing');
-  const u = new URL(REST_PROXY);
-  u.searchParams.set('target', target);
-  Object.entries(params || {}).forEach(([k,v])=>{
-    if(v !== undefined && v !== null) u.searchParams.set(k, String(v));
-  });
-  return u.toString();
-}
-function _kakaoKeywordUrl(q, size){
-  return _kakaoProxyUrl('keyword', { query:q, size:size });
-}
-function _kakaoDirectionsUrl(origin, destination){
-  return _kakaoProxyUrl('directions', { origin:origin, destination:destination, priority:'RECOMMEND' });
-}
 const TC    = {'성지':'#c0392b','순례지':'#1565c0','순교 사적지':'#1b7a3e'};
 const _DIOS=[['all','전체'],['서울대교구','서울'],['인천교구','인천'],['수원교구','수원'],['의정부교구','의정부'],['춘천교구','춘천'],['원주교구','원주'],['대전교구','대전'],['청주교구','청주'],['대구대교구','대구'],['안동교구','안동'],['부산교구','부산'],['마산교구','마산'],['광주대교구','광주'],['전주교구','전주'],['제주교구','제주']];
 
@@ -760,7 +746,9 @@ SHRINES.forEach(s=>{
   if(s.hp&&_URL_T[s.hp.slice(0,2)]) s.hp=_URL_T[s.hp.slice(0,2)]+s.hp.slice(2);
   else if(s.hp&&_URL_T[s.hp[0]]) s.hp=_URL_T[s.hp[0]]+s.hp.slice(1);
 });
-/* V37: 카카오 REST 호출은 Cloudflare Worker 프록시로 처리합니다. */
+const _NAV='https://apis-navi.kakaomobility.com/v1/directions';
+const _AH={headers:{Authorization:'KakaoAK '+REST}};
+const _ACH={headers:{Authorization:'KakaoAK '+REST,'Content-Type':'application/json'}};
 
 /* ── Mobility API 동시 호출 제한 + 결과 캐시 ──────────────────────
    - 동시 최대 5개 fetch (카카오 무료 쿼터 보호)
@@ -777,7 +765,7 @@ function _navFetch(origin, dest) {
   return new Promise((resolve) => {
     function run() {
       _navActive++;
-      fetch(_kakaoDirectionsUrl(origin, dest))
+      fetch(`${_NAV}?origin=${origin}&destination=${dest}&priority=RECOMMEND`, _AH)
         .then(r => r.json())
         .then(data => {
           const route = data.routes?.[0];
@@ -1470,7 +1458,7 @@ function _updateTabBtns(active){
 }
 
 function _getInfoCardCenterTargetY(mapH){
-  // V37: 성지·성당·피정 지도 중심은 항상 인포카드가 올라왔을 때의 기준으로 통일한다.
+  // V33: 성지·성당·피정 지도 중심은 항상 인포카드가 올라왔을 때의 기준으로 통일한다.
   // 실제 인포카드가 아직 없거나 목록 시트만 떠 있어도 같은 시각 중심을 사용해 덜컹거림을 줄인다.
   return Math.round((mapH || 700) * 0.34);
 }
@@ -1601,7 +1589,9 @@ function _showInfoCard(item, idx){
   const _snap=item;
   (async()=>{
    try{
-    const res=await fetch(_kakaoDirectionsUrl(`${_myLng},${_myLat}`, `${_snap.lng},${_snap.lat}`));
+    const res=await fetch(
+     `https://apis-navi.kakaomobility.com/v1/directions?origin=${_myLng},${_myLat}&destination=${_snap.lng},${_snap.lat}&priority=RECOMMEND`,
+     _AH);
     if(!res.ok) throw new Error('fail');
     const data=await res.json();
     const route=data.routes?.[0];
@@ -1651,8 +1641,8 @@ function closeInfoCard(opts){
   else {
     if(_paSelMkr){try{_paSelMkr.setMap(null);}catch(e){ console.warn("[가톨릭길동무]", e); }  _paSelMkr=null;}
   }
-  // V37: 시트 전환으로 닫을 때는 지도 중심을 다시 움직이지 않는다.
-  // 사용자가 X/지도 터치로 인포카드만 닫을 때는 기존 V37 기준 중심을 유지한다.
+  // V33: 시트 전환으로 닫을 때는 지도 중심을 다시 움직이지 않는다.
+  // 사용자가 X/지도 터치로 인포카드만 닫을 때는 기존 V33 기준 중심을 유지한다.
   if(!opts.keepMap && wasItem && wasItem.item && wasItem.item.lat && _map){
     try{ _focusMarkerAboveInfoCard(wasItem.item); }catch(e){ console.warn("[가톨릭길동무]", e); }
   }
@@ -1726,7 +1716,7 @@ function _mkrImgRetreat(color,big){
 }
 function _mkrImg(color,big){
   const w=big?40:28,h=big?52:36;
-  // V37: iPhone/Android marker cross unified to the cleaner text-glyph marker.
+  // V33: iPhone/Android marker cross unified to the cleaner text-glyph marker.
   // This avoids Safari's SVG rect rendering difference inside the white marker circle.
   const crossBig = `<text x="20" y="25" text-anchor="middle" font-size="13" fill="${color}" font-family="serif" font-weight="bold">✝</text>`;
   const crossSmall = `<text x="14" y="18" text-anchor="middle" font-size="9" fill="${color}" font-family="serif" font-weight="bold">✝</text>`;
@@ -1938,7 +1928,7 @@ function _fitParishNearbyBounds(items, lat, lng){
 function _showParishNearbyMarkersOnMap(items, lat, lng, phase){
   if(_mode!=='parish' || !_map || !Array.isArray(items) || !items.length || typeof _LL==='undefined') return;
   try{
-    /* V37
+    /* V33
        성당 카테고리 첫 진입/내주변 목록에서는 지도에 10개 주변 마커만 올리지 않는다.
        목록은 지금처럼 현재 위치 주변 10곳을 보여주고, 지도에는 그 주변 성당 중
        가장 가까운 성당이 속한 교구의 성당 마커 전체를 표시한다.
@@ -2138,7 +2128,7 @@ function _focusParishPointAround(lat, lng, opts){
         _map.setLevel(targetLevel);
       }
     }
-    // V37: 현재 위치/내 주변/선택 성당 모두 인포카드 기준 중심으로 통일한다.
+    // V33: 현재 위치/내 주변/선택 성당 모두 인포카드 기준 중심으로 통일한다.
     if(typeof _setMapCenterByInfoCardStandard==='function'){
       return _setMapCenterByInfoCardStandard(pos);
     }
@@ -2715,7 +2705,7 @@ function doRegionSearch(){
   inp.blur();
   const body=$('region-body');
   body.innerHTML='<div class="empty-msg">🔍 장소 검색 중...</div>';
-  fetch(_kakaoKeywordUrl(q, 8))
+  fetch(`https://dapi.kakao.com/v2/local/search/keyword.json?query=${_EC(q)}&size=8`,_AH)
   .then(r=>r.json()).then(data=>{
     const docs=data.documents||[];
     if(!docs.length){ _showRegionFallback(q); return; }
@@ -3060,7 +3050,9 @@ async function _calcRoute(){
   _drawLine(_rS, navDest, null);
 
   try{
-  const res=await fetch(_kakaoDirectionsUrl(`${_rS.lng},${_rS.lat}`, `${navDest.lng},${navDest.lat}`));
+  const res=await fetch(
+   `https://apis-navi.kakaomobility.com/v1/directions?origin=${_rS.lng},${_rS.lat}&destination=${navDest.lng},${navDest.lat}&priority=RECOMMEND`,
+   _ACH);
   if(!res.ok) throw new Error(res.status);
   const data=await res.json();
   const route=data.routes?.[0];
@@ -3117,7 +3109,7 @@ function _drawLine(s1,s2,path){
   if(_startTmpMkr) bounds.extend(new _LL(s1.lat,s1.lng));
   if(_endTmpMkr) bounds.extend(new _LL(s2.lat,s2.lng));
   const tabH=($('tabbar')?.offsetHeight)||54;
-  // V37: 길찾기 경로도 성지·성당·피정의집 일반 인포카드와 같은 중심 기준을 사용한다.
+  // V33: 길찾기 경로도 성지·성당·피정의집 일반 인포카드와 같은 중심 기준을 사용한다.
   // 아래 경로 카드가 떠 있어도 별도 55vh 보정을 쓰지 않고, 통일된 카드 기준 여백으로 맞춘다.
   const routeBottomPad=142;
   if(typeof _setBoundsByInfoCardStandard==='function'){
@@ -3199,7 +3191,7 @@ function onSmInp(v){
 }
 
 function _searchKakaoPlace(q){
-  fetch(_kakaoKeywordUrl(q, 10))
+  fetch(`https://dapi.kakao.com/v2/local/search/keyword.json?query=${_EC(q)}&size=10`,_AH)
   .then(r=>r.json()).then(data=>{
     const docs=data.documents||[];
     const body=$('sm-body-place');
@@ -3515,7 +3507,9 @@ document.addEventListener('DOMContentLoaded', function bindEvents() {
   on('diocese-close-btn', 'click', function() {
     if (typeof closeDioceseView === 'function') closeDioceseView();
   });
-  // diocese-frame load는 openDioceseView() 내 frame.onload에서 처리함 (이중 바인딩 방지)
+  on('diocese-frame', 'load', function() {
+    if (typeof dioceseLoaded === 'function') dioceseLoaded();
+  });
 
   // ── 기도문 ──
   on('prayer-close',  'click', function() { _closePrayerAndReturn(); });
