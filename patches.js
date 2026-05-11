@@ -160,10 +160,18 @@
       if(prayerDetail && prayerDetail.classList.contains('show')){
         window.__APP_PRAYER_DETAIL_TS__ = Date.now();
         prayerDetail.classList.remove('show');
+        /* 본문→목록 전환 후, 다음 뒤로가기가 목록 닫기로 처리되도록 history 무장 */
+        setTimeout(function(){
+          try{ history.pushState({oai_prayer_list:1}, '', location.href.split('#')[0]); }catch(e){ console.warn('[가톨릭길동무]', e); }
+        }, 30);
         return true;
       }
-      if(typeof window._returnToMassQuickMenu === 'function') window._returnToMassQuickMenu();
-      else {
+      /* 기도문 목록 → 팝업/커버 */
+      if(typeof window._returnToMassQuickMenu === 'function'){
+        window._returnToMassQuickMenu();
+        /* _returnToMassQuickMenu 는 callGTC 를 호출하지 않으므로 트랩을 직접 재무장 */
+        setTimeout(rearmCoverTrap, 80);
+      } else {
         if(typeof window.closePrayerView === 'function') window.closePrayerView();
         else prayer.classList.remove('open');
         callGTC();
@@ -269,6 +277,8 @@
         closeMassQuickToCover();
         return;
       }
+      /* prayer-view 등이 app-active 없이 열려 있을 수 있으므로 먼저 닫기 */
+      if(closeExtOrModule()) return;
       var exiting = false;
       if(typeof window._showBackToast==='function') exiting = window._showBackToast() === true;
       if(!exiting){ try{ history.pushState({_p:1}, '', _href); }catch(e){ console.warn("[가톨릭길동무]", e); } }
@@ -292,6 +302,8 @@
         closeMassQuickToCover();
         return;
       }
+      /* prayer-view 등이 app-active 없이 열려 있을 수 있으므로 먼저 닫기 */
+      if(closeExtOrModule()) return;
       if(typeof window._showBackToast==='function') window._showBackToast();
       return;
     }
