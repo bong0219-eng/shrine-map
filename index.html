@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko" class="oai-font-global">
 <head>
+<meta charset="UTF-8">
 
 <script>
 (function(){
@@ -26,7 +27,7 @@
   function readStored(){
     try{
       var v = parseFloat(localStorage.getItem(KEY) || '');
-      return (v > 3 && v < 20) ? v : 0;
+      return (v > 3 && v <= 20) ? v : 0;
     }catch(e){ return 0; }
   }
   function measure(){
@@ -37,7 +38,7 @@
     return h ? (h * 0.01) : 0;
   }
   function apply(v, save){
-    if(!(v > 3 && v < 20)) return;
+    if(!(v > 3 && v <= 20)) return;
     root.style.setProperty('--cover-vh', v + 'px');
     if(save){ try{ localStorage.setItem(KEY, String(v)); }catch(e){} }
   }
@@ -65,10 +66,6 @@ window.APP_CONFIG = {
 };
 </script>
 
-<meta charset="UTF-8">
-<meta http-equiv="Cache-Control" content="no-cache, max-age=0, must-revalidate">
-<meta http-equiv="Pragma" content="no-cache">
-<meta http-equiv="Expires" content="0">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover,interactive-widget=resizes-visual">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">

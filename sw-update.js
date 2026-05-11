@@ -19,7 +19,6 @@
     try{
       if(document.getElementById('srch-modal') && document.getElementById('srch-modal').classList.contains('open')) return true;
       if(document.getElementById('sheet-route') && document.getElementById('sheet-route').classList.contains('open')) return true;
-      if(document.getElementById('missa-view') && document.getElementById('missa-view').classList.contains('open')) return true;
     }catch(e){ console.warn("[가톨릭길동무]", e); }
     return false;
   }

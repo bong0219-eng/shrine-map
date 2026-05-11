@@ -369,10 +369,20 @@
   }, true);
   document.addEventListener('DOMContentLoaded', function(){ setTimeout(syncPrayerTabOn, 300); });
   window.addEventListener('load', function(){ setTimeout(syncPrayerTabOn, 300); });
-  setInterval(function(){
-    var pv = document.getElementById('prayer-view');
-    if(pv && pv.classList.contains('open')) syncPrayerTabOn();
-  }, 500);
+  // setInterval 대신 MutationObserver로 기도문 뷰 열림/닫힘만 감지
+  try{
+    var prayerView = document.getElementById('prayer-view') || document.querySelector('#prayer-view');
+    function watchPrayerView(){
+      var pv = document.getElementById('prayer-view');
+      if(!pv || pv.__oaiPrayerTabObserver) return;
+      pv.__oaiPrayerTabObserver = true;
+      new MutationObserver(function(){ if(pv.classList.contains('open')) syncPrayerTabOn(); })
+        .observe(pv, {attributes:true, attributeFilter:['class']});
+    }
+    if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', watchPrayerView, {once:true});
+    else watchPrayerView();
+    window.addEventListener('load', watchPrayerView, {once:true});
+  }catch(e){ console.warn('[가톨릭길동무]', e); }
 })();
 
 
@@ -519,10 +529,6 @@
 
 /* ====== 성능 최적화 JS 패치 ====== */
 (function(){
-  // 중복 setTimeout 래핑으로 인한 함수 실행 누적 방지
-  // relayoutAll 류 함수의 과도한 setTimeout 체인 제한
-  var _raf = requestAnimationFrame;
-  
   // cover의 pull-to-refresh: 불필요한 transform 제거
   var coverEl = document.getElementById('cover');
   if(coverEl) coverEl.style.willChange = 'auto';
@@ -577,14 +583,6 @@
 
 (function(){
   'use strict';
-  window.oaiSwipeAction = function(el, dir){
-    if(!el) return;
-    el.classList.remove('oai-swipe-left','oai-swipe-right');
-    requestAnimationFrame(function(){
-      el.classList.add(dir === 'right' ? 'oai-swipe-right' : 'oai-swipe-left');
-      setTimeout(function(){ try{ el.classList.remove('oai-swipe-left','oai-swipe-right'); }catch(e){ console.warn("[가톨릭길동무]", e); } }, 180);
-    });
-  };
   var DIO_KEY = 'oai_diocese_return_state_v3';
   window.openDioceseExternal = function(url, state){
     if(!url) return;
@@ -622,7 +620,7 @@
     el.classList.add(dir==='right'?'oai-swipe-right':'oai-swipe-left');
     setTimeout(function(){try{el.classList.remove('oai-swipe-left','oai-swipe-right');}catch(e){ console.warn("[가톨릭길동무]", e); }},240);
   }
-  window.oaiSwipeAction = function(el, dir){ flash(el, dir); };
+  window.oaiSwipeAction = function(el, dir){ flash(el, dir); };  /* 787번 줄에서 overlay 방식으로 덮어씀 */
 
   /* 가로로 밀 때 브라우저/웹뷰 자체 화면이 옆으로 밀리는 현상 차단 */
   function bindHorizontalGuard(el){

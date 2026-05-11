@@ -3507,9 +3507,7 @@ document.addEventListener('DOMContentLoaded', function bindEvents() {
   on('diocese-close-btn', 'click', function() {
     if (typeof closeDioceseView === 'function') closeDioceseView();
   });
-  on('diocese-frame', 'load', function() {
-    if (typeof dioceseLoaded === 'function') dioceseLoaded();
-  });
+  // diocese-frame load는 openDioceseView() 내 frame.onload에서 처리함 (이중 바인딩 방지)
 
   // ── 기도문 ──
   on('prayer-close',  'click', function() { _closePrayerAndReturn(); });
