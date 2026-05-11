@@ -183,7 +183,7 @@
     url = (typeof normalizeCatholicExternalUrl === 'function') ? normalizeCatholicExternalUrl(url) : String(url||'').trim();
     if(!url) return;
 
-    // V21-1: 웹사이트와 순례길 모두 외부 복귀는 브라우저의 기본 복원에 맡긴다.
+    // V21-2: 웹사이트와 순례길 모두 외부 복귀는 브라우저의 기본 복원에 맡긴다.
     // 별도 sessionStorage 복원/지도 재초기화가 복귀 순간 덜컹거림을 만들 수 있어 저장하지 않는다.
     try{ sessionStorage.removeItem(RETURN_KEY); }catch(e){ console.warn("[가톨릭길동무]", e); }
     location.href = url;
@@ -199,6 +199,7 @@
   function enterIntegratedView(id){
     hideIntegratedViews();
     _screen = 'map';
+    if(typeof window.oaiSetMainMapLayerHidden === 'function') window.oaiSetMainMapLayerHidden(true);
     document.documentElement.classList.add('app-active');
     document.documentElement.classList.remove('parish-mode','retreat-mode');
     const cover = ig$('cover');
@@ -268,19 +269,19 @@
     if(!state || !state.module) return;
 
     if(state.module === 'web'){
-      // V21-1: 웹사이트 화면은 브라우저가 돌아온 화면을 그대로 복원하게 둔다.
+      // V21-2: 웹사이트 화면은 브라우저가 돌아온 화면을 그대로 복원하게 둔다.
       // 여기서 openWebView/renderWebList를 다시 호출하면 복귀 순간 배경 지도와 목록이 겹쳐 보인다.
       return;
     }
 
     if(state.module === 'trail'){
-      // V21-1: 순례길도 외부 복귀 시 강제 재오픈/지도 재생성을 하지 않는다.
+      // V21-2: 순례길도 외부 복귀 시 강제 재오픈/지도 재생성을 하지 않는다.
       return;
     }
   }
 
   window.addEventListener('pageshow', function(){
-    // V21-1: 외부사이트 복귀 시 순례길 지도 relayout을 강제로 반복하지 않는다.
+    // V21-2: 외부사이트 복귀 시 순례길 지도 relayout을 강제로 반복하지 않는다.
     // 브라우저 bfcache가 복원한 화면을 그대로 두는 것이 가장 덜 흔들린다.
     setTimeout(restoreIntegratedState, 0);
   });
@@ -440,7 +441,7 @@
           if(webState.curCat==='⭐ 즐겨찾기') renderWebList();
           return;
         }
-        // V21-1: 교구 카드도 저장/복원 없이 즉시 이동한다.
+        // V21-2: 교구 카드도 저장/복원 없이 즉시 이동한다.
         if(isDioceseCard){
           openExternalUrl(s.url, { module:'web' });
           return;
