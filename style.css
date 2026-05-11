@@ -1697,7 +1697,7 @@ html.retreat-mode #sm-tab-bar .sm-tab.active{
 }
 
 
-/* V31: 비지도 전체화면에서는 뒤쪽 메인 카카오 지도 레이어를 숨긴다.
+/* V32: 비지도 전체화면에서는 뒤쪽 메인 카카오 지도 레이어를 숨긴다.
    성지·성당·피정의집 지도 화면은 이 클래스가 꺼진 상태로 유지한다. */
 html.oai-hide-main-map-layer #map-wrap,
 html.oai-hide-main-map-layer #loc-btn,
@@ -1711,7 +1711,7 @@ html.oai-hide-main-map-layer #srch-modal{
 }
 html.oai-hide-main-map-layer #app{background:#EDE8E0;}
 
-/* V31: 외부 복귀/화면 진입 CSS 정리
+/* V32: 외부 복귀/화면 진입 CSS 정리
    외부 이동 보호막을 제거한 현재 구조에서는 복귀 전용 강제 고정 CSS를 두지 않는다.
    화면 진입 중 필요한 최소 전환만 유지하고, app/viewport 전체를 흔드는 전역 보정은 금지한다. */
 html:not(.app-active),html:not(.app-active) body{scroll-behavior:auto!important;}
@@ -1796,7 +1796,7 @@ html.retreat-mode #region-body .nearby-dist span{
   margin-left:4px!important;
 }
 
-/* 커버 전용 당겨서 새로고침 — V31 단일 기준 */
+/* 커버 전용 당겨서 새로고침 — V32 단일 기준 */
 #cover{
   overscroll-behavior-y:contain!important;
 }
@@ -2125,7 +2125,7 @@ html.app-active #cv-pull-modern{
 #qna-view  .qna-tab.on        { background: var(--navy, #0e1535) !important; }
 
 /* ── 6. 헤더 배경색 (모듈별) ─────────────────────────────────────── */
-/* V31: 기도문 헤더를 기준으로 주요 모듈 헤더 단색 통일 */
+/* V32: 기도문 헤더를 기준으로 주요 모듈 헤더 단색 통일 */
 #prayer-bar,
 #trail-view .module-bar,
 #web-view .module-bar,
@@ -2168,7 +2168,7 @@ html.oai-font-global #qna-view  .qna-tab {
 
 
 /* ══════════════════════════════════════════════════════════════════
-   V31 커버 레이아웃 안정 복원
+   V32 커버 레이아웃 안정 복원
    구조: #cover > cover-header / #cover-main-block / #cover-bottom-note
    #cover-main-block: cover-grid + cover-action-row 한 몸체
    V19 완료 기준 커버 구조로 복원
@@ -2338,7 +2338,7 @@ html.app-active #cover {
 }
 
 
-/* V31: iPhone 카카오톡 인앱 브라우저 Safari 설치 안내
+/* V32: iPhone 카카오톡 인앱 브라우저 Safari 설치 안내
    - 커버 레이아웃을 밀지 않고, 커버 위 레이어로 표시한다.
    - 카테고리를 일부 가려도 Safari 설치 안내가 먼저 보이도록 한다. */
 #cover .ios-safari-banner{
@@ -2571,7 +2571,7 @@ html.oai-font-global #cover #cover-bottom-note,
 }
 
 
-/* V31: 출발 검색 모달 색상 기준 재정리
+/* V32: 출발 검색 모달 색상 기준 재정리
    - 성지/성당/피정 + 일반장소 탭: 활성은 금색, 비활성은 고유색 배경 위의 은은한 반투명 버튼
    - 검색창을 감싸는 영역은 성지/성당/피정 각 카테고리 고유색으로 통일
    - 실제 검색 입력창(.sm-si)은 기존 아이보리 계열 유지 */
@@ -2642,7 +2642,7 @@ html.retreat-mode #srch-modal #sm-tab-bar .sm-tab:not(.active){
 html #srch-modal #sm-tab-bar .sm-tab.active,
 html.parish-mode #srch-modal #sm-tab-bar .sm-tab.active,
 html.retreat-mode #srch-modal #sm-tab-bar .sm-tab.active{
-  /* V31: 바로 위 교구 활성화 버튼(.sm-fb.on)과 같은 금색 기준 사용 */
+  /* V32: 바로 위 교구 활성화 버튼(.sm-fb.on)과 같은 금색 기준 사용 */
   background:var(--gold,#d4aa6a)!important;
   background-image:none!important;
   color:#1F2937!important;
@@ -2654,7 +2654,7 @@ html.retreat-mode #srch-modal #sm-tab-bar .sm-tab.active{
 
 
 /* ══════════════════════════════════════════════════════════════════
-   V31 모듈 표준화
+   V32 모듈 표준화
    - 헤더: 기도문 헤더 기준 단색 네이비(그라데이션 제거)
    - 탭바/탭버튼: 관구·교구 탭 기준 높이·형태 통일
    - 활성 탭의 고유 색상은 각 모듈 기존 색상을 유지
@@ -2738,7 +2738,7 @@ html.oai-font-global #trail-view .trail-tab{
 }
 
 /* ══════════════════════════════════════════════════════════════════
-   V31 주요 기능 안내 — 커버 전용, 별도 파일 없음
+   V32 주요 기능 안내 — 커버 전용, 별도 파일 없음
    ══════════════════════════════════════════════════════════════════ */
 #cover #cover-guide-btn{
   position:absolute;
@@ -3001,7 +3001,7 @@ html.app-active #cover-guide-btn{ display:none!important; }
   .guide-mini-list{ grid-template-columns:66px 1fr; }
 }
 
-/* V31: iPhone 내부 화면 UI 밀도 보정
+/* V32: iPhone 내부 화면 UI 밀도 보정
    - 커버/설치 배너/지도 컨테이너는 그대로 두고, 내부 카드·버튼·여백만 조밀하게 조정한다.
    - transform scale을 쓰지 않아 가장자리 빈 공간과 지도 터치 좌표 문제를 피한다. */
 html.ios-device{
@@ -3086,233 +3086,3 @@ html.ios-device .trail-sh-head{padding-left:12px!important;padding-right:12px!im
 html.ios-device .qna-tab{height:36px!important;border-radius:10px!important;}
 html.ios-device .qna-card,
 html.ios-device .qna-panel{border-radius:13px!important;}
-
-
-/* ============================================================
-   V31: iPhone 표시 보정
-   1) 십자가를 문자/이모지가 아니라 CSS 도형으로 고정
-   2) iPhone 내부 글자·버튼 밀도를 한 단계 더 조밀하게 조정
-   ============================================================ */
-
-/* 헤더 십자가: 기기별 이모지 렌더링 차이 제거 */
-#prayer-bar .module-bar-ico,
-#trail-view .module-bar-ico,
-#diocese-view .module-bar-ico,
-#qna-view .module-bar-ico{
-  position:relative!important;
-  font-size:0!important;
-  overflow:hidden!important;
-}
-#prayer-bar .module-bar-ico::before,
-#trail-view .module-bar-ico::before,
-#diocese-view .module-bar-ico::before,
-#qna-view .module-bar-ico::before{
-  content:""!important;
-  display:block!important;
-  position:absolute!important;
-  left:50%!important;
-  top:50%!important;
-  width:5px!important;
-  height:25px!important;
-  transform:translate(-50%,-50%)!important;
-  background:currentColor!important;
-  border-radius:2px!important;
-}
-#prayer-bar .module-bar-ico::after,
-#trail-view .module-bar-ico::after,
-#diocese-view .module-bar-ico::after,
-#qna-view .module-bar-ico::after{
-  content:""!important;
-  display:block!important;
-  position:absolute!important;
-  left:50%!important;
-  top:50%!important;
-  width:21px!important;
-  height:5px!important;
-  transform:translate(-50%,-50%)!important;
-  background:currentColor!important;
-  border-radius:2px!important;
-}
-
-/* 기도문 카드 십자가: iOS 보라색 이모지 박스 방지 */
-.pr-icon-dot{
-  position:relative!important;
-  font-size:0!important;
-  overflow:hidden!important;
-}
-.pr-icon-dot::before{
-  content:""!important;
-  display:block!important;
-  position:absolute!important;
-  left:50%!important;
-  top:50%!important;
-  width:4px!important;
-  height:21px!important;
-  transform:translate(-50%,-50%)!important;
-  background:currentColor!important;
-  border-radius:2px!important;
-}
-.pr-icon-dot::after{
-  content:""!important;
-  display:block!important;
-  position:absolute!important;
-  left:50%!important;
-  top:50%!important;
-  width:17px!important;
-  height:4px!important;
-  transform:translate(-50%,-50%)!important;
-  background:currentColor!important;
-  border-radius:2px!important;
-}
-
-/* iPhone 전용: 전체 내부 UI를 조금 더 작고 조밀하게 */
-html.ios-device{
-  --ios-ui-density:.88;
-  --ios-inner-font-scale:.90;
-  --app-fs-title:14.4px;
-  --app-fs-body:14.2px;
-  --app-fs-sub:11.2px;
-  --pr-item-fs:14.4px;
-  --pr-body-fs:15px;
-  --pr-detail-fs:16px;
-  --pr-icon-sz:32px;
-  --pr-icon-fs:0px;
-  --fs-header:19px;
-  --fs-tab:13px;
-  --oai-std-header-h:58px;
-  --oai-std-title-fs:18px;
-  --oai-std-sub-fs:10px;
-  --oai-std-btn-fs:12px;
-  --oai-std-icon-sz:22px;
-}
-
-html.ios-device #app .module-bar,
-html.ios-device #prayer-view .module-bar,
-html.ios-device #web-view .module-bar,
-html.ios-device #trail-view .module-bar,
-html.ios-device #diocese-view .module-bar,
-html.ios-device #qna-view .module-bar{
-  padding:calc(env(safe-area-inset-top,0px) + 8px) 11px 8px!important;
-}
-
-html.ios-device #prayer-bar .module-bar-title,
-html.ios-device #web-view .module-bar-title,
-html.ios-device #trail-view .module-bar-title,
-html.ios-device #diocese-view .module-bar-title,
-html.ios-device #qna-view .module-bar-title,
-html.ios-device.oai-font-global #prayer-bar-ttl,
-html.ios-device.oai-font-global .module-bar-title{
-  font-size:18px!important;
-  line-height:1.18!important;
-}
-html.ios-device #prayer-bar .module-bar-sub,
-html.ios-device #web-view .module-bar-sub,
-html.ios-device #trail-view .module-bar-sub,
-html.ios-device #diocese-view .module-bar-sub,
-html.ios-device #qna-view .module-bar-sub,
-html.ios-device.oai-font-global #prayer-bar-sub,
-html.ios-device.oai-font-global .module-bar-sub{
-  font-size:10px!important;
-  line-height:1.15!important;
-}
-
-html.ios-device #goodnews-prayer-btn{
-  font-size:13px!important;
-  min-height:34px!important;
-  padding:0 12px!important;
-  border-radius:15px!important;
-}
-
-html.ios-device #prayer-tabs .pr-tab,
-html.ios-device .web-cat-btn,
-html.ios-device .trail-tab,
-html.ios-device #app .tab-btn{
-  font-size:12.2px!important;
-  letter-spacing:-.04em!important;
-}
-
-html.ios-device #app .tab-btn{
-  height:52px!important;
-  min-height:52px!important;
-  padding:5px 2px 4px!important;
-}
-
-html.ios-device .pr-item{
-  padding:10px 12px!important;
-  min-height:58px!important;
-}
-html.ios-device .pr-title,
-html.ios-device.oai-font-global .pr-title{
-  font-size:14.4px!important;
-  line-height:1.32!important;
-}
-html.ios-device .pr-icon-dot,
-html.ios-device.oai-font-global .pr-icon-dot{
-  width:32px!important;
-  height:32px!important;
-  flex-basis:32px!important;
-  min-width:32px!important;
-  border-radius:9px!important;
-}
-html.ios-device .pr-icon-dot::before{height:19px!important;width:3.6px!important;}
-html.ios-device .pr-icon-dot::after{width:15px!important;height:3.6px!important;}
-
-html.ios-device .nearby-name,
-html.ios-device .li-name,
-html.ios-device .region-item .li-name,
-html.ios-device .sm-name,
-html.ios-device .sm-place-name,
-html.ios-device.oai-font-global .nearby-name,
-html.ios-device.oai-font-global .li-name,
-html.ios-device.oai-font-global .region-item .nearby-name,
-html.ios-device.oai-font-global #region-body .li-name,
-html.ios-device.oai-font-global #region-body .nearby-name,
-html.ios-device.oai-font-global .sm-name,
-html.ios-device.oai-font-global .sm-place-name{
-  font-size:14.6px!important;
-  line-height:1.28!important;
-}
-html.ios-device .nearby-addr,
-html.ios-device .li-sub,
-html.ios-device .region-item .li-sub,
-html.ios-device .sm-sub,
-html.ios-device .sm-place-addr,
-html.ios-device.oai-font-global .nearby-addr,
-html.ios-device.oai-font-global .li-sub,
-html.ios-device.oai-font-global #region-body .li-sub,
-html.ios-device.oai-font-global #region-body .nearby-addr,
-html.ios-device.oai-font-global .sm-sub,
-html.ios-device.oai-font-global .sm-place-addr{
-  font-size:11.4px!important;
-  line-height:1.32!important;
-}
-html.ios-device .nearby-dist,
-html.ios-device.oai-font-global .nearby-dist{
-  font-size:13.2px!important;
-}
-html.ios-device #app .nearby-item,
-html.ios-device #app .region-item,
-html.ios-device #app .list-item{
-  padding:8px 10px!important;
-}
-
-
-/* ============================================================
-   V31: 기도문 목록 아이콘 복구
-   V31에서 .pr-icon-dot 전체에 십자가 도형을 얹어 원래 이모지와 겹쳤던 문제 수정.
-   헤더 십자가와 지도 마커 십자가 통일 보정은 유지하고, 목록 아이콘만 원래 표시로 복구.
-   ============================================================ */
-.pr-icon-dot::before,
-.pr-icon-dot::after{
-  content:none!important;
-  display:none!important;
-}
-.pr-icon-dot{
-  font-size:var(--pr-icon-fs,17px)!important;
-  color:inherit!important;
-  text-indent:0!important;
-}
-html.ios-device .pr-icon-dot,
-html.ios-device.oai-font-global .pr-icon-dot{
-  font-size:15px!important;
-}
