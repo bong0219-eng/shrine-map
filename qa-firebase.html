@@ -48,7 +48,8 @@
     background: #0e1535; color: #fff;
     height: calc(70px + env(safe-area-inset-top, 0px)); min-height: calc(70px + env(safe-area-inset-top, 0px)); padding: env(safe-area-inset-top, 0px) 16px 10px;
     display: flex; align-items: center; gap: 12px;
-    position: sticky; top: 0; z-index: 100;
+    position: fixed; top: 0; left: 50%; transform: translateX(-50%); z-index: 100;
+    max-width: 720px;
     border-radius: 0; border-bottom: 2px solid var(--gold); box-shadow: 0 12px 28px rgba(18,24,38,.18);
   }
   #qna-cross-icon {
@@ -90,21 +91,26 @@
   /* ── 뷰 전환 ── */
   .view { display: none; padding: 0 0 80px; }
   .view.active { display: block; }
+  #list-view { padding-top: calc(120px + env(safe-area-inset-top, 0px)); }
+  #detail-view-wrap, #write-view { padding-top: calc(84px + env(safe-area-inset-top, 0px)); }
 
   /* ── 필터 ── */
   #filter-bar {
-    height: 52px; min-height: 52px; max-height: 52px;
-    display: flex; align-items: center; gap: 8px; padding: 8px 14px;
-    background: rgba(255,255,255,.92);
+    position: fixed; top: calc(70px + env(safe-area-inset-top, 0px)); left: 50%; transform: translateX(-50%); z-index: 90;
+    width: 100%; max-width: 720px;
+    height: 50px; min-height: 50px; max-height: 50px;
+    display: flex; align-items: center; gap: 5px; padding: 7px 8px;
+    background: rgba(255,255,255,.96);
     border-bottom: 1px solid rgba(0,0,0,.08);
-    overflow-x: auto; overflow-y: hidden; scrollbar-width: none;
+    overflow: hidden; scrollbar-width: none;
     box-sizing: border-box;
+    touch-action: pan-y;
   }
   #filter-bar::-webkit-scrollbar { display: none; }
   .filter-btn {
-    flex-shrink: 0; height: 36px; min-height: 36px;
-    border: 1.5px solid #dde3ee; border-radius: 14px;
-    padding: 0 16px; font-size: 14px; background: #f4f6fb; color: #5a6478;
+    flex: 1 1 0; min-width: 0; height: 36px; min-height: 36px;
+    border: 1.5px solid #dde3ee; border-radius: 12px;
+    padding: 0 4px; font-size: 12px; background: #f4f6fb; color: #5a6478;
     cursor: pointer; font-weight: 700; font-family: inherit; transition: background .14s,color .14s,border-color .14s;
     display: flex; align-items: center; justify-content: center; line-height: 1; white-space: nowrap;
     box-shadow: inset 0 1px 0 rgba(255,255,255,.8);
@@ -256,42 +262,6 @@
     .field-group { margin-bottom: 12px; }
     #write-view { padding-top: 12px; }
     textarea { min-height: 96px; }
-  }
-
-
-  /* 문의 헤더/탭바 기준 정리 */
-  #header {
-    height: calc(70px + env(safe-area-inset-top, 0px));
-    min-height: calc(70px + env(safe-area-inset-top, 0px));
-    padding: env(safe-area-inset-top, 0px) 16px 10px;
-    gap: 12px;
-  }
-  #qna-cross-icon {
-    width: 42px; height: 42px; min-width: 42px; flex: 0 0 42px;
-    font-size: 22px;
-  }
-  #header-texts .title { font-size: 20px; font-weight: 800; line-height: 1.24; }
-  #header-texts .sub { font-size: 11px; font-weight: 600; line-height: 1.25; }
-  #close-btn { width: 36px; height: 36px; min-width: 36px; flex: 0 0 36px; }
-
-  #filter-bar {
-    position: sticky;
-    top: calc(70px + env(safe-area-inset-top, 0px));
-    z-index: 90;
-    height: 50px; min-height: 50px; max-height: 50px;
-    display: flex; align-items: center; gap: 5px;
-    padding: 7px 8px;
-    overflow: hidden;
-    background: rgba(255,255,255,.96);
-  }
-  .filter-btn {
-    flex: 1 1 0;
-    min-width: 0;
-    height: 36px; min-height: 36px;
-    padding: 0 4px;
-    font-size: 12px;
-    border-radius: 12px;
-    white-space: nowrap;
   }
 
 </style>
@@ -605,7 +575,7 @@ function showDetailView(post) {
 }
 
 /* ═══════════════════ 운영자 답변 관리 ═══════════════════
-   V22: 공개 HTML 안의 운영자 인증/답변/삭제 기능 제거.
+   V24: 공개 HTML 안의 운영자 인증/답변/삭제 기능 제거.
    답변과 삭제는 Firebase 콘솔 또는 별도 서버 인증 관리자 도구에서 처리합니다.
 */
 
@@ -707,10 +677,10 @@ showView('list-view', { historyMode:'replace' });
 subscribeList();
 </script>
 
-<script id="oai-cache-lifecycle-V22">
+<script id="oai-cache-lifecycle-V24">
 (function(){
   'use strict';
-  var APP_VERSION = 'V22';
+  var APP_VERSION = 'V24';
   if('serviceWorker' in navigator){
     try{ navigator.serviceWorker.register('./sw.js?v=' + encodeURIComponent(APP_VERSION)).then(function(reg){try{reg.update();}catch(e){}}).catch(function(){}); }catch(e){}
   }
