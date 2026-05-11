@@ -1819,16 +1819,16 @@ function _restoreMapMarkers(){
     /* 성당 카테고리는 내주변 기준 교구만 유지한다.
        내주변 목록을 뒤로가기로 닫아도 전국 교구 라벨 화면으로 되돌리지 않는다. */
     const keepCode = (AppState && AppState.nearbyParishDioCode) || _activeDio || null;
-    document.querySelectorAll('.dio-label').forEach(e=>{e.style.transform='';e.style.display='none';});
-    _hideDioOverlays();
     if(keepCode){
       if(_activeDio && _activeDio!==keepCode){
         try{ _hideParishDioMkrs(_activeDio); }catch(e){ console.warn('[가톨릭길동무]',e); }
       }
       _activeDio=keepCode;
       _showParishDioMkrs(keepCode);
+      _syncParishDioLabels();
       return;
     }
+    _syncParishDioLabels();
     try{ _showCurrentParishDioIfIdle(); }catch(e){ console.warn('[가톨릭길동무]',e); }
     return;
   }
@@ -1948,12 +1948,12 @@ function _showParishNearbyMarkersOnMap(items, lat, lng, phase){
       try{ _hideParishDioMkrs(_activeDio); }catch(e){ console.warn('[가톨릭길동무]',e); }
     }
 
-    // 교구명 라벨은 내주변 목록 아래에서 시야를 복잡하게 만들 수 있어 숨기고,
-    // 지도에는 해당 교구의 성당 마커 전체만 표시한다.
-    _hideDioOverlays();
+    // 선택된 교구는 성당 마커로 표시하므로 교구명 라벨을 숨기고,
+    // 나머지 교구명 라벨은 지도 위에 남겨 두어 다른 교구로 바로 이동할 수 있게 한다.
     if(_paSelMkr){ try{ _paSelMkr.setMap(null); }catch(e){ console.warn('[가톨릭길동무]',e); } _paSelMkr=null; }
     _activeDio = code;
     _showParishDioMkrs(code);
+    _syncParishDioLabels();
 
     // 마커는 해당 교구 전체를 표시하고, 줌/중심은 내 주변 10곳 기준으로 맞춘다.
     // final 거리 재계산 때 같은 교구면 다시 맞추지 않아 덜컹거림을 줄인다.
@@ -2023,9 +2023,7 @@ function _selectParishMarker(p){
     if(_activeDio && _activeDio!==dioCode) _hideParishDioMkrs(_activeDio);
     _activeDio=dioCode;
     _showParishDioMkrs(dioCode);
-    document.querySelectorAll('.dio-label').forEach(e=>{e.style.transform='';e.style.display='';});
-    const clickedEl=_dioOverlays[dioCode]?.getContent?.();
-    if(clickedEl){clickedEl.style.display='none';}
+    _syncParishDioLabels();
     // 성당 선택의 노란 마커는 교구 전체 bounds로 축소하지 않고, 선택 지점 주변만 보이도록 한다.
     // 실제 중심/확대는 인포카드 표시 후 _focusMarkerAboveInfoCard()에서 한 번만 처리한다.
   }else if(dioCode){
@@ -2191,19 +2189,28 @@ function _hideDioOverlays(){
   Object.values(_dioOverlays).forEach(ov=>{ try{ov.setMap(null);}catch(e){ console.warn("[가톨릭길동무]", e); } });
 }
 
+function _syncParishDioLabels(){
+  if(_mode!=='parish' || !_map || !_parishSysInited) return;
+  Object.entries(_dioOverlays).forEach(([code,ov])=>{
+    try{ ov.setMap(_map); }catch(e){ console.warn("[가톨릭길동무]", e); }
+    const el = ov && typeof ov.getContent==='function' ? ov.getContent() : null;
+    if(el){
+      el.style.transform='';
+      el.style.display = (code===_activeDio) ? 'none' : '';
+    }
+  });
+}
+
 function _toggleParishDio(code){
   if(_activeDio===code){
     _hideParishDioMkrs(code);_activeDio=null;
-    const el=_dioOverlays[code]?.getContent?.();
-    if(el){el.style.transform='';el.style.display='';}
+    _syncParishDioLabels();
     return;
   }
-  if(_activeDio){_hideParishDioMkrs(_activeDio);const pe=_dioOverlays[_activeDio]?.getContent?.();if(pe){pe.style.transform='';pe.style.display='';}}
-  document.querySelectorAll('.dio-label').forEach(e=>{e.style.transform='';e.style.display='';});
+  if(_activeDio){_hideParishDioMkrs(_activeDio);}
   _activeDio=code;
-  const clickedEl=_dioOverlays[code]?.getContent?.();
-  if(clickedEl){clickedEl.style.display='none';}
   _showParishDioMkrs(code);
+  _syncParishDioLabels();
   _focusParishDio(code,{fromLabel:true});
 }
 
@@ -2430,9 +2437,7 @@ function _showCurrentParishDioIfIdle(){
     _activeDio=code;
     _showParishDioMkrs(code);
     if(typeof _focusParishPointAround==='function') _focusParishPointAround(_myLat,_myLng,{level:6});
-    document.querySelectorAll('.dio-label').forEach(e=>{e.style.transform='';e.style.display='';});
-    const clickedEl=_dioOverlays[code]?.getContent?.();
-    if(clickedEl){clickedEl.style.display='none';}
+    _syncParishDioLabels();
   }catch(e){ console.warn("[가톨릭길동무]", e); }
 }
 function _setMyLoc(lat,lng){
