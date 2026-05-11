@@ -1,0 +1,33 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /qa_posts/{postId} {
+      // 문의·건의 글은 앱에서 읽을 수 있습니다.
+      allow read: if true;
+
+      // 사용자는 새 문의만 작성할 수 있습니다.
+      // 답변/삭제/수정은 공개 앱에서 허용하지 않습니다.
+      allow create: if
+        request.resource.data.keys().hasOnly([
+          'category', 'title', 'content', 'author', 'date',
+          'answer', 'answered', 'createdAt'
+        ])
+        && request.resource.data.category in ['문의', '수정제안', '개선건의', '칭찬']
+        && request.resource.data.title is string
+        && request.resource.data.title.size() > 0
+        && request.resource.data.title.size() <= 80
+        && request.resource.data.content is string
+        && request.resource.data.content.size() > 0
+        && request.resource.data.content.size() <= 2000
+        && request.resource.data.author is string
+        && request.resource.data.date is string
+        && request.resource.data.answered == false
+        && request.resource.data.answer == null;
+
+      // 공개 앱에서는 수정과 삭제를 막습니다.
+      // 운영자 답변과 삭제는 Firebase 콘솔에서 직접 처리하세요.
+      allow update, delete: if false;
+    }
+  }
+}

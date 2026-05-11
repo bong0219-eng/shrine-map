@@ -175,8 +175,6 @@
   }
   #admin-form { background: #fffaf2; border: 1px solid #e6dccb; border-radius: var(--radius); padding: 14px; }
   .admin-pin-row { display: flex; gap: 8px; margin-bottom: 10px; }
-  #admin-pin-input { flex: 1; }
-  #admin-pin-check { padding: 0 16px; background: #92400E; color: #fff; border: none; border-radius: 10px; font-size: 16px; cursor: pointer; font-family: inherit; }
   #answer-textarea {
     width: 100%; border: 1px solid #e6dccb; border-radius: 10px;
     padding: 10px 12px; font-size: 16px; line-height: 1.75; resize: vertical;
@@ -198,12 +196,12 @@
   .cat-opt.active-수정제안 { background:#FEF9C3; color:#92400E; border-color:#FDE68A; font-weight:700; }
   .cat-opt.active-개선건의 { background:#F0FDF4; color:#166534; border-color:#BBF7D0; font-weight:700; }
   .cat-opt.active-칭찬     { background:#FDF4FF; color:#7E22CE; border-color:#E9D5FF; font-weight:700; }
-  input[type=text], input[type=number], input[type=password], textarea {
+  input[type=text], input[type=number], textarea {
     width: 100%; border: 1.5px solid #e6dccb; border-radius: 10px;
     padding: 11px 14px; font-size: 16px; font-family: inherit; outline: none;
     background: #fffaf2; transition: border-color .15s;
   }
-  input[type=text]:focus, input[type=number]:focus, input[type=password]:focus, textarea:focus { border-color: var(--gold); }
+  input[type=text]:focus, input[type=number]:focus, textarea:focus { border-color: var(--gold); }
   textarea { resize: vertical; line-height: 1.75; }
   .char-count { text-align: right; font-size: 16px; color: var(--gray-400); margin-top: 4px; }
   .error-msg { color: #DC2626; font-size: 16px; margin-bottom: 12px; }
@@ -344,7 +342,6 @@ const FIREBASE_CONFIG = {
 };
 
 
-const ADMIN_PASSWORD = "cksgurdltkfkdgo";
 
 /* ══════════════════════════════════════════════ */
 
@@ -361,7 +358,6 @@ const FILTERS     = ["전체", ...CATEGORIES];
 let currentFilter  = "전체";
 let currentPost    = null;
 let selectedCat    = "문의";
-let adminUnlocked  = false;
 let unsubscribe    = null;
 
 /* ═══════════════════ 뷰 전환 ═══════════════════ */
@@ -417,7 +413,6 @@ function goList(opt)   {
   try{ document.activeElement && document.activeElement.blur && document.activeElement.blur(); }catch(e){}
   opt = opt || {};
   showView('list-view', { history: opt.history !== false, historyMode: opt.historyMode || 'replace' });
-  adminUnlocked = false;
   currentPost = null;
 }
 function goWrite()  {
@@ -504,7 +499,6 @@ function openPost(id) {
 
 function showDetailView(post) {
   currentPost   = post;
-  adminUnlocked = false;
 
   const contentHTML = escHtml(post.content);
 
@@ -529,24 +523,9 @@ function showDetailView(post) {
           <div class="answer-text">${escHtml(post.answer)}</div>
         </div>` : `
         <div class="pending-box">⏳ 답변을 준비 중입니다. 잠시 기다려 주세요.</div>`}
-
-      <div class="admin-area">
-        <button id="admin-toggle-btn" onclick="toggleAdminArea()">🔧 관리자 답변 달기</button>
-        <div id="admin-form" style="display:none;">
-          <div style="font-size:16px;font-weight:700;color:#92400E;margin-bottom:10px;">관리자 인증 후 답변 작성</div>
-          <div class="admin-pin-row" id="admin-pin-row">
-            <input type="password" id="admin-pin-input" placeholder="관리자 비밀번호" style="flex:1;">
-            <button id="admin-pin-check" onclick="verifyAdmin()">확인</button>
-          </div>
-          <div id="admin-write-area" style="display:none;">
-            <textarea id="answer-textarea" rows="4" placeholder="답변을 입력하세요…">${escHtml(post.answer || '')}</textarea>
-            <div class="btn-row">
-              <button class="btn-primary" style="font-size:16px;" onclick="submitAnswer()">답변 등록</button>
-              <button class="btn-secondary" onclick="deleteCurrentPost()">글 삭제</button>
-              <button class="btn-secondary" onclick="toggleAdminArea()">취소</button>
-            </div>
-          </div>
-          <div id="admin-error" class="error-msg" style="display:none;margin-top:8px;"></div>
+      <div class="admin-area qa-public-admin-notice">
+        <div style="font-size:13px;color:#64748B;line-height:1.5;">
+          운영자 답변은 앱 안에서 작성하지 않고 Firebase 콘솔에서 관리합니다.
         </div>
       </div>
     </div>`;
@@ -554,49 +533,10 @@ function showDetailView(post) {
   goDetail();
 }
 
-/* ═══════════════════ 관리자 ═══════════════════ */
-function toggleAdminArea() {
-  const form = document.getElementById('admin-form');
-  form.style.display = form.style.display === 'none' ? 'block' : 'none';
-}
-function verifyAdmin() {
-  const pw = document.getElementById('admin-pin-input').value;
-  if (pw === ADMIN_PASSWORD) {
-    document.getElementById('admin-pin-row').style.display = 'none';
-    document.getElementById('admin-write-area').style.display = 'block';
-    document.getElementById('admin-error').style.display = 'none';
-    adminUnlocked = true;
-  } else {
-    document.getElementById('admin-error').textContent = '비밀번호가 틀렸습니다.';
-    document.getElementById('admin-error').style.display = 'block';
-  }
-}
-async function submitAnswer() {
-  if (!adminUnlocked) return;
-  const text = document.getElementById('answer-textarea').value.trim();
-  if (!text) return;
-  try {
-    await COL.doc(currentPost.id).update({ answer: text, answered: true });
-    currentPost = { ...currentPost, answer: text, answered: true };
-    alert('답변이 등록되었습니다.');
-    showDetailView(currentPost);
-  } catch(e) {
-    alert('저장 실패: ' + e.message);
-  }
-}
-
-async function deleteCurrentPost() {
-  if (!adminUnlocked || !currentPost) return;
-  if (!confirm('이 글을 삭제하시겠습니까? 삭제 후에는 되돌릴 수 없습니다.')) return;
-  try {
-    await COL.doc(currentPost.id).delete();
-    alert('삭제되었습니다.');
-    currentPost = null;
-    goList();
-  } catch(e) {
-    alert('삭제 실패: ' + e.message);
-  }
-}
+/* ═══════════════════ 운영자 답변 관리 ═══════════════════
+   V37: 공개 HTML 안의 운영자 인증/답변/삭제 기능 제거.
+   답변과 삭제는 Firebase 콘솔 또는 별도 서버 인증 관리자 도구에서 처리합니다.
+*/
 
 /* ═══════════════════ 글쓰기 ═══════════════════ */
 function buildCatRow() {
@@ -645,7 +585,6 @@ async function submitPost() {
 
   const data = {
     category: selectedCat, title, content, author, date: today,
-    secret: false, pin: null,
     answer: null, answered: false,
     createdAt: firebase.firestore.FieldValue.serverTimestamp()
   };
@@ -700,7 +639,7 @@ subscribeList();
 <script id="oai-cache-lifecycle-V23">
 (function(){
   'use strict';
-  var APP_VERSION = 'V33';
+  var APP_VERSION = 'V37';
   if('serviceWorker' in navigator){
     try{ navigator.serviceWorker.register('./sw.js?v=' + encodeURIComponent(APP_VERSION)).then(function(reg){try{reg.update();}catch(e){}}).catch(function(){}); }catch(e){}
   }
@@ -730,7 +669,7 @@ subscribeList();
     '.btn-kakao-route','.btn-kakao-nav','.c-btn',
     '.web-card','.trail-foot','.web-card-foot','.trail-sh-foot',
     '#close-btn','.module-close','.sheet-x','.sm-x','.ic-close-btn','.c-x',
-    '.btn-primary','.btn-secondary','#write-btn','#sb','#admin-pin-check'
+    '.btn-primary','.btn-secondary','#write-btn','#sb'
   ].join(',');
 
   function closest(el, sel){
