@@ -1,19 +1,19 @@
-/* 가톨릭길동무 Service Worker - V37-2
+/* 가톨릭길동무 Service Worker - V37-3
    캐시를 매번 삭제하지 않고, 버전 변경 시 오래된 캐시만 정리합니다.
    localStorage/사용자 설정은 건드리지 않습니다. */
-const CACHE_VERSION = 'catholic-way-V37-2';
+const CACHE_VERSION = 'catholic-way-V37-3';
 const APP_SHELL = [
   './',
   './index.html',
   './diocese.html',
   './qa-firebase.html',
-  './parishes.js?v=V37-2',
-  './style.css?v=V37-2',
-  './app.js?v=V37-2',
-  './web.js?v=V37-2',
-  './prayer.js?v=V37-2',
-  './patches.js?v=V37-2',
-  './sw-update.js?v=V37-2',
+  './parishes.js?v=V37-3',
+  './style.css?v=V37-3',
+  './app.js?v=V37-3',
+  './web.js?v=V37-3',
+  './prayer.js?v=V37-3',
+  './patches.js?v=V37-3',
+  './sw-update.js?v=V37-3',
   './manifest.json',
   './icon-192x192.png',
   './icon-512x512.png',

@@ -204,6 +204,7 @@
   // 트랩이 소실되면 다음 뒤로가기에서 앱이 탈출된다.
   window.addEventListener('pageshow', function(){
     try{
+      if(!appActive() && typeof window._resetCoverExitReady === 'function') window._resetCoverExitReady();
       var st = history.state;
       if(st && st._p === 1) return;  // 트랩 유지 중이면 스킵
       history.replaceState({_p:0}, '', _href);
@@ -369,7 +370,7 @@
   if(window.__APP_FONT_SCALE_GUARD__) return;
   window.__APP_FONT_SCALE_GUARD__=true;
   // V37: 문의·건의는 qa-firebase.html 한 경로로만 통일한다.
-  var QA_URL="qa-firebase.html?v=V37-1";
+  var QA_URL="qa-firebase.html?v=V37-3";
   var FONT_KEY='prayer_font_size', BASE=16, SIZES=[15,16,17,18,19,20,21,22,24,26,28];
   function el(id){return document.getElementById(id)}
   function getPx(){var px=parseInt(localStorage.getItem(FONT_KEY)||BASE,10);return (px>=15&&px<=28)?px:BASE;}
@@ -906,11 +907,18 @@
     if(now && !lastCover) clearNativeExitToast();
     lastCover=now;
   }
+  function resetNativeExitToastIfCover(){
+    if(isCover()) clearNativeExitToast();
+  }
   var oldGTC=window.goToCover;
   if(typeof oldGTC==='function'){
     window.goToCover=function(){
       var r=oldGTC.apply(this,arguments);
-      setTimeout(function(){fixRetreatTabLabel();resetNativeExitToastOnCoverEntry();},0);
+      // goToCover가 호출되었다면 lastCover 상태와 무관하게 종료 대기값을 지운다.
+      // 팝업/기도문 흐름은 이미 커버 위에서 움직여 lastCover가 true인 경우가 있으므로
+      // '커버가 아니었다가 커버가 됨' 조건에만 의존하면 첫 뒤로가기에서 바로 종료될 수 있다.
+      clearNativeExitToast();
+      setTimeout(function(){fixRetreatTabLabel();resetNativeExitToastIfCover();},0);
       return r;
     };
   }
@@ -926,6 +934,7 @@
   function boot(){fixRetreatTabLabel();resetNativeExitToastOnCoverEntry();}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
   window.addEventListener('load',function(){boot();setTimeout(boot,200);},{once:true});
+  window.addEventListener('pageshow',function(){setTimeout(resetNativeExitToastIfCover,0);},true);
   try{new MutationObserver(function(){fixRetreatTabLabel();resetNativeExitToastOnCoverEntry();}).observe(document.documentElement,{attributes:true,attributeFilter:['class']});}catch(e){ console.warn("[가톨릭길동무]", e); }
 })();
 

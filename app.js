@@ -217,7 +217,7 @@ function syncCoverUpdateVersionState(){
     var box = document.getElementById('cover-update-box');
     var marker = document.getElementById('oai-build-marker');
     if(!btn || !box) return;
-    var target = btn.getAttribute('data-target-version') || 'V37-1';
+    var target = btn.getAttribute('data-target-version') || 'V37-3';
     var current = '';
     if(window.APP_VERSION) current = String(window.APP_VERSION).trim();
     if(!current && marker) current = String(marker.textContent || '').trim();
@@ -488,7 +488,7 @@ function openDioceseView(opts){
       if(!restore) try{ frame.contentWindow && frame.contentWindow.resetDioceseFirstPage && frame.contentWindow.resetDioceseFirstPage(); }catch(e){ console.warn("[가톨릭길동무]", e); }
       if(typeof dioceseLoaded==='function') dioceseLoaded();
     };
-    frame.src='diocese.html?v=V37-1';
+    frame.src='diocese.html?v=V37-3';
   }else if(!restore){
     try{ frame.contentWindow && frame.contentWindow.resetDioceseFirstPage && frame.contentWindow.resetDioceseFirstPage(); }catch(e){ console.warn("[가톨릭길동무]", e); }
   }
@@ -1221,6 +1221,10 @@ function goToCover(){
     _coverEl.style.pointerEvents='';
     _coverEl.scrollTop=0;
   }
+  // 커버로 돌아오는 모든 경로는 새 종료 대기 상태로 시작해야 한다.
+  // 정상 카테고리뿐 아니라 팝업/기도문/외부복귀 경로에서도
+  // 이전 _exitReady=true가 남아 커버 첫 뒤로가기에서 바로 종료되는 것을 막는다.
+  try{ if(typeof _resetCoverExitReady === 'function') _resetCoverExitReady(); }catch(e){ console.warn('[가톨릭길동무]', e); }
 }
 
 function _loadMap(){
