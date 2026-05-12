@@ -3088,14 +3088,23 @@ html.ios-device .qna-card,
 html.ios-device .qna-panel{border-radius:13px!important;}
 
 
-/* V37-6-3: 외부 복귀 후 빠른메뉴 팝업 표시 흔들림 완화 */
-html.oai-massquick-resuming #cover{
-  will-change:auto;
-}
+/* V37-6-4: 빠른메뉴 외부 복귀 흔들림 최소 보정
+   - history/popstate/goToCover는 건드리지 않고, 무거운 blur/큰 눌림 변형만 줄인다. */
 .mass-quick-modal .guide-backdrop{
-  transition:opacity .12s ease;
+  -webkit-backdrop-filter:none!important;
+  backdrop-filter:none!important;
+  background:rgba(31,42,68,.30)!important;
 }
-.mass-quick-modal .guide-panel{
-  transition:opacity .14s ease, transform .14s ease;
-  transform:translate3d(0,0,0);
+.mass-quick-modal .guide-panel,
+.mass-quick-panel{
+  transform:translateZ(0);
+  backface-visibility:hidden;
+  contain:layout paint style;
+}
+.mass-quick-btn.app-pressing,
+.mass-quick-btn.mass-quick-primary.app-pressing{
+  transform:translateY(2px) scale(.995)!important;
+  filter:brightness(.98)!important;
+  box-shadow:0 7px 16px rgba(31,42,68,.08)!important;
+  transition:transform .10s ease,filter .10s ease,box-shadow .10s ease!important;
 }
