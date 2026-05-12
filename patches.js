@@ -167,13 +167,18 @@
 
   window.addEventListener('popstate', function(){
     if(window._appExiting) return;
-    if(_restoring){ _restoring = false; return; }
 
+    /* 빠른메뉴/안내 팝업이 열려 있으면 어떤 복원 상태보다 먼저 닫는다.
+       _restoring이 남은 상태에서 이 검사를 건너뛰면 Android PWA가 팝업을 닫지 못하고
+       바로 앱 종료 흐름으로 빠질 수 있다. */
     if(isGuideModalOpen()){
+      _restoring = false;
       closeGuideModals();
       try{ history.pushState({_p:1}, '', _href); }catch(e){ console.warn("[가톨릭길동무]", e); }
       return;
     }
+
+    if(_restoring){ _restoring = false; return; }
 
     /* 커버: 토스트 → 두 번째에 종료. go(1) 재복원 없이 바로 트랩만 다시 심어 2번으로 끝낸다. */
     if(!appActive()){
