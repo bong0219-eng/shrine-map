@@ -31,17 +31,6 @@
 
   function $b(id){ return document.getElementById(id); }
   function appActive(){ return document.documentElement.classList.contains('app-active'); }
-  function isMassQuickOpen(){
-    var m = $b('mass-quick-modal');
-    return !!(m && m.classList.contains('show'));
-  }
-  function closeMassQuickModal(){
-    if(typeof window.closeMassQuickMenu === 'function') window.closeMassQuickMenu();
-    else {
-      var m = $b('mass-quick-modal');
-      if(m){ m.classList.remove('show'); m.setAttribute('aria-hidden','true'); }
-    }
-  }
 
   function isGuideModalOpen(){
     try{ return !!document.querySelector('.guide-modal.show'); }catch(e){ return false; }
@@ -49,11 +38,8 @@
   function closeGuideModals(){
     try{
       document.querySelectorAll('.guide-modal.show').forEach(function(el){
-        if(el && el.id === 'mass-quick-modal') closeMassQuickModal();
-        else {
-          el.classList.remove('show');
-          el.setAttribute('aria-hidden','true');
-        }
+        el.classList.remove('show');
+        el.setAttribute('aria-hidden','true');
       });
       if(typeof window.resetGuideManualScroll === 'function') window.resetGuideManualScroll();
     }catch(e){ console.warn('[가톨릭길동무]', e); }
@@ -174,17 +160,9 @@
   /* ── popstate 핸들러 ── */
   var _restoring = false;
 
-  window.addEventListener('popstate', function(e){
+  window.addEventListener('popstate', function(){
     if(window._appExiting) return;
     if(_restoring){ _restoring = false; return; }
-
-    if(isMassQuickOpen()){
-      closeMassQuickModal();
-      try{
-        if(!e.state || e.state._p !== 1) history.pushState({_p:1}, '', _href);
-      }catch(err){ console.warn("[가톨릭길동무]", err); }
-      return;
-    }
 
     if(isGuideModalOpen()){
       closeGuideModals();
@@ -211,8 +189,11 @@
 
   /* Cordova 물리 백버튼 */
   document.addEventListener('backbutton', function(){
-    if(isMassQuickOpen()){ closeMassQuickModal(); return; }
-    if(isGuideModalOpen()){ closeGuideModals(); return; }
+    if(isGuideModalOpen()){
+      closeGuideModals();
+      try{ history.pushState({_p:1}, '', _href); }catch(e){ console.warn("[가톨릭길동무]", e); }
+      return;
+    }
     if(!appActive()){
       if(typeof window._showBackToast==='function') window._showBackToast();
       return;
@@ -450,8 +431,8 @@
 (function(){
   if(window.__APP_FONT_SCALE_GUARD__) return;
   window.__APP_FONT_SCALE_GUARD__=true;
-  // V46: 문의·건의는 qa-firebase.html 한 경로로만 통일한다.
-  var QA_URL="qa-firebase.html?v=V46";
+  // V47: 문의·건의는 qa-firebase.html 한 경로로만 통일한다.
+  var QA_URL="qa-firebase.html?v=V47";
   var FONT_KEY='prayer_font_size', BASE=16, SIZES=[15,16,17,18,19,20,21,22,24,26,28];
   function el(id){return document.getElementById(id)}
   function getPx(){var px=parseInt(localStorage.getItem(FONT_KEY)||BASE,10);return (px>=15&&px<=28)?px:BASE;}
