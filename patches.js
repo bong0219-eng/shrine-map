@@ -964,7 +964,6 @@
   /* 스크롤/당겨서 새로고침 중 눌림 방지 적용 대상: 목록형 요소만 */
   var delayedSelectors = [
     '#cover .cover-card','#cover .cv-hotspot','#cover .cv-btn',
-    '#mass-quick-modal .mass-quick-btn',
     '#prayer-list-view .pr-item','#prayer-list-view .prayer-item','#prayer-list-view .prayer-card','#prayer-list-view .prayer-list-item','#prayer-list-view .pr-list-item',
     '#trail-list .trail-card',
     '#region-body .list-item','#region-body .nearby-item','#region-body .region-item',
@@ -976,6 +975,7 @@
 
   var directSelectors = [
     'a','input','textarea','select','label',
+    '#mass-quick-modal .mass-quick-btn',
     '.ic-link-btn','.ic-hp-btn','.ic-guide-btn',
     '.btn-kakao-route','.btn-kakao-nav','.c-btn',
     '.trail-foot','.web-card-foot','.trail-sh-foot','.trail-sh-body',

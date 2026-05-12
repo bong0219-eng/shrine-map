@@ -3088,7 +3088,7 @@ html.ios-device .qna-card,
 html.ios-device .qna-panel{border-radius:13px!important;}
 
 
-/* V37-6-4: 빠른메뉴 외부 복귀 흔들림 최소 보정
+/* V37-6-5: 빠른메뉴 외부 복귀 흔들림 최소 보정
    - history/popstate/goToCover는 건드리지 않고, 무거운 blur/큰 눌림 변형만 줄인다. */
 .mass-quick-modal .guide-backdrop{
   -webkit-backdrop-filter:none!important;
