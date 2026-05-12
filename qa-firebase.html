@@ -99,6 +99,11 @@
     border-bottom: 1px solid rgba(0,0,0,.08);
     overflow-x: auto; overflow-y: hidden; scrollbar-width: none;
     box-sizing: border-box;
+    position: sticky;
+    top: calc(70px + env(safe-area-inset-top, 0px));
+    z-index: 90;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
   }
   #filter-bar::-webkit-scrollbar { display: none; }
   .filter-btn {
@@ -700,7 +705,7 @@ subscribeList();
 <script id="oai-cache-lifecycle-V23">
 (function(){
   'use strict';
-  var APP_VERSION = 'V34';
+  var APP_VERSION = 'V35';
   if('serviceWorker' in navigator){
     try{ navigator.serviceWorker.register('./sw.js?v=' + encodeURIComponent(APP_VERSION)).then(function(reg){try{reg.update();}catch(e){}}).catch(function(){}); }catch(e){}
   }
