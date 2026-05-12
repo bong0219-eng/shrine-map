@@ -23,7 +23,7 @@ function hideCoverAndRun(callback) {
 
 
 function markExternalReturnStabilize(kind){
-  // V37-16: 외부 사이트 이동은 브라우저 기본 동작에 맡긴다.
+  // V37-17: 외부 사이트 이동은 브라우저 기본 동작에 맡긴다.
   // 이전 버전 호환을 위해 함수명만 유지하고, 이동 상태는 저장하지 않는다.
 }
 
@@ -43,7 +43,7 @@ function oaiClearExternalNavigationState(){
 }
 
 function oaiSmoothNavigate(url, kind){
-  // V37-16: 호환용 함수. 보호막/지연/전역 가로채기 없이 즉시 이동한다.
+  // V37-17: 호환용 함수. 보호막/지연/전역 가로채기 없이 즉시 이동한다.
   if(!url) return;
   try{ document.activeElement && document.activeElement.blur && document.activeElement.blur(); }catch(e){ console.warn("[가톨릭길동무]", e); }
   try{ oaiClearExternalNavigationState(); }catch(e){ console.warn("[가톨릭길동무]", e); }
@@ -51,7 +51,7 @@ function oaiSmoothNavigate(url, kind){
 }
 
 function applyExternalReturnStabilize(){
-  // V37-16: 복귀 시 화면을 재계산하지 않고, 예전 이동중 잔여 상태만 제거한다.
+  // V37-17: 복귀 시 화면을 재계산하지 않고, 예전 이동중 잔여 상태만 제거한다.
   try{ oaiClearExternalNavigationState(); }catch(e){ console.warn("[가톨릭길동무]", e); }
 }
 window.addEventListener('pageshow', applyExternalReturnStabilize, true);
@@ -144,12 +144,12 @@ function _hideMassQuickModalOnly(){
 }
 function _armMassQuickHistoryTrap(force){
   try{
-    // V37-16: 팝업용 history는 같은 URL state만 쓰지 않고 #massQuick 해시를 붙인다.
-    // 일부 Android PWA/WebView에서 같은 URL pushState가 native back 보호막으로 안정적으로 잡히지 않아
-    // 팝업에서 곧바로 앱이 종료되는 일이 있었기 때문이다.
+    // 빠른메뉴 팝업은 커버 위에 뜨는 화면이라 브라우저가 자동으로 history를 만들지 않는다.
+    // 예전 플래그가 남아 있어도 실제 history trap이 없으면 팝업에서 뒤로가기 시 앱이 바로 종료될 수 있으므로,
+    // 팝업을 새로 열 때는 항상 현재 커버 상태를 trap으로 보정한 뒤 팝업용 trap을 1개 심는다.
     var href = location.href.split('#')[0];
     try{ history.replaceState({_p:1, oai_cover_trap:1}, '', href); }catch(_e){}
-    history.pushState({_p:2, oai_mass_quick:1}, '', href + '#massQuick');
+    history.pushState({_p:2, oai_mass_quick:1}, '', href);
     window.__MASS_QUICK_POPUP_TRAP_ARMED__ = true;
   }catch(e){ console.warn("[가톨릭길동무]", e); }
 }
@@ -185,7 +185,10 @@ function closeMassQuickMenu(opts){
   }
   // X 버튼/배경 클릭처럼 popstate가 아닌 방식으로 팝업을 닫아도
   // 다음 커버 뒤로가기에서 바로 앱이 종료되지 않도록 커버 trap을 보정한다.
-  try{ history.replaceState({_p:1, oai_cover_trap:1}, '', location.href.split('#')[0]); }catch(e){ console.warn("[가톨릭길동무]", e); }
+  // popstate로 닫는 경우에는 patches.js가 replace+push를 한 번만 담당한다.
+  if(!(opts && opts.fromBack)){
+    try{ history.replaceState({_p:1, oai_cover_trap:1}, '', location.href.split('#')[0]); }catch(e){ console.warn("[가톨릭길동무]", e); }
+  }
 }
 function _resumeMassQuickReturnIfNeeded(){
   try{
@@ -219,16 +222,6 @@ document.addEventListener('visibilitychange', function(){
 window.addEventListener('focus', function(){
   try{ _resumeMassQuickReturnIfNeeded(); }catch(e){ console.warn("[가톨릭길동무]", e); }
 }, true);
-window.addEventListener('hashchange', function(){
-  try{
-    var mq = document.getElementById('mass-quick-modal');
-    if(mq && mq.classList.contains('show') && location.hash !== '#massQuick'){
-      closeMassQuickMenu({preserveReturn:true});
-      try{ history.replaceState({_p:1, oai_cover_trap:1}, '', location.href.split('#')[0]); }catch(_e){}
-      try{ history.pushState({_p:1, oai_cover_trap:1}, '', location.href.split('#')[0]); }catch(_e2){}
-    }
-  }catch(e){ console.warn("[가톨릭길동무]", e); }
-}, true);
 try{ window._shouldMassQuickReturn=_shouldMassQuickReturn; window._massQuickReturnKind=_massQuickReturnKind; window._clearMassQuickReturnForReload=_clearMassQuickReturnForReload; window._returnToMassQuickMenu=_returnToMassQuickMenu; window._closePrayerAndReturn=_closePrayerAndReturn; window._resetCoverExitReady=_resetCoverExitReady; window._resumeMassQuickReturnIfNeeded=_resumeMassQuickReturnIfNeeded; window.openMassQuickMenu=openMassQuickMenu; window.closeMassQuickMenu=closeMassQuickMenu; }catch(e){ console.warn('[가톨릭길동무]', e); }
 
 // 안정형 새로고침: 캐시/서비스워커를 지우지 않고 현재 화면만 다시 불러온다.
@@ -243,7 +236,7 @@ function refreshAppFilesOnly(){
       btn.textContent = '새로고침 중';
     }
     if(document.activeElement && document.activeElement.blur) document.activeElement.blur();
-    // V37-16: 새로고침 전에는 레이아웃/스크롤/모달 DOM을 건드리지 않고,
+    // V37-17: 새로고침 전에는 레이아웃/스크롤/모달 DOM을 건드리지 않고,
     // 복귀 상태값만 정리한다. 화면 흔들림은 주로 reload 직전 DOM 조작에서 발생했다.
     sessionStorage.setItem('oai_soft_refresh_requested', String(Date.now ? Date.now() : new Date().getTime()));
     try{ _clearMassQuickReturnForReload(); }catch(_e){}
@@ -291,7 +284,7 @@ function syncCoverUpdateVersionState(){
     var box = document.getElementById('cover-update-box');
     var marker = document.getElementById('oai-build-marker');
     if(!btn || !box) return;
-    var target = btn.getAttribute('data-target-version') || 'V37-16';
+    var target = btn.getAttribute('data-target-version') || 'V37-17';
     var current = '';
     if(window.APP_VERSION) current = String(window.APP_VERSION).trim();
     if(!current && marker) current = String(marker.textContent || '').trim();
@@ -310,7 +303,7 @@ document.addEventListener('DOMContentLoaded', function(){
 }, true);
 window.addEventListener('load', syncCoverUpdateVersionState, true);
 
-// V37-16: 커버 전용 주요 기능 안내. 별도 파일 없이 작은 자동 안내 + 자세한 카드형 팝업을 제공한다.
+// V37-17: 커버 전용 주요 기능 안내. 별도 파일 없이 작은 자동 안내 + 자세한 카드형 팝업을 제공한다.
 (function(){
   'use strict';
   var HIDE_DAYS = 7;
@@ -396,7 +389,7 @@ window.addEventListener('load', syncCoverUpdateVersionState, true);
   function maybeShowIntro(){
     var forceRefresh = hasRecentSoftRefreshRequest();
     if(forceRefresh){
-      // V37-16: 안정형 새로고침 뒤에는 어떤 커버 팝업도 자동으로 다시 띄우지 않는다.
+      // V37-17: 안정형 새로고침 뒤에는 어떤 커버 팝업도 자동으로 다시 띄우지 않는다.
       try{ if(typeof closeMassQuickMenu === 'function') closeMassQuickMenu(); }catch(e){ console.warn('[가톨릭길동무]', e); }
       try{ hideModal('guide-intro-modal'); hideModal('guide-manual-modal'); }catch(e){ console.warn('[가톨릭길동무]', e); }
       try{ var ios=document.getElementById('ios-safari-guide-modal'); if(ios){ ios.classList.remove('show'); ios.setAttribute('aria-hidden','true'); } }catch(e){ console.warn('[가톨릭길동무]', e); }
@@ -486,7 +479,7 @@ function _closePrayerAndReturn(){
 
 
 
-// V37-16: iPhone 카카오톡 인앱 브라우저에서만 Safari 설치 안내 배너를 표시한다.
+// V37-17: iPhone 카카오톡 인앱 브라우저에서만 Safari 설치 안내 배너를 표시한다.
 (function(){
   'use strict';
   function ua(){ return (navigator.userAgent || '').toLowerCase(); }
@@ -571,7 +564,7 @@ function openDioceseView(opts){
       if(!restore) try{ frame.contentWindow && frame.contentWindow.resetDioceseFirstPage && frame.contentWindow.resetDioceseFirstPage(); }catch(e){ console.warn("[가톨릭길동무]", e); }
       if(typeof dioceseLoaded==='function') dioceseLoaded();
     };
-    frame.src='diocese.html?v=V37-16';
+    frame.src='diocese.html?v=V37-17';
   }else if(!restore){
     try{ frame.contentWindow && frame.contentWindow.resetDioceseFirstPage && frame.contentWindow.resetDioceseFirstPage(); }catch(e){ console.warn("[가톨릭길동무]", e); }
   }
@@ -698,7 +691,7 @@ function restoreCoreReturnState(){
     _loadMap();
   }
   const restoreDelay = needMapLoad ? 650 : 30;
-  // V37-16: 외부사이트 복귀 시 지도 중심을 두 단계로 움직이지 않는다.
+  // V37-17: 외부사이트 복귀 시 지도 중심을 두 단계로 움직이지 않는다.
   // 인포카드가 있었던 경우에는 처음부터 인포카드 기준 중심으로 복원한다.
   setTimeout(()=>{
     _restoreMapMarkers();
@@ -1581,7 +1574,7 @@ function _updateTabBtns(active){
 }
 
 function _getInfoCardCenterTargetY(mapH){
-  // V37-16: 성지·성당·피정 지도 중심은 항상 인포카드가 올라왔을 때의 기준으로 통일한다.
+  // V37-17: 성지·성당·피정 지도 중심은 항상 인포카드가 올라왔을 때의 기준으로 통일한다.
   // 실제 인포카드가 아직 없거나 목록 시트만 떠 있어도 같은 시각 중심을 사용해 덜컹거림을 줄인다.
   return Math.round((mapH || 700) * 0.34);
 }
@@ -1762,8 +1755,8 @@ function closeInfoCard(opts){
   else {
     if(_paSelMkr){try{_paSelMkr.setMap(null);}catch(e){ console.warn("[가톨릭길동무]", e); }  _paSelMkr=null;}
   }
-  // V37-16: 시트 전환으로 닫을 때는 지도 중심을 다시 움직이지 않는다.
-  // 사용자가 X/지도 터치로 인포카드만 닫을 때는 기존 V37-16 기준 중심을 유지한다.
+  // V37-17: 시트 전환으로 닫을 때는 지도 중심을 다시 움직이지 않는다.
+  // 사용자가 X/지도 터치로 인포카드만 닫을 때는 기존 V37-17 기준 중심을 유지한다.
   if(!opts.keepMap && wasItem && wasItem.item && wasItem.item.lat && _map){
     try{ _focusMarkerAboveInfoCard(wasItem.item); }catch(e){ console.warn("[가톨릭길동무]", e); }
   }
@@ -1837,7 +1830,7 @@ function _mkrImgRetreat(color,big){
 }
 function _mkrImg(color,big){
   const w=big?40:28,h=big?52:36;
-  // V37-16: iPhone/Android marker cross unified to the cleaner text-glyph marker.
+  // V37-17: iPhone/Android marker cross unified to the cleaner text-glyph marker.
   // This avoids Safari's SVG rect rendering difference inside the white marker circle.
   const crossBig = `<text x="20" y="25" text-anchor="middle" font-size="13" fill="${color}" font-family="serif" font-weight="bold">✝</text>`;
   const crossSmall = `<text x="14" y="18" text-anchor="middle" font-size="9" fill="${color}" font-family="serif" font-weight="bold">✝</text>`;
@@ -2049,7 +2042,7 @@ function _fitParishNearbyBounds(items, lat, lng){
 function _showParishNearbyMarkersOnMap(items, lat, lng, phase){
   if(_mode!=='parish' || !_map || !Array.isArray(items) || !items.length || typeof _LL==='undefined') return;
   try{
-    /* V37-16
+    /* V37-17
        성당 카테고리 첫 진입/내주변 목록에서는 지도에 10개 주변 마커만 올리지 않는다.
        목록은 지금처럼 현재 위치 주변 10곳을 보여주고, 지도에는 그 주변 성당 중
        가장 가까운 성당이 속한 교구의 성당 마커 전체를 표시한다.
@@ -2249,7 +2242,7 @@ function _focusParishPointAround(lat, lng, opts){
         _map.setLevel(targetLevel);
       }
     }
-    // V37-16: 현재 위치/내 주변/선택 성당 모두 인포카드 기준 중심으로 통일한다.
+    // V37-17: 현재 위치/내 주변/선택 성당 모두 인포카드 기준 중심으로 통일한다.
     if(typeof _setMapCenterByInfoCardStandard==='function'){
       return _setMapCenterByInfoCardStandard(pos);
     }
@@ -3228,7 +3221,7 @@ function _drawLine(s1,s2,path){
   if(_startTmpMkr) bounds.extend(new _LL(s1.lat,s1.lng));
   if(_endTmpMkr) bounds.extend(new _LL(s2.lat,s2.lng));
   const tabH=($('tabbar')?.offsetHeight)||54;
-  // V37-16: 길찾기 경로도 성지·성당·피정의집 일반 인포카드와 같은 중심 기준을 사용한다.
+  // V37-17: 길찾기 경로도 성지·성당·피정의집 일반 인포카드와 같은 중심 기준을 사용한다.
   // 아래 경로 카드가 떠 있어도 별도 55vh 보정을 쓰지 않고, 통일된 카드 기준 여백으로 맞춘다.
   const routeBottomPad=142;
   if(typeof _setBoundsByInfoCardStandard==='function'){

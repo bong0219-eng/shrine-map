@@ -39,7 +39,7 @@
     try{
       var mq = $b('mass-quick-modal');
       if(mq && mq.classList.contains('show') && typeof window.closeMassQuickMenu === 'function'){
-        window.closeMassQuickMenu();
+        window.closeMassQuickMenu({fromBack:true});
       } else {
         document.querySelectorAll('.guide-modal.show').forEach(function(el){
           el.classList.remove('show');
@@ -167,18 +167,22 @@
 
   window.addEventListener('popstate', function(){
     if(window._appExiting) return;
-    if(_restoring){ _restoring = false; return; }
 
+    // 빠른메뉴/안내 팝업은 항상 최우선으로 처리한다.
+    // 이전 카테고리 복원용 _restoring 값이 남아 있으면 팝업 back이 무시되어
+    // Android PWA에서 바로 앱 탈출로 이어질 수 있으므로, 팝업이 열려 있으면
+    // _restoring 상태와 무관하게 먼저 닫고 커버 trap을 다시 세운다.
     if(isGuideModalOpen()){
+      _restoring = false;
       closeGuideModals();
       try{
-        // 팝업에서 뒤로가기 후에는 반드시 커버 trap을 다시 세워
-        // 다음 뒤로가기가 앱 종료가 아니라 커버 종료 토스트로 이어지게 한다.
         history.replaceState({_p:1, oai_cover_trap:1}, '', _href);
         history.pushState({_p:1, oai_cover_trap:1}, '', _href);
       }catch(e){ console.warn("[가톨릭길동무]", e); }
       return;
     }
+
+    if(_restoring){ _restoring = false; return; }
 
     /* 커버: 토스트 → 두 번째에 종료. go(1) 재복원 없이 바로 트랩만 다시 심어 2번으로 끝낸다. */
     if(!appActive()){
@@ -378,8 +382,8 @@
 (function(){
   if(window.__APP_FONT_SCALE_GUARD__) return;
   window.__APP_FONT_SCALE_GUARD__=true;
-  // V37-16: 문의·건의는 qa-firebase.html 한 경로로만 통일한다.
-  var QA_URL="qa-firebase.html?v=V37-16";
+  // V37-17: 문의·건의는 qa-firebase.html 한 경로로만 통일한다.
+  var QA_URL="qa-firebase.html?v=V37-17";
   var FONT_KEY='prayer_font_size', BASE=16, SIZES=[15,16,17,18,19,20,21,22,24,26,28];
   function el(id){return document.getElementById(id)}
   function getPx(){var px=parseInt(localStorage.getItem(FONT_KEY)||BASE,10);return (px>=15&&px<=28)?px:BASE;}
@@ -790,7 +794,7 @@
     try{
       var mq = $b('mass-quick-modal');
       if(mq && mq.classList.contains('show') && typeof window.closeMassQuickMenu === 'function'){
-        window.closeMassQuickMenu();
+        window.closeMassQuickMenu({fromBack:true});
       } else {
         document.querySelectorAll('.guide-modal.show').forEach(function(el){
           el.classList.remove('show');
