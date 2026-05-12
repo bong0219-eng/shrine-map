@@ -887,7 +887,9 @@
     try{
       var ind=$('cv-pull-modern');
       hideIndicator(ind);
-      if(isCoverVisible()) window.scrollTo(0,0);
+      // 외부 사이트에서 돌아올 때 강제 window.scrollTo(0,0)를 실행하면
+      // 화면이 아래로 내려갔다가 돌아오는 흔들림이 생긴다.
+      // pull-to-refresh 표시만 정리하고 스크롤 위치는 브라우저 복원에 맡긴다.
     }catch(e){ console.warn('[가톨릭길동무]', e); }
   }, true);
 

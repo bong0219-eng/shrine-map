@@ -103,7 +103,7 @@ function _isFreshMassQuickReturnStore(store){
     if(!store || store.getItem('oai_mass_quick_return') !== '1') return false;
     var ts = parseInt(store.getItem('oai_mass_quick_return_ts') || '0', 10) || 0;
     if(!ts) return true;
-    return Date.now() - ts < 30 * 60 * 1000;
+    return Date.now() - ts < 5 * 60 * 1000;
   }catch(e){ return false; }
 }
 function _shouldMassQuickReturn(){
@@ -155,12 +155,19 @@ function _hideMassQuickMenuOnly(){
   modal.classList.remove('show');
   modal.setAttribute('aria-hidden','true');
 }
+function _isCoverAlreadyVisibleForQuickMenu(){
+  try{
+    var cover=document.getElementById('cover');
+    return !!(cover && !document.documentElement.classList.contains('app-active') && getComputedStyle(cover).display !== 'none');
+  }catch(e){ return false; }
+}
 function _returnToMassQuickMenu(){
-  // 매일미사/주요기도문/성가에서 돌아올 때는 커버를 안정화한 뒤 빠른메뉴 팝업까지만 복귀한다.
-  if(typeof goToCover==='function') goToCover();
+  // 외부 사이트에서 돌아올 때 이미 커버가 복원되어 있으면 goToCover()를 다시 호출하지 않는다.
+  // goToCover() 재호출이 커버를 아래로 밀었다가 되돌리는 흔들림의 주된 원인이었다.
+  if(!_isCoverAlreadyVisibleForQuickMenu() && typeof goToCover==='function') goToCover();
   _resetCoverExitReady();
   _clearMassQuickReturnForReload();
-  setTimeout(function(){ openMassQuickMenu(); }, 30);
+  setTimeout(function(){ openMassQuickMenu(); }, 16);
 }
 function openMassQuickMenu(opts){
   const modal=document.getElementById('mass-quick-modal');
@@ -189,12 +196,17 @@ var _massQuickResumeBusy = false;
 function _resumeMassQuickReturnIfNeeded(){
   try{
     // 매일미사/성가 외부 사이트에서 돌아온 경우에만 빠른메뉴 팝업을 복구한다.
-    // V37-6-5: pageshow에서 reload 판정으로 먼저 지워버리면 외부 복귀 플래그가 사라질 수 있으므로,
+    // V37-6-6: pageshow에서 reload 판정으로 먼저 지워버리면 외부 복귀 플래그가 사라질 수 있으므로,
     // 복귀 플래그 확인을 가장 먼저 하고 실제 복구는 한 번만 예약한다.
     if(!_shouldMassQuickReturn()) return false;
     if(document.documentElement.classList.contains('app-active')) return false;
     var mq = document.getElementById('mass-quick-modal');
-    if(mq && mq.classList.contains('show')) return true;
+    if(mq && mq.classList.contains('show')){
+      // bfcache가 팝업 열린 상태를 그대로 복원한 경우에는 다시 goToCover/open을 돌리지 않는다.
+      // 여기서 복귀 플래그를 지워야 이후 다른 외부사이트 복귀 때 화면이 다시 튀지 않는다.
+      _clearMassQuickReturnForReload();
+      return true;
+    }
     if(_massQuickResumeBusy) return true;
     if(_massQuickResumeTimer) clearTimeout(_massQuickResumeTimer);
     _massQuickResumeBusy = true;
@@ -222,10 +234,16 @@ function _tryResumeMassQuickSoon(){
   return false;
 }
 window.addEventListener('pageshow', function(){
-  // 외부 복귀 시에는 reload 판정보다 빠른메뉴 복귀 플래그를 우선한다.
-  // 그래야 매일미사/성가에서 돌아왔을 때 커버에 멈추지 않고 팝업으로 복귀한다.
-  _tryResumeMassQuickSoon();
-  setTimeout(_tryResumeMassQuickSoon, 120);
+  // 외부 복귀 시에는 빠른메뉴 복귀 플래그를 우선 확인한다.
+  // 복귀 플래그가 없으면 V37-4처럼 커버 종료 대기값을 정리해서 커버 2회 종료 흐름을 보존한다.
+  var handled = _tryResumeMassQuickSoon();
+  if(!handled){
+    try{
+      _clearMassQuickReturnForReload();
+      if(!document.documentElement.classList.contains('app-active')) _resetCoverExitReady();
+    }catch(e){ console.warn('[가톨릭길동무]', e); }
+  }
+  setTimeout(_tryResumeMassQuickSoon, 80);
 }, true);
 document.addEventListener('visibilitychange', function(){
   if(document.visibilityState === 'visible'){
@@ -302,7 +320,7 @@ function syncCoverUpdateVersionState(){
     var box = document.getElementById('cover-update-box');
     var marker = document.getElementById('oai-build-marker');
     if(!btn || !box) return;
-    var target = btn.getAttribute('data-target-version') || 'V37-6-5';
+    var target = btn.getAttribute('data-target-version') || 'V37-6-6';
     var current = '';
     if(window.APP_VERSION) current = String(window.APP_VERSION).trim();
     if(!current && marker) current = String(marker.textContent || '').trim();
@@ -583,7 +601,7 @@ function openDioceseView(opts){
       if(!restore) try{ frame.contentWindow && frame.contentWindow.resetDioceseFirstPage && frame.contentWindow.resetDioceseFirstPage(); }catch(e){ console.warn("[가톨릭길동무]", e); }
       if(typeof dioceseLoaded==='function') dioceseLoaded();
     };
-    frame.src='diocese.html?v=V37-6-5';
+    frame.src='diocese.html?v=V37-6-6';
   }else if(!restore){
     try{ frame.contentWindow && frame.contentWindow.resetDioceseFirstPage && frame.contentWindow.resetDioceseFirstPage(); }catch(e){ console.warn("[가톨릭길동무]", e); }
   }
