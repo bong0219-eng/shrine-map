@@ -3087,8 +3087,8 @@ html.ios-device .qna-tab{height:36px!important;border-radius:10px!important;}
 html.ios-device .qna-card,
 html.ios-device .qna-panel{border-radius:13px!important;}
 
-/* V37-7 안정화: 빠른메뉴 팝업 표시를 한 번만 부드럽게 보이도록 조정 */
-.mass-quick-modal.show .guide-backdrop{animation:oaiMassQuickBackdropIn .18s ease-out both;}
-.mass-quick-modal.show .mass-quick-panel{animation:oaiMassQuickPanelIn .20s cubic-bezier(.2,.8,.2,1) both;will-change:transform,opacity;}
+/* V37-8 안정화: 빠른메뉴 팝업은 복귀 직후 가볍고 빠르게 표시한다. */
+.mass-quick-modal.show .guide-backdrop{animation:oaiMassQuickBackdropIn .12s ease-out both;}
+.mass-quick-modal.show .mass-quick-panel{animation:oaiMassQuickPanelIn .14s cubic-bezier(.2,.8,.2,1) both;will-change:transform,opacity;}
 @keyframes oaiMassQuickBackdropIn{from{opacity:0}to{opacity:1}}
-@keyframes oaiMassQuickPanelIn{from{opacity:0;transform:translateY(10px) scale(.985)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes oaiMassQuickPanelIn{from{opacity:0;transform:translateY(4px) scale(.995)}to{opacity:1;transform:translateY(0) scale(1)}}
