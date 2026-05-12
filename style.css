@@ -3087,8 +3087,42 @@ html.ios-device .qna-tab{height:36px!important;border-radius:10px!important;}
 html.ios-device .qna-card,
 html.ios-device .qna-panel{border-radius:13px!important;}
 
-/* V37-8 안정화: 빠른메뉴 팝업은 복귀 직후 가볍고 빠르게 표시한다. */
+/* V37-9 안정화: 빠른메뉴 팝업은 복귀 직후 가볍고 빠르게 표시한다. */
 .mass-quick-modal.show .guide-backdrop{animation:oaiMassQuickBackdropIn .12s ease-out both;}
 .mass-quick-modal.show .mass-quick-panel{animation:oaiMassQuickPanelIn .14s cubic-bezier(.2,.8,.2,1) both;will-change:transform,opacity;}
 @keyframes oaiMassQuickBackdropIn{from{opacity:0}to{opacity:1}}
 @keyframes oaiMassQuickPanelIn{from{opacity:0;transform:translateY(4px) scale(.995)}to{opacity:1;transform:translateY(0) scale(1)}}
+
+
+/* V37-9: 주요기도문 헤더 정렬 — X 왼쪽, 굿뉴스기도문 오른쪽, 기도문 아이콘 제거 */
+#prayer-bar{
+  justify-content:flex-start!important;
+  gap:10px!important;
+}
+#prayer-bar #prayer-close{
+  order:0!important;
+  margin-right:2px!important;
+  margin-left:0!important;
+}
+#prayer-bar .module-bar-main{
+  order:1!important;
+  flex:1 1 auto!important;
+  min-width:0!important;
+}
+#prayer-bar .module-bar-txt{
+  min-width:0!important;
+}
+#prayer-bar .module-bar-ico{
+  display:none!important;
+  width:0!important;
+  min-width:0!important;
+  flex:0 0 0!important;
+  margin:0!important;
+  padding:0!important;
+}
+#goodnews-prayer-btn{
+  order:2!important;
+  margin-left:auto!important;
+  margin-right:0!important;
+  flex:0 0 auto!important;
+}
