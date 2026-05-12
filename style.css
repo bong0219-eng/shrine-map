@@ -3087,14 +3087,14 @@ html.ios-device .qna-tab{height:36px!important;border-radius:10px!important;}
 html.ios-device .qna-card,
 html.ios-device .qna-panel{border-radius:13px!important;}
 
-/* V37-10 안정화: 빠른메뉴 팝업은 복귀 직후 가볍고 빠르게 표시한다. */
+/* V37-11 안정화: 빠른메뉴 팝업은 복귀 직후 가볍고 빠르게 표시한다. */
 .mass-quick-modal.show .guide-backdrop{animation:oaiMassQuickBackdropIn .12s ease-out both;}
 .mass-quick-modal.show .mass-quick-panel{animation:oaiMassQuickPanelIn .14s cubic-bezier(.2,.8,.2,1) both;will-change:transform,opacity;}
 @keyframes oaiMassQuickBackdropIn{from{opacity:0}to{opacity:1}}
 @keyframes oaiMassQuickPanelIn{from{opacity:0;transform:translateY(4px) scale(.995)}to{opacity:1;transform:translateY(0) scale(1)}}
 
 
-/* V37-10: 주요기도문 헤더 정렬 — X 왼쪽, 굿뉴스기도문 오른쪽, 기도문 아이콘 제거 */
+/* V37-11: 주요기도문 헤더 정렬 — X 왼쪽, 굿뉴스기도문 오른쪽, 기도문 아이콘 제거 */
 #prayer-bar{
   justify-content:flex-start!important;
   gap:10px!important;
@@ -3128,7 +3128,7 @@ html.ios-device .qna-panel{border-radius:13px!important;}
 }
 
 
-/* V37-10: 기도문 본문 하단 플로팅 뒤로가기 버튼 - iPhone 웹사이트 하단 뒤로가기 느낌 통일 */
+/* V37-11: 기도문 본문 하단 플로팅 뒤로가기 버튼 - iPhone 웹사이트 하단 뒤로가기 느낌 통일 */
 #prayer-detail .pr-floating-back{
   position:fixed!important;
   left:calc(22px + env(safe-area-inset-left,0px))!important;
