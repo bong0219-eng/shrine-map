@@ -63,7 +63,7 @@
       else missa.classList.remove('open');
       return true;
     }
-    /* 기도문: 본문이면 목록으로, 목록이면 팝업 출발 여부에 따라 팝업/커버로 */
+    /* 기도문: 본문이면 목록으로, 목록이면 커버로 */
     var prayer = $b('prayer-view');
     if(prayer && prayer.classList.contains('open')){
       var prayerDetail = $b('prayer-detail');
@@ -76,8 +76,7 @@
       else {
         if(typeof window.closePrayerView === 'function') window.closePrayerView();
         else prayer.classList.remove('open');
-        if(typeof window._shouldMassQuickReturn === 'function' && window._shouldMassQuickReturn() && typeof window._returnToMassQuickMenu === 'function') window._returnToMassQuickMenu();
-        else callGTC();
+        callGTC();
       }
       return true;
     }
@@ -370,7 +369,7 @@
   if(window.__APP_FONT_SCALE_GUARD__) return;
   window.__APP_FONT_SCALE_GUARD__=true;
   // V37: 문의·건의는 qa-firebase.html 한 경로로만 통일한다.
-  var QA_URL="qa-firebase.html?v=V37-3";
+  var QA_URL="qa-firebase.html?v=V37-4";
   var FONT_KEY='prayer_font_size', BASE=16, SIZES=[15,16,17,18,19,20,21,22,24,26,28];
   function el(id){return document.getElementById(id)}
   function getPx(){var px=parseInt(localStorage.getItem(FONT_KEY)||BASE,10);return (px>=15&&px<=28)?px:BASE;}

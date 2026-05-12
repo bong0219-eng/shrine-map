@@ -152,8 +152,12 @@ function openCatholicHymn(){
   location.href = url;
 }
 window.addEventListener('pageshow', function(){
-  try{ if(_isPageReloadNavigation()){ _clearMassQuickReturnForReload(); return; } }catch(e){ console.warn("[가톨릭길동무]", e); }
-  if(_shouldMassQuickReturn()) setTimeout(function(){ openMassQuickMenu({keepReturn:true}); }, 80);
+  try{
+    // 외부 사이트나 bfcache에서 돌아와도 빠른메뉴 팝업을 자동 재개하지 않는다.
+    // 커버는 항상 새 종료 대기 상태로 시작해야 한다.
+    _clearMassQuickReturnForReload();
+    if(!document.documentElement.classList.contains('app-active')) _resetCoverExitReady();
+  }catch(e){ console.warn("[가톨릭길동무]", e); }
 });
 try{ window._shouldMassQuickReturn=_shouldMassQuickReturn; window._clearMassQuickReturnForReload=_clearMassQuickReturnForReload; window._returnToMassQuickMenu=_returnToMassQuickMenu; window._closePrayerAndReturn=_closePrayerAndReturn; window._resetCoverExitReady=_resetCoverExitReady; window.openMassQuickMenu=openMassQuickMenu; window.closeMassQuickMenu=closeMassQuickMenu; }catch(e){ console.warn('[가톨릭길동무]', e); }
 
@@ -217,7 +221,7 @@ function syncCoverUpdateVersionState(){
     var box = document.getElementById('cover-update-box');
     var marker = document.getElementById('oai-build-marker');
     if(!btn || !box) return;
-    var target = btn.getAttribute('data-target-version') || 'V37-3';
+    var target = btn.getAttribute('data-target-version') || 'V37-4';
     var current = '';
     if(window.APP_VERSION) current = String(window.APP_VERSION).trim();
     if(!current && marker) current = String(marker.textContent || '').trim();
@@ -372,7 +376,11 @@ function missaLoaded(){
 }
 
 function openPrayerBook(opts){
-  if(opts && opts.fromMassQuick){ window.__MASS_QUICK_RETURN__ = true; window.__MASS_QUICK_FROM_PRAYER__ = true; try{ sessionStorage.setItem('oai_mass_quick_return','1'); }catch(e){ console.warn("[가톨릭길동무]", e); } }
+  // 주요기도문은 앱 내부 카테고리로 처리한다.
+  // 매일미사/성가 같은 외부 이동용 빠른메뉴 복귀 플래그를 남기지 않는다.
+  if(opts && opts.fromMassQuick){
+    try{ if(typeof _setMassQuickReturn === 'function') _setMassQuickReturn(false); }catch(e){ console.warn("[가톨릭길동무]", e); }
+  }
   const view=$('prayer-view');
   if(!view) return;
   const cv=$('cover');
@@ -396,8 +404,10 @@ function closePrayerView(){
 }
 function _closePrayerAndReturn(){
   closePrayerView();
-  if(_shouldMassQuickReturn()) _returnToMassQuickMenu();
-  else if(typeof goToCover==='function') goToCover();
+  // 기도문은 내부 카테고리이므로 닫히면 항상 커버로 돌아간다.
+  // 팝업으로 재복귀시키면 커버 종료 대기 상태와 history가 꼬인다.
+  try{ if(typeof _setMassQuickReturn === 'function') _setMassQuickReturn(false); }catch(e){ console.warn("[가톨릭길동무]", e); }
+  if(typeof goToCover==='function') goToCover();
 }
 
 
@@ -488,7 +498,7 @@ function openDioceseView(opts){
       if(!restore) try{ frame.contentWindow && frame.contentWindow.resetDioceseFirstPage && frame.contentWindow.resetDioceseFirstPage(); }catch(e){ console.warn("[가톨릭길동무]", e); }
       if(typeof dioceseLoaded==='function') dioceseLoaded();
     };
-    frame.src='diocese.html?v=V37-3';
+    frame.src='diocese.html?v=V37-4';
   }else if(!restore){
     try{ frame.contentWindow && frame.contentWindow.resetDioceseFirstPage && frame.contentWindow.resetDioceseFirstPage(); }catch(e){ console.warn("[가톨릭길동무]", e); }
   }
@@ -3572,9 +3582,9 @@ document.addEventListener('DOMContentLoaded', function bindEvents() {
 
   // ── 미사·기도·성가 빠른 메뉴 ──
   onQ('[data-mass-quick-close]', 'click', function() { closeMassQuickMenu(); });
-  on('mass-quick-missa', 'click', function() { _setMassQuickReturn(true); if (typeof openMissa === 'function') openMissa(); });
-  on('mass-quick-prayer', 'click', function() { _setMassQuickReturn(true); window.__MASS_QUICK_FROM_PRAYER__ = true; var modal=document.getElementById('mass-quick-modal'); if(modal){ modal.classList.remove('show'); modal.setAttribute('aria-hidden','true'); } hideCoverAndRun(function() { if (typeof openPrayerBook === 'function') openPrayerBook({fromMassQuick:true}); else alert('기도문 기능이 연결되지 않았습니다.'); }); });
-  on('mass-quick-hymn', 'click', function() { _setMassQuickReturn(true); if (typeof openCatholicHymn === 'function') openCatholicHymn(); });
+  on('mass-quick-missa', 'click', function() { if (typeof closeMassQuickMenu === 'function') closeMassQuickMenu(); else _setMassQuickReturn(false); if (typeof openMissa === 'function') openMissa(); });
+  on('mass-quick-prayer', 'click', function() { if (typeof closeMassQuickMenu === 'function') closeMassQuickMenu(); else _setMassQuickReturn(false); hideCoverAndRun(function() { if (typeof openPrayerBook === 'function') openPrayerBook({fromMassQuick:true}); else alert('기도문 기능이 연결되지 않았습니다.'); }); });
+  on('mass-quick-hymn', 'click', function() { if (typeof closeMassQuickMenu === 'function') closeMassQuickMenu(); else _setMassQuickReturn(false); if (typeof openCatholicHymn === 'function') openCatholicHymn(); });
 
   // ── 커버 기타 ──
   on('cover-update-btn','click', function(e) { e.stopPropagation(); refreshAppFilesOnly(); });
