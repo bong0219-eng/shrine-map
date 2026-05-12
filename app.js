@@ -126,6 +126,23 @@ function closeMassQuickMenu(){
   if(!modal) return;
   modal.classList.remove('show');
   modal.setAttribute('aria-hidden','true');
+
+  // V38: 커버에서 매일미사·기도문·성가 팝업만 열었다 닫은 경우에만
+  // 커버의 기본 뒤로가기 트랩을 다시 세운다.
+  // 다른 카테고리의 뒤로가기 흐름은 건드리지 않는다.
+  try{
+    var cover = document.getElementById('cover');
+    var isCoverVisible = !!(cover && !document.documentElement.classList.contains('app-active') && getComputedStyle(cover).display !== 'none');
+    if(isCoverVisible){
+      window._exitReady = false;
+      clearTimeout(window._exitTimer);
+      var toast = document.getElementById('_bt');
+      if(toast && toast.parentNode) toast.parentNode.removeChild(toast);
+      var href = location.href.split('#')[0];
+      history.replaceState({_p:0}, '', href);
+      history.pushState({_p:1}, '', href);
+    }
+  }catch(e){ console.warn('[가톨릭길동무]', e); }
 }
 function openCatholicHymn(){
   const url='https://maria.catholic.or.kr/mobile/sungga/sungga.asp';
