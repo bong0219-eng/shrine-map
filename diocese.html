@@ -1,13 +1,6 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<script>
-(function(){
-  var ua=(navigator.userAgent||'').toLowerCase();
-  var isIOS=/iphone|ipad|ipod/.test(ua) || (navigator.platform==='MacIntel' && navigator.maxTouchPoints>1);
-  if(isIOS){ document.documentElement.classList.add('ios-device'); }
-})();
-</script>
 <meta charset="UTF-8">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
@@ -20,9 +13,6 @@
 <style>
 :root{
   --diocese-font-scale:1;
-  --ios-dio-font-scale:1;
-  --dio-effective-font-scale:calc(var(--dio-font-scale,1) * var(--ios-dio-font-scale,1));
-  --diocese-effective-font-scale:calc(var(--diocese-font-scale,1) * var(--ios-dio-font-scale,1));
   --d:#1F2A44;
   --d-lt:#E8EBF0;
   --bg:#EDE8E0;
@@ -117,7 +107,7 @@ header{flex-shrink:0;background:var(--d);border-bottom:none;z-index:30;
 
 /* ── 관구 버튼 ── */
 #gw-bar{position:absolute;top:10px;left:10px;display:flex;flex-direction:column;gap:5px;z-index:50;}
-.gb{padding:6px 14px;border-radius:20px;border:2px solid;font-size:calc(12px * var(--diocese-effective-font-scale,1));font-weight:700;
+.gb{padding:6px 14px;border-radius:20px;border:2px solid;font-size:calc(12px * var(--diocese-font-scale,1));font-weight:700;
   cursor:pointer;background:white;box-shadow:0 2px 8px rgba(0,0,0,0.12);white-space:nowrap;}
 .gb.on{color:white!important;}
 .gb-all{color:#555!important;border-color:#bbb!important;font-weight:500;}
@@ -209,8 +199,7 @@ header{flex-shrink:0;background:var(--d);border-bottom:none;z-index:30;
 /* OAI 20260504-5: 관구·교구 단독 화면 헤더 최종 표준화 */
 :root{
   --diocese-font-scale:1;--d:#1f2a44!important;--header-h:70px!important;--fs-header:20px!important;--fs-sub:11px!important;}
-html,body{width:100%!important;max-width:none!important;margin:0!important;overflow-x:hidden!important;-webkit-text-size-adjust:100%;text-size-adjust:100%;}
-html.ios-device{--ios-dio-font-scale:.94;}
+html,body{width:100%!important;max-width:none!important;margin:0!important;overflow-x:hidden!important;}
 body{background:var(--bg)!important;}
 header{width:100%!important;max-width:none!important;min-height:70px!important;height:70px!important;padding:0 16px!important;background:#1f2a44!important;background-image:none!important;background-color:#1f2a44!important;color:#fff!important;display:flex!important;align-items:center!important;border-bottom:0!important;box-shadow:none!important;box-sizing:border-box!important;}
 .hd{width:100%!important;display:flex!important;align-items:center!important;justify-content:space-between!important;}
@@ -240,38 +229,38 @@ body > header{display:none!important;visibility:hidden!important;height:0!import
 <style id="oai-diocese-tab-standard-20260504">
 /* 관구교구 헤더 아래 탭 버튼 표준화 + 글자 크기 조절(지도 제외) */
 :root{
-  --diocese-font-scale:1;--dio-font-scale:1;--dio-effective-font-scale:calc(var(--dio-font-scale,1) * var(--ios-dio-font-scale,1));--diocese-effective-font-scale:calc(var(--diocese-font-scale,1) * var(--ios-dio-font-scale,1));}
+  --diocese-font-scale:1;--dio-font-scale:1;}
 .tab-bar{height:55px!important;padding:8px 10px!important;gap:8px!important;background:#FFFBF2!important;border-top:0!important;border-bottom:1px solid #DDD5C8!important;align-items:center!important;}
-.tab{height:40px!important;border-radius:12px!important;font-size:calc(15px * var(--dio-effective-font-scale,1))!important;font-weight:800!important;background:#F8FAFC!important;color:#475569!important;border:1.5px solid #dde3ee!important;display:flex!important;align-items:center!important;justify-content:center!important;}
+.tab{height:40px!important;border-radius:12px!important;font-size:calc(15px * var(--dio-font-scale,1))!important;font-weight:800!important;background:#F8FAFC!important;color:#475569!important;border:1.5px solid #dde3ee!important;display:flex!important;align-items:center!important;justify-content:center!important;}
 .tab.on{background:#1F2A44!important;color:#fff!important;border-color:#1F2A44!important;box-shadow:0 3px 10px rgba(31,42,68,.22)!important;}
 
 
 
 
 
-#search-view #si,#search-view #sb{font-size:calc(15px * var(--dio-effective-font-scale,1))!important;}
-#search-view .sh{font-size:calc(11px * var(--dio-effective-font-scale,1))!important;}
-#search-view .se{font-size:calc(13px * var(--dio-effective-font-scale,1))!important;}
-#search-view .sl{font-size:calc(12px * var(--dio-effective-font-scale,1))!important;}
-#search-view .si-r-op{font-size:calc(11px * var(--dio-effective-font-scale,1))!important;}
-#search-view .sd{font-size:calc(16px * var(--dio-effective-font-scale,1))!important;}
-#search-view .sg{font-size:calc(12px * var(--dio-effective-font-scale,1))!important;}
-#search-view .si-r-url{font-size:calc(11px * var(--dio-effective-font-scale,1))!important;}
-#search-view .si-r-arr{font-size:calc(15px * var(--dio-effective-font-scale,1))!important;}
-#search-view .sot{font-size:calc(12px * var(--dio-effective-font-scale,1))!important;}
-#search-view .sod{font-size:calc(13px * var(--dio-effective-font-scale,1))!important;}
-#search-view .sodd{font-size:calc(12px * var(--dio-effective-font-scale,1))!important;}
-#list-view .lv-sec-bdg{font-size:calc(15px * var(--dio-effective-font-scale,1))!important;}
-#list-view .lv-sec-cnt{font-size:calc(14px * var(--dio-effective-font-scale,1))!important;}
-#list-view .lv-bdg{font-size:calc(12px * var(--dio-effective-font-scale,1))!important;}
-#list-view .lv-op{font-size:calc(11.5px * var(--dio-effective-font-scale,1))!important;}
-#list-view .lv-name{font-size:calc(17px * var(--dio-effective-font-scale,1))!important;}
-#list-view .lv-rg,#list-view .lv-det{font-size:calc(13px * var(--dio-effective-font-scale,1))!important;}
-#list-view .lv-parish-count{font-size:calc(8px * var(--dio-effective-font-scale,1))!important;}
-#list-view .lv-parish-count b{font-size:calc(12px * var(--dio-effective-font-scale,1))!important;}
-#list-view .lv-parish-count span{font-size:calc(7px * var(--dio-effective-font-scale,1))!important;}
-#list-view .lv-url{font-size:calc(12px * var(--dio-effective-font-scale,1))!important;}
-#list-view .lv-arr{font-size:calc(15px * var(--dio-effective-font-scale,1))!important;}
+#search-view #si,#search-view #sb{font-size:calc(15px * var(--dio-font-scale,1))!important;}
+#search-view .sh{font-size:calc(11px * var(--dio-font-scale,1))!important;}
+#search-view .se{font-size:calc(13px * var(--dio-font-scale,1))!important;}
+#search-view .sl{font-size:calc(12px * var(--dio-font-scale,1))!important;}
+#search-view .si-r-op{font-size:calc(11px * var(--dio-font-scale,1))!important;}
+#search-view .sd{font-size:calc(16px * var(--dio-font-scale,1))!important;}
+#search-view .sg{font-size:calc(12px * var(--dio-font-scale,1))!important;}
+#search-view .si-r-url{font-size:calc(11px * var(--dio-font-scale,1))!important;}
+#search-view .si-r-arr{font-size:calc(15px * var(--dio-font-scale,1))!important;}
+#search-view .sot{font-size:calc(12px * var(--dio-font-scale,1))!important;}
+#search-view .sod{font-size:calc(13px * var(--dio-font-scale,1))!important;}
+#search-view .sodd{font-size:calc(12px * var(--dio-font-scale,1))!important;}
+#list-view .lv-sec-bdg{font-size:calc(15px * var(--dio-font-scale,1))!important;}
+#list-view .lv-sec-cnt{font-size:calc(14px * var(--dio-font-scale,1))!important;}
+#list-view .lv-bdg{font-size:calc(12px * var(--dio-font-scale,1))!important;}
+#list-view .lv-op{font-size:calc(11.5px * var(--dio-font-scale,1))!important;}
+#list-view .lv-name{font-size:calc(17px * var(--dio-font-scale,1))!important;}
+#list-view .lv-rg,#list-view .lv-det{font-size:calc(13px * var(--dio-font-scale,1))!important;}
+#list-view .lv-parish-count{font-size:calc(8px * var(--dio-font-scale,1))!important;}
+#list-view .lv-parish-count b{font-size:calc(12px * var(--dio-font-scale,1))!important;}
+#list-view .lv-parish-count span{font-size:calc(7px * var(--dio-font-scale,1))!important;}
+#list-view .lv-url{font-size:calc(12px * var(--dio-font-scale,1))!important;}
+#list-view .lv-arr{font-size:calc(15px * var(--dio-font-scale,1))!important;}
 @media(max-width:360px){}
 </style>
 

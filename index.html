@@ -7,10 +7,6 @@
   var ua = navigator.userAgent.toLowerCase();
   var isAndroid = ua.indexOf('android') > -1;
   var isKakao = ua.indexOf('kakaotalk') > -1;
-  var isIOS = /iphone|ipad|ipod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-  if(isIOS){
-    document.documentElement.classList.add('ios-device');
-  }
   /* Android 카카오톡에서만 Chrome으로 연결합니다. iPhone/iPad/Safari/PWA에서는 실행하지 않습니다. */
   if(isAndroid && isKakao){
     var url = location.href;
@@ -56,7 +52,7 @@
   window.addEventListener('orientationchange', function(){ setTimeout(settle, 250); setTimeout(settle, 900); }, {passive:true});
 })();
 </script>
-<script src="parishes.js?v=V21-4"></script>
+<script src="parishes.js?v=V20-19"></script>
 <script>
 /* ⚠️ 레포를 반드시 Private으로 설정하세요 */
 window.APP_CONFIG = {
@@ -76,8 +72,8 @@ window.APP_CONFIG = {
 <meta name="application-name" content="가톨릭길동무">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#0e1535">
-<link rel="manifest" href="manifest.json?v=V21-4">
-<link rel="apple-touch-icon" href="icon-192x192.png?v=V21-4">
+<link rel="manifest" href="manifest.json?v=V20-19">
+<link rel="apple-touch-icon" href="icon-192x192.png?v=V20-19">
 <meta name="format-detection" content="telephone=no">
 <meta name="description" content="가톨릭길동무 - 가톨릭 신앙생활 종합 앱">
 <title>가톨릭길동무</title>
@@ -87,7 +83,7 @@ window.APP_CONFIG = {
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style id="oai-initial-bg">html,body{margin:0;background:#f5f0e8;}body{min-height:100vh;}#cover,#app{background:#f5f0e8;}</style>
-<link rel="stylesheet" href="style.css?v=V21-4">
+<link rel="stylesheet" href="style.css?v=V20-19">
 </head>
 <body>
 <div id="missa-view" role="dialog" aria-modal="true" aria-label="매일미사">
@@ -159,7 +155,7 @@ window.APP_CONFIG = {
   </div>
 </div>
 <div id="cover">
-<div id="oai-build-marker" aria-label="수정 단계 표시" style="position:absolute;left:8px;bottom:calc(env(safe-area-inset-bottom,0px) + 6px);z-index:120;display:inline-flex;align-items:center;justify-content:center;min-width:34px;height:18px;padding:0 6px;border-radius:999px;background:rgba(31,42,68,.72);color:#fff;font-size:9px;font-weight:800;line-height:1;pointer-events:none;opacity:.74;">V21-4</div>
+<div id="oai-build-marker" aria-label="수정 단계 표시" style="position:absolute;left:8px;bottom:calc(env(safe-area-inset-bottom,0px) + 6px);z-index:120;display:inline-flex;align-items:center;justify-content:center;min-width:34px;height:18px;padding:0 6px;border-radius:999px;background:rgba(31,42,68,.72);color:#fff;font-size:9px;font-weight:800;line-height:1;pointer-events:none;opacity:.74;">V20-19</div>
   <div id="cv-pull-modern" aria-hidden="true">
   <div class="cv-pull-ring">
     <svg viewBox="0 0 24 24" class="cv-pull-icon">
@@ -232,8 +228,8 @@ window.APP_CONFIG = {
       <!-- 커버 하단 작업줄: 새로고침 + 문의·건의 -->
       <div id="cover-action-row" aria-label="커버 보조 기능">
         <div id="cover-update-box">
-          <button id="cover-update-btn" type="button" data-target-version="V21-4" aria-label="앱 화면 안정형 새로고침">
-            V21-4 새로고침
+          <button id="cover-update-btn" type="button" data-target-version="V20-19" aria-label="앱 화면 안정형 새로고침">
+            V20-19 새로고침
           </button>
           <div id="cover-update-hint" aria-live="polite">아래 버전과 다릅니다. 눌러서 최신 파일을 다시 받아 주세요.</div>
         </div>
@@ -261,22 +257,22 @@ window.APP_CONFIG = {
       <div class="ios-safari-step">
         <b>1</b>
         <span>카카오톡 하단 버튼 4개 중 <strong>오른쪽 끝 버튼</strong>을 누르세요.</span>
-        <img src="ios-install-step1-kakao-bottom-buttons.png?v=V21-4" alt="카카오톡 오른쪽 아래 버튼 모양">
+        <img src="ios-install-step1-kakao-bottom-buttons.png?v=V20-19" alt="카카오톡 오른쪽 아래 버튼 모양">
       </div>
       <div class="ios-safari-step">
         <b>2</b>
         <span>공유 화면에서 <strong>Safari로 열기</strong>를 누르세요.</span>
-        <img src="ios-install-step2-safari-open.png?v=V21-4" alt="Safari로 열기 버튼">
+        <img src="ios-install-step2-safari-open.png?v=V20-19" alt="Safari로 열기 버튼">
       </div>
       <div class="ios-safari-step">
         <b>3</b>
         <span>Safari에서 열린 뒤, 상단 메뉴 목록의 <strong>공유</strong>를 누르세요.</span>
-        <img src="ios-install-step3-share-menu.png?v=V21-4" alt="Safari 상단 공유 버튼">
+        <img src="ios-install-step3-share-menu.png?v=V20-19" alt="Safari 상단 공유 버튼">
       </div>
       <div class="ios-safari-step">
         <b>4</b>
         <span>목록을 아래로 내려 <strong>홈 화면에 추가</strong>를 누르세요.</span>
-        <img src="ios-install-step4-home-screen.png?v=V21-4" alt="홈 화면에 추가 버튼">
+        <img src="ios-install-step4-home-screen.png?v=V20-19" alt="홈 화면에 추가 버튼">
       </div>
     </div>
     <div class="guide-actions">
@@ -355,7 +351,7 @@ window.APP_CONFIG = {
   📲 홈 화면에 앱 설치하기
 </button>
 </div>
-<script src="app.js?v=V21-4"></script>
+<script src="app.js?v=V20-19"></script>
 <div id="oai-category-entry-veil" aria-hidden="true"></div>
 <div id="app"><div id="tabbar"><button id="tab-btn-nearby" class="tab-btn" data-tab="nearby"><span class="tab-icon">📍</span><span id="tab-nearby-lbl">내주변</span></button><button id="tab-btn-list" class="tab-btn" data-tab="list"><span class="tab-icon">📋</span><span id="tab-list-lbl">목록</span></button><button id="tab-btn-region" class="tab-btn" data-tab="region"><span class="tab-icon">🔍</span>지역검색
     </button><button id="tab-btn-route" class="tab-btn" data-tab="route"><span class="tab-icon">🧭</span>길찾기
@@ -431,14 +427,14 @@ window.APP_CONFIG = {
     </div>
   </div>
 </div>
-<script src="web.js?v=V21-4"></script>
-<script src="prayer.js?v=V21-4"></script>
+<script src="web.js?v=V20-19"></script>
+<script src="prayer.js?v=V20-19"></script>
 
 <div id="qna-view" role="dialog" aria-modal="true" aria-label="문의·건의" class="module-view"><div class="module-bar qna"><div class="module-bar-main"><div class="module-bar-ico">✝</div><div class="module-bar-txt"><div class="module-bar-title">문의·건의 / Q&A</div><div class="module-bar-sub">질문, 오류, 수정요청을 남기고 답변을 확인하세요</div></div></div><button id="qna-close-btn" class="module-close" aria-label="문의·건의 닫기">×</button></div><div class="qna-body"><div class="qna-tabs"><button id="qna-tab-write" class="qna-tab on" type="button">작성</button><button id="qna-tab-answers" class="qna-tab" type="button">답변</button></div><div class="qna-list" id="qna-list"></div></div></div>
 
-<script src="patches.js?v=V21-4"></script>
+<script src="patches.js?v=V20-19"></script>
 
-<script src="sw-update.js?v=V21-4"></script>
+<script src="sw-update.js?v=V20-19"></script>
 
 
 
