@@ -180,6 +180,17 @@
 
     if(_restoring){ _restoring = false; return; }
 
+    // 일부 모바일/PWA 복귀 타이밍에서 app-active 클래스가 먼저 풀려도
+    // 기도문 화면이 열려 있으면 커버 종료 로직보다 기도문 닫기를 우선한다.
+    var prayerOpen = $b('prayer-view');
+    if(prayerOpen && prayerOpen.classList.contains('open')){
+      _restoring = true;
+      history.go(1);
+      if(typeof window._closePrayerAndReturn === 'function') window._closePrayerAndReturn();
+      else { prayerOpen.classList.remove('open'); callGTC(); }
+      return;
+    }
+
     /* 커버: 토스트 → 두 번째에 종료. go(1) 재복원 없이 바로 트랩만 다시 심어 2번으로 끝낸다. */
     if(!appActive()){
       var exiting = false;
@@ -200,6 +211,12 @@
   /* Cordova 물리 백버튼 */
   document.addEventListener('backbutton', function(){
     if(isGuideModalOpen()){ closeGuideModals(); return; }
+    var prayerOpen = $b('prayer-view');
+    if(prayerOpen && prayerOpen.classList.contains('open')){
+      if(typeof window._closePrayerAndReturn === 'function') window._closePrayerAndReturn();
+      else { prayerOpen.classList.remove('open'); callGTC(); }
+      return;
+    }
     if(!appActive()){
       if(typeof window._showBackToast==='function') window._showBackToast();
       return;
@@ -378,7 +395,7 @@
   if(window.__APP_FONT_SCALE_GUARD__) return;
   window.__APP_FONT_SCALE_GUARD__=true;
   // V37: 문의·건의는 qa-firebase.html 한 경로로만 통일한다.
-  var QA_URL="qa-firebase.html?v=V37-6-13";
+  var QA_URL="qa-firebase.html?v=V38-1";
   var FONT_KEY='prayer_font_size', BASE=16, SIZES=[15,16,17,18,19,20,21,22,24,26,28];
   function el(id){return document.getElementById(id)}
   function getPx(){var px=parseInt(localStorage.getItem(FONT_KEY)||BASE,10);return (px>=15&&px<=28)?px:BASE;}
