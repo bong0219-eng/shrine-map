@@ -241,7 +241,6 @@ function _repairMassQuickBackTrap(){
   }catch(e){ console.warn('[가톨릭길동무]', e); }
 }
 function _returnToMassQuickMenu(){
-  try{ window.__OAI_QUICK_MENU_REOPENING__ = true; }catch(e){ console.warn('[가톨릭길동무]', e); }
   // 기도문 뒤로가기 직후에는 patches.js가 history.go(1)로 트랩을 복원하는 중일 수 있다.
   // 그 popstate가 끝나기 전에 팝업을 열면 복원 popstate가 새 팝업을 다시 닫아
   // 다음 뒤로가기에서 앱이 바로 빠지는 흐름이 생긴다.
@@ -258,7 +257,6 @@ function _returnToMassQuickMenu(){
     }catch(e){ console.warn('[가톨릭길동무]', e); }
   };
   setTimeout(open, 90);
-  setTimeout(function(){ try{ window.__OAI_QUICK_MENU_REOPENING__ = false; }catch(e){ console.warn('[가톨릭길동무]', e); } }, 900);
 }
 function openMassQuickMenu(opts){
   const modal=document.getElementById('mass-quick-modal');
@@ -272,7 +270,6 @@ function openMassQuickMenu(opts){
   setTimeout(_repairMassQuickBackTrap, 120);
 }
 function closeMassQuickMenu(){
-  try{ window.__OAI_QUICK_MENU_REOPENING__ = false; }catch(e){ console.warn('[가톨릭길동무]', e); }
   const modal=document.getElementById('mass-quick-modal');
   _setMassQuickReturn(false);
   _resetCoverExitReady();
@@ -304,7 +301,7 @@ var _massQuickResumeBusy = false;
 function _resumeMassQuickReturnIfNeeded(){
   try{
     // 매일미사/성가 외부 사이트에서 돌아온 경우에만 빠른메뉴 팝업을 복구한다.
-    // V38-6: pageshow에서 reload 판정으로 먼저 지워버리면 외부 복귀 플래그가 사라질 수 있으므로,
+    // V38-2: pageshow에서 reload 판정으로 먼저 지워버리면 외부 복귀 플래그가 사라질 수 있으므로,
     // 복귀 플래그 확인을 가장 먼저 하고 실제 복구는 한 번만 예약한다.
     if(!_shouldMassQuickReturn()) return false;
     if(document.documentElement.classList.contains('app-active')) return false;
@@ -427,7 +424,7 @@ function syncCoverUpdateVersionState(){
     var box = document.getElementById('cover-update-box');
     var marker = document.getElementById('oai-build-marker');
     if(!btn || !box) return;
-    var target = btn.getAttribute('data-target-version') || 'V38-6';
+    var target = btn.getAttribute('data-target-version') || 'V38-2';
     var current = '';
     if(window.APP_VERSION) current = String(window.APP_VERSION).trim();
     if(!current && marker) current = String(marker.textContent || '').trim();
@@ -721,7 +718,7 @@ function openDioceseView(opts){
       if(!restore) try{ frame.contentWindow && frame.contentWindow.resetDioceseFirstPage && frame.contentWindow.resetDioceseFirstPage(); }catch(e){ console.warn("[가톨릭길동무]", e); }
       if(typeof dioceseLoaded==='function') dioceseLoaded();
     };
-    frame.src='diocese.html?v=V38-6';
+    frame.src='diocese.html?v=V38-2';
   }else if(!restore){
     try{ frame.contentWindow && frame.contentWindow.resetDioceseFirstPage && frame.contentWindow.resetDioceseFirstPage(); }catch(e){ console.warn("[가톨릭길동무]", e); }
   }

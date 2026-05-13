@@ -168,15 +168,6 @@
   window.addEventListener('popstate', function(){
     if(window._appExiting) return;
 
-    /* 기도문 → 빠른메뉴 팝업 복귀 중 history.go(1)의 복원 popstate가 늦게 도착할 수 있다.
-       이 복원 popstate가 새로 열린 팝업을 다시 닫으면 '목록 → 커버' 또는
-       '팝업 → 앱탈출'처럼 흐름이 흔들리므로, 이 1회 복원은 팝업 판단보다 먼저 소비한다. */
-    if(_restoring && window.__OAI_QUICK_MENU_REOPENING__ === true){
-      _restoring = false;
-      try{ window.__OAI_QUICK_MENU_REOPENING__ = false; }catch(e){ console.warn('[가톨릭길동무]', e); }
-      return;
-    }
-
     /* 빠른메뉴/안내 팝업이 열려 있으면 어떤 복원 상태보다 먼저 닫는다.
        _restoring이 남은 상태에서 이 검사를 건너뛰면 Android PWA가 팝업을 닫지 못하고
        바로 앱 종료 흐름으로 빠질 수 있다. */
@@ -426,7 +417,7 @@
   if(window.__APP_FONT_SCALE_GUARD__) return;
   window.__APP_FONT_SCALE_GUARD__=true;
   // V37: 문의·건의는 qa-firebase.html 한 경로로만 통일한다.
-  var QA_URL="qa-firebase.html?v=V38-6";
+  var QA_URL="qa-firebase.html?v=V38-2";
   var FONT_KEY='prayer_font_size', BASE=16, SIZES=[15,16,17,18,19,20,21,22,24,26,28];
   function el(id){return document.getElementById(id)}
   function getPx(){var px=parseInt(localStorage.getItem(FONT_KEY)||BASE,10);return (px>=15&&px<=28)?px:BASE;}
