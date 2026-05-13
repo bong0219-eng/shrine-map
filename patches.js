@@ -174,7 +174,7 @@
     if(isGuideModalOpen()){
       _restoring = false;
       closeGuideModals();
-      try{ history.pushState({_p:1}, '', _href); }catch(e){ console.warn("[가톨릭길동무]", e); }
+      try{ history.replaceState({_p:1}, '', _href); }catch(e){ console.warn("[가톨릭길동무]", e); }
       return;
     }
 
@@ -1100,50 +1100,4 @@
     });
     mo.observe(document.documentElement,{childList:true,subtree:true});
   }catch(e){ console.warn("[가톨릭길동무]", e); }
-})();
-
-/* ── DEBUG OVERLAY ── */
-(function(){
-  'use strict';
-  var log=[], MAX=20;
-  function ts(){ return new Date().toISOString().substr(11,8); }
-  function addLog(msg,color){
-    log.push({t:ts(),msg:msg,color:color||'#fff'});
-    if(log.length>MAX) log.shift();
-    render();
-  }
-  var box=document.createElement('div');
-  box.id='__oai_dbg__';
-  box.style.cssText='position:fixed;top:0;left:0;right:0;background:rgba(0,0,0,0.85);color:#fff;font-size:10px;font-family:monospace;z-index:2147483647;padding:4px 6px;max-height:50vh;overflow-y:auto;pointer-events:none;line-height:1.5';
-  function tryAppend(){ if(document.body && !document.getElementById('__oai_dbg__')) document.body.appendChild(box); }
-  document.addEventListener('DOMContentLoaded', tryAppend);
-  setTimeout(tryAppend, 0);
-  setTimeout(tryAppend, 200);
-  setTimeout(tryAppend, 600);
-  function ss(){ try{ return 'st='+JSON.stringify(history.state)+' len='+history.length; }catch(e){ return '?'; } }
-  function ac(){ return document.documentElement.classList.contains('app-active')?'APP':'CVR'; }
-  function mo(){ try{ var m=document.querySelector('.guide-modal.show'); return m?'MODAL:'+m.id:'no-modal'; }catch(e){ return '?'; } }
-  function render(){ var h=''; for(var i=0;i<log.length;i++){ var e=log[i]; h+='<div style="color:'+e.color+'"><b>['+e.t+']</b> '+e.msg+'</div>'; } box.innerHTML=h; box.scrollTop=box.scrollHeight; }
-  window.addEventListener('popstate',function(){ addLog('POPSTATE|'+ac()+'|'+mo()+'|'+ss(),'#7ef'); },true);
-  var oP=history.pushState.bind(history), oR=history.replaceState.bind(history);
-  history.pushState=function(s,t,u){ oP(s,t,u); addLog('PUSH '+JSON.stringify(s)+' len='+history.length,'#af8'); };
-  history.replaceState=function(s,t,u){ oR(s,t,u); addLog('RPLC '+JSON.stringify(s)+' len='+history.length,'#fa8'); };
-  function wrap(name,color){
-    var t=setInterval(function(){
-      if(typeof window[name]==='function'&&!window[name].__dbg__){
-        var o=window[name];
-        window[name]=function(){
-          addLog(name+'|'+ss()+'|'+ac()+'|'+mo(),color);
-          return o.apply(this,arguments);
-        };
-        window[name].__dbg__=true;
-        clearInterval(t);
-      }
-    },300);
-  }
-  wrap('_showBackToast','#f87');
-  wrap('_returnToMassQuickMenu','#ff0');
-  wrap('closeGuideModals','#c8f');
-  wrap('_closePrayerAndReturn','#0ff');
-  addLog('DBG ON|'+ss(),'#0f0');
 })();
