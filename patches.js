@@ -174,7 +174,10 @@
     if(isGuideModalOpen()){
       _restoring = false;
       closeGuideModals();
-      try{ history.pushState({_p:1}, '', _href); }catch(e){ console.warn("[가톨릭길동무]", e); }
+      try{
+        if(typeof window._forceCoverBackTrap === 'function') window._forceCoverBackTrap();
+        else { history.replaceState({_p:0}, '', _href); history.pushState({_p:1}, '', _href); }
+      }catch(e){ console.warn("[가톨릭길동무]", e); }
       return;
     }
 
@@ -201,6 +204,7 @@
   document.addEventListener('backbutton', function(){
     if(isGuideModalOpen()){ closeGuideModals(); return; }
     if(!appActive()){
+      try{ if(typeof window._forceCoverBackTrap === 'function') window._forceCoverBackTrap(); }catch(e){ console.warn("[가톨릭길동무]", e); }
       if(typeof window._showBackToast==='function') window._showBackToast();
       return;
     }
@@ -213,6 +217,7 @@
   // 트랩이 소실되면 다음 뒤로가기에서 앱이 탈출된다.
   window.addEventListener('pageshow', function(){
     try{
+      if(!appActive() && typeof window._forceCoverBackTrap === 'function'){ window._forceCoverBackTrap(); return; }
       var st = history.state;
       if(st && st._p === 1) return;  // 트랩 유지 중이면 스킵
       history.replaceState({_p:0}, '', _href);
