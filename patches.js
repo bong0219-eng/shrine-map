@@ -213,7 +213,10 @@
   // 트랩이 소실되면 다음 뒤로가기에서 앱이 탈출된다.
   window.addEventListener('pageshow', function(){
     try{
-      if(!appActive() && typeof window._resetCoverExitReady === 'function') window._resetCoverExitReady();
+      // pageshow에서는 history 트랩만 복구한다.
+      // 종료 대기값(_exitReady)은 건드리지 않는다.
+      // 일부 Android PWA에서 뒤로가기 1회 후 pageshow성 이벤트가 들어오면
+      // 여기서 _exitReady가 지워져 커버 2회 종료가 실패한다.
       var st = history.state;
       if(st && st._p === 1) return;  // 트랩 유지 중이면 스킵
       history.replaceState({_p:0}, '', _href);
@@ -950,7 +953,7 @@
   function boot(){fixRetreatTabLabel();resetNativeExitToastOnCoverEntry();}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
   window.addEventListener('load',function(){boot();setTimeout(boot,200);},{once:true});
-  window.addEventListener('pageshow',function(){setTimeout(resetNativeExitToastIfCover,0);},true);
+  // pageshow에서 종료 대기값을 지우지 않는다. 커버 진입/복귀 시에는 goToCover와 class 변화 감지에서만 초기화한다.
   try{new MutationObserver(function(){fixRetreatTabLabel();resetNativeExitToastOnCoverEntry();}).observe(document.documentElement,{attributes:true,attributeFilter:['class']});}catch(e){ console.warn("[가톨릭길동무]", e); }
 })();
 
