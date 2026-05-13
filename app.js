@@ -563,12 +563,13 @@ function closePrayerView(){
 }
 function _closePrayerAndReturn(){
   closePrayerView();
-  // 빠른메뉴에서 들어온 주요기도문은 커버가 아니라 팝업으로 한 단계 복귀한다.
-  if(_shouldMassQuickReturn()) _returnToMassQuickMenu();
-  else {
-    try{ if(typeof _setMassQuickReturn === 'function') _setMassQuickReturn(false); }catch(e){ console.warn("[가톨릭길동무]", e); }
-    if(typeof goToCover==='function') goToCover();
-  }
+  // 주요기도문은 내부 화면이므로 뒤로가기는 항상 커버로 보낸다.
+  // 빠른메뉴 팝업에서 진입했더라도 매일미사/성가 외부복귀 플래그를 사용하지 않는다.
+  try{
+    if(typeof _setMassQuickReturn === 'function') _setMassQuickReturn(false);
+    window.__MASS_QUICK_FROM_PRAYER__ = false;
+  }catch(e){ console.warn("[가톨릭길동무]", e); }
+  if(typeof goToCover==='function') goToCover();
 }
 
 
@@ -3754,7 +3755,12 @@ document.addEventListener('DOMContentLoaded', function bindEvents() {
     _setMassQuickReturn(true);
     if (typeof openMissa === 'function') openMissa();
   });
-  on('mass-quick-prayer', 'click', function() { try{ _setMassQuickReturn(false); window.__MASS_QUICK_FROM_PRAYER__ = false; }catch(e){ console.warn('[가톨릭길동무]', e); } if (typeof _hideMassQuickMenuOnly === 'function') _hideMassQuickMenuOnly(); hideCoverAndRun(function() { if (typeof openPrayerBook === 'function') openPrayerBook(); else alert('기도문 기능이 연결되지 않았습니다.'); }); });
+  on('mass-quick-prayer', 'click', function() {
+    try{ _setMassQuickReturn(false); window.__MASS_QUICK_FROM_PRAYER__ = false; }catch(e){ console.warn('[가톨릭길동무]', e); }
+    if (typeof _hideMassQuickMenuOnly === 'function') _hideMassQuickMenuOnly();
+    try{ history.pushState({_p:1, oai_prayer_quick:1}, '', location.href.split('#')[0]); }catch(e){ console.warn('[가톨릭길동무]', e); }
+    hideCoverAndRun(function() { if (typeof openPrayerBook === 'function') openPrayerBook(); else alert('기도문 기능이 연결되지 않았습니다.'); });
+  });
   on('mass-quick-hymn', 'click', function() {
     // 외부 사이트 이동은 지연 체감이 가장 크므로 팝업 닫기/화면 정리 없이 즉시 이동한다.
     _setMassQuickReturn(true);
