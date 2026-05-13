@@ -31,31 +31,6 @@
 
   function $b(id){ return document.getElementById(id); }
   function appActive(){ return document.documentElement.classList.contains('app-active'); }
-  function isMassQuickOpen(){
-    try{ var mq=$b('mass-quick-modal'); return !!(mq && mq.classList.contains('show')); }catch(e){ return false; }
-  }
-  function closeMassQuickToCover(){
-    try{
-      var mq=$b('mass-quick-modal');
-      if(mq){ mq.classList.remove('show'); mq.setAttribute('aria-hidden','true'); }
-      if(typeof window._setMassQuickReturn === 'function') window._setMassQuickReturn(false);
-      if(typeof window._setQuickPrayerToCover === 'function') window._setQuickPrayerToCover(false);
-      if(typeof window.goToCover === 'function') window.goToCover();
-      if(typeof window._resetCoverExitReady === 'function') window._resetCoverExitReady();
-      if(typeof window._clearCoverExitArmed === 'function') window._clearCoverExitArmed();
-      if(typeof window._resetCoverHistoryTrapAfterQuickMenu === 'function') window._resetCoverHistoryTrapAfterQuickMenu();
-      else { history.replaceState({_p:0}, '', _href); history.pushState({_p:1, oai_cover_trap:1}, '', _href); }
-      setTimeout(function(){
-        try{
-          if(typeof window.goToCover === 'function') window.goToCover();
-          if(typeof window._resetCoverExitReady === 'function') window._resetCoverExitReady();
-          if(typeof window._clearCoverExitArmed === 'function') window._clearCoverExitArmed();
-          if(typeof window._resetCoverHistoryTrapAfterQuickMenu === 'function') window._resetCoverHistoryTrapAfterQuickMenu();
-          else { history.replaceState({_p:0}, '', _href); history.pushState({_p:1, oai_cover_trap:1}, '', _href); }
-        }catch(e){ console.warn('[가톨릭길동무]', e); }
-      }, 80);
-    }catch(e){ console.warn('[가톨릭길동무]', e); }
-  }
 
   function isGuideModalOpen(){
     try{ return !!document.querySelector('.guide-modal.show'); }catch(e){ return false; }
@@ -193,19 +168,29 @@
   window.addEventListener('popstate', function(){
     if(window._appExiting) return;
 
-    /* 빠른메뉴/안내 팝업이 열려 있으면 어떤 복원 상태보다 먼저 닫는다.
-       _restoring이 남은 상태에서 이 검사를 건너뛰면 Android PWA가 팝업을 닫지 못하고
-       바로 앱 종료 흐름으로 빠질 수 있다. */
-    if(isMassQuickOpen()){
+    /* 기도문 → 빠른메뉴 팝업 복귀 중 history.go(1)의 복원 popstate가 늦게 도착할 수 있다.
+       이 복원 popstate가 새로 열린 팝업을 다시 닫으면 '목록 → 커버' 또는
+       '팝업 → 앱탈출'처럼 흐름이 흔들리므로, 이 1회 복원은 팝업 판단보다 먼저 소비한다. */
+    if(_restoring && window.__OAI_QUICK_MENU_REOPENING__ === true){
       _restoring = false;
-      closeMassQuickToCover();
+      try{ window.__OAI_QUICK_MENU_REOPENING__ = false; }catch(e){ console.warn('[가톨릭길동무]', e); }
       return;
     }
 
+    /* 빠른메뉴/안내 팝업이 열려 있으면 어떤 복원 상태보다 먼저 닫는다.
+       _restoring이 남은 상태에서 이 검사를 건너뛰면 Android PWA가 팝업을 닫지 못하고
+       바로 앱 종료 흐름으로 빠질 수 있다. */
     if(isGuideModalOpen()){
       _restoring = false;
+      var mqWasOpen = false;
+      try{ var mq = $b('mass-quick-modal'); mqWasOpen = !!(mq && mq.classList.contains('show')); }catch(e){ mqWasOpen = false; }
       closeGuideModals();
+      /* 빠른메뉴 팝업에서 뒤로가기를 누른 경우에는 반드시 커버에 남긴다.
+         Android/PWA에서는 popstate가 이미 루트 상태로 내려온 뒤 실행될 수 있으므로
+         replaceState만 하면 다음 뒤로가기가 즉시 앱 종료로 이어진다. 루트(0) + 트랩(1)을
+         다시 세워 팝업 → 커버 → 종료 안내 → 앱 종료 흐름을 보장한다. */
       try{
+        if(mqWasOpen && typeof window.goToCover === 'function') window.goToCover();
         if(typeof window._resetCoverExitReady === 'function') window._resetCoverExitReady();
         if(typeof window._clearCoverExitArmed === 'function') window._clearCoverExitArmed();
         history.replaceState({_p:0}, '', _href);
@@ -246,12 +231,15 @@
 
   /* Cordova 물리 백버튼 */
   document.addEventListener('backbutton', function(){
-    if(isMassQuickOpen()){
-      closeMassQuickToCover();
-      return;
-    }
     if(isGuideModalOpen()){
+      var mqWasOpen = false;
+      try{ var mq = $b('mass-quick-modal'); mqWasOpen = !!(mq && mq.classList.contains('show')); }catch(e){ mqWasOpen = false; }
       closeGuideModals();
+      if(mqWasOpen){
+        try{ if(typeof window.goToCover === 'function') window.goToCover(); }catch(e){ console.warn('[가톨릭길동무]', e); }
+        try{ if(typeof window._resetCoverExitReady === 'function') window._resetCoverExitReady(); }catch(e){ console.warn('[가톨릭길동무]', e); }
+        try{ if(typeof window._clearCoverExitArmed === 'function') window._clearCoverExitArmed(); }catch(e){ console.warn('[가톨릭길동무]', e); }
+      }
       return;
     }
     var prayerOpen = $b('prayer-view');
@@ -438,7 +426,7 @@
   if(window.__APP_FONT_SCALE_GUARD__) return;
   window.__APP_FONT_SCALE_GUARD__=true;
   // V37: 문의·건의는 qa-firebase.html 한 경로로만 통일한다.
-  var QA_URL="qa-firebase.html?v=V38-5";
+  var QA_URL="qa-firebase.html?v=V38-6";
   var FONT_KEY='prayer_font_size', BASE=16, SIZES=[15,16,17,18,19,20,21,22,24,26,28];
   function el(id){return document.getElementById(id)}
   function getPx(){var px=parseInt(localStorage.getItem(FONT_KEY)||BASE,10);return (px>=15&&px<=28)?px:BASE;}
