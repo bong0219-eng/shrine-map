@@ -291,7 +291,16 @@ window.addEventListener('pageshow', function(){
   // '한 번 더 누르면 앱을 종료합니다' 상태가 지워져 커버 2회 종료가 깨진다.
   var handled = _tryResumeMassQuickSoon();
   if(!handled){
-    try{ _clearMassQuickReturnForReload(); }catch(e){ console.warn('[가톨릭길동무]', e); }
+    try{
+      // 주요기도문은 외부 사이트가 아니라 앱 내부 화면이다.
+      // 빠른메뉴에서 주요기도문으로 들어간 직후 pageshow가 한 번 더 들어와도
+      // 복귀 플래그를 지우면 뒤로가기가 팝업이 아니라 커버/앱 종료로 빠진다.
+      var prayerFromQuick = window.__MASS_QUICK_FROM_PRAYER__ === true &&
+        document.documentElement.classList.contains('app-active') &&
+        document.getElementById('prayer-view') &&
+        document.getElementById('prayer-view').classList.contains('open');
+      if(!prayerFromQuick) _clearMassQuickReturnForReload();
+    }catch(e){ console.warn('[가톨릭길동무]', e); }
   }
   setTimeout(_tryResumeMassQuickSoon, 80);
 }, true);
