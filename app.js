@@ -370,7 +370,7 @@ function syncCoverUpdateVersionState(){
     var box = document.getElementById('cover-update-box');
     var marker = document.getElementById('oai-build-marker');
     if(!btn || !box) return;
-    var target = btn.getAttribute('data-target-version') || 'V37-6-13';
+    var target = btn.getAttribute('data-target-version') || 'V38-8';
     var current = '';
     if(window.APP_VERSION) current = String(window.APP_VERSION).trim();
     if(!current && marker) current = String(marker.textContent || '').trim();
@@ -653,7 +653,7 @@ function openDioceseView(opts){
       if(!restore) try{ frame.contentWindow && frame.contentWindow.resetDioceseFirstPage && frame.contentWindow.resetDioceseFirstPage(); }catch(e){ console.warn("[가톨릭길동무]", e); }
       if(typeof dioceseLoaded==='function') dioceseLoaded();
     };
-    frame.src='diocese.html?v=V37-6-13';
+    frame.src='diocese.html?v=V38-8';
   }else if(!restore){
     try{ frame.contentWindow && frame.contentWindow.resetDioceseFirstPage && frame.contentWindow.resetDioceseFirstPage(); }catch(e){ console.warn("[가톨릭길동무]", e); }
   }
@@ -1219,8 +1219,8 @@ function _showBackToast(){
   if(old) old.remove();
   const t=document.createElement('div');
   t.id='_bt';
-  t.textContent='한 번 더 누르면 앱을 종료합니다';
-  t.style.cssText='position:fixed;bottom:calc(env(safe-area-inset-bottom,0px)+32px);left:50%;transform:translateX(-50%);background:rgba(14,21,53,.92);color:#fff;padding:10px 22px;border-radius:22px;font-size:13px;font-weight:600;z-index:99999;white-space:nowrap;pointer-events:none;box-shadow:0 4px 16px rgba(0,0,0,.3);';
+  t.textContent='한 번 더 누르면 앱이 종료됩니다';
+  t.style.cssText='position:fixed;bottom:calc(env(safe-area-inset-bottom,0px)+18px);left:50%;transform:translateX(-50%);background:rgba(14,21,53,.92);color:#fff;padding:10px 22px;border-radius:22px;font-size:13px;font-weight:600;z-index:99999;white-space:nowrap;pointer-events:none;box-shadow:0 4px 16px rgba(0,0,0,.3);';
   document.body.appendChild(t);
   _exitTimer=setTimeout(function(){
     _exitReady=false;
