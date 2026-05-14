@@ -357,7 +357,7 @@
   var KEY='prayer_font_size', BASE=16;
   function currentPx(){
     var px=parseInt((localStorage&&localStorage.getItem(KEY))||BASE,10);
-    if(!px||px<15||px>28) px=BASE;
+    if(!px||px<13||px>30) px=BASE;
     return px;
   }
   function applyStableScale(){
@@ -478,10 +478,10 @@
   if(window.__APP_FONT_SCALE_GUARD__) return;
   window.__APP_FONT_SCALE_GUARD__=true;
   // V37: 문의·건의는 qa-firebase.html 한 경로로만 통일한다.
-  var QA_URL="qa-firebase.html?v=V38-34";
-  var FONT_KEY='prayer_font_size', BASE=16, SIZES=[15,16,17,18,19,20,21,22,24,26,28];
+  var QA_URL="qa-firebase.html?v=V38-37";
+  var FONT_KEY='prayer_font_size', BASE=16, SIZES=[13,14,15,16,17,18,19,20,21,22,24,26,28,30];
   function el(id){return document.getElementById(id)}
-  function getPx(){var px=parseInt(localStorage.getItem(FONT_KEY)||BASE,10);return (px>=15&&px<=28)?px:BASE;}
+  function getPx(){var px=parseInt(localStorage.getItem(FONT_KEY)||BASE,10);return (px>=13&&px<=30)?px:BASE;}
   function setPx(px){px=parseInt(px,10)||BASE;var best=SIZES[0],diff=999;SIZES.forEach(function(v){var d=Math.abs(v-px);if(d<diff){diff=d;best=v;}});try{localStorage.setItem(FONT_KEY,String(best));}catch(_){ console.warn("[가톨릭길동무] silent catch"); }return best;}
   function applyScale(){var scale=getPx()/BASE;document.documentElement.classList.add('oai-font-global');document.documentElement.style.setProperty('--app-font-scale',String(scale));var pv=el('prayer-view');if(pv){pv.style.setProperty('--pr-item-fs',getPx()+'px');pv.style.setProperty('--pr-body-fs',getPx()+'px');pv.style.setProperty('--pr-detail-fs',(getPx()+1)+'px')}}
   window.__APP_applyGlobalFont=applyScale;

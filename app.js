@@ -689,7 +689,7 @@ function syncCoverUpdateVersionState(){
     var box = document.getElementById('cover-update-box');
     var marker = document.getElementById('oai-build-marker');
     if(!btn || !box) return;
-    var target = btn.getAttribute('data-target-version') || 'V38-34';
+    var target = btn.getAttribute('data-target-version') || 'V38-37';
     var current = '';
     if(window.APP_VERSION) current = String(window.APP_VERSION).trim();
     if(!current && marker) current = String(marker.textContent || '').trim();
@@ -918,7 +918,7 @@ function _closePrayerAndReturn(){
     return false;
   }
   function shouldShow(){
-    // V38-34 임시 확인용: iPhone 설치 안내를 Android에서도 확인할 수 있게 한다.
+    // V38-37 임시 확인용: iPhone 설치 안내를 Android에서도 확인할 수 있게 한다.
     // 실제 배포 확정 후에는 아래 Android 조건만 제거하면 된다.
     if(isAndroid()) return true;
     return isIOS() && isKakao() && !isStandalone();
@@ -994,7 +994,7 @@ function openDioceseView(opts){
       if(!restore) try{ frame.contentWindow && frame.contentWindow.resetDioceseFirstPage && frame.contentWindow.resetDioceseFirstPage(); }catch(e){ console.warn("[가톨릭길동무]", e); }
       if(typeof dioceseLoaded==='function') dioceseLoaded();
     };
-    frame.src='diocese.html?v=V38-34';
+    frame.src='diocese.html?v=V38-37';
   }else if(!restore){
     try{ frame.contentWindow && frame.contentWindow.resetDioceseFirstPage && frame.contentWindow.resetDioceseFirstPage(); }catch(e){ console.warn("[가톨릭길동무]", e); }
   }
@@ -2273,13 +2273,13 @@ function _mkrImgRetreat(color,big){
 }
 function _mkrImg(color,big){
   const w=big?40:28,h=big?52:36;
-  // V37: iPhone/Android marker cross unified to the cleaner text-glyph marker.
-  // This avoids Safari's SVG rect rendering difference inside the white marker circle.
-  const crossBig = `<text x="20" y="25" text-anchor="middle" font-size="13" fill="${color}" font-family="serif" font-weight="bold">✝</text>`;
-  const crossSmall = `<text x="14" y="18" text-anchor="middle" font-size="9" fill="${color}" font-family="serif" font-weight="bold">✝</text>`;
+  // V38-37: iPhone/Android marker cross uses SVG bars, not an emoji/text glyph.
+  // This removes the purple emoji background and keeps a plain white cross.
+  const crossBig = `<g fill="#fff" opacity="0.96"><rect x="18.45" y="10.5" width="3.1" height="18.5" rx="1.1"/><rect x="13.4" y="16.3" width="13.2" height="3.1" rx="1.1"/></g>`;
+  const crossSmall = `<g fill="#fff" opacity="0.96"><rect x="12.85" y="7.8" width="2.3" height="12.8" rx="0.8"/><rect x="9.6" y="11.7" width="8.8" height="2.3" rx="0.8"/></g>`;
   const svg=big?
-  `<svg ${_NS} width="40" height="52" viewBox="0 0 40 52"><path d="M20 0C8.954 0 0 8.954 0 20c0 14.21 20 32 20 32S40 34.21 40 20C40 8.954 31.046 0 20 0z" fill="${color}"/><circle cx="20" cy="20" r="9" fill="white" opacity="0.95"/>${crossBig}</svg>`:
-  `<svg ${_NS} width="28" height="36" viewBox="0 0 28 36"><path d="M14 0C6.268 0 0 6.268 0 14c0 9.941 14 22 14 22S28 23.941 28 14C28 6.268 21.732 0 14 0z" fill="${color}" opacity="0.9"/><circle cx="14" cy="14" r="6" fill="white" opacity="0.9"/>${crossSmall}</svg>`;
+  `<svg ${_NS} width="40" height="52" viewBox="0 0 40 52"><path d="M20 0C8.954 0 0 8.954 0 20c0 14.21 20 32 20 32S40 34.21 40 20C40 8.954 31.046 0 20 0z" fill="${color}"/>${crossBig}</svg>`:
+  `<svg ${_NS} width="28" height="36" viewBox="0 0 28 36"><path d="M14 0C6.268 0 0 6.268 0 14c0 9.941 14 22 14 22S28 23.941 28 14C28 6.268 21.732 0 14 0z" fill="${color}" opacity="0.92"/>${crossSmall}</svg>`;
   return new _MI(_svgUrl(svg),new _SZ(w,h),{offset:new _PT(w/2,h)});
 }
 

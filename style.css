@@ -2450,7 +2450,7 @@ html.ios-install-preview-mode #cover .ios-safari-banner{
   margin-bottom:10px;
 }
 
-/* V38-34: iPhone 설치 안내 팝업 구분감 강화 */
+/* V38-37: iPhone 설치 안내 팝업 구분감 강화 */
 #ios-safari-guide-modal .guide-backdrop{
   background:rgba(14,21,53,.58)!important;
   -webkit-backdrop-filter:blur(3px);
@@ -3254,7 +3254,7 @@ html.ios-device .qna-panel{border-radius:13px!important;}
 }
 
 
-/* V38-34: iPhone 설치 안내 팝업 가독성 보정
+/* V38-37: iPhone 설치 안내 팝업 가독성 보정
    - 팝업 패널은 더 어둡게, 안내 카드 내부는 아이보리로 분리
    - 제목/리드 문구가 이미지 카드와 겹치지 않도록 flex 영역 고정 */
 #ios-safari-guide-modal .guide-backdrop{
@@ -3301,7 +3301,7 @@ html.ios-device .qna-panel{border-radius:13px!important;}
   box-sizing:border-box!important;
 }
 
-/* V38-34: 설치 안내 팝업은 제목까지 고정하고, 안내 문구부터 단계 카드까지 함께 스크롤한다. */
+/* V38-37: 설치 안내 팝업은 제목까지 고정하고, 안내 문구부터 단계 카드까지 함께 스크롤한다. */
 .ios-safari-scroll{
   flex:1 1 auto!important;
   min-height:0!important;
@@ -3355,7 +3355,7 @@ html.ios-device .qna-panel{border-radius:13px!important;}
   box-shadow:0 10px 22px rgba(0,0,0,.26)!important;
 }
 
-/* V38-34: 커버 뒤로가기 종료 안내문을 화면 중앙으로 이동 */
+/* V38-37: 커버 뒤로가기 종료 안내문을 화면 중앙으로 이동 */
 #oai-cover-exit-toast{
   top:50%!important;
   bottom:auto!important;
@@ -3374,7 +3374,7 @@ html.ios-device .qna-panel{border-radius:13px!important;}
   transform:translate(-50%,-50%) scale(1)!important;
 }
 
-/* V38-34: iPhone 설치 안내 팝업 X 버튼 색상과 커버 종료 안내 중앙 고정 */
+/* V38-37: iPhone 설치 안내 팝업 X 버튼 색상과 커버 종료 안내 중앙 고정 */
 #ios-safari-guide-modal .guide-x{
   background:#fffaf1!important;
   color:#111!important;
@@ -3392,7 +3392,7 @@ html.ios-device .qna-panel{border-radius:13px!important;}
 }
 
 
-/* V38-34: iPhone 1차 화면 높이 축소
+/* V38-37: iPhone 1차 화면 높이 축소
    Android 공통 구조는 유지하고, iPhone 내부 화면의 헤더·탭 세로 밀도만 소폭 줄인다. */
 html.ios-device #app .module-title,
 html.ios-device #prayer-view .module-title,
@@ -3409,7 +3409,7 @@ html.ios-device #prayer-view .pr-filter-btn{
   padding-bottom:3px!important;
 }
 
-/* V38-34: iPhone 1차 탭 높이 직접 보정
+/* V38-37: iPhone 1차 탭 높이 직접 보정
    기존 Android/공통 탭 규칙은 유지하고, iPhone에서 실제 크게 보였던 #tabbar 높이만 소폭 낮춘다. */
 html.ios-device{
   --tab-h:64px;
@@ -3437,7 +3437,7 @@ html.ios-device #prayer-tabs .pr-tab{
   gap:6px!important;
 }
 
-/* V38-35: iPhone 커버 비율 1차 보정
+/* V38-37: iPhone 커버 비율 1차 보정
    Android 공통 구조는 건드리지 않고, iPhone/확인용 ios-device 상태에서만 커버 카드 글자와 하단 안내문 균형을 조정한다. */
 html.ios-device #cover,
 html.ios-install-preview-mode #cover{
@@ -3502,4 +3502,87 @@ html.ios-install-preview-mode #cover #cover-bottom-note{
 html.ios-device #cover #oai-build-marker,
 html.ios-install-preview-mode #cover #oai-build-marker{
   bottom:calc(env(safe-area-inset-bottom,0px) + 7px)!important;
+}
+
+
+/* V38-37: iPhone category tab height and header/cross icon polish
+   - Only the three map categories using #tabbar (shrine/cathedral/retreat) get a little more tab-button height.
+   - Prayer keeps its structure: left X, no header emoji.
+   - Header cross icons are drawn with CSS bars to avoid iOS purple emoji rendering.
+*/
+html.ios-device{
+  --tab-h:68px;
+}
+html.ios-device #tabbar{
+  height:calc(var(--tab-h) + env(safe-area-inset-top,0px))!important;
+  min-height:calc(var(--tab-h) + env(safe-area-inset-top,0px))!important;
+  padding:calc(env(safe-area-inset-top,0px) + 5px) 6px 5px!important;
+}
+html.ios-device #tabbar .tab-btn{
+  height:44px!important;
+  min-height:44px!important;
+  padding:5px 2px 5px!important;
+  gap:2px!important;
+  line-height:1.08!important;
+}
+html.ios-device #tabbar .tab-icon{
+  font-size:17px!important;
+  line-height:1!important;
+}
+html.ios-device #tabbar .tab-btn.active .tab-icon{
+  font-size:18px!important;
+}
+
+/* Header icon visual alignment: keep emoji/icon centered inside the square. */
+#web-view .module-bar-ico,
+#trail-view .module-bar-ico,
+#qna-view .module-bar-ico,
+#diocese-view .module-bar-ico{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  line-height:1!important;
+  overflow:hidden!important;
+  font-family:"Apple SD Gothic Neo","Noto Sans KR",Arial,sans-serif!important;
+}
+
+/* Plain white CSS cross for module headers that use a cross icon. */
+#trail-view .module-bar-ico,
+#qna-view .module-bar-ico,
+#diocese-view .module-bar-ico{
+  font-size:0!important;
+  position:relative!important;
+}
+#trail-view .module-bar-ico::before,
+#qna-view .module-bar-ico::before,
+#diocese-view .module-bar-ico::before{
+  content:""!important;
+  display:block!important;
+  position:absolute!important;
+  left:50%!important;
+  top:50%!important;
+  width:3px!important;
+  height:22px!important;
+  border-radius:2px!important;
+  background:#fff!important;
+  transform:translate(-50%,-50%)!important;
+}
+#trail-view .module-bar-ico::after,
+#qna-view .module-bar-ico::after,
+#diocese-view .module-bar-ico::after{
+  content:""!important;
+  display:block!important;
+  position:absolute!important;
+  left:50%!important;
+  top:50%!important;
+  width:14px!important;
+  height:3px!important;
+  border-radius:2px!important;
+  background:#fff!important;
+  transform:translate(-50%,-50%)!important;
+}
+
+/* Prayer header structure exception: keep no emoji and left X. */
+#prayer-bar .module-bar-ico{
+  display:none!important;
 }

@@ -7,7 +7,7 @@
   var isIOS=/iphone|ipad|ipod/.test(ua) || (navigator.platform==='MacIntel' && navigator.maxTouchPoints>1);
   var isAndroid=ua.indexOf('android')>-1;
   if(isIOS){ document.documentElement.classList.add('ios-device'); }
-  // V38-34 임시 확인용: Android에서도 iPhone 전용 교구지도 보정을 확인한다.
+  // V38-37 임시 확인용: Android에서도 iPhone 전용 교구지도 보정을 확인한다.
   if(isAndroid){ document.documentElement.classList.add('ios-device','android-ios-preview'); }
 })();
 </script>
@@ -239,6 +239,9 @@ body > header{display:none!important;visibility:hidden!important;height:0!import
 #main{top:0!important;}
 #card .c-x{display:flex!important;align-items:center!important;justify-content:center!important;opacity:1!important;visibility:visible!important;pointer-events:auto!important;}
 
+
+/* V38-37: 헤더 아이콘 중앙 정렬 보정 */
+.hd-icon{line-height:1!important;display:flex!important;align-items:center!important;justify-content:center!important;overflow:hidden!important;font-family:"Apple SD Gothic Neo","Noto Sans KR",Arial,sans-serif!important;}
 </style>
 <style id="oai-diocese-tab-standard-20260504">
 /* 관구교구 헤더 아래 탭 버튼 표준화 + 글자 크기 조절(지도 제외) */
@@ -1306,7 +1309,7 @@ function buildListView(){
   var KEY='prayer_font_size', BASE=16;
   function currentScale(){
     var px=parseInt(localStorage.getItem(KEY)||BASE,10);
-    if(!px || px<15 || px>28) px=BASE;
+    if(!px || px<13 || px>30) px=BASE;
     return px/BASE;
   }
   window.dioApplySharedFont=function(){

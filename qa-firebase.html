@@ -312,6 +312,13 @@
     textarea { min-height: 96px; }
   }
 
+
+  /* V38-37: 문의 헤더 십자가는 iOS/Android 모두 흰색 단색 CSS 십자가로 표시 */
+  #qna-cross-icon{ position:relative; font-size:0!important; line-height:1!important; display:flex; align-items:center; justify-content:center; }
+  #qna-cross-icon::before,
+  #qna-cross-icon::after{ content:""; position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); background:#fff; border-radius:2px; display:block; }
+  #qna-cross-icon::before{ width:3px; height:22px; }
+  #qna-cross-icon::after{ width:14px; height:3px; }
 </style>
 
 
@@ -332,7 +339,7 @@
 
 <!-- 헤더 -->
 <div id="header">
-  <div id="qna-cross-icon" aria-hidden="true">✝</div><div id="header-texts">
+  <div id="qna-cross-icon" aria-hidden="true"></div><div id="header-texts">
     <div class="title" id="header-title">문의 · 건의</div>
     <div class="sub">가톨릭길동무</div>
   </div>
@@ -806,7 +813,7 @@ subscribeList();
 <script id="oai-cache-lifecycle-V23">
 (function(){
   'use strict';
-  var APP_VERSION = 'V38-34';
+  var APP_VERSION = 'V38-37';
   if('serviceWorker' in navigator){
     try{ navigator.serviceWorker.register('./sw.js?v=' + encodeURIComponent(APP_VERSION)).then(function(reg){try{reg.update();}catch(e){}}).catch(function(){}); }catch(e){}
   }

@@ -170,7 +170,7 @@ const PrayerState = {
     });
   });
 })();
-const PR_FONT_SIZES = [13,14,15,16,17,18,19,20,21,22,24];
+const PR_FONT_SIZES = [13,14,15,16,17,18,19,20,21,22,24,26,28,30];
 const PR_FONT_KEY = 'prayer_font_size';
 
 function prG(id){ return document.getElementById(id); }
