@@ -2450,7 +2450,7 @@ html.ios-install-preview-mode #cover .ios-safari-banner{
   margin-bottom:10px;
 }
 
-/* V38-43: iPhone 설치 안내 팝업 구분감 강화 */
+/* V38-44: iPhone 설치 안내 팝업 구분감 강화 */
 #ios-safari-guide-modal .guide-backdrop{
   background:rgba(14,21,53,.58)!important;
   -webkit-backdrop-filter:blur(3px);
@@ -3276,7 +3276,7 @@ html.ios-device #diocese-view .module-bar-sub{
 }
 
 
-/* V38-43: iPhone 설치 안내 팝업 가독성 보정
+/* V38-44: iPhone 설치 안내 팝업 가독성 보정
    - 팝업 패널은 더 어둡게, 안내 카드 내부는 아이보리로 분리
    - 제목/리드 문구가 이미지 카드와 겹치지 않도록 flex 영역 고정 */
 #ios-safari-guide-modal .guide-backdrop{
@@ -3323,7 +3323,7 @@ html.ios-device #diocese-view .module-bar-sub{
   box-sizing:border-box!important;
 }
 
-/* V38-43: 설치 안내 팝업은 제목까지 고정하고, 안내 문구부터 단계 카드까지 함께 스크롤한다. */
+/* V38-44: 설치 안내 팝업은 제목까지 고정하고, 안내 문구부터 단계 카드까지 함께 스크롤한다. */
 .ios-safari-scroll{
   flex:1 1 auto!important;
   min-height:0!important;
@@ -3377,7 +3377,7 @@ html.ios-device #diocese-view .module-bar-sub{
   box-shadow:0 10px 22px rgba(0,0,0,.26)!important;
 }
 
-/* V38-43: 커버 뒤로가기 종료 안내문을 화면 중앙으로 이동 */
+/* V38-44: 커버 뒤로가기 종료 안내문을 화면 중앙으로 이동 */
 #oai-cover-exit-toast{
   top:50%!important;
   bottom:auto!important;
@@ -3396,7 +3396,7 @@ html.ios-device #diocese-view .module-bar-sub{
   transform:translate(-50%,-50%) scale(1)!important;
 }
 
-/* V38-43: iPhone 설치 안내 팝업 X 버튼 색상과 커버 종료 안내 중앙 고정 */
+/* V38-44: iPhone 설치 안내 팝업 X 버튼 색상과 커버 종료 안내 중앙 고정 */
 #ios-safari-guide-modal .guide-x{
   background:#fffaf1!important;
   color:#111!important;
@@ -3414,7 +3414,7 @@ html.ios-device #diocese-view .module-bar-sub{
 }
 
 
-/* V38-43: iPhone 1차 화면 높이 축소
+/* V38-44: iPhone 1차 화면 높이 축소
    Android 공통 구조는 유지하고, iPhone 내부 화면의 헤더·탭 세로 밀도만 소폭 줄인다. */
 html.ios-device #app .module-title,
 html.ios-device #prayer-view .module-title,
@@ -3431,7 +3431,7 @@ html.ios-device #prayer-view .pr-filter-btn{
   padding-bottom:3px!important;
 }
 
-/* V38-43: iPhone 1차 탭 높이 직접 보정
+/* V38-44: iPhone 1차 탭 높이 직접 보정
    기존 Android/공통 탭 규칙은 유지하고, iPhone에서 실제 크게 보였던 #tabbar 높이만 소폭 낮춘다. */
 html.ios-device{
   --tab-h:64px;
@@ -3459,7 +3459,7 @@ html.ios-device #prayer-tabs .pr-tab{
   gap:6px!important;
 }
 
-/* V38-43: iPhone 커버 비율 1차 보정
+/* V38-44: iPhone 커버 비율 1차 보정
    Android 공통 구조는 건드리지 않고, iPhone/확인용 ios-device 상태에서만 커버 카드 글자와 하단 안내문 균형을 조정한다. */
 html.ios-device #cover,
 html.ios-install-preview-mode #cover{
@@ -3527,7 +3527,7 @@ html.ios-install-preview-mode #cover #oai-build-marker{
 }
 
 
-/* V38-43: iPhone tab height balance and header/cross icon polish
+/* V38-44: iPhone tab height balance and header/cross icon polish
    - 성지·성당·피정의집 3개 카테고리의 #tabbar는 너무 커진 높이를 줄이고 버튼과 균형을 맞춘다.
    - 주요기도문·웹사이트·순례길·문의 탭바/탭 버튼은 주요기도문 느낌을 기준으로 균형 있게 맞춘다.
    - 주요기도문 구조는 유지한다: X 왼쪽, 헤더 이모지 없음, 굿뉴스 기도문 오른쪽.
@@ -3565,7 +3565,7 @@ html.ios-device #tabbar .tab-btn span:not(.tab-icon){
   line-height:1.12!important;
 }
 
-/* V38-43: iPhone 성지·성당·피정의집 제목 글자 축소
+/* V38-44: iPhone 성지·성당·피정의집 제목 글자 축소
    ‘내 주변 10곳 / 찾기 / 지역검색’ 제목만 메인 3개 카테고리에서 작게 보정한다. */
 html.ios-device #app #nearby-sheet-title,
 html.ios-device #app #list-sheet-title,
@@ -3673,7 +3673,7 @@ html.ios-device #qna-view .qna-tab{
 }
 
 
-/* V38-43: iPhone main category list card vertical density and refresh long-press guard
+/* V38-44: iPhone main category list card vertical density and refresh long-press guard
    - 성지·성당·피정의집 목록 카드의 아래 빈 여백을 iPhone에서만 줄인다.
    - 새로고침 버튼 길게 누르기 시 OS 텍스트 선택/복사/공유 메뉴가 뜨지 않도록 한다. */
 html.ios-device #app .nearby-item,
@@ -3726,7 +3726,7 @@ html.ios-device #app .li-badge{
 }
 
 
-/* V38-43: iPhone 설치 안내 첫 화면 글자 크기 축소 + 새로고침 버튼 짧은 탭 복구 보정 */
+/* V38-44: iPhone 설치 안내 첫 화면 글자 크기 축소 + 새로고침 버튼 짧은 탭 복구 보정 */
 #ios-safari-guide-modal .ios-safari-guide-panel .guide-lead{
   font-size:13px!important;
   line-height:1.38!important;

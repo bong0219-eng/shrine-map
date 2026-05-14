@@ -634,7 +634,7 @@ function _showRefreshContentDialog(onConfirm){
       '<div style="font-size:21px;font-weight:900;line-height:1.2;margin-bottom:10px;">Refresh Content</div>' +
       '<div style="font-size:15px;font-weight:800;line-height:1.55;color:#475569;margin-bottom:10px;">앱 화면을 안정형으로 다시 불러옵니다.</div>' +
       '<div style="font-size:14px;font-weight:700;line-height:1.55;color:#64748b;margin-bottom:12px;">캐시와 설치 상태는 삭제하지 않습니다.<br>글자 크기와 즐겨찾기도 그대로 유지됩니다.</div>' +
-      '<div style="font-size:12.5px;font-weight:800;line-height:1.45;color:#8A6A2F;background:#fff4d7;border:1px solid rgba(212,170,106,.45);border-radius:12px;padding:8px 10px;margin-bottom:16px;">문제가 계속되면 새로고침 버튼을 길게 눌러<br>앱 캐시 초기화를 실행할 수 있습니다.</div>' +
+      '<div style="font-size:12.5px;font-weight:800;line-height:1.45;color:#8A6A2F;background:#fff4d7;border:1px solid rgba(212,170,106,.45);border-radius:12px;padding:8px 10px;margin-bottom:16px;">문제가 계속되면 새로고침 버튼을 더 길게 눌러<br>앱 캐시 초기화를 실행할 수 있습니다.</div>' +
       '<div style="display:flex;gap:10px;justify-content:center;">' +
       '<button type="button" data-oai-refresh-cancel="1" style="height:42px;min-width:96px;padding:0 16px;border:1px solid #d8d1c5;border-radius:999px;background:#fff;color:#475569;font-family:inherit;font-size:15px;font-weight:850;">취소</button>' +
       '<button type="button" data-oai-refresh-ok="1" style="height:42px;min-width:96px;padding:0 18px;border:0;border-radius:999px;background:#1f2a44;color:#fff;font-family:inherit;font-size:15px;font-weight:900;">확인</button>' +
@@ -724,7 +724,7 @@ function syncCoverUpdateVersionState(){
     var box = document.getElementById('cover-update-box');
     var marker = document.getElementById('oai-build-marker');
     if(!btn || !box) return;
-    var target = btn.getAttribute('data-target-version') || 'V38-43';
+    var target = btn.getAttribute('data-target-version') || 'V38-44';
     var current = '';
     if(window.APP_VERSION) current = String(window.APP_VERSION).trim();
     if(!current && marker) current = String(marker.textContent || '').trim();
@@ -953,7 +953,7 @@ function _closePrayerAndReturn(){
     return false;
   }
   function shouldShow(){
-    // V38-43 임시 확인용: iPhone 설치 안내를 Android에서도 확인할 수 있게 한다.
+    // V38-44 임시 확인용: iPhone 설치 안내를 Android에서도 확인할 수 있게 한다.
     // 실제 배포 확정 후에는 아래 Android 조건만 제거하면 된다.
     if(isAndroid()) return true;
     return isIOS() && isKakao() && !isStandalone();
@@ -1029,7 +1029,7 @@ function openDioceseView(opts){
       if(!restore) try{ frame.contentWindow && frame.contentWindow.resetDioceseFirstPage && frame.contentWindow.resetDioceseFirstPage(); }catch(e){ console.warn("[가톨릭길동무]", e); }
       if(typeof dioceseLoaded==='function') dioceseLoaded();
     };
-    frame.src='diocese.html?v=V38-43';
+    frame.src='diocese.html?v=V38-44';
   }else if(!restore){
     try{ frame.contentWindow && frame.contentWindow.resetDioceseFirstPage && frame.contentWindow.resetDioceseFirstPage(); }catch(e){ console.warn("[가톨릭길동무]", e); }
   }
@@ -2308,7 +2308,7 @@ function _mkrImgRetreat(color,big){
 }
 function _mkrImg(color,big){
   const w=big?40:28,h=big?52:36;
-  // V38-43: iPhone/Android marker cross uses SVG bars, not an emoji/text glyph.
+  // V38-44: iPhone/Android marker cross uses SVG bars, not an emoji/text glyph.
   // This removes the purple emoji background and keeps a plain white cross.
   const crossBig = `<g fill="#fff" opacity="0.96"><rect x="18.45" y="10.5" width="3.1" height="18.5" rx="1.1"/><rect x="13.4" y="16.3" width="13.2" height="3.1" rx="1.1"/></g>`;
   const crossSmall = `<g fill="#fff" opacity="0.96"><rect x="12.85" y="7.8" width="2.3" height="12.8" rx="0.8"/><rect x="9.6" y="11.7" width="8.8" height="2.3" rx="0.8"/></g>`;
@@ -4150,31 +4150,47 @@ document.addEventListener('DOMContentLoaded', function bindEvents() {
   });
 
   // ── 커버 기타 ──
-  (function bindCoverRefreshLongPress(){
+  (function bindCoverRefreshPressActions(){
     var refreshBtn = document.getElementById('cover-update-btn');
     if(!refreshBtn) return;
     var holdTimer = null;
-    var didLongPress = false;
     var pressActive = false;
-    var HOLD_MS = 850;
+    var cacheActionFired = false;
+    var handledUntil = 0;
+    // 짧은 탭과 보통 길게 누른 뒤 놓기는 일반 새로고침, 더 오래 누르면 캐시 초기화.
+    var CACHE_HOLD_MS = 1350;
     function now(){ return Date.now ? Date.now() : new Date().getTime(); }
-    function preventNativePressMenu(e){
+    function markHandled(ms){
+      handledUntil = now() + (ms || 900);
+      try{ window.__OAI_REFRESH_PRESS_HANDLED_UNTIL__ = handledUntil; }catch(_e){}
+    }
+    function recentlyHandled(){
+      var t = now();
+      try{
+        return t < handledUntil ||
+          (window.__OAI_REFRESH_PRESS_HANDLED_UNTIL__ && t < window.__OAI_REFRESH_PRESS_HANDLED_UNTIL__);
+      }catch(_e){
+        return t < handledUntil;
+      }
+    }
+    function stopEvent(e, preventDefault){
       try{
         if(e){
           e.stopPropagation();
-          if(e.cancelable) e.preventDefault();
+          if(preventDefault && e.cancelable) e.preventDefault();
         }
       }catch(_e){}
     }
     function clearHoldOnly(){
       if(holdTimer){ clearTimeout(holdTimer); holdTimer = null; }
     }
-    function armHold(e){
+    function armPress(e){
       try{ if(e && e.button !== undefined && e.button !== 0) return; }catch(_e){}
-      preventNativePressMenu(e);
+      // 여기서 preventDefault를 걸면 일부 iPhone/Android에서 짧은 탭 click이 사라질 수 있어 막지 않는다.
+      stopEvent(e, false);
       clearHoldOnly();
       pressActive = true;
-      didLongPress = false;
+      cacheActionFired = false;
       try{
         refreshBtn.style.webkitUserSelect = 'none';
         refreshBtn.style.userSelect = 'none';
@@ -4182,46 +4198,61 @@ document.addEventListener('DOMContentLoaded', function bindEvents() {
       }catch(_e){}
       holdTimer = setTimeout(function(){
         holdTimer = null;
-        if(!pressActive) return;
-        didLongPress = true;
+        if(!pressActive || recentlyHandled()) return;
+        cacheActionFired = true;
         pressActive = false;
-        try{ window.__OAI_REFRESH_LONG_PRESS_UNTIL__ = now() + 1000; }catch(_e){}
+        markHandled(1600);
         try{ if(navigator.vibrate) navigator.vibrate(25); }catch(_e){}
         if(typeof clearAppFilesCacheCompletely === 'function') clearAppFilesCacheCompletely();
-      }, HOLD_MS);
+      }, CACHE_HOLD_MS);
     }
-    function releaseHold(e){
-      preventNativePressMenu(e);
-      if(!pressActive){ clearHoldOnly(); return; }
-      var wasShortTap = !didLongPress;
+    function releasePress(e){
+      stopEvent(e, true);
+      if(recentlyHandled()){
+        pressActive = false;
+        clearHoldOnly();
+        return;
+      }
+      if(!pressActive){
+        clearHoldOnly();
+        return;
+      }
       pressActive = false;
       clearHoldOnly();
-      if(wasShortTap){
-        try{ window.__OAI_REFRESH_POINTER_HANDLED_UNTIL__ = now() + 700; }catch(_e){}
+      if(!cacheActionFired){
+        markHandled(900);
         refreshAppFilesOnly();
       }
     }
-    function cancelHold(e){
-      preventNativePressMenu(e);
+    function cancelPress(e){
+      stopEvent(e, false);
       pressActive = false;
       clearHoldOnly();
     }
-    on(refreshBtn, 'pointerdown', armHold, {passive:false});
-    on(refreshBtn, 'pointerup', releaseHold, {passive:false});
-    on(refreshBtn, 'pointercancel', cancelHold, {passive:false});
+    function preventNativePressMenu(e){
+      stopEvent(e, true);
+      return false;
+    }
+
+    on(refreshBtn, 'pointerdown', armPress, {passive:false});
+    on(refreshBtn, 'pointerup', releasePress, {passive:false});
+    on(refreshBtn, 'pointercancel', cancelPress, {passive:false});
     // iPhone/Android에서는 손가락이 버튼 경계 밖으로 살짝 흔들려도 짧은 탭이 취소되지 않게 한다.
-    on(refreshBtn, 'pointerleave', function(e){ try{ if(e && e.pointerType === 'mouse') cancelHold(e); }catch(_e){} }, {passive:false});
-    on(refreshBtn, 'contextmenu', function(e){ preventNativePressMenu(e); return false; }, {capture:true});
-    on(refreshBtn, 'selectstart', function(e){ preventNativePressMenu(e); return false; }, {capture:true});
-    on(refreshBtn, 'dragstart', function(e){ preventNativePressMenu(e); return false; }, {capture:true});
+    on(refreshBtn, 'pointerleave', function(e){ try{ if(e && e.pointerType === 'mouse') cancelPress(e); }catch(_e){} }, {passive:false});
+    // 포인터 이벤트가 불안정한 환경을 위해 터치/마우스 입력도 같은 컨트롤러에 연결한다.
+    on(refreshBtn, 'touchstart', armPress, {passive:false});
+    on(refreshBtn, 'touchend', releasePress, {passive:false});
+    on(refreshBtn, 'touchcancel', cancelPress, {passive:false});
+    on(refreshBtn, 'mousedown', armPress, {passive:false});
+    on(refreshBtn, 'mouseup', releasePress, {passive:false});
+    on(refreshBtn, 'mouseleave', cancelPress, {passive:false});
+    on(refreshBtn, 'contextmenu', preventNativePressMenu, {capture:true});
+    on(refreshBtn, 'selectstart', preventNativePressMenu, {capture:true});
+    on(refreshBtn, 'dragstart', preventNativePressMenu, {capture:true});
     on('cover-update-btn','click', function(e) {
-      e.stopPropagation();
-      e.preventDefault();
-      var t = now();
-      if((window.__OAI_REFRESH_LONG_PRESS_UNTIL__ && t < window.__OAI_REFRESH_LONG_PRESS_UNTIL__) ||
-         (window.__OAI_REFRESH_POINTER_HANDLED_UNTIL__ && t < window.__OAI_REFRESH_POINTER_HANDLED_UNTIL__)){
-        return;
-      }
+      stopEvent(e, true);
+      if(recentlyHandled()) return;
+      markHandled(900);
       refreshAppFilesOnly();
     });
   })();
