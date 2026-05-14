@@ -39,7 +39,13 @@
     try{
       var mq = $b('mass-quick-modal');
       if(mq && mq.classList.contains('show') && typeof window.closeMassQuickMenu === 'function'){
+        var fromPrayer = false;
+        try{ fromPrayer = !!(mq.dataset && mq.dataset.returnSource === 'prayer'); }catch(e){}
+        try{ if(typeof window._isPrayerPopupReturnSource === 'function' && window._isPrayerPopupReturnSource()) fromPrayer = true; }catch(e){}
         window.closeMassQuickMenu();
+        if(fromPrayer && typeof window._forceCoverAfterPrayerQuickPopup === 'function'){
+          window._forceCoverAfterPrayerQuickPopup();
+        }
       } else {
         document.querySelectorAll('.guide-modal.show').forEach(function(el){
           el.classList.remove('show');
@@ -183,7 +189,7 @@
     if(isGuideModalOpen()){
       _restoring = false;
       closeGuideModals();
-      try{ history.replaceState({_p:1}, '', _href); }catch(e){ console.warn("[가톨릭길동무]", e); }
+      try{ if(typeof window._ensureCoverBackTrap === 'function') window._ensureCoverBackTrap(); else history.replaceState({_p:1}, '', _href); }catch(e){ console.warn("[가톨릭길동무]", e); }
       return;
     }
 
@@ -387,7 +393,7 @@
   if(window.__APP_FONT_SCALE_GUARD__) return;
   window.__APP_FONT_SCALE_GUARD__=true;
   // V37: 문의·건의는 qa-firebase.html 한 경로로만 통일한다.
-  var QA_URL="qa-firebase.html?v=V38-12";
+  var QA_URL="qa-firebase.html?v=V38-14";
   var FONT_KEY='prayer_font_size', BASE=16, SIZES=[15,16,17,18,19,20,21,22,24,26,28];
   function el(id){return document.getElementById(id)}
   function getPx(){var px=parseInt(localStorage.getItem(FONT_KEY)||BASE,10);return (px>=15&&px<=28)?px:BASE;}
