@@ -164,23 +164,24 @@
 
   /* ── popstate 핸들러 ── */
   var _restoring = false;
-  var _go1Ts = 0; /* history.go(1) 호출 시각 — 팝업 복귀 경로에서 stray popstate 가 _showBackToast 를 오호출하는 문제 방지 */
 
   window.addEventListener('popstate', function(){
     if(window._appExiting) return;
-    if(_restoring){ _restoring = false; return; }
 
+    /* 빠른메뉴/안내 팝업이 열려 있으면 어떤 복원 상태보다 먼저 닫는다.
+       _restoring이 남은 상태에서 이 검사를 건너뛰면 Android PWA가 팝업을 닫지 못하고
+       바로 앱 종료 흐름으로 빠질 수 있다. */
     if(isGuideModalOpen()){
+      _restoring = false;
       closeGuideModals();
       try{ history.pushState({_p:1}, '', _href); }catch(e){ console.warn("[가톨릭길동무]", e); }
       return;
     }
 
-    /* 커버: 토스트 → 두 번째에 종료. go(1) 재복원 없이 바로 트랩만 다시 심어 2번으로 끝낸다.
-       단, history.go(1) 호출 후 200ms 이내에 발생한 popstate 는 go(1) 의 stray 이벤트이므로 무시한다.
-       (매일미사·기도문·성가 팝업 복귀 경로에서 _exitReady 가 조기 세팅되어 종료 알림 없이 앱이 닫히는 버그 수정) */
+    if(_restoring){ _restoring = false; return; }
+
+    /* 커버: 토스트 → 두 번째에 종료. go(1) 재복원 없이 바로 트랩만 다시 심어 2번으로 끝낸다. */
     if(!appActive()){
-      if(Date.now() - _go1Ts < 200) return;
       var exiting = false;
       if(typeof window._showBackToast==='function') exiting = window._showBackToast() === true;
       if(!exiting){ try{ history.pushState({_p:1}, '', _href); }catch(e){ console.warn("[가톨릭길동무]", e); } }
@@ -189,7 +190,6 @@
 
     /* 앱 활성: go(1) 복원 후 처리 */
     _restoring = true;
-    _go1Ts = Date.now();
     history.go(1);
 
     if(closeExtOrModule()) return;  /* 닫으면서 goToCover() 이미 호출됨 */
@@ -213,7 +213,6 @@
   // 트랩이 소실되면 다음 뒤로가기에서 앱이 탈출된다.
   window.addEventListener('pageshow', function(){
     try{
-      if(!appActive() && typeof window._resetCoverExitReady === 'function') window._resetCoverExitReady();
       var st = history.state;
       if(st && st._p === 1) return;  // 트랩 유지 중이면 스킵
       history.replaceState({_p:0}, '', _href);
@@ -379,7 +378,7 @@
   if(window.__APP_FONT_SCALE_GUARD__) return;
   window.__APP_FONT_SCALE_GUARD__=true;
   // V37: 문의·건의는 qa-firebase.html 한 경로로만 통일한다.
-  var QA_URL="qa-firebase.html?v=V37-11";
+  var QA_URL="qa-firebase.html?v=V37-4";
   var FONT_KEY='prayer_font_size', BASE=16, SIZES=[15,16,17,18,19,20,21,22,24,26,28];
   function el(id){return document.getElementById(id)}
   function getPx(){var px=parseInt(localStorage.getItem(FONT_KEY)||BASE,10);return (px>=15&&px<=28)?px:BASE;}
@@ -887,7 +886,9 @@
     try{
       var ind=$('cv-pull-modern');
       hideIndicator(ind);
-      if(isCoverVisible()) window.scrollTo(0,0);
+      // 외부 사이트에서 돌아올 때 강제 window.scrollTo(0,0)를 실행하면
+      // 화면이 아래로 내려갔다가 돌아오는 흔들림이 생긴다.
+      // pull-to-refresh 표시만 정리하고 스크롤 위치는 브라우저 복원에 맡긴다.
     }catch(e){ console.warn('[가톨릭길동무]', e); }
   }, true);
 
@@ -918,7 +919,10 @@
   if(typeof window._resetCoverExitReady !== 'function') window._resetCoverExitReady = clearNativeExitToast;
   function resetNativeExitToastOnCoverEntry(){
     var now=isCover();
-    if(now && !lastCover) clearNativeExitToast();
+    if(now && !lastCover){
+      clearNativeExitToast();
+      try{ if(typeof window._clearCoverExitArmed === 'function') window._clearCoverExitArmed(); }catch(e){ console.warn("[가톨릭길동무]", e); }
+    }
     lastCover=now;
   }
   function resetNativeExitToastIfCover(){
@@ -932,6 +936,7 @@
       // 팝업/기도문 흐름은 이미 커버 위에서 움직여 lastCover가 true인 경우가 있으므로
       // '커버가 아니었다가 커버가 됨' 조건에만 의존하면 첫 뒤로가기에서 바로 종료될 수 있다.
       clearNativeExitToast();
+      try{ if(typeof window._clearCoverExitArmed === 'function') window._clearCoverExitArmed(); }catch(e){ console.warn("[가톨릭길동무]", e); }
       setTimeout(function(){fixRetreatTabLabel();resetNativeExitToastIfCover();},0);
       return r;
     };
@@ -948,7 +953,7 @@
   function boot(){fixRetreatTabLabel();resetNativeExitToastOnCoverEntry();}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
   window.addEventListener('load',function(){boot();setTimeout(boot,200);},{once:true});
-  window.addEventListener('pageshow',function(){setTimeout(resetNativeExitToastIfCover,0);},true);
+  // pageshow에서 종료 대기값을 지우지 않는다. 커버 진입/복귀 시에는 goToCover와 class 변화 감지에서만 초기화한다.
   try{new MutationObserver(function(){fixRetreatTabLabel();resetNativeExitToastOnCoverEntry();}).observe(document.documentElement,{attributes:true,attributeFilter:['class']});}catch(e){ console.warn("[가톨릭길동무]", e); }
 })();
 
@@ -964,7 +969,6 @@
   /* 스크롤/당겨서 새로고침 중 눌림 방지 적용 대상: 목록형 요소만 */
   var delayedSelectors = [
     '#cover .cover-card','#cover .cv-hotspot','#cover .cv-btn',
-    '#mass-quick-modal .mass-quick-btn',
     '#prayer-list-view .pr-item','#prayer-list-view .prayer-item','#prayer-list-view .prayer-card','#prayer-list-view .prayer-list-item','#prayer-list-view .pr-list-item',
     '#trail-list .trail-card',
     '#region-body .list-item','#region-body .nearby-item','#region-body .region-item',
@@ -976,6 +980,7 @@
 
   var directSelectors = [
     'a','input','textarea','select','label',
+    '#mass-quick-modal .mass-quick-btn',
     '.ic-link-btn','.ic-hp-btn','.ic-guide-btn',
     '.btn-kakao-route','.btn-kakao-nav','.c-btn',
     '.trail-foot','.web-card-foot','.trail-sh-foot','.trail-sh-body',
@@ -1002,6 +1007,14 @@
     el.classList.add('app-touchable','app-pressing');
     setTimeout(function(){ clearPress(el); }, FEEDBACK_MS);
   }
+
+  var instantPressSelectors = '#mass-quick-modal .mass-quick-btn';
+  document.addEventListener('pointerdown', function(e){
+    var el = closest(e.target, instantPressSelectors);
+    if(!el) return;
+    press(el);
+  }, true);
+
   function cancelActive(){
     if(!activeTouch) return;
     activeTouch.canceled = true;
