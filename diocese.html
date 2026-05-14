@@ -7,7 +7,7 @@
   var isIOS=/iphone|ipad|ipod/.test(ua) || (navigator.platform==='MacIntel' && navigator.maxTouchPoints>1);
   var isAndroid=ua.indexOf('android')>-1;
   if(isIOS){ document.documentElement.classList.add('ios-device'); }
-  // V38-39 임시 확인용: Android에서도 iPhone 전용 교구지도 보정을 확인한다.
+  // V38-40 임시 확인용: Android에서도 iPhone 전용 교구지도 보정을 확인한다.
   if(isAndroid){ document.documentElement.classList.add('ios-device','android-ios-preview'); }
 })();
 </script>
@@ -240,7 +240,7 @@ body > header{display:none!important;visibility:hidden!important;height:0!import
 #card .c-x{display:flex!important;align-items:center!important;justify-content:center!important;opacity:1!important;visibility:visible!important;pointer-events:auto!important;}
 
 
-/* V38-39: 헤더 아이콘 중앙 정렬 보정 */
+/* V38-40: 헤더 아이콘 중앙 정렬 보정 */
 .hd-icon{line-height:1!important;display:flex!important;align-items:center!important;justify-content:center!important;overflow:hidden!important;font-family:"Apple SD Gothic Neo","Noto Sans KR",Arial,sans-serif!important;}
 </style>
 <style id="oai-diocese-tab-standard-20260504">

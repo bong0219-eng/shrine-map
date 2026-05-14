@@ -630,9 +630,11 @@ function _showRefreshContentDialog(onConfirm){
     wrap.setAttribute('aria-modal','true');
     wrap.setAttribute('aria-label','Refresh Content');
     wrap.style.cssText = 'position:fixed;inset:0;z-index:10090;display:flex;align-items:center;justify-content:center;background:rgba(14,21,53,.36);padding:22px;box-sizing:border-box;';
-    wrap.innerHTML = '<div style="width:min(92vw,370px);background:#fffaf2;border:1px solid rgba(212,170,106,.42);border-radius:20px;box-shadow:0 18px 42px rgba(14,21,53,.24);padding:22px 18px 17px;text-align:center;font-family:inherit;color:#1f2937;box-sizing:border-box;">' +
+    wrap.innerHTML = '<div style="width:min(92vw,380px);background:#fffaf2;border:1px solid rgba(212,170,106,.42);border-radius:20px;box-shadow:0 18px 42px rgba(14,21,53,.24);padding:22px 18px 17px;text-align:center;font-family:inherit;color:#1f2937;box-sizing:border-box;">' +
       '<div style="font-size:21px;font-weight:900;line-height:1.2;margin-bottom:10px;">Refresh Content</div>' +
-      '<div style="font-size:15px;font-weight:700;line-height:1.55;color:#64748b;margin-bottom:18px;">앱 화면을 안정형으로 다시 불러올까요?<br>캐시와 설치 상태는 삭제하지 않습니다.</div>' +
+      '<div style="font-size:15px;font-weight:800;line-height:1.55;color:#475569;margin-bottom:10px;">앱 화면을 안정형으로 다시 불러옵니다.</div>' +
+      '<div style="font-size:14px;font-weight:700;line-height:1.55;color:#64748b;margin-bottom:12px;">캐시와 설치 상태는 삭제하지 않습니다.<br>글자 크기와 즐겨찾기도 그대로 유지됩니다.</div>' +
+      '<div style="font-size:12.5px;font-weight:800;line-height:1.45;color:#8A6A2F;background:#fff4d7;border:1px solid rgba(212,170,106,.45);border-radius:12px;padding:8px 10px;margin-bottom:16px;">문제가 계속되면 새로고침 버튼을 길게 눌러<br>앱 캐시 초기화를 실행할 수 있습니다.</div>' +
       '<div style="display:flex;gap:10px;justify-content:center;">' +
       '<button type="button" data-oai-refresh-cancel="1" style="height:42px;min-width:96px;padding:0 16px;border:1px solid #d8d1c5;border-radius:999px;background:#fff;color:#475569;font-family:inherit;font-size:15px;font-weight:850;">취소</button>' +
       '<button type="button" data-oai-refresh-ok="1" style="height:42px;min-width:96px;padding:0 18px;border:0;border-radius:999px;background:#1f2a44;color:#fff;font-family:inherit;font-size:15px;font-weight:900;">확인</button>' +
@@ -657,10 +659,8 @@ function refreshAppFilesOnly(){
 window.refreshAppFilesOnly = refreshAppFilesOnly;
 
 // 관리용 완전 정리 함수: 일반 새로고침 버튼에서는 호출하지 않는다.
-// 캐시가 심하게 꼬였을 때만 콘솔/별도 호출로 사용한다.
-async function clearAppFilesCacheCompletely(){
-  var msg = '앱 파일 캐시와 서비스워커를 완전히 삭제할까요?\n일반 새로고침보다 강한 정리입니다.';
-  if(!window.confirm(msg)) return;
+// 캐시가 심하게 꼬였을 때만 새로고침 버튼 길게 누르기 또는 별도 호출로 사용한다.
+async function _runClearAppFilesCacheCompletely(){
   try{
     if(window.caches && caches.keys){
       var keys = await caches.keys();
@@ -681,6 +681,41 @@ async function clearAppFilesCacheCompletely(){
     location.reload();
   }
 }
+function _showCacheClearDialog(onConfirm){
+  try{
+    var old = document.getElementById('oai-cache-clear-dialog');
+    if(old && old.parentNode) old.parentNode.removeChild(old);
+    var wrap = document.createElement('div');
+    wrap.id = 'oai-cache-clear-dialog';
+    wrap.setAttribute('role','dialog');
+    wrap.setAttribute('aria-modal','true');
+    wrap.setAttribute('aria-label','앱 캐시 초기화');
+    wrap.style.cssText = 'position:fixed;inset:0;z-index:10095;display:flex;align-items:center;justify-content:center;background:rgba(14,21,53,.46);padding:22px;box-sizing:border-box;';
+    wrap.innerHTML = '<div style="width:min(92vw,390px);background:#fffaf2;border:2px solid rgba(212,170,106,.70);border-radius:20px;box-shadow:0 18px 46px rgba(14,21,53,.30);padding:22px 18px 17px;text-align:center;font-family:inherit;color:#1f2937;box-sizing:border-box;">' +
+      '<div style="font-size:21px;font-weight:950;line-height:1.2;margin-bottom:10px;color:#1f2a44;">앱 캐시 초기화</div>' +
+      '<div style="font-size:15px;font-weight:800;line-height:1.55;color:#475569;margin-bottom:10px;">앱 파일 캐시를 삭제하고 다시 불러옵니다.</div>' +
+      '<div style="font-size:14px;font-weight:700;line-height:1.55;color:#64748b;margin-bottom:12px;">화면이 이상하게 꼬였을 때만 사용하세요.<br>글자 크기와 즐겨찾기는 유지됩니다.</div>' +
+      '<div style="font-size:12.5px;font-weight:800;line-height:1.45;color:#8A3B20;background:#fff1e8;border:1px solid rgba(194,65,12,.22);border-radius:12px;padding:8px 10px;margin-bottom:16px;">인터넷이 약하면 다시 불러오는 데 시간이 걸릴 수 있습니다.</div>' +
+      '<div style="display:flex;gap:10px;justify-content:center;">' +
+      '<button type="button" data-oai-cache-cancel="1" style="height:42px;min-width:96px;padding:0 16px;border:1px solid #d8d1c5;border-radius:999px;background:#fff;color:#475569;font-family:inherit;font-size:15px;font-weight:850;">취소</button>' +
+      '<button type="button" data-oai-cache-ok="1" style="height:42px;min-width:120px;padding:0 18px;border:0;border-radius:999px;background:#1f2a44;color:#fff;font-family:inherit;font-size:15px;font-weight:900;">초기화</button>' +
+      '</div></div>';
+    function close(){ try{ if(wrap && wrap.parentNode) wrap.parentNode.removeChild(wrap); }catch(_e){} }
+    wrap.addEventListener('click', function(e){ if(e.target === wrap) close(); }, true);
+    var cancel = wrap.querySelector('[data-oai-cache-cancel]');
+    var ok = wrap.querySelector('[data-oai-cache-ok]');
+    if(cancel) cancel.onclick = function(e){ e.preventDefault(); close(); };
+    if(ok) ok.onclick = function(e){ e.preventDefault(); close(); if(typeof onConfirm === 'function') onConfirm(); };
+    document.body.appendChild(wrap);
+    setTimeout(function(){ try{ if(cancel) cancel.focus(); }catch(_e){} }, 0);
+  }catch(e){
+    console.warn('[가톨릭길동무]', e);
+    if(typeof onConfirm === 'function') onConfirm();
+  }
+}
+function clearAppFilesCacheCompletely(){
+  _showCacheClearDialog(_runClearAppFilesCacheCompletely);
+}
 window.clearAppFilesCacheCompletely = clearAppFilesCacheCompletely;
 
 function syncCoverUpdateVersionState(){
@@ -689,7 +724,7 @@ function syncCoverUpdateVersionState(){
     var box = document.getElementById('cover-update-box');
     var marker = document.getElementById('oai-build-marker');
     if(!btn || !box) return;
-    var target = btn.getAttribute('data-target-version') || 'V38-39';
+    var target = btn.getAttribute('data-target-version') || 'V38-40';
     var current = '';
     if(window.APP_VERSION) current = String(window.APP_VERSION).trim();
     if(!current && marker) current = String(marker.textContent || '').trim();
@@ -918,7 +953,7 @@ function _closePrayerAndReturn(){
     return false;
   }
   function shouldShow(){
-    // V38-39 임시 확인용: iPhone 설치 안내를 Android에서도 확인할 수 있게 한다.
+    // V38-40 임시 확인용: iPhone 설치 안내를 Android에서도 확인할 수 있게 한다.
     // 실제 배포 확정 후에는 아래 Android 조건만 제거하면 된다.
     if(isAndroid()) return true;
     return isIOS() && isKakao() && !isStandalone();
@@ -994,7 +1029,7 @@ function openDioceseView(opts){
       if(!restore) try{ frame.contentWindow && frame.contentWindow.resetDioceseFirstPage && frame.contentWindow.resetDioceseFirstPage(); }catch(e){ console.warn("[가톨릭길동무]", e); }
       if(typeof dioceseLoaded==='function') dioceseLoaded();
     };
-    frame.src='diocese.html?v=V38-39';
+    frame.src='diocese.html?v=V38-40';
   }else if(!restore){
     try{ frame.contentWindow && frame.contentWindow.resetDioceseFirstPage && frame.contentWindow.resetDioceseFirstPage(); }catch(e){ console.warn("[가톨릭길동무]", e); }
   }
@@ -2273,7 +2308,7 @@ function _mkrImgRetreat(color,big){
 }
 function _mkrImg(color,big){
   const w=big?40:28,h=big?52:36;
-  // V38-39: iPhone/Android marker cross uses SVG bars, not an emoji/text glyph.
+  // V38-40: iPhone/Android marker cross uses SVG bars, not an emoji/text glyph.
   // This removes the purple emoji background and keeps a plain white cross.
   const crossBig = `<g fill="#fff" opacity="0.96"><rect x="18.45" y="10.5" width="3.1" height="18.5" rx="1.1"/><rect x="13.4" y="16.3" width="13.2" height="3.1" rx="1.1"/></g>`;
   const crossSmall = `<g fill="#fff" opacity="0.96"><rect x="12.85" y="7.8" width="2.3" height="12.8" rx="0.8"/><rect x="9.6" y="11.7" width="8.8" height="2.3" rx="0.8"/></g>`;
@@ -4115,7 +4150,38 @@ document.addEventListener('DOMContentLoaded', function bindEvents() {
   });
 
   // ── 커버 기타 ──
-  on('cover-update-btn','click', function(e) { e.stopPropagation(); refreshAppFilesOnly(); });
+  (function bindCoverRefreshLongPress(){
+    var refreshBtn = document.getElementById('cover-update-btn');
+    if(!refreshBtn) return;
+    var holdTimer = null;
+    var HOLD_MS = 850;
+    function clearHold(){
+      if(holdTimer){ clearTimeout(holdTimer); holdTimer = null; }
+    }
+    function armHold(e){
+      try{ if(e && e.button !== undefined && e.button !== 0) return; }catch(_e){}
+      clearHold();
+      holdTimer = setTimeout(function(){
+        holdTimer = null;
+        try{ window.__OAI_REFRESH_LONG_PRESS_UNTIL__ = (Date.now ? Date.now() : new Date().getTime()) + 900; }catch(_e){}
+        try{ if(navigator.vibrate) navigator.vibrate(25); }catch(_e){}
+        if(typeof clearAppFilesCacheCompletely === 'function') clearAppFilesCacheCompletely();
+      }, HOLD_MS);
+    }
+    on(refreshBtn, 'pointerdown', armHold, {passive:true});
+    on(refreshBtn, 'pointerup', clearHold, {passive:true});
+    on(refreshBtn, 'pointercancel', clearHold, {passive:true});
+    on(refreshBtn, 'pointerleave', clearHold, {passive:true});
+    on('cover-update-btn','click', function(e) {
+      e.stopPropagation();
+      var now = Date.now ? Date.now() : new Date().getTime();
+      if(window.__OAI_REFRESH_LONG_PRESS_UNTIL__ && now < window.__OAI_REFRESH_LONG_PRESS_UNTIL__){
+        e.preventDefault();
+        return;
+      }
+      refreshAppFilesOnly();
+    });
+  })();
   on('qna-cover-btn',  'click', function() { openQnaView(); });
   on('pwa-install-btn','click', function() { triggerPwaInstall(); });
 
