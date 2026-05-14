@@ -724,7 +724,7 @@ function syncCoverUpdateVersionState(){
     var box = document.getElementById('cover-update-box');
     var marker = document.getElementById('oai-build-marker');
     if(!btn || !box) return;
-    var target = btn.getAttribute('data-target-version') || 'V38-40';
+    var target = btn.getAttribute('data-target-version') || 'V38-41';
     var current = '';
     if(window.APP_VERSION) current = String(window.APP_VERSION).trim();
     if(!current && marker) current = String(marker.textContent || '').trim();
@@ -953,7 +953,7 @@ function _closePrayerAndReturn(){
     return false;
   }
   function shouldShow(){
-    // V38-40 임시 확인용: iPhone 설치 안내를 Android에서도 확인할 수 있게 한다.
+    // V38-41 임시 확인용: iPhone 설치 안내를 Android에서도 확인할 수 있게 한다.
     // 실제 배포 확정 후에는 아래 Android 조건만 제거하면 된다.
     if(isAndroid()) return true;
     return isIOS() && isKakao() && !isStandalone();
@@ -1029,7 +1029,7 @@ function openDioceseView(opts){
       if(!restore) try{ frame.contentWindow && frame.contentWindow.resetDioceseFirstPage && frame.contentWindow.resetDioceseFirstPage(); }catch(e){ console.warn("[가톨릭길동무]", e); }
       if(typeof dioceseLoaded==='function') dioceseLoaded();
     };
-    frame.src='diocese.html?v=V38-40';
+    frame.src='diocese.html?v=V38-41';
   }else if(!restore){
     try{ frame.contentWindow && frame.contentWindow.resetDioceseFirstPage && frame.contentWindow.resetDioceseFirstPage(); }catch(e){ console.warn("[가톨릭길동무]", e); }
   }
@@ -2308,7 +2308,7 @@ function _mkrImgRetreat(color,big){
 }
 function _mkrImg(color,big){
   const w=big?40:28,h=big?52:36;
-  // V38-40: iPhone/Android marker cross uses SVG bars, not an emoji/text glyph.
+  // V38-41: iPhone/Android marker cross uses SVG bars, not an emoji/text glyph.
   // This removes the purple emoji background and keeps a plain white cross.
   const crossBig = `<g fill="#fff" opacity="0.96"><rect x="18.45" y="10.5" width="3.1" height="18.5" rx="1.1"/><rect x="13.4" y="16.3" width="13.2" height="3.1" rx="1.1"/></g>`;
   const crossSmall = `<g fill="#fff" opacity="0.96"><rect x="12.85" y="7.8" width="2.3" height="12.8" rx="0.8"/><rect x="9.6" y="11.7" width="8.8" height="2.3" rx="0.8"/></g>`;
@@ -4154,29 +4154,62 @@ document.addEventListener('DOMContentLoaded', function bindEvents() {
     var refreshBtn = document.getElementById('cover-update-btn');
     if(!refreshBtn) return;
     var holdTimer = null;
+    var didLongPress = false;
     var HOLD_MS = 850;
-    function clearHold(){
+    function now(){ return Date.now ? Date.now() : new Date().getTime(); }
+    function preventNativePressMenu(e){
+      try{
+        if(e){
+          e.stopPropagation();
+          if(e.cancelable) e.preventDefault();
+        }
+      }catch(_e){}
+    }
+    function clearHoldOnly(){
       if(holdTimer){ clearTimeout(holdTimer); holdTimer = null; }
     }
     function armHold(e){
       try{ if(e && e.button !== undefined && e.button !== 0) return; }catch(_e){}
-      clearHold();
+      preventNativePressMenu(e);
+      clearHoldOnly();
+      didLongPress = false;
+      try{
+        refreshBtn.style.webkitUserSelect = 'none';
+        refreshBtn.style.userSelect = 'none';
+        refreshBtn.style.webkitTouchCallout = 'none';
+      }catch(_e){}
       holdTimer = setTimeout(function(){
         holdTimer = null;
-        try{ window.__OAI_REFRESH_LONG_PRESS_UNTIL__ = (Date.now ? Date.now() : new Date().getTime()) + 900; }catch(_e){}
+        didLongPress = true;
+        try{ window.__OAI_REFRESH_LONG_PRESS_UNTIL__ = now() + 1000; }catch(_e){}
         try{ if(navigator.vibrate) navigator.vibrate(25); }catch(_e){}
         if(typeof clearAppFilesCacheCompletely === 'function') clearAppFilesCacheCompletely();
       }, HOLD_MS);
     }
-    on(refreshBtn, 'pointerdown', armHold, {passive:true});
-    on(refreshBtn, 'pointerup', clearHold, {passive:true});
-    on(refreshBtn, 'pointercancel', clearHold, {passive:true});
-    on(refreshBtn, 'pointerleave', clearHold, {passive:true});
+    function releaseHold(e){
+      preventNativePressMenu(e);
+      var wasShortTap = !!holdTimer && !didLongPress;
+      clearHoldOnly();
+      try{ window.__OAI_REFRESH_POINTER_HANDLED_UNTIL__ = now() + 700; }catch(_e){}
+      if(wasShortTap) refreshAppFilesOnly();
+    }
+    function cancelHold(e){
+      preventNativePressMenu(e);
+      clearHoldOnly();
+    }
+    on(refreshBtn, 'pointerdown', armHold, {passive:false});
+    on(refreshBtn, 'pointerup', releaseHold, {passive:false});
+    on(refreshBtn, 'pointercancel', cancelHold, {passive:false});
+    on(refreshBtn, 'pointerleave', function(e){ clearHoldOnly(); }, {passive:false});
+    on(refreshBtn, 'contextmenu', function(e){ preventNativePressMenu(e); return false; }, {capture:true});
+    on(refreshBtn, 'selectstart', function(e){ preventNativePressMenu(e); return false; }, {capture:true});
+    on(refreshBtn, 'dragstart', function(e){ preventNativePressMenu(e); return false; }, {capture:true});
     on('cover-update-btn','click', function(e) {
       e.stopPropagation();
-      var now = Date.now ? Date.now() : new Date().getTime();
-      if(window.__OAI_REFRESH_LONG_PRESS_UNTIL__ && now < window.__OAI_REFRESH_LONG_PRESS_UNTIL__){
-        e.preventDefault();
+      e.preventDefault();
+      var t = now();
+      if((window.__OAI_REFRESH_LONG_PRESS_UNTIL__ && t < window.__OAI_REFRESH_LONG_PRESS_UNTIL__) ||
+         (window.__OAI_REFRESH_POINTER_HANDLED_UNTIL__ && t < window.__OAI_REFRESH_POINTER_HANDLED_UNTIL__)){
         return;
       }
       refreshAppFilesOnly();

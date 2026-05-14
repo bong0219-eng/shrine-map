@@ -2450,7 +2450,7 @@ html.ios-install-preview-mode #cover .ios-safari-banner{
   margin-bottom:10px;
 }
 
-/* V38-40: iPhone 설치 안내 팝업 구분감 강화 */
+/* V38-41: iPhone 설치 안내 팝업 구분감 강화 */
 #ios-safari-guide-modal .guide-backdrop{
   background:rgba(14,21,53,.58)!important;
   -webkit-backdrop-filter:blur(3px);
@@ -3254,7 +3254,7 @@ html.ios-device .qna-panel{border-radius:13px!important;}
 }
 
 
-/* V38-40: iPhone 설치 안내 팝업 가독성 보정
+/* V38-41: iPhone 설치 안내 팝업 가독성 보정
    - 팝업 패널은 더 어둡게, 안내 카드 내부는 아이보리로 분리
    - 제목/리드 문구가 이미지 카드와 겹치지 않도록 flex 영역 고정 */
 #ios-safari-guide-modal .guide-backdrop{
@@ -3301,7 +3301,7 @@ html.ios-device .qna-panel{border-radius:13px!important;}
   box-sizing:border-box!important;
 }
 
-/* V38-40: 설치 안내 팝업은 제목까지 고정하고, 안내 문구부터 단계 카드까지 함께 스크롤한다. */
+/* V38-41: 설치 안내 팝업은 제목까지 고정하고, 안내 문구부터 단계 카드까지 함께 스크롤한다. */
 .ios-safari-scroll{
   flex:1 1 auto!important;
   min-height:0!important;
@@ -3355,7 +3355,7 @@ html.ios-device .qna-panel{border-radius:13px!important;}
   box-shadow:0 10px 22px rgba(0,0,0,.26)!important;
 }
 
-/* V38-40: 커버 뒤로가기 종료 안내문을 화면 중앙으로 이동 */
+/* V38-41: 커버 뒤로가기 종료 안내문을 화면 중앙으로 이동 */
 #oai-cover-exit-toast{
   top:50%!important;
   bottom:auto!important;
@@ -3374,7 +3374,7 @@ html.ios-device .qna-panel{border-radius:13px!important;}
   transform:translate(-50%,-50%) scale(1)!important;
 }
 
-/* V38-40: iPhone 설치 안내 팝업 X 버튼 색상과 커버 종료 안내 중앙 고정 */
+/* V38-41: iPhone 설치 안내 팝업 X 버튼 색상과 커버 종료 안내 중앙 고정 */
 #ios-safari-guide-modal .guide-x{
   background:#fffaf1!important;
   color:#111!important;
@@ -3392,7 +3392,7 @@ html.ios-device .qna-panel{border-radius:13px!important;}
 }
 
 
-/* V38-40: iPhone 1차 화면 높이 축소
+/* V38-41: iPhone 1차 화면 높이 축소
    Android 공통 구조는 유지하고, iPhone 내부 화면의 헤더·탭 세로 밀도만 소폭 줄인다. */
 html.ios-device #app .module-title,
 html.ios-device #prayer-view .module-title,
@@ -3409,7 +3409,7 @@ html.ios-device #prayer-view .pr-filter-btn{
   padding-bottom:3px!important;
 }
 
-/* V38-40: iPhone 1차 탭 높이 직접 보정
+/* V38-41: iPhone 1차 탭 높이 직접 보정
    기존 Android/공통 탭 규칙은 유지하고, iPhone에서 실제 크게 보였던 #tabbar 높이만 소폭 낮춘다. */
 html.ios-device{
   --tab-h:64px;
@@ -3437,7 +3437,7 @@ html.ios-device #prayer-tabs .pr-tab{
   gap:6px!important;
 }
 
-/* V38-40: iPhone 커버 비율 1차 보정
+/* V38-41: iPhone 커버 비율 1차 보정
    Android 공통 구조는 건드리지 않고, iPhone/확인용 ios-device 상태에서만 커버 카드 글자와 하단 안내문 균형을 조정한다. */
 html.ios-device #cover,
 html.ios-install-preview-mode #cover{
@@ -3505,7 +3505,7 @@ html.ios-install-preview-mode #cover #oai-build-marker{
 }
 
 
-/* V38-40: iPhone tab height balance and header/cross icon polish
+/* V38-41: iPhone tab height balance and header/cross icon polish
    - 성지·성당·피정의집 3개 카테고리의 #tabbar는 너무 커진 높이를 줄이고 버튼과 균형을 맞춘다.
    - 주요기도문·웹사이트·순례길·문의 탭바/탭 버튼은 주요기도문 느낌을 기준으로 균형 있게 맞춘다.
    - 주요기도문 구조는 유지한다: X 왼쪽, 헤더 이모지 없음, 굿뉴스 기도문 오른쪽.
@@ -3540,7 +3540,7 @@ html.ios-device #tabbar .tab-btn.active .tab-icon{
   font-size:18px!important;
 }
 
-/* V38-40: iPhone 성지·성당·피정의집 제목 글자 축소
+/* V38-41: iPhone 성지·성당·피정의집 제목 글자 축소
    ‘내 주변 10곳 / 찾기 / 지역검색’ 제목만 메인 3개 카테고리에서 작게 보정한다. */
 html.ios-device #app #nearby-sheet-title,
 html.ios-device #app #list-sheet-title,
@@ -3645,4 +3645,57 @@ html.ios-device #qna-view .qna-tab{
 /* Prayer header structure exception: keep no emoji and left X. */
 #prayer-bar .module-bar-ico{
   display:none!important;
+}
+
+
+/* V38-41: iPhone main category list card vertical density and refresh long-press guard
+   - 성지·성당·피정의집 목록 카드의 아래 빈 여백을 iPhone에서만 줄인다.
+   - 새로고침 버튼 길게 누르기 시 OS 텍스트 선택/복사/공유 메뉴가 뜨지 않도록 한다. */
+html.ios-device #app .nearby-item,
+html.ios-device #app .list-item,
+html.ios-device #app .region-item{
+  min-height:62px!important;
+  padding-top:7px!important;
+  padding-bottom:7px!important;
+  align-items:center!important;
+  gap:9px!important;
+}
+html.ios-device #app .nearby-info,
+html.ios-device #app .li-info,
+html.ios-device #app .region-item .nearby-info,
+html.ios-device #app .region-item .li-info{
+  display:flex!important;
+  flex-direction:column!important;
+  justify-content:center!important;
+  gap:2px!important;
+  min-height:0!important;
+}
+html.ios-device #app .nearby-name,
+html.ios-device #app .li-name,
+html.ios-device #app .region-item .nearby-name,
+html.ios-device #app .region-item .li-name{
+  line-height:1.24!important;
+}
+html.ios-device #app .nearby-addr,
+html.ios-device #app .li-sub,
+html.ios-device #app .region-item .nearby-addr,
+html.ios-device #app .region-item .li-sub{
+  line-height:1.26!important;
+}
+html.ios-device #app .nearby-meta,
+html.ios-device #app .li-badge{
+  margin-top:0!important;
+  align-self:center!important;
+}
+#cover #cover-update-btn{
+  -webkit-user-select:none!important;
+  user-select:none!important;
+  -webkit-touch-callout:none!important;
+  -webkit-user-drag:none!important;
+  touch-action:manipulation!important;
+}
+#cover #cover-update-btn *{
+  -webkit-user-select:none!important;
+  user-select:none!important;
+  -webkit-touch-callout:none!important;
 }
