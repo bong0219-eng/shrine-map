@@ -287,13 +287,25 @@
   }
   function ensureCoverTrapAfterPrayer(reason){
     try{
-      if(typeof window._resetCoverBackTrap === 'function') window._resetCoverBackTrap(reason || 'prayer-cover-reset');
-      else if(typeof window._ensureCoverBackTrap === 'function') window._ensureCoverBackTrap(reason || 'prayer-cover-reset');
-      else {
-        var href = location.href.split('#')[0];
-        history.replaceState({_p:0, oai_cover_root:reason||'prayer-cover-reset'}, '', href);
-        history.pushState({_p:1, oai_cover_trap:reason||'prayer-cover-reset'}, '', href);
-      }
+      /* V1-6: 기도문/팝업에서 커버로 돌아온 직후에는 현재 위치가 무엇이든
+         커버 root(0) → 커버 trap(1)을 직접 다시 만든다.
+         다른 헬퍼의 조기 return 조건에 맡기지 않아 Android/PWA Back이 앱 종료로
+         빠지기 전에 반드시 JS가 받을 트랩을 확보한다. */
+      var href = location.href.split('#')[0];
+      history.replaceState({_p:0, oai_cover_root:reason||'prayer-cover-reset'}, '', href);
+      history.pushState({_p:1, oai_cover_trap:reason||'prayer-cover-reset'}, '', href);
+    }catch(e){ console.warn('[가톨릭길동무]', e); }
+  }
+  function armPrayerPopupTrap(reason){
+    try{
+      /* V1-6 핵심: 기도문 목록에서 빠른메뉴 팝업으로 돌아오는 순간
+         현재 history가 이미 한 칸 소비된 상태일 수 있다.
+         그래서 팝업을 보여주기 전에 커버 root(0)를 현재 항목으로 고정하고,
+         그 위에 팝업 trap(1)을 새로 얹는다.
+         다음 Back은 브라우저 종료가 아니라 popstate → resetPrayerToCover()로 들어온다. */
+      var href = location.href.split('#')[0];
+      history.replaceState({_p:0, oai_prayer_popup_root:reason||'prayer-popup-root'}, '', href);
+      history.pushState({_p:1, oai_prayer_step:'popup', oai_prayer_reason:reason||'prayer-list-popup'}, '', href);
     }catch(e){ console.warn('[가톨릭길동무]', e); }
   }
   function resetPrayerToCover(reason){
@@ -309,7 +321,7 @@
       resetPrayerFlags();
       try{ if(typeof window._resetCoverExitReady === 'function') window._resetCoverExitReady(); }catch(_e){}
       try{ if(typeof window._clearCoverExitArmed === 'function') window._clearCoverExitArmed(); }catch(_e){}
-      /* V1-5: 기도문 복귀 팝업에서 Back 또는 X를 누른 뒤에는 결과가 반드시 커버여야 한다.
+      /* V1-6: 기도문 복귀 팝업에서 Back 또는 X를 누른 뒤에는 결과가 반드시 커버여야 한다.
          resetPrayerFlags()가 이전 보호값을 정리한 다음, 커버 첫 Back은 항상 종료 안내가 먼저 나오도록
          여기서만 커버 보호 시간을 다시 건다. 새 보정 블록을 추가하지 않고 기도문 전용 컨트롤러 안에서 처리한다. */
       try{ window.__OAI_PRAYER_COVER_FORCE_FIRST_TOAST_UNTIL__ = Date.now() + 10000; }catch(_e){}
@@ -347,7 +359,7 @@
         mq.classList.add('show');
         mq.setAttribute('aria-hidden','false');
       }
-      pushPrayerState('popup', reason || 'prayer-list-popup');
+      armPrayerPopupTrap(reason || 'prayer-list-popup');
       return true;
     }catch(e){ console.warn('[가톨릭길동무]', e); return true; }
   }
