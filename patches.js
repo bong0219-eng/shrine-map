@@ -265,7 +265,15 @@
 
     if(_restoring){
       _restoring = false;
-      runPendingPrayerQuickPopup();
+      var _hadPopup = runPendingPrayerQuickPopup();
+      /* go(1) 복원 후 앱이 여전히 활성이면 트랩이 소멸된 상태이므로 반드시 재설정한다.
+         (closeExtOrModule이 본문닫기/레이어닫기 후 return true로 빠져나온 경우가 여기 해당) */
+      if(!_hadPopup && appActive()){
+        try{
+          history.replaceState({_p:0, oai_app_trap_from:'restoring'}, '', _href);
+          history.pushState({_p:1, oai_app_trap:'restoring'}, '', _href);
+        }catch(e){ console.warn('[가톨릭길동무]', e); }
+      }
       return;
     }
 
