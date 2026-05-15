@@ -1,26 +1,19 @@
-/* 가톨릭길동무 Service Worker - V1
+/* 가톨릭길동무 Service Worker - V1-4
    캐시를 매번 삭제하지 않고, 버전 변경 시 오래된 캐시만 정리합니다.
-   localStorage/사용자 설정은 건드리지 않습니다.
-
-   ⚠️ 업데이트 배포 시 반드시 아래 CACHE_VERSION 값을 변경하세요.
-   - index.html, app.js 등 파일 변경 후 버전을 올리지 않으면
-     cacheFirst 전략으로 인해 구버전 파일이 계속 서빙됩니다.
-   - APP_SHELL 목록의 파일명도 실제 파일과 일치하는지 확인하세요.
-     (특히 날짜가 포함된 이미지 파일명은 교체 시 목록도 함께 수정)
-*/
-const CACHE_VERSION = 'catholic-way-V1';
+   localStorage/사용자 설정은 건드리지 않습니다. */
+const CACHE_VERSION = 'catholic-way-V1-4';
 const APP_SHELL = [
   './',
   './index.html',
   './diocese.html',
   './qa-firebase.html',
-  './parishes.js?v=V1',
-  './style.css?v=V1',
-  './app.js?v=V1',
-  './web.js?v=V1',
-  './prayer.js?v=V1',
-  './patches.js?v=V1',
-  './sw-update.js?v=V1',
+  './parishes.js?v=V1-4',
+  './style.css?v=V1-4',
+  './app.js?v=V1-4',
+  './web.js?v=V1-4',
+  './prayer.js?v=V1-4',
+  './patches.js?v=V1-4',
+  './sw-update.js?v=V1-4',
   './manifest.json',
   './icon-192x192.png',
   './icon-512x512.png',
@@ -35,13 +28,7 @@ const APP_SHELL = [
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_VERSION)
-      .then((cache) => Promise.all(
-        APP_SHELL.map((url) =>
-          cache.add(url).catch((err) => {
-            console.warn('[가톨릭길동무 SW] 캐시 추가 실패:', url, err);
-          })
-        )
-      ))
+      .then((cache) => Promise.all(APP_SHELL.map((url) => cache.add(url).catch(() => null))))
       .then(() => self.skipWaiting())
   );
 });

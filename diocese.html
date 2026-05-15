@@ -237,7 +237,7 @@ body > header{display:none!important;visibility:hidden!important;height:0!import
 #card .c-x{display:flex!important;align-items:center!important;justify-content:center!important;opacity:1!important;visibility:visible!important;pointer-events:auto!important;}
 
 
-/* V1: 헤더 아이콘 중앙 정렬 보정 */
+/* v1: 헤더 아이콘 중앙 정렬 보정 */
 .hd-icon{line-height:1!important;display:flex!important;align-items:center!important;justify-content:center!important;overflow:hidden!important;font-family:"Apple SD Gothic Neo","Noto Sans KR",Arial,sans-serif!important;}
 </style>
 <style id="oai-diocese-tab-standard-20260504">
@@ -321,10 +321,18 @@ html.ios-device .si-r,
 html.ios-device .lv-card{border-radius:12px!important;padding:10px 12px!important;}
 html.ios-device .cb{width:34px!important;height:34px!important;border-radius:10px!important;}
 </style>
+
+<style id="oai-diocese-latin-cross">
+/* 관구·교구 단독 화면 헤더 십자가를 라틴 십자가 비율로 통일 */
+.hd-icon{position:relative!important;font-size:0!important;overflow:hidden!important;}
+.hd-icon::before,.hd-icon::after{content:"";position:absolute;left:50%;background:#fff;border-radius:2px;display:block;}
+.hd-icon::before{top:50%;width:3px;height:24px;transform:translate(-50%,-50%);}
+.hd-icon::after{top:42%;width:14px;height:3px;transform:translate(-50%,-50%);}
+</style>
 </head>
 <body>
 <header>
-  <div class="hd"><div class="hd-left"><span class="hd-icon">⛪</span><div class="hd-titles"><h1>한국 천주교 교구 지도</h1><span class="hd-sub">한국천주교 3개관구.16개교구</span></div></div></div>
+  <div class="hd"><div class="hd-left"><span class="hd-icon" aria-hidden="true"></span><div class="hd-titles"><h1>한국 천주교 교구 지도</h1><span class="hd-sub">한국천주교 3개관구.16개교구</span></div></div></div>
 </header>
 <div class="tab-bar">
   <div class="tab on" data-tab="gwangu">관구별 보기</div>
