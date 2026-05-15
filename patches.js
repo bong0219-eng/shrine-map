@@ -309,6 +309,10 @@
       resetPrayerFlags();
       try{ if(typeof window._resetCoverExitReady === 'function') window._resetCoverExitReady(); }catch(_e){}
       try{ if(typeof window._clearCoverExitArmed === 'function') window._clearCoverExitArmed(); }catch(_e){}
+      /* V1-5: 기도문 복귀 팝업에서 Back 또는 X를 누른 뒤에는 결과가 반드시 커버여야 한다.
+         resetPrayerFlags()가 이전 보호값을 정리한 다음, 커버 첫 Back은 항상 종료 안내가 먼저 나오도록
+         여기서만 커버 보호 시간을 다시 건다. 새 보정 블록을 추가하지 않고 기도문 전용 컨트롤러 안에서 처리한다. */
+      try{ window.__OAI_PRAYER_COVER_FORCE_FIRST_TOAST_UNTIL__ = Date.now() + 10000; }catch(_e){}
       ensureCoverTrapAfterPrayer(reason || 'prayer-cover-reset');
       return true;
     }catch(e){ console.warn('[가톨릭길동무]', e); return true; }
