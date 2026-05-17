@@ -190,16 +190,23 @@ function prSaveFavorites(){ try{ localStorage.setItem('pr_favorites', JSON.strin
 function prApplyFont(){
   const px = PR_FONT_SIZES[prFontIdx];
   const r = document.getElementById('prayer-view');
-  if(!r) return;
-  r.style.setProperty('--pr-item-fs',   px+'px');
-  r.style.setProperty('--pr-body-fs',   px+'px');
-  r.style.setProperty('--pr-detail-fs', (px+1)+'px');
-  r.style.setProperty('--pr-icon-sz',   Math.max(34,Math.round(px*2.2))+'px');
-  r.style.setProperty('--pr-icon-fs',   Math.max(17,Math.round(px*1.2))+'px');
+  if(r){
+    r.style.setProperty('--pr-item-fs',   px+'px');
+    r.style.setProperty('--pr-body-fs',   px+'px');
+    r.style.setProperty('--pr-detail-fs', (px+1)+'px');
+    r.style.setProperty('--pr-icon-sz',   Math.max(34,Math.round(px*2.2))+'px');
+    r.style.setProperty('--pr-icon-fs',   Math.max(17,Math.round(px*1.2))+'px');
+  }
   try{ localStorage.setItem(PR_FONT_KEY, px); }catch(e){ console.warn("[가톨릭길동무]", e); }
+  try{
+    if(typeof window.__APP_applyGlobalFont === 'function') window.__APP_applyGlobalFont();
+  }catch(e){ console.warn("[가톨릭길동무]", e); }
 }
 
 window.prAdjustFont = function(delta){
+  const saved = parseInt(localStorage.getItem(PR_FONT_KEY), 10);
+  const savedIdx = PR_FONT_SIZES.indexOf(saved);
+  if(savedIdx >= 0) prFontIdx = savedIdx;
   const next = prFontIdx + delta;
   if(next < 0 || next >= PR_FONT_SIZES.length) return;
   prFontIdx = next;
