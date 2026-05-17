@@ -682,7 +682,7 @@
   if(window.__APP_FONT_SCALE_GUARD__) return;
   window.__APP_FONT_SCALE_GUARD__=true;
   // V37: 문의·건의는 qa-firebase.html 한 경로로만 통일한다.
-  var QA_URL="qa-firebase.html?v=V1-S-A10";
+  var QA_URL="qa-firebase.html?v=V1-S-A11";
   var FONT_KEY='prayer_font_size', BASE=16, SIZES=[13,14,15,16,17,18,19,20,21,22,24,26,28,30];
   function el(id){return document.getElementById(id)}
   function getPx(){var px=parseInt(localStorage.getItem(FONT_KEY)||BASE,10);return (px>=13&&px<=30)?px:BASE;}
@@ -1098,7 +1098,8 @@
         cover.classList.remove('pulling','refreshing');
         cover.scrollTop=0;
       }
-      window.scrollTo(0,0);
+      // 커버는 fixed 레이어이므로 window scroll을 강제로 움직이지 않는다.
+      // 짧은 새로고침 때 화면이 위/아래로 튀는 원인이 될 수 있다.
       hideIndicator(ind);
     }catch(e){ console.warn('[가톨릭길동무]', e); }
   };
