@@ -9,8 +9,8 @@
   // APP_VERSION:      화면 표시용 단축 버전 (build marker, data-target-version)
   // SW_BUILD_VERSION:  SW 등록·캐시 키용 전체 버전 (sw.js BUILD_VERSION과 일치해야 함)
   // ★ 버전 업그레이드 시 두 값 모두 수정, sw.js BUILD_VERSION과 SW_BUILD_VERSION을 동일하게 맞출 것
-  var APP_VERSION = 'V1-S-A19';
-  var SW_BUILD_VERSION = 'V1-S-A19';
+  var APP_VERSION = 'V1-S-A21';
+  var SW_BUILD_VERSION = 'V1-S-A21';
   window.APP_VERSION = APP_VERSION;
 
   function now(){ return Date.now ? Date.now() : new Date().getTime(); }
@@ -101,7 +101,7 @@
   function registerServiceWorker(){
     if(!('serviceWorker' in navigator)) return;
     try{
-      navigator.serviceWorker.register('./sw.js?v=' + encodeURIComponent(SW_BUILD_VERSION || APP_VERSION))
+      navigator.serviceWorker.register('./sw.js?v=' + encodeURIComponent(SW_BUILD_VERSION || APP_VERSION), { updateViaCache: 'none' })
         .then(function(reg){ try{ reg.update(); }catch(e){ console.warn("[가톨릭길동무]", e); } })
         .catch(function(){});
     }catch(e){ console.warn("[가톨릭길동무]", e); }

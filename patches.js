@@ -642,7 +642,7 @@
   if(window.__APP_FONT_SCALE_GUARD__) return;
   window.__APP_FONT_SCALE_GUARD__=true;
   // V37: 문의·건의는 qa-firebase.html 한 경로로만 통일한다.
-  var QA_URL="qa-firebase.html?v=V1-S-A19";
+  var QA_URL="qa-firebase.html?v=V1-S-A21";
   var FONT_KEY='prayer_font_size', BASE=16;
   function el(id){return document.getElementById(id)}
   function getPx(){var px=parseInt(localStorage.getItem(FONT_KEY)||BASE,10);return (px>=13&&px<=30)?px:BASE;}
@@ -793,23 +793,9 @@
     el.classList.add(dir==='right'?'oai-swipe-right':'oai-swipe-left');
     setTimeout(function(){try{el.classList.remove('oai-swipe-left','oai-swipe-right');}catch(e){ console.warn("[가톨릭길동무]", e); }},240);
   }
-  /* 가로로 밀 때 브라우저/웹뷰 자체 화면이 옆으로 밀리는 현상 차단 */
-  /* 가로 스와이프 중 브라우저 화면이 함께 밀리는 것을 막는다. */
-  function bindHorizontalGuard(el){
-    if(!el || el.__oaiPreciseGuard) return;
-    el.__oaiPreciseGuard = true;
-    var sx=0, sy=0, horizontal=false;
-    el.addEventListener('touchstart', function(e){
-      if(!e.touches || !e.touches[0]) return;
-      sx=e.touches[0].clientX; sy=e.touches[0].clientY; horizontal=false;
-    }, {passive:true, capture:true});
-    el.addEventListener('touchmove', function(e){
-      if(!e.touches || !e.touches[0]) return;
-      var dx=e.touches[0].clientX-sx, dy=e.touches[0].clientY-sy;
-      if(Math.abs(dx)>10 && Math.abs(dx)>Math.abs(dy)*1.15) horizontal=true;
-      if(horizontal && e.cancelable) e.preventDefault();
-    }, {passive:false, capture:true});
-  }
+  /* 가로 스와이프 보호는 각 기능의 실제 스와이프 리스너가 담당한다.
+     부모 뷰에서 touchmove를 가로채면 기도문/웹사이트 탭의 손가락 스크롤까지 막힐 수 있으므로
+     전역 preventDefault 가드는 사용하지 않는다. */
 
   /* 웹사이트 좌우 스와이프 탭 이동 — 기도문과 동일 감도 */
   function bindWebSwipe(){
@@ -826,11 +812,8 @@
       if(!e.touches || !e.touches[0]) return;
       sx=e.touches[0].clientX; sy=e.touches[0].clientY;
     }, {passive:true});
-    el.addEventListener('touchmove', function(e){
-      if(!e.touches || !e.touches[0]) return;
-      var dx=e.touches[0].clientX-sx, dy=e.touches[0].clientY-sy;
-      if(Math.abs(dx)>7 && Math.abs(dx)>Math.abs(dy)*HORIZONTAL_RATIO && e.cancelable) e.preventDefault();
-    }, {passive:false});
+    /* 세로 스크롤을 막지 않기 위해 touchmove에서는 preventDefault를 하지 않는다.
+       좌우 탭 전환은 touchend에서만 거리와 비율을 판단한다. */
     el.addEventListener('touchend', function(e){
       if(!e.changedTouches || !e.changedTouches[0]) return;
       var dx=e.changedTouches[0].clientX-sx, dy=e.changedTouches[0].clientY-sy;
@@ -908,11 +891,7 @@
   }
 
   function init(){
-    bindHorizontalGuard($('prayer-view'));
-    bindHorizontalGuard($('prayer-list-view'));
-    bindHorizontalGuard($('web-view'));
-    bindHorizontalGuard($('web-list'));
-    bindWebSwipe();
+    // 웹사이트 목록 세로 스크롤 우선: web-list 스와이프 전환 리스너는 붙이지 않는다.
     wrapRouteReset();
     watchRouteSheet();
   }
@@ -930,9 +909,8 @@
   function rememberRouteDest(){ try{ if(_rE&&_rE.lat) return {lat:_rE.lat,lng:_rE.lng,idx:_rE.idx,name:_rE.name}; if(_curInfoItem&&_curInfoItem.item) return {lat:_curInfoItem.item.lat,lng:_curInfoItem.item.lng,idx:_curInfoItem.idx,item:_curInfoItem.item,name:_curInfoItem.item.name}; }catch(e){ console.warn("[가톨릭길동무]", e); } return null; }
   function restoreDest(dest){ if(!dest||!dest.lat) return; setTimeout(function(){ try{ var items=(typeof _getCurrentItems==='function')?_getCurrentItems():[]; var idx=(typeof dest.idx==='number'&&dest.idx>=0)?dest.idx:items.findIndex(function(p){return Number(p.lat)===Number(dest.lat)&&Number(p.lng)===Number(dest.lng);}); var item=idx>=0?items[idx]:dest.item; if(item&&typeof _showInfoCard==='function') _showInfoCard(item,idx); if(item&&typeof _focusMarkerAboveInfoCard==='function') _focusMarkerAboveInfoCard(item); }catch(e){ console.warn("[가톨릭길동무]", e); } },80); }
   window.oaiResetRouteThenClose=function(){ var dest=rememberRouteDest(); try{ if(typeof window.resetRoute==='function') window.resetRoute(); }catch(e){ console.warn("[가톨릭길동무]", e); } try{_routeMode=false;}catch(e){ console.warn("[가톨릭길동무]", e); } var rs=byId('sheet-route'); if(rs) rs.classList.remove('open'); restoreDest(dest); };
-  function guardHorizontal(el){ if(!el||el.__oaiPreciseGuard) return; el.__oaiPreciseGuard=true; var sx=0,sy=0,h=false; el.addEventListener('touchstart',function(e){if(!e.touches||!e.touches[0])return; sx=e.touches[0].clientX; sy=e.touches[0].clientY; h=false;},{passive:true}); el.addEventListener('touchmove',function(e){if(!e.touches||!e.touches[0])return; var dx=e.touches[0].clientX-sx,dy=e.touches[0].clientY-sy; if(Math.abs(dx)>10&&Math.abs(dx)>Math.abs(dy)*1.15) h=true; if(h&&e.cancelable)e.preventDefault();},{passive:false}); }
-  function init(){ ['prayer-view','prayer-list-view','prayer-detail','web-view','web-list'].forEach(function(id){guardHorizontal(byId(id));}); }
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init); else init(); window.addEventListener('load',init); window.addEventListener('pageshow',init);
+  /* 기존에는 여기서 prayer/web 부모 영역에 가로 preventDefault를 다시 붙였지만,
+     탭바의 자연스러운 손가락 스크롤을 막는 원인이 될 수 있어 제거한다. */
 })();
 (function(){
   'use strict';
