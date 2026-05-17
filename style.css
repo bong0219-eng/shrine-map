@@ -40,7 +40,7 @@
   --oai-std-radius:    14px;
   --oai-std-gap:       8px;
   --oai-std-icon-sz:   28px;
-  --oai-std-close-sz:  36px;
+  --oai-std-close-sz:  40px;
   --oai-std-hdr-pad:   calc(10px + env(safe-area-inset-top, 0px));
 
   /* ── 타이포그래피 */
@@ -446,13 +446,13 @@ html.retreat-mode #tabbar .tab-btn.active {
   top: 12px;
   right: 12px;
   z-index: 650;
-  width: 34px;
-  height: 34px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   border: 1px solid rgba(31,42,68,.22);
   background: rgba(31,42,68,.88);
   color: #fff;
-  font-size: 22px;
+  font-size: 28px;
   font-weight: 900;
   display: flex;
   align-items: center;
@@ -513,13 +513,13 @@ html.retreat-mode #tabbar .tab-btn.active {
   border: 1px solid rgba(196,155,86,.22);
   border-radius: 50%;
   color: #c49b56;
-  font-size: 22px;
+  font-size: 28px;
   font-weight: 900;
   line-height: 1;
-  width: 34px;
-  height: 34px;
-  min-width: 34px;
-  flex: 0 0 34px;
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  flex: 0 0 40px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -555,13 +555,13 @@ html.retreat-mode #tabbar .tab-btn.active {
   top: 10px;
   right: 12px;
   z-index: 3;
-  width: 34px;
-  height: 34px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   border: 1px solid rgba(31,42,68,.18);
   background: rgba(31,42,68,.86);
   color: #fff;
-  font-size: 22px;
+  font-size: 28px;
   font-weight: 900;
   line-height: 1;
   display: flex;
@@ -615,7 +615,7 @@ html.retreat-mode #tabbar .tab-btn.active {
   font-family: inherit;
 }
 .srch-inner input::placeholder, #srch-modal .sm-si input::placeholder { color: #8a8f98; }
-.srch-x { background: none; border: none; color: rgba(255,255,255,.5); font-size: 18px; cursor: pointer; padding: 0; display: none; }
+.srch-x { background: none; border: none; color: rgba(255,255,255,.58); font-size: 24px; font-weight: 900; line-height: 1; width: 30px; height: 30px; min-width: 30px; cursor: pointer; padding: 0; display: none; align-items: center; justify-content: center; }
 
 .filter-btn, .region-search-btn {
   flex-shrink: 0;
@@ -897,13 +897,13 @@ html.retreat-mode #region-body { overflow-x: hidden; }
   border: 1px solid rgba(212,170,106,.58);
   border-radius: 50%;
   color: #c49b56;
-  font-size: 22px;
+  font-size: 28px;
   font-weight: 900;
   line-height: 1;
-  width: 34px;
-  height: 34px;
-  min-width: 34px;
-  flex: 0 0 34px;
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  flex: 0 0 40px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1156,9 +1156,9 @@ html.retreat-mode #srch-modal #sm-tab-bar .sm-tab.active {
   background: rgba(31,42,68,.86);
   border: 1px solid rgba(31,42,68,.18);
   border-radius: 50%;
-  width: 34px;
-  height: 34px;
-  font-size: 22px;
+  width: 40px;
+  height: 40px;
+  font-size: 28px;
   line-height: 1;
   font-weight: 900;
   cursor: pointer;
@@ -1284,7 +1284,7 @@ html.retreat-mode #srch-modal #sm-tab-bar .sm-tab.active {
 .rs-lbl.filled { color: var(--ink); font-weight: 700; }
 .rs-lbl.empty  { color: #aaa; }
 .rs-myloc { background: none; border: 1px solid var(--border); border-radius: 14px; padding: 6px 11px; font-size: 12px; color: var(--pilgrim); cursor: pointer; font-family: inherit; white-space: nowrap; }
-.rs-x { width:28px; height:28px; border-radius:50%; background: none; border: none; color: #aaa; font-size: 22px; font-weight:900; line-height:1; cursor: pointer; padding: 0; display:flex; align-items:center; justify-content:center; }
+.rs-x { width:30px; height:30px; border-radius:50%; background: none; border: none; color: #999; font-size: 24px; font-weight:900; line-height:1; cursor: pointer; padding: 0; display:flex; align-items:center; justify-content:center; }
 .rs-swap-btn { width: 36px; height: 36px; border-radius: 50%; border: 1.5px solid var(--border); background: #fff; font-size: 17px; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 1px 4px rgba(0,0,0,.1); }
 .rs-result { background: #fff; border-radius: 12px; padding: 12px; border: 1.5px solid var(--border); box-shadow: 0 2px 10px rgba(14,21,53,.08); }
 .rs-stats { display: flex; gap: 8px; margin-bottom: 10px; }
@@ -1462,7 +1462,7 @@ html.retreat-mode .ric-hd { background: linear-gradient(135deg, #2d4a0a, #3d5c1a
   background: rgba(255,255,255,.13);
   border: 1px solid rgba(255,255,255,.22);
   color: rgba(212,170,106,.9);
-  font-size: 22px;
+  font-size: 28px;
   font-weight: 900;
   display: flex;
   align-items: center;
@@ -1766,7 +1766,7 @@ html.retreat-mode .ric-hd { background: linear-gradient(135deg, #2d4a0a, #3d5c1a
 .trail-sheet { position: absolute; left: 0; right: 0; bottom: 0; z-index: 6; background: linear-gradient(180deg, #fffdf9, #f6efe4); border-radius: 26px 26px 0 0; border-top: 1px solid #eadfce; box-shadow: 0 -16px 32px rgba(0,0,0,.18); padding: 0 0 calc(28px + env(safe-area-inset-bottom, 0)); transform: translateY(110%); transition: transform .25s cubic-bezier(.4,0,.2,1); pointer-events: none; overflow: visible; height: auto; }
 .trail-sheet.open { transform: none; pointer-events: all; }
 .trail-sh-handle { width: 36px; height: 4px; border-radius: 2px; background: #e8ecf3; margin: 10px auto 0; }
-.trail-sh-close { position: absolute; top: 12px; right: 14px; width: 34px; height: 34px; border-radius: 50%; background: #f1f5f9; border: 1px solid #e2e8f0; cursor: pointer; font-size: 22px; line-height: 1; color: #64748b; display: flex; align-items: center; justify-content: center; }
+.trail-sh-close { position: absolute; top: 12px; right: 14px; width: 40px; height: 40px; border-radius: 50%; background: #f1f5f9; border: 1px solid #e2e8f0; cursor: pointer; font-size: 28px; font-weight: 900; line-height: 1; color: #64748b; display: flex; align-items: center; justify-content: center; }
 .trail-sh-top { display: flex; align-items: center; justify-content: space-between; padding: 18px 18px 0; gap: 8px; }
 .trail-sh-bdg { font-size: 11px; font-weight: 800; padding: 3px 8px; border-radius: 999px; color: #fff; white-space: nowrap; flex-shrink: 0; }
 .trail-sh-bdg.d { background: #1d4ed8; }
@@ -1812,11 +1812,11 @@ html.retreat-mode .ric-hd { background: linear-gradient(135deg, #2d4a0a, #3d5c1a
   border: none;
   border-radius: 50%;
   color: rgba(212,170,106,.9);
-  font-size: 22px;
+  font-size: 28px;
   font-weight: 900;
   line-height: 1;
-  width: 36px;
-  height: 36px;
+  width: 40px;
+  height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1867,10 +1867,10 @@ html.retreat-mode .ric-hd { background: linear-gradient(135deg, #2d4a0a, #3d5c1a
   border: 1px solid rgba(255,255,255,.28);
   border-radius: 50%;
   color: rgba(212,170,106,.9);
-  font-size: 20px;
+  font-size: 28px;
   font-weight: 900;
-  width: 38px;
-  height: 38px;
+  width: 40px;
+  height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2079,7 +2079,7 @@ html.retreat-mode .ric-hd { background: linear-gradient(135deg, #2d4a0a, #3d5c1a
 }
 #prayer-detail-hd .pr-font-ctrl { margin-left: auto; }
 #prayer-detail-hd #pr-detail-star { margin-left: 6px; margin-right: 0; }
-.pr-back { background: none; border: none; width: 42px; height: 42px; border-radius: var(--oai-std-radius); display: flex; align-items: center; justify-content: center; color: #555577; cursor: pointer; font-size: 22px; line-height: 1; }
+.pr-back { background: none; border: none; width: 42px; height: 42px; border-radius: var(--oai-std-radius); display: flex; align-items: center; justify-content: center; color: #1f2a44; cursor: pointer; font-size: 28px; font-weight: 900; line-height: 1; }
 #prayer-detail-ttl { display: none; }
 #prayer-detail-body { padding: 16px 14px 36px; flex: 1 1 auto; min-height: 0; overflow-y: auto; -webkit-overflow-scrolling: touch; }
 .pr-content-card { background: #fffbf2; border: 1px solid #ddd5c8; border-radius: 13px; padding: 24px 18px; font-family: inherit; font-size: var(--pr-body-fs, 16px); line-height: 2.1; color: #111; font-weight: 500; box-shadow: 0 1px 4px rgba(80,60,30,.07); }
@@ -2532,9 +2532,9 @@ html.app-active #pwa-install-btn { display: none; }
 .guide-backdrop { position: absolute; inset: 0; background: rgba(31,42,68,.34); backdrop-filter: blur(2px); }
 .guide-panel { position: relative; width: min(100%,430px); max-height: min(86dvh,720px); overflow: hidden; border-radius: 20px; background: #fffdf8; border: 1px solid #e4d8c7; box-shadow: 0 22px 60px rgba(31,42,68,.24); color: #1f2a44; padding: 20px 18px 18px; box-sizing: border-box; }
 .guide-manual-panel { display: flex; flex-direction: column; padding: 22px 16px 16px; }
-.guide-x { position: absolute; right: 10px; top: 10px; width: 34px; height: 34px; border: 0; border-radius: 50%; background: rgba(31,42,68,.08); color: #1f2a44; font-size: 22px; font-weight: 900; line-height: 1; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+.guide-x { position: absolute; right: 10px; top: 10px; width: 40px; height: 40px; border: 0; border-radius: 50%; background: rgba(31,42,68,.08); color: #1f2a44; font-size: 28px; font-weight: 900; line-height: 1; cursor: pointer; display: flex; align-items: center; justify-content: center; }
 .guide-badge { display: inline-flex; align-items: center; justify-content: center; min-height: 24px; padding: 0 10px; border-radius: 999px; background: #efe4d2; color: #7a5a2b; font-size: 11px; font-weight: 900; margin-bottom: 10px; box-sizing: border-box; }
-.guide-panel h2 { margin: 0 34px 10px 0; min-height: 30px; color: #1f2a44; font-size: calc(20px * var(--app-font-scale)); line-height: 1.35; font-weight: 900; letter-spacing: -.03em; }
+.guide-panel h2 { margin: 0 46px 10px 0; min-height: 30px; color: #1f2a44; font-size: calc(20px * var(--app-font-scale)); line-height: 1.35; font-weight: 900; letter-spacing: -.03em; }
 .guide-lead { margin: 0 0 8px; color: #4b5563; font-size: calc(13.5px * var(--app-font-scale)); line-height: 1.55; font-weight: 650; word-break: keep-all; }
 .guide-intro-note { margin: 0; color: #7a7065; font-size: calc(12.5px * var(--app-font-scale)); line-height: 1.55; word-break: keep-all; }
 .guide-actions { display: flex; gap: 8px; margin-top: 16px; }
@@ -2583,18 +2583,18 @@ html.ios-kakao-inapp #cover .ios-safari-banner {
 #cover .ios-safari-banner-x {
   position: absolute;
   top: 10px; right: 10px;
-  width: 34px; height: 34px;
+  width: 40px; height: 40px;
   border: 0; border-radius: 50%;
   background: rgba(31,42,68,.10);
   color: #1f2a44;
   font-family: inherit;
-  font-size: 24px; font-weight: 900; line-height: 1;
+  font-size: 28px; font-weight: 900; line-height: 1;
   display: flex; align-items: center; justify-content: center;
   box-shadow: 0 4px 12px rgba(31,42,68,.10);
 }
 #cover .ios-safari-banner-text {
   min-width: 0; display: flex; flex-direction: column; align-items: center;
-  gap: 8px; text-align: center; line-height: 1.28; padding: 8px 28px 0;
+  gap: 8px; text-align: center; line-height: 1.28; padding: 8px 36px 0;
 }
 #cover .ios-safari-banner-text strong { font-size: calc(24px * var(--app-font-scale)); font-weight: 900; letter-spacing: -.04em; word-break: keep-all; }
 #cover .ios-safari-banner-text span { font-size: calc(16px * var(--app-font-scale)); font-weight: 850; color: rgba(31,42,68,.72); word-break: keep-all; }
@@ -2807,7 +2807,7 @@ html.ios-device #trail-view .module-bar-ico,
 html.ios-device #diocese-view .module-bar-ico,
 html.ios-device #qna-view .module-bar-ico { width: 34px; height: 34px; }
 html.ios-device .module-close,
-html.ios-device #prayer-close { width: 34px; height: 34px; min-width: 34px; font-size: 22px; }
+html.ios-device #prayer-close { width: 40px; height: 40px; min-width: 40px; font-size: 28px; }
 html.ios-device #tabbar {
   height: calc(var(--tab-h) + env(safe-area-inset-top, 0px));
   min-height: calc(var(--tab-h) + env(safe-area-inset-top, 0px));
@@ -2854,10 +2854,10 @@ html.ios-device #app .sm-tab,
 html.ios-device .web-cat-btn,
 html.ios-device .trail-tab { min-height: 30px; padding: 3px 9px; border-radius: 12px; }
 html.ios-device #app .sheet-hd { padding: 10px 12px; }
-html.ios-device #app .sheet-x, html.ios-device #app .route-sheet-x { width: 34px; height: 34px; min-width:34px; font-size: 22px; line-height:1; }
+html.ios-device #app .sheet-x, html.ios-device #app .route-sheet-x { width: 40px; height: 40px; min-width:40px; font-size: 28px; line-height:1; }
 html.ios-device #app #info-card { border-radius: 20px 20px 0 0; max-height: 48vh; }
 html.ios-device #app .ic-header { padding: 11px 12px 5px; }
-html.ios-device #app .ic-close-btn { width: 34px; height: 34px; font-size: 22px; line-height:1; }
+html.ios-device #app .ic-close-btn { width: 40px; height: 40px; font-size: 28px; line-height:1; }
 html.ios-device #app .ic-meta { padding: 0 12px 6px; }
 html.ios-device #app .ic-addr-row { gap: 8px; padding: 0 12px 8px; }
 html.ios-device #app .ic-btn-row { gap: 6px; padding: 8px 12px 0; }
@@ -3091,7 +3091,7 @@ html.oai-font-global #region-body .dio-hd { font-size: calc(17px * var(--app-inn
 html:not(.app-active), html:not(.app-active) body { scroll-behavior: auto; }
 
 /* ============================================================
-   13. 커버 신규 컴포넌트 (cv-*) & 기타 패치
+   13. 커버 신규 컴포넌트 (cv-*) & 기타 보정
    ============================================================ */
 .cv-title em{color:#e1ba7a;text-shadow:0 8px 24px rgba(212,170,106,.22)}
 .cv-sub{margin:6px 0 0;max-width:420px;font-size:13px;line-height:1.4;color:#667085;letter-spacing:.02em}
@@ -3226,7 +3226,7 @@ html.retreat-mode .region-item .nearby-num{background:#4f46e5!important}
 #diocese-view.open{display:flex;inset:0;bottom:0;height:auto;min-height:0}
 #diocese-bar{background:linear-gradient(135deg,#1f2a44,#2f4167);padding:env(safe-area-inset-top,0) 14px 0;display:flex;align-items:center;justify-content:space-between;min-height:calc(52px + env(safe-area-inset-top,0));flex-shrink:0;border-bottom:2px solid var(--gold)}
 #diocese-bar-title{font-size:16px;font-weight:700;color:var(--gold);letter-spacing:.05em}
-#diocese-close{position:fixed;top:calc(env(safe-area-inset-top,0px) + 10px);right:14px;background:rgba(15,21,53,.72);border:1px solid rgba(255,255,255,.28);border-radius:50%;color:rgba(212,170,106,.9);font-size:20px;font-weight:900;width:38px;height:38px;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:2100;flex-shrink:0}
+#diocese-close{position:fixed;top:calc(env(safe-area-inset-top,0px) + 10px);right:14px;background:rgba(15,21,53,.72);border:1px solid rgba(255,255,255,.28);border-radius:50%;color:rgba(212,170,106,.9);font-size:28px;font-weight:900;width:40px;height:40px;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:2100;flex-shrink:0}
 #prayer-view{display:none;position:fixed;inset:0;z-index:20000;flex-direction:column;background:#EDE8E0;font-family:'Noto Sans KR',sans-serif}
 #prayer-view.open{display:flex;left:0!important;right:0!important;width:100vw!important;position:fixed;top:0!important;bottom:0!important;height:auto!important;min-height:0!important;transform:none!important}
 #prayer-bar{background:#0e1535;border-bottom:2px solid var(--gold);gap:12px}
@@ -3234,7 +3234,7 @@ html.retreat-mode .region-item .nearby-num{background:#4f46e5!important}
 #prayer-bar-ico{width:44px;height:44px;border-radius:14px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.22);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
 #prayer-bar-ttl{font-size:18px;font-weight:800;color:#fff;letter-spacing:-.02em}
 #prayer-bar-sub{font-size:11px;color:rgba(255,255,255,.6);margin-top:1px}
-#prayer-close{background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.22);border-radius:50%;color:rgba(212,170,106,.9);font-size:20px;font-weight:900;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;flex:0 0 auto!important}
+#prayer-close{background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.22);border-radius:50%;color:rgba(212,170,106,.9);font-size:28px;font-weight:900;width:40px;height:40px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;flex:0 0 auto!important}
 #prayer-tabs{display:flex;align-items:center;gap:6px;overflow-x:auto;scrollbar-width:none;padding:9px 12px;background:#EDE8E0;border-bottom:1px solid #d8d0c8;flex-shrink:0;overscroll-behavior-x:contain!important}
 #prayer-tabs::-webkit-scrollbar{display:none}
 .pr-tab{flex:0 0 auto;height:36px;padding:8px 12px;border-radius:10px;border:1.5px solid transparent;font-size:13px;font-weight:700;font-family:inherit;white-space:nowrap;cursor:pointer;align-items:center;gap:8px;background:#FFFBF2;border-bottom:1px solid #ddd5c8;flex-shrink:0}
@@ -3268,7 +3268,7 @@ html.retreat-mode .region-item .nearby-num{background:#4f46e5!important}
 #prayer-detail{position:absolute;inset:0;top:0;z-index:10;background:#EDE8E0;transform:translateX(100%);transition:transform .27s cubic-bezier(.25,.46,.45,.94);overflow-y:auto;display:flex;flex-direction:column;right:0!important;width:100vw!important;max-width:100vw!important}
 #prayer-detail.show{transform:none!important;display:flex!important;visibility:visible;pointer-events:auto}
 #prayer-detail-hd{position:sticky;top:0;background:#FFFBF2;border-bottom:1px solid #ddd5c8;display:flex;align-items:center;padding:10px 13px;min-height:60px;z-index:11;gap:9px}
-.pr-back{background:none;border:none;width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;color:#555577!important;cursor:pointer;font-size:22px;line-height:1}
+.pr-back{background:none;border:none;width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;color:#1f2a44!important;cursor:pointer;font-size:28px;font-weight:900;line-height:1}
 #prayer-detail-ttl{display:none}
 #prayer-detail-body{padding:16px 14px 36px;flex:1 1 auto!important;min-height:0!important;overflow-y:auto!important;-webkit-overflow-scrolling:touch!important}
 .pr-content-card{background:#FFFBF2;border:1px solid #ddd5c8;border-radius:13px;padding:24px 18px;font-family:inherit;font-size:var(--pr-body-fs,16px);line-height:2.1;color:#111;font-weight:500;box-shadow:0 1px 4px rgba(80,60,30,.07)}
@@ -3368,9 +3368,6 @@ html.app-active #qna-cover-btn{display:none}
 /* ============================================================
    14. 기타 누락 블록
    ============================================================ */
-/* --retreat-bg 등 변수 최종값은 하단 #oai-retreat-unified-clean 에서 일괄 정의 */
-/* --retreat-bg 중간 패치 제거됨: 최종값은 하단 #oai-retreat-unified-clean 참조 */
-/* --retreat-bg 중간 패치 제거됨: 최종값은 하단 #oai-retreat-unified-clean 참조 */
 #pwa-install-btn{display:none;width:calc(100% - 32px);max-width:380px;margin:20px auto 0;padding:0 20px;height:72px;background:linear-gradient(135deg, #ff6b35 0%, #f7931e 40%, #ffcc02 100%);color:#1a0a00;border:none;border-radius:22px;font-size:18px;font-weight:900;font-family:inherit;letter-spacing:-0.3px;cursor:pointer;box-shadow:0 6px 0 rgba(180,80,0,.35), 0 12px 32px rgba(255,107,53,.55), 0 4px 12px rgba(255,107,53,.30);-webkit-tap-highlight-color:transparent;animation:pwa-install-bounce 2s ease-in-out infinite;text-align:center;position:relative;overflow:hidden;align-items:center;justify-content:center;gap:10px}
 @keyframes pwa-install-bounce {
   0%,100% { transform: translateY(0); box-shadow: 0 6px 0 rgba(180,80,0,.35), 0 12px 32px rgba(255,107,53,.55); }

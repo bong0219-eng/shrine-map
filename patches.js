@@ -1,7 +1,6 @@
-/* patches.js — 뒤로가기·스와이프·터치 UX 패치
+/* patches.js — 뒤로가기·스와이프·터치 UX 보조 모듈
    history 기반 뒤로가기 컨트롤러, 스와이프 액션,
-   터치 피드백 & 키보드 입력 보정
-   원본 index.html Block D+E+G 에서 분리 */
+   터치 피드백과 키보드 입력 보정을 담당합니다. */
 
 /*
  * ═══════════════════════════════════════════════════════════
@@ -330,7 +329,7 @@
          사용자의 Back으로 공통 trap이 일단 소비된 직후라, 이 자리에서 openMassQuickMenu()를
          바로 호출하면 Android/PWA에서 history.go(1) 복원 타이밍과 겹쳐 팝업 Back이 앱 종료로
          먹힐 수 있다. 기존 안정 함수 _returnToMassQuickMenu('prayer')에게 맡기면,
-         patches.js의 _restoring 해제 지점에서 공통 trap 복원이 끝난 뒤
+         공통 trap 복원이 끝난 뒤
          '기도문 닫기 → 커버 복원 → 커버 위 빠른메뉴 팝업 표시'를 한 번에 실행한다. */
       try{ keepPrayerQuickSource(true); }catch(_e){}
       try{ if(typeof window._setPrayerPopupReturnSource === 'function') window._setPrayerPopupReturnSource(true); }catch(_e){}
@@ -682,7 +681,7 @@
   if(window.__APP_FONT_SCALE_GUARD__) return;
   window.__APP_FONT_SCALE_GUARD__=true;
   // V37: 문의·건의는 qa-firebase.html 한 경로로만 통일한다.
-  var QA_URL="qa-firebase.html?v=V1-S-A14";
+  var QA_URL="qa-firebase.html?v=V1-S-A15";
   var FONT_KEY='prayer_font_size', BASE=16, SIZES=[13,14,15,16,17,18,19,20,21,22,24,26,28,30];
   function el(id){return document.getElementById(id)}
   function getPx(){var px=parseInt(localStorage.getItem(FONT_KEY)||BASE,10);return (px>=13&&px<=30)?px:BASE;}
@@ -775,12 +774,9 @@
   window.addEventListener('pageshow', applyVisibility);
 })();
 
-/* ====== 성능 최적화 JS 패치 ====== */
+/* ====== 성능 최적화 보정 ====== */
 (function(){
-  // 중복 setTimeout 래핑으로 인한 함수 실행 누적 방지
-  // relayoutAll 류 함수의 과도한 setTimeout 체인 제한
-  var _raf = requestAnimationFrame;
-  
+  // 화면 전환 중 불필요한 레이아웃 부담을 줄인다.
   // cover의 pull-to-refresh: 불필요한 transform 제거
   var coverEl = document.getElementById('cover');
   if(coverEl) coverEl.style.willChange = 'auto';
@@ -807,7 +803,6 @@
 })();
 
 
-/* IIFE10 oaiSwipeAction 초기 정의 제거: IIFE11(flash 방식)·IIFE17(overlay 방식)에 의해 즉시 덮어쓰여 dead code였음 */
 (function(){
   'use strict';
   if(window.__APP_BACK_ROUTE_GUARD__) return;
@@ -821,11 +816,8 @@
     el.classList.add(dir==='right'?'oai-swipe-right':'oai-swipe-left');
     setTimeout(function(){try{el.classList.remove('oai-swipe-left','oai-swipe-right');}catch(e){ console.warn("[가톨릭길동무]", e); }},240);
   }
-  /* oaiSwipeAction: IIFE17에서 overlay div 방식으로 최종 정의 - 여기서 flash 방식 정의 제거 */
-
   /* 가로로 밀 때 브라우저/웹뷰 자체 화면이 옆으로 밀리는 현상 차단 */
-  /* bindHorizontalGuard: guardHorizontal(__APP_PRECISE_GUARD__, IIFE13)과 동일 로직
-     플래그를 __oaiPreciseGuard로 통일 → IIFE13 init() 실행 시 이미 붙은 요소는 자동 skip */
+  /* 가로 스와이프 중 브라우저 화면이 함께 밀리는 것을 막는다. */
   function bindHorizontalGuard(el){
     if(!el || el.__oaiPreciseGuard) return;
     el.__oaiPreciseGuard = true;
