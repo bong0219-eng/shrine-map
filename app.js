@@ -837,7 +837,7 @@ function syncCoverUpdateVersionState(){
     var box = document.getElementById('cover-update-box');
     var marker = document.getElementById('oai-build-marker');
     if(!btn || !box) return;
-    var target = btn.getAttribute('data-target-version') || 'V1-S-A2';
+    var target = btn.getAttribute('data-target-version') || 'V1-S-A3';
     var current = '';
     if(window.APP_VERSION) current = String(window.APP_VERSION).trim();
     if(!current && marker) current = String(marker.textContent || '').trim();
@@ -1172,7 +1172,7 @@ function openDioceseView(opts){
       if(!restore) try{ frame.contentWindow && frame.contentWindow.resetDioceseFirstPage && frame.contentWindow.resetDioceseFirstPage(); }catch(e){ console.warn("[가톨릭길동무]", e); }
       if(typeof dioceseLoaded==='function') dioceseLoaded();
     };
-    frame.src='diocese.html?v=V1-S-A2';
+    frame.src='diocese.html?v=V1-S-A3';
   }else if(!restore){
     try{ frame.contentWindow && frame.contentWindow.resetDioceseFirstPage && frame.contentWindow.resetDioceseFirstPage(); }catch(e){ console.warn("[가톨릭길동무]", e); }
   }
@@ -3279,7 +3279,14 @@ function _buildParishDioSystem(){
   });
 }
 
+function _isParishRouteLineActive(){
+  return _mode==='parish' && !!_polyline;
+}
 function _showDioOverlays(){
+  if(_isParishRouteLineActive()){
+    _hideDioOverlays();
+    return;
+  }
   Object.values(_dioOverlays).forEach(ov=>{ try{ov.setMap(_map);}catch(e){ console.warn("[가톨릭길동무]", e); } });
 }
 function _hideDioOverlays(){
@@ -3288,6 +3295,12 @@ function _hideDioOverlays(){
 
 function _syncParishDioLabels(){
   if(_mode!=='parish' || !_map) return;
+  // 성당 길찾기 경로가 지도에 표시된 동안에는 출발/도착 마커와 경로선만 보이도록
+  // 교구 라벨을 다시 띄우지 않는다. 지도 idle/복귀 보정에서 이 함수가 재호출되어도 유지된다.
+  if(_isParishRouteLineActive()){
+    _hideDioOverlays();
+    return;
+  }
   if(!_parishSysInited){ try{ _buildParishDioSystem(); }catch(e){ console.warn('[가톨릭길동무]',e); } }
   Object.entries(_dioOverlays||{}).forEach(function(pair){
     const code=pair[0], ov=pair[1];
@@ -3388,6 +3401,10 @@ function _ensureParishMarkerZoom(){
   }catch(e){ console.warn('[가톨릭길동무]',e); }
 }
 function _showParishDioMkrs(code){
+  if(_isParishRouteLineActive()){
+    try{ _hideParishDioMkrs(code); }catch(e){ console.warn('[가톨릭길동무]',e); }
+    return;
+  }
   // 교구를 선택했을 때는 해당 교구 성당 마커가 반드시 보이도록 한다.
   // 지도 줌/중심은 _focusParishDio()의 교구 전체 bounds를 우선한다.
   // 여기서 줌을 강제로 당기면 넓은 교구의 일부 마커만 보일 수 있으므로 건드리지 않는다.
@@ -3433,6 +3450,12 @@ function _showParishDioMkrs(code){
 function _updateParishViewport(code){
   const mkrs=_dioMkrs[code];
   if(!mkrs||!_map) return;
+  if(_isParishRouteLineActive()){
+    mkrs.forEach(mk=>{
+      try{ mk.setMap(null); }catch(e){ console.warn('[가톨릭길동무]',e); }
+    });
+    return;
+  }
   mkrs.forEach(mk=>{
     try{ mk.setMap(_map); }catch(e){ console.warn('[가톨릭길동무]',e); }
   });
@@ -3766,6 +3789,20 @@ function setDioFilter(v,btn){
   renderList();
   setTimeout(()=>_scrollSheetTop('list'),0);
   if(v!=='all'&&DIOCESE_CENTER[v]&&_map){
+  // 성당 카테고리는 고정 중심값 대신 교구별 실제 성당 bounds를 사용한다.
+  // 이 계산에서 인천교구 백령도, 대구대교구 울릉도는 _isParishDioBoundsOutlier()로 제외된다.
+  if(_mode==='parish'){
+    const code=_PARISH_DIO_CODE_MAP[v]||null;
+    if(code){
+      try{
+        if(_activeDio && _activeDio!==code) _hideParishDioMkrs(_activeDio);
+        _activeDio=code;
+        _showParishDioMkrs(code);
+        _syncParishDioLabels();
+        if(_fitParishDioBounds(code,{reason:'list-filter'})) return;
+      }catch(e){ console.warn('[가톨릭길동무]',e); }
+    }
+  }
   const dc=DIOCESE_CENTER[v];
   _map.setLevel(dc.mob||10);
   if(typeof _setMapCenterByInfoCardStandard==='function') _setMapCenterByInfoCardStandard(new _LL(dc.lat,dc.lng));
@@ -4207,7 +4244,12 @@ function _drawLine(s1,s2,path){
   strokeOpacity:path?0.88:0.7,strokeStyle:path?'solid':'dashed'});
   _polyline.setMap(_map);
   _refreshRouteTmpMarkers();
-  if(_mode==='parish') _hideParishMarkersForRouteDisplay();
+  if(_mode==='parish'){
+    _hideParishMarkersForRouteDisplay();
+    // setBounds/idle 후 교구 마커·라벨이 다시 붙는 경우까지 한 번 더 정리한다.
+    setTimeout(_hideParishMarkersForRouteDisplay, 60);
+    setTimeout(_hideParishMarkersForRouteDisplay, 180);
+  }
 
   if(path){
   _markers.forEach((m,i)=>{
