@@ -20,7 +20,7 @@
    op:"천주교 서울대교구", url:"https://m.catholic.or.kr/web/addr/",
    desc:"교구·본당·기관 연락처와 주소를 모바일에서 빠르게 확인"},
   {cat:"신앙 포털", ico:"📘", name:"가톨릭 사전",
-   op:"Q&A 정보마당", url:"https://maria.catholic.or.kr/mobile/dictionary/dictionary.asp",
+   op:"서울대교구 굿뉴스", url:"https://maria.catholic.or.kr/mobile/dictionary/dictionary.asp",
    desc:"가톨릭 교리·전례·성경 용어를 모바일 사전으로 조회"},
   {cat:"신앙 포털", ico:"🌟", name:"성인/축일",
    op:"서울대교구 굿뉴스", url:"https://maria.catholic.or.kr/mobile/sa_ho/list/list.asp?menugubun=saint&today=on",
@@ -179,14 +179,38 @@
   function saveReturnState(state){
     try{ sessionStorage.setItem(RETURN_KEY, JSON.stringify(state)); }catch(e){ console.warn("[가톨릭길동무]", e); }
   }
+  // 외부 URL 이동 함수들의 공통 전처리:
+  //   1) normalizeCatholicExternalUrl 호출  2) 빈 URL이면 null 반환
+  // openExternalUrl이 IIFE 안에 있으므로 헬퍼도 IIFE 안에 선언해 전역 누출을 방지한다.
+  function prepareExternalUrl(url){
+    url = (typeof normalizeCatholicExternalUrl === 'function')
+          ? normalizeCatholicExternalUrl(url)
+          : String(url || '').trim();
+    return url || null;
+  }
   function openExternalUrl(url, state){
-    url = (typeof normalizeCatholicExternalUrl === 'function') ? normalizeCatholicExternalUrl(url) : String(url||'').trim();
+    url = prepareExternalUrl(url);
     if(!url) return;
 
-    // V33: 웹사이트와 순례길 모두 외부 복귀는 브라우저의 기본 복원에 맡긴다.
-    // 별도 sessionStorage 복원/지도 재초기화가 복귀 순간 덜컹거림을 만들 수 있어 저장하지 않는다.
+    // 웹사이트는 기존처럼 자연 복귀, 순례길은 현재 탭/목록 위치만 저장하고 덮개 없이 이동한다.
+    if(state && state.module === 'trail'){
+      try{
+        state.view = trailState.view || state.view || 'map';
+        state.scroll = ig$('trail-list') ? (ig$('trail-list').scrollTop || 0) : (state.scroll || 0);
+        if(trailState.map && window.kakao && kakao.maps){
+          var c = trailState.map.getCenter();
+          state.center = c ? {lat:c.getLat(), lng:c.getLng()} : null;
+          state.level = trailState.map.getLevel ? trailState.map.getLevel() : null;
+        }
+        saveReturnState(state);
+      }catch(e){ console.warn("[가톨릭길동무]", e); }
+      try{ document.activeElement && document.activeElement.blur && document.activeElement.blur(); }catch(e){ console.warn("[가톨릭길동무]", e); }
+      try{ location.href = url; }catch(e){ try{ location.assign(url); }catch(_){ } }
+      return;
+    }
     try{ sessionStorage.removeItem(RETURN_KEY); }catch(e){ console.warn("[가톨릭길동무]", e); }
-    location.href = url;
+    if(typeof oaiSmoothNavigate === 'function') oaiSmoothNavigate(url, 'integrated-external');
+    else { try{ if(typeof markExternalReturnStabilize === 'function') markExternalReturnStabilize('integrated-external'); }catch(e){ console.warn("[가톨릭길동무]", e); } location.href = url; }
     return;
   }
 
@@ -254,9 +278,11 @@
     enterIntegratedView('trail-view');
     initTrailModule();
     trailSetView(trailState.view || 'map');
-    relayoutTrailMap(80);
-    relayoutTrailMap(260);
-    relayoutTrailMap(520);
+    if(!restore){
+      relayoutTrailMap(80);
+      relayoutTrailMap(260);
+      relayoutTrailMap(520);
+    }
   };
 
   function restoreIntegratedState(){
@@ -269,20 +295,45 @@
     if(!state || !state.module) return;
 
     if(state.module === 'web'){
-      // V33: 웹사이트 화면은 브라우저가 돌아온 화면을 그대로 복원하게 둔다.
+      // V37: 웹사이트 화면은 브라우저가 돌아온 화면을 그대로 복원하게 둔다.
       // 여기서 openWebView/renderWebList를 다시 호출하면 복귀 순간 배경 지도와 목록이 겹쳐 보인다.
       return;
     }
 
     if(state.module === 'trail'){
-      // V33: 순례길도 외부 복귀 시 강제 재오픈/지도 재생성을 하지 않는다.
+      // 순례길은 이미 열린 화면을 유지한 채 스크롤/지도 중심만 조용히 복원한다.
+      try{
+        if(!ig$('trail-view')?.classList.contains('open')) enterIntegratedView('trail-view');
+        trailState.view = state.view || trailState.view || 'map';
+        trailState.restoreCenter = state.center || null;
+        trailState.restoreLevel = state.level || null;
+        trailState.pendingFitBounds = false;
+        initTrailModule();
+        trailSetView(trailState.view || 'map');
+        if(state.view === 'list' || trailState.view === 'list'){
+          var list = ig$('trail-list');
+          if(list){
+            var y = Number(state.scroll || 0);
+            list.style.scrollBehavior='auto';
+            list.scrollTop = y;
+            setTimeout(function(){ try{ list.scrollTop = y; }catch(_e){} }, 80);
+            list.style.scrollBehavior='';
+          }
+        }
+      }catch(e){ console.warn("[가톨릭길동무]", e); }
       return;
     }
   }
 
-  window.addEventListener('pageshow', function(){
-    // V33: 외부사이트 복귀 시 순례길 지도 relayout을 강제로 반복하지 않는다.
-    // 브라우저 bfcache가 복원한 화면을 그대로 두는 것이 가장 덜 흔들린다.
+  window.addEventListener('pageshow', function(ev){
+    // 웹사이트처럼 bfcache로 복귀한 순례길 화면은 그대로 둔다.
+    // 복귀 직후 initTrailModule/trailSetView를 다시 실행하면 목록·지도·시트가 한 번씩 재배치되어 크게 흔들린다.
+    try{
+      if(ev && ev.persisted && ig$('trail-view') && ig$('trail-view').classList.contains('open')){
+        sessionStorage.removeItem(RETURN_KEY);
+        return;
+      }
+    }catch(e){ console.warn('[가톨릭길동무]', e); }
     setTimeout(restoreIntegratedState, 0);
   });
 
@@ -441,7 +492,7 @@
           if(webState.curCat==='⭐ 즐겨찾기') renderWebList();
           return;
         }
-        // V33: 교구 카드도 저장/복원 없이 즉시 이동한다.
+        // V37: 교구 카드도 저장/복원 없이 즉시 이동한다.
         if(isDioceseCard){
           openExternalUrl(s.url, { module:'web' });
           return;
@@ -698,6 +749,7 @@
     ig$('trail-panel-list')?.classList.toggle('on', v==='list');
     ig$('trail-tab-map')?.classList.toggle('on', v==='map');
     ig$('trail-tab-list')?.classList.toggle('on', v==='list');
+    try{ if(typeof window.oaiKeepActiveTabsVisible === 'function') window.oaiKeepActiveTabsVisible('trail'); }catch(e){ console.warn('[가톨릭길동무]', e); }
     if(v==='map'){
       trailCloseSheet();
       initTrailModule();
