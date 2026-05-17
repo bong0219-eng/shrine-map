@@ -837,7 +837,7 @@ function syncCoverUpdateVersionState(){
     var box = document.getElementById('cover-update-box');
     var marker = document.getElementById('oai-build-marker');
     if(!btn || !box) return;
-    var target = btn.getAttribute('data-target-version') || 'V1-S-A23';
+    var target = btn.getAttribute('data-target-version') || 'V1-S-A24';
     var current = '';
     if(window.APP_VERSION) current = String(window.APP_VERSION).trim();
     if(!current && marker) current = String(marker.textContent || '').trim();
@@ -1118,17 +1118,16 @@ function _closePrayerAndReturn(){
   function init(){
     var banner = document.getElementById('ios-kakao-safari-banner');
     var modal = document.getElementById('ios-safari-guide-modal');
-    // Android에서는 iPhone 설치 안내 배너/팝업 보기 자체를 제거한다.
-    // iPhone/iPad 카카오톡 인앱 브라우저에서만 아래 안내가 동작한다.
-    if(!isIOS()){
-      document.documentElement.classList.remove('ios-kakao-inapp','ios-install-preview-mode');
-      if(banner && banner.parentNode) banner.parentNode.removeChild(banner);
-      if(modal && modal.parentNode) modal.parentNode.removeChild(modal);
-      return;
-    }
     if(!banner) return;
+    var previewMode = !isIOS();
     var show = shouldShow();
-    if(show){
+    if(previewMode){
+      // A24: Android/PC에서도 iPhone 설치 안내 이미지 lazy loading 결과를 확인할 수 있게 한다.
+      document.documentElement.classList.add('ios-install-preview-mode');
+      document.documentElement.classList.remove('ios-kakao-inapp');
+      banner.hidden = false;
+      banner.setAttribute('aria-hidden','false');
+    }else if(show){
       document.documentElement.classList.add('ios-kakao-inapp');
       document.documentElement.classList.remove('ios-install-preview-mode');
       banner.hidden = false;
@@ -1183,7 +1182,7 @@ function openDioceseView(opts){
       if(!restore) try{ frame.contentWindow && frame.contentWindow.resetDioceseFirstPage && frame.contentWindow.resetDioceseFirstPage(); }catch(e){ console.warn("[가톨릭길동무]", e); }
       if(typeof dioceseLoaded==='function') dioceseLoaded();
     };
-    frame.src='diocese.html?v=V1-S-A23';
+    frame.src='diocese.html?v=V1-S-A24';
   }else if(!restore){
     try{ frame.contentWindow && frame.contentWindow.resetDioceseFirstPage && frame.contentWindow.resetDioceseFirstPage(); }catch(e){ console.warn("[가톨릭길동무]", e); }
   }

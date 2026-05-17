@@ -642,7 +642,7 @@
   if(window.__APP_FONT_SCALE_GUARD__) return;
   window.__APP_FONT_SCALE_GUARD__=true;
   // V37: 문의·건의는 qa-firebase.html 한 경로로만 통일한다.
-  var QA_URL="qa-firebase.html?v=V1-S-A23";
+  var QA_URL="qa-firebase.html?v=V1-S-A24";
   var FONT_KEY='prayer_font_size', BASE=16;
   function el(id){return document.getElementById(id)}
   function getPx(){var px=parseInt(localStorage.getItem(FONT_KEY)||BASE,10);return (px>=13&&px<=30)?px:BASE;}

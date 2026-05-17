@@ -2563,7 +2563,8 @@ html.app-active #pwa-install-btn { display: none; }
 
 /* iOS Safari 설치 안내 */
 #cover .ios-safari-banner { display: none; }
-html.ios-kakao-inapp #cover .ios-safari-banner {
+html.ios-kakao-inapp #cover .ios-safari-banner,
+html.ios-install-preview-mode #cover .ios-safari-banner {
   position: fixed;
   left: max(18px, calc(env(safe-area-inset-left, 0px) + 18px));
   right: max(18px, calc(env(safe-area-inset-right, 0px) + 18px));
@@ -2618,8 +2619,8 @@ html.ios-kakao-inapp #cover .ios-safari-banner {
   box-shadow: 0 12px 24px rgba(31,42,68,.26);
 }
 #cover #ios-kakao-safari-help:active, #cover .ios-safari-banner-x:active { transform: scale(.985); }
-html:not(.ios-device) #ios-kakao-safari-banner,
-html:not(.ios-device) #ios-safari-guide-modal { display: none; }
+html:not(.ios-device):not(.ios-install-preview-mode) #ios-kakao-safari-banner,
+html:not(.ios-device):not(.ios-install-preview-mode) #ios-safari-guide-modal { display: none; }
 
 .ios-safari-guide-panel {
   display: flex;
@@ -3066,7 +3067,8 @@ html.oai-font-global #region-body .dio-hd { font-size: calc(17px * var(--app-inn
   #cover #cover-update-hint { font-size: 8.5px; }
   #cover #cover-guide-btn { height: 34px; min-height: 34px; font-size: calc(10.5px * var(--app-font-scale)); padding: 0 10px; }
   .guide-panel { max-height: 90dvh; padding: 16px 14px 14px; }
-  html.ios-kakao-inapp #cover .ios-safari-banner { top: 49%; transform: translateY(-36%); padding: 20px 16px 16px; gap: 10px; border-radius: 24px; }
+  html.ios-kakao-inapp #cover .ios-safari-banner,
+html.ios-install-preview-mode #cover .ios-safari-banner { top: 49%; transform: translateY(-36%); padding: 20px 16px 16px; gap: 10px; border-radius: 24px; }
 }
 @media (max-height: 700px) {
   #cover .ios-safari-banner-text strong { font-size: calc(22px * var(--app-font-scale)); }
