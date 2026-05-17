@@ -837,7 +837,7 @@ function syncCoverUpdateVersionState(){
     var box = document.getElementById('cover-update-box');
     var marker = document.getElementById('oai-build-marker');
     if(!btn || !box) return;
-    var target = btn.getAttribute('data-target-version') || 'V1-S-A4';
+    var target = btn.getAttribute('data-target-version') || 'V1-S-A5';
     var current = '';
     if(window.APP_VERSION) current = String(window.APP_VERSION).trim();
     if(!current && marker) current = String(marker.textContent || '').trim();
@@ -1172,7 +1172,7 @@ function openDioceseView(opts){
       if(!restore) try{ frame.contentWindow && frame.contentWindow.resetDioceseFirstPage && frame.contentWindow.resetDioceseFirstPage(); }catch(e){ console.warn("[가톨릭길동무]", e); }
       if(typeof dioceseLoaded==='function') dioceseLoaded();
     };
-    frame.src='diocese.html?v=V1-S-A4';
+    frame.src='diocese.html?v=V1-S-A5';
   }else if(!restore){
     try{ frame.contentWindow && frame.contentWindow.resetDioceseFirstPage && frame.contentWindow.resetDioceseFirstPage(); }catch(e){ console.warn("[가톨릭길동무]", e); }
   }
@@ -3817,6 +3817,15 @@ function setDioFilter(v,btn){
   }
 }
 
+function _regionHtmlEsc(v){
+  return String(v == null ? '' : v).replace(/[&<>"]/g, function(ch){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[ch];
+  });
+}
+function _regionAttrEsc(v){
+  return _regionHtmlEsc(v).replace(/'/g, '&#39;');
+}
+
 function _regionModeLabel(){
   return _mode==='parish' ? '성당' : (_mode==='retreat' ? '피정의 집' : '성지');
 }
@@ -3854,8 +3863,9 @@ function doRegionSearch(){
     if(!docs.length){ _showRegionFallback(q); return; }
     let html='<div style="padding:8px 14px 4px;font-size:11px;font-weight:700;color:#888;background:#f8f9fc;border-bottom:1px solid #eee;">📍 지역을 선택하세요</div>';
     docs.forEach(d=>{
-      const nm=d.place_name, ad=d.road_address_name||d.address_name;
-      html+=`<div class="region-place-cand" data-lat="${parseFloat(d.y)}" data-lng="${parseFloat(d.x)}" data-name="${nm.replace(/"/g,'&quot;')}" style="padding:11px 14px;border-bottom:1px solid #f0f0f0;cursor:pointer;background:#fff;display:flex;align-items:center;gap:10px;"><div style="font-size:20px">📍</div><div><div style="font-size:14px;font-weight:600;color:#1F2937">${nm}</div><div style="font-size:12px;color:#888;margin-top:2px">${ad}</div></div></div>`;
+      const nm=d.place_name||'', ad=d.road_address_name||d.address_name||'';
+      const cat=d.category_name||'', url=d.place_url||'';
+      html+=`<div class="region-place-cand" data-lat="${parseFloat(d.y)}" data-lng="${parseFloat(d.x)}" data-name="${_regionAttrEsc(nm)}" data-addr="${_regionAttrEsc(ad)}" data-cat="${_regionAttrEsc(cat)}" data-url="${_regionAttrEsc(url)}" style="padding:11px 14px;border-bottom:1px solid #f0f0f0;cursor:pointer;background:#fff;display:flex;align-items:center;gap:10px;"><div style="font-size:20px">📍</div><div><div style="font-size:14px;font-weight:600;color:#1F2937">${_regionHtmlEsc(nm)}</div>${ad?`<div style="font-size:12px;color:#888;margin-top:2px">${_regionHtmlEsc(ad)}</div>`:''}</div></div>`;
     });
     body.innerHTML=html;
     body.onclick=function(e){
@@ -3863,9 +3873,10 @@ function doRegionSearch(){
       if(!cand) return;
       body.onclick=null;
       const clat=parseFloat(cand.dataset.lat),clng=parseFloat(cand.dataset.lng),cname=cand.dataset.name;
+      const caddr=cand.dataset.addr||'', ccat=cand.dataset.cat||'', curl=cand.dataset.url||'';
       _regionLat=clat;_regionLng=clng;_regionName=cname;_regionPlaceName=cname;
       body.innerHTML='<div class="empty-msg">🚗 자동차 거리 계산 중...</div>';
-      _showRegionResults(cname,clat,clng,{place_name:cname,road_address_name:'',address_name:'',category_name:'',place_url:''});
+      _showRegionResults(cname,clat,clng,{place_name:cname,road_address_name:caddr,address_name:caddr,category_name:ccat,place_url:curl});
       if(_map){
         if(typeof _setMapCenterByInfoCardStandard==='function') _setMapCenterByInfoCardStandard(new _LL(clat,clng));
         else _map.setCenter(new _LL(clat,clng));
@@ -3883,7 +3894,11 @@ function _showRegionResults(q,lat,lng,doc){
   const placeCat=doc.category_name?doc.category_name.split(' > ').pop():'';
   const placeUrl=doc.place_url||'';
   const isParish=_mode==='parish',isRetreat=_mode==='retreat';
-  const infoCard=`<div class="region-info-card"><div class="ric-hd"><div class="ric-icon">📍</div><div class="ric-name-wrap"><div class="ric-name">${placeName}</div>${placeCat?`<div class="ric-cat">${placeCat}</div>`:''}</div>${placeUrl?`<a class="ric-map-link" href="${placeUrl}" target="_blank">지도 ↗</a>`:''}</div><div class="ric-body">${placeAddr?`<div class="ric-row"><span class="ric-lbl">주소</span><span>${placeAddr}</span></div>`:''}</div></div>`;
+  const safePlaceName=_regionHtmlEsc(placeName);
+  const safePlaceAddr=_regionHtmlEsc(placeAddr);
+  const safePlaceCat=_regionHtmlEsc(placeCat);
+  const safePlaceUrl=_regionAttrEsc(placeUrl);
+  const infoCard=`<div class="region-info-card"><div class="ric-hd"><div class="ric-icon">📍</div><div class="ric-name-wrap"><div class="ric-name">${safePlaceName}</div>${placeAddr?`<div class="ric-addr">${safePlaceAddr}</div>`:''}${placeCat?`<div class="ric-cat">${safePlaceCat}</div>`:''}</div>${placeUrl?`<a class="ric-map-link" href="${safePlaceUrl}" target="_blank" rel="noopener">지도 ↗</a>`:''}</div></div>`;
   const listHd=`<div class="region-list-hd">${isParish?'⛪ 근처 성당':(isRetreat?'🏔 근처 피정의 집':'✝ 근처 성지')} <span style="font-size:13px;font-weight:500;color:#aaa">· 자동차 거리순 10곳</span></div>`;
   $('region-body').innerHTML=infoCard+listHd+'<div id="rg-loading" style="text-align:center;padding:10px;font-size:12px;color:#888;">🚗 정확한 거리 계산 중입니다…</div><div id="rg-list" style="background:#fff"></div>';
   const results=new Array(prelim.length).fill(null);let done=0;
