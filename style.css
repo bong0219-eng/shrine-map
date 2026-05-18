@@ -2651,8 +2651,8 @@ html.ios-kakao-inapp #cover .ios-safari-banner {
   box-shadow: 0 12px 24px rgba(31,42,68,.26);
 }
 #cover #ios-kakao-safari-help:active, #cover .ios-safari-banner-x:active { transform: scale(.985); }
-html:not(.ios-device):not(.ios-install-guide-android-test) #ios-kakao-safari-banner,
-html:not(.ios-device):not(.ios-install-guide-android-test) #ios-safari-guide-modal { display: none; }
+html:not(.ios-device) #ios-kakao-safari-banner,
+html:not(.ios-device) #ios-safari-guide-modal { display: none; }
 
 .ios-safari-guide-panel {
   display: flex;
