@@ -2171,6 +2171,26 @@ html.oai-cover-booting body { background: var(--navy); }
 html.oai-cover-booting #cover {
   background-color: var(--navy);
 }
+html.oai-cover-booting::before {
+  content: "✝";
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: calc(var(--cover-vh, 1svh) * 100);
+  z-index: 2147483600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--navy);
+  color: var(--gold);
+  font-family: 'Times New Roman', 'Noto Sans Symbols 2', 'Segoe UI Symbol', 'Apple Symbols', serif;
+  font-size: clamp(86px, 26vw, 132px);
+  line-height: 1;
+  pointer-events: none;
+  transform: translateZ(0);
+  contain: layout paint size;
+}
 html.oai-cover-booting #cover, html.oai-cover-booting #cover * {
   transition: none;
   animation: none;
@@ -2178,6 +2198,11 @@ html.oai-cover-booting #cover, html.oai-cover-booting #cover * {
 }
 html.oai-cover-booting #cover > * {
   visibility: hidden;
+}
+html.oai-cover-booting #cover {
+  height: calc(var(--cover-vh, 1svh) * 100);
+  min-height: calc(var(--cover-vh, 1svh) * 100);
+  max-height: calc(var(--cover-vh, 1svh) * 100);
 }
 
 .cover-header {
