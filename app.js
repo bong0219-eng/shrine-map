@@ -856,7 +856,7 @@ function syncCoverUpdateVersionState(){
     var box = document.getElementById('cover-update-box');
     var marker = document.getElementById('oai-build-marker');
     if(!btn || !box) return;
-    var target = btn.getAttribute('data-target-version') || 'V2-S';
+    var target = btn.getAttribute('data-target-version') || 'V3-S-A1';
     var current = '';
     if(window.APP_VERSION) current = String(window.APP_VERSION).trim();
     if(!current && marker) current = String(marker.textContent || '').trim();
@@ -1102,7 +1102,7 @@ function openPrayerBook(opts){
   }catch(e){ console.warn("[가톨릭길동무]", e); }
   if(typeof oaiSetMainMapLayerHidden==='function') oaiSetMainMapLayerHidden(true);
   view.classList.add('open');
-  // V2-S: restore 변수 미정의 오류 방지. 주요기도문 초기화가 중간에 끊기면
+  // V3-S-A1: restore 변수 미정의 오류 방지. 주요기도문 초기화가 중간에 끊기면
   // 탭/목록이 비어 보이므로 opts.restore 값을 명확히 계산해서 사용한다.
   var restore = !!(opts && opts.restore);
   if(!restore && typeof oaiEnterView==='function') oaiEnterView(view);
@@ -1266,7 +1266,7 @@ function openDioceseView(opts){
       if(!restore) try{ frame.contentWindow && frame.contentWindow.resetDioceseFirstPage && frame.contentWindow.resetDioceseFirstPage(); }catch(e){ console.warn("[가톨릭길동무]", e); }
       if(typeof dioceseLoaded==='function') dioceseLoaded();
     };
-    frame.src='diocese.html?v=V2-S';
+    frame.src='diocese.html?v=V3-S-A1';
   }else if(!restore){
     try{ frame.contentWindow && frame.contentWindow.resetDioceseFirstPage && frame.contentWindow.resetDioceseFirstPage(); }catch(e){ console.warn("[가톨릭길동무]", e); }
   }
@@ -1400,7 +1400,7 @@ function restoreDioceseExternalState(opts){
     var alreadyOpen=!!(view && view.classList.contains('open'));
     var frameAlive=!!(frame && frame.contentWindow);
 
-    // V2-S stable: frame.contentWindow가 있다는 이유만으로 '살아 있다'고 판단하면 안 된다.
+    // V3-S-A1 stable: frame.contentWindow가 있다는 이유만으로 '살아 있다'고 판단하면 안 된다.
     // Android/카카오 WebView에서는 부모 iframe 객체는 남아 있어도, iframe 내부 diocese.html이
     // 새로 초기화되어 목록이 맨 위로 돌아간 상태가 섞인다. 그래서 iframe 내부에 현재 탭/scrollTop이
     // 저장값과 실제로 일치하는지 물어본 뒤, 일치할 때만 웹사이트처럼 아무 복원도 하지 않는다.
@@ -1627,7 +1627,53 @@ let PARISHES=[];
 let _parishRawLoaded=false;
 let _parishDioIndexReady=false;
 let _parishDataLoadPromise=null;
-const _PARISH_ASSET_VERSION='V2-S';
+
+// V3-S-A1: 성당 교구별 파일 분리를 위한 준비 상수.
+// 이 단계에서는 기존 parishes.js 전체 로딩 방식을 그대로 유지하고,
+// 2단계 실제 분리 때 필요한 교구 순서/파일명/로딩 상태만 미리 한곳에 모은다.
+const _PARISH_DIOCESE_ORDER=[
+  'SE','IC','SW','UJ','CC','WJ','DJ','CJ',
+  'DG','BS','AD','MS','GJ','JJ','JE','ML'
+];
+const _PARISH_DIOCESE_ASSETS={
+  'SE':'parishes-seoul.js',
+  'IC':'parishes-incheon.js',
+  'SW':'parishes-suwon.js',
+  'UJ':'parishes-uijeongbu.js',
+  'CC':'parishes-chuncheon.js',
+  'WJ':'parishes-wonju.js',
+  'DJ':'parishes-daejeon.js',
+  'CJ':'parishes-cheongju.js',
+  'DG':'parishes-daegu.js',
+  'BS':'parishes-busan.js',
+  'AD':'parishes-andong.js',
+  'MS':'parishes-masan.js',
+  'GJ':'parishes-gwangju.js',
+  'JJ':'parishes-jeonju.js',
+  'JE':'parishes-jeju.js',
+  'ML':'parishes-military.js'
+};
+const _PARISH_DIOCESE_LOAD_STATE={};
+function _getParishDioceseAsset(code){
+  return _PARISH_DIOCESE_ASSETS[code] || null;
+}
+function _rememberParishDioceseLoaded(code){
+  if(code) _PARISH_DIOCESE_LOAD_STATE[code]=true;
+  return _PARISH_DIOCESE_LOAD_STATE;
+}
+function _rememberAllParishDiocesesLoadedFromRaw(raw){
+  if(!Array.isArray(raw)) return _PARISH_DIOCESE_LOAD_STATE;
+  raw.forEach(function(r){
+    if(r && r[1]) _rememberParishDioceseLoaded(r[1]);
+  });
+  return _PARISH_DIOCESE_LOAD_STATE;
+}
+function _getParishRawByDioceseCode(code){
+  const raw=_getParishRawGlobal();
+  if(!Array.isArray(raw) || !code) return [];
+  return raw.filter(function(r){ return r && r[1]===code; });
+}
+const _PARISH_ASSET_VERSION='V3-S-A1';
 function _buildParishList(raw){
   raw = Array.isArray(raw) ? raw : [];
   return raw.map(r=>{
@@ -1648,6 +1694,7 @@ function _setParishRawData(raw, loaded){
   raw = Array.isArray(raw) ? raw : [];
   PARISHES=_buildParishList(raw);
   _parishRawLoaded=loaded !== false && raw.length > 0;
+  if(_parishRawLoaded) _rememberAllParishDiocesesLoadedFromRaw(raw);
   if(_parishDioIndexReady && typeof _rebuildParishDioIndex==='function') _rebuildParishDioIndex();
   return PARISHES;
 }
@@ -1687,7 +1734,7 @@ function _ensureParishDataLoaded(){
 }
 _initParishDataFromGlobal();
 
-const _PRAYER_ASSET_VERSION='V2-S';
+const _PRAYER_ASSET_VERSION='V3-S-A1';
 let _prayerModuleLoadPromise=null;
 function _isPrayerModuleReady(){
   return typeof window.initPrayerView === 'function' &&
@@ -1732,7 +1779,7 @@ try{ window.ensurePrayerModuleLoaded=ensurePrayerModuleLoaded; }catch(e){ consol
 let _RT_RAW = [];
 let _retreatRawLoaded = false;
 let _retreatDataLoadPromise = null;
-const _RETREAT_ASSET_VERSION='V2-S';
+const _RETREAT_ASSET_VERSION='V3-S-A1';
 
 let RETREATS = [];
 function _buildRetreatList(raw){
@@ -1972,7 +2019,7 @@ const _TY={'A':'성지','B':'순례지','C':'순교 사적지'};
 
 let _shrineRawLoaded = false;
 let _shrineDataLoadPromise = null;
-const _SHRINE_ASSET_VERSION='V2-S';
+const _SHRINE_ASSET_VERSION='V3-S-A1';
 let SHRINES = [];
 let JUKRIMGUL_IDX = -1;
 function _decodeShrineHomePage(hp){
@@ -2310,7 +2357,7 @@ function oaiEnterView(el){
   try{
     var root=document.documentElement;
     if(root.classList.contains('oai-returning')) return;
-    // V2-S: 화면 진입 효과는 안정막으로 덮지 않고, 실제 화면 자체를 아주 짧게 fade-in 한다.
+    // V3-S-A1: 화면 진입 효과는 안정막으로 덮지 않고, 실제 화면 자체를 아주 짧게 fade-in 한다.
     // 뒤로가기/history는 건드리지 않고, 카테고리 첫 진입의 시각 효과만 통일한다.
     el.classList.remove('oai-enter-ready','oai-enter-show','oai-prepaint-view');
     el.classList.add('oai-enter-ready');
