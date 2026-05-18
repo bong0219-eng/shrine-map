@@ -19,6 +19,7 @@
  *  - goToCover/startApp/history 통합은 아직 하지 않습니다.
  *  - Step 9-2에서는 커버/앱 활성 판별만 실제 DOM 표시 상태 기준으로 보강합니다.
  *  - Step 9-5에서는 기도문 본문→목록 복귀를 기존 prayer.js 담당 함수로 정리합니다.
+ *  - Step 9-6에서는 매일미사·성가 빠른메뉴 팝업 닫힘 흐름을 기존 정상 구조로 유지합니다.
  * ═══════════════════════════════════════════════════════════
  */
 (function(){
@@ -701,7 +702,7 @@
   window.__APP_FONT_SCALE_GUARD__=true;
   // V1-S: 커버 글자 크기 조절은 prayer.js에 의존하지 않는 공통 함수가 담당한다.
   // prayer.js는 기도문 화면이 열렸을 때 같은 localStorage 값을 읽어 자체 UI를 맞춘다.
-  var QA_URL="qa-firebase.html?v=V1-S-A38";
+  var QA_URL="qa-firebase.html?v=V1-S-A39";
   var FONT_KEY='prayer_font_size';
   var BASE=16;
   var FONT_SIZES=[13,14,15,16,17,18,19,20,21,22,24,26,28,30];

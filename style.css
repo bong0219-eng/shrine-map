@@ -2244,6 +2244,7 @@ html.app-active #qna-cover-btn { display: none; }
 
 .cover-icon-wrap {
   width: clamp(50px, 14vw, 65px);
+  min-width: clamp(50px, 14vw, 65px);
   height: clamp(50px, 14vw, 65px);
   border-radius: 50%;
   display: flex;
@@ -2261,6 +2262,9 @@ html.app-active #qna-cover-btn { display: none; }
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  width: 1em;
+  min-width: 1em;
+  text-align: center;
   font-size: var(--cover-emoji-size, 34px);
   line-height: 1.16;
   vertical-align: middle;
@@ -2271,6 +2275,9 @@ html.app-active #qna-cover-btn { display: none; }
   font-family: 'Times New Roman', 'Noto Sans Symbols 2', 'Segoe UI Symbol', 'Apple Symbols', serif;
 }
 .cover-name {
+  display: block;
+  width: 100%;
+  min-width: 0;
   margin: 0;
   font-size: calc(16px * var(--app-font-scale));
   line-height: 1.22;
