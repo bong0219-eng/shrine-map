@@ -14,10 +14,11 @@
  *  - 아무것도 없고 앱 활성 → goToCover()
  *  - 커버 상태 → 토스트 → 두 번째 → 앱 종료
  *
- *  Step 9-1~9-2 기준:
+ *  Step 9-1~9-5 기준:
  *  - 이 파일의 popstate 순서가 현재 정상 흐름의 기준입니다.
  *  - goToCover/startApp/history 통합은 아직 하지 않습니다.
  *  - Step 9-2에서는 커버/앱 활성 판별만 실제 DOM 표시 상태 기준으로 보강합니다.
+ *  - Step 9-5에서는 기도문 본문→목록 복귀를 기존 prayer.js 담당 함수로 정리합니다.
  * ═══════════════════════════════════════════════════════════
  */
 (function(){
@@ -362,9 +363,15 @@
   function prayerDetailToList(reason){
     try{
       var fromQuick = isPrayerQuickSource();
-      var d = prayerDetail();
-      if(d) d.classList.remove('show');
+      /* Step 9-5: 본문 → 목록 복귀는 prayer.js의 기존 상세 닫기 함수를 우선 사용한다.
+         history는 건드리지 않고, 목록 스크롤 복원과 탭 표시만 원래 담당 함수에 맡긴다. */
+      if(typeof window.prCloseDetail === 'function') window.prCloseDetail({skipTrap:true});
+      else {
+        var d = prayerDetail();
+        if(d) d.classList.remove('show');
+      }
       if(typeof window.showPrayerListOnly === 'function') window.showPrayerListOnly();
+      try{ if(typeof window.prEnsureTabsVisible === 'function') window.prEnsureTabsVisible(); }catch(_e){}
       keepPrayerQuickSource(!!fromQuick);
       return true;
     }catch(e){ console.warn('[가톨릭길동무]', e); return true; }
@@ -694,7 +701,7 @@
   window.__APP_FONT_SCALE_GUARD__=true;
   // V1-S: 커버 글자 크기 조절은 prayer.js에 의존하지 않는 공통 함수가 담당한다.
   // prayer.js는 기도문 화면이 열렸을 때 같은 localStorage 값을 읽어 자체 UI를 맞춘다.
-  var QA_URL="qa-firebase.html?v=V1-S-A37";
+  var QA_URL="qa-firebase.html?v=V1-S-A38";
   var FONT_KEY='prayer_font_size';
   var BASE=16;
   var FONT_SIZES=[13,14,15,16,17,18,19,20,21,22,24,26,28,30];
