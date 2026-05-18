@@ -856,7 +856,7 @@ function syncCoverUpdateVersionState(){
     var box = document.getElementById('cover-update-box');
     var marker = document.getElementById('oai-build-marker');
     if(!btn || !box) return;
-    var target = btn.getAttribute('data-target-version') || 'V1-S-A52';
+    var target = btn.getAttribute('data-target-version') || 'V1-S-A53';
     var current = '';
     if(window.APP_VERSION) current = String(window.APP_VERSION).trim();
     if(!current && marker) current = String(marker.textContent || '').trim();
@@ -883,9 +883,18 @@ window.addEventListener('load', syncCoverUpdateVersionState, true);
   var KEY_COUNT = 'catholicGuideLaterCount';
   var KEY_HIDE_UNTIL = 'catholicGuideHideUntil';
   var KEY_DISABLED = 'catholicGuideAutoDisabled';
+  var KEY_INSTALLED_SHOWN = 'catholicGuideInstalledIntroShown';
   var SOFT_REFRESH_KEY = 'oai_soft_refresh_requested';
 
   function now(){ return Date.now ? Date.now() : new Date().getTime(); }
+  function isStandaloneApp(){
+    try{ if(window.navigator.standalone === true) return true; }catch(e){}
+    try{ return !!(window.matchMedia && window.matchMedia('(display-mode: standalone)').matches); }catch(e){}
+    return false;
+  }
+  function isKakaoBrowser(){
+    try{ return (navigator.userAgent || '').toLowerCase().indexOf('kakaotalk') > -1; }catch(e){ return false; }
+  }
   function hasRecentSoftRefreshRequest(){
     try{
       var raw = sessionStorage.getItem(SOFT_REFRESH_KEY);
@@ -949,12 +958,13 @@ window.addEventListener('load', syncCoverUpdateVersionState, true);
     }
   }
   function shouldShowIntro(forceRefresh){
-    if(forceRefresh) return isCoverVisible();
+    if(forceRefresh) return false;
     try{
-      if(localStorage.getItem(KEY_DISABLED) === '1') return false;
-      if(getInt(KEY_COUNT) >= MAX_LATER_COUNT){ setVal(KEY_DISABLED, '1'); return false; }
-      var hideUntil = parseInt(localStorage.getItem(KEY_HIDE_UNTIL) || '0', 10) || 0;
-      if(hideUntil && now() < hideUntil) return false;
+      // 주요기능 자동 안내는 카카오/일반 브라우저에서는 띄우지 않고,
+      // 홈 화면에 설치된 앱에서 처음 열린 경우에만 Android/iPhone 공통으로 1회 표시한다.
+      if(isKakaoBrowser()) return false;
+      if(!isStandaloneApp()) return false;
+      if(localStorage.getItem(KEY_INSTALLED_SHOWN) === '1') return false;
     }catch(e){ return false; }
     return isCoverVisible();
   }
@@ -968,7 +978,10 @@ window.addEventListener('load', syncCoverUpdateVersionState, true);
       clearSoftRefreshRequest();
       return;
     }
-    if(shouldShowIntro(false)) showModal('guide-intro-modal');
+    if(shouldShowIntro(false)){
+      setVal(KEY_INSTALLED_SHOWN, '1');
+      showModal('guide-intro-modal');
+    }
   }
   function bindGuide(){
     var btn=document.getElementById('cover-guide-btn');
@@ -1200,7 +1213,7 @@ function openDioceseView(opts){
       if(!restore) try{ frame.contentWindow && frame.contentWindow.resetDioceseFirstPage && frame.contentWindow.resetDioceseFirstPage(); }catch(e){ console.warn("[가톨릭길동무]", e); }
       if(typeof dioceseLoaded==='function') dioceseLoaded();
     };
-    frame.src='diocese.html?v=V1-S-A52';
+    frame.src='diocese.html?v=V1-S-A53';
   }else if(!restore){
     try{ frame.contentWindow && frame.contentWindow.resetDioceseFirstPage && frame.contentWindow.resetDioceseFirstPage(); }catch(e){ console.warn("[가톨릭길동무]", e); }
   }
@@ -1561,7 +1574,7 @@ let PARISHES=[];
 let _parishRawLoaded=false;
 let _parishDioIndexReady=false;
 let _parishDataLoadPromise=null;
-const _PARISH_ASSET_VERSION='V1-S-A52';
+const _PARISH_ASSET_VERSION='V1-S-A53';
 function _buildParishList(raw){
   raw = Array.isArray(raw) ? raw : [];
   return raw.map(r=>{
@@ -1621,7 +1634,7 @@ function _ensureParishDataLoaded(){
 }
 _initParishDataFromGlobal();
 
-const _PRAYER_ASSET_VERSION='V1-S-A52';
+const _PRAYER_ASSET_VERSION='V1-S-A53';
 let _prayerModuleLoadPromise=null;
 function _isPrayerModuleReady(){
   return typeof window.initPrayerView === 'function' &&
@@ -1666,7 +1679,7 @@ try{ window.ensurePrayerModuleLoaded=ensurePrayerModuleLoaded; }catch(e){ consol
 let _RT_RAW = [];
 let _retreatRawLoaded = false;
 let _retreatDataLoadPromise = null;
-const _RETREAT_ASSET_VERSION='V1-S-A52';
+const _RETREAT_ASSET_VERSION='V1-S-A53';
 
 let RETREATS = [];
 function _buildRetreatList(raw){
@@ -1906,7 +1919,7 @@ const _TY={'A':'성지','B':'순례지','C':'순교 사적지'};
 
 let _shrineRawLoaded = false;
 let _shrineDataLoadPromise = null;
-const _SHRINE_ASSET_VERSION='V1-S-A52';
+const _SHRINE_ASSET_VERSION='V1-S-A53';
 let SHRINES = [];
 let JUKRIMGUL_IDX = -1;
 function _decodeShrineHomePage(hp){

@@ -6,8 +6,8 @@
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait-primary",
-  "background_color": "#f7f0e5",
-  "theme_color": "#f7f0e5",
+  "background_color": "#0e1535",
+  "theme_color": "#0e1535",
   "lang": "ko",
   "categories": [
     "religion",

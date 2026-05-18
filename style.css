@@ -2172,9 +2172,9 @@ html.app-active #qna-cover-btn { display: none; }
    6. 커버 화면
    ============================================================ */
 #cover { overscroll-behavior-y: contain; }
-html.oai-cover-booting body { background: var(--bg-color); }
+html.oai-cover-booting body { background: var(--navy); }
 html.oai-cover-booting #cover {
-  background-color: var(--bg-color);
+  background-color: var(--navy);
 }
 html.oai-cover-booting #cover, html.oai-cover-booting #cover * {
   transition: none;
