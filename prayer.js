@@ -181,7 +181,9 @@ function prNorm(t){ return (t||'').replace(/\s+/g,'').toLowerCase(); }
 
 function prLoadPrefs(){
   try{ prFavorites = JSON.parse(localStorage.getItem('pr_favorites')||'[]'); }catch(e){ prFavorites=[]; }
-  const saved = parseInt(localStorage.getItem(PR_FONT_KEY));
+  const saved = (typeof window.__APP_getSharedFontPx === 'function')
+    ? window.__APP_getSharedFontPx()
+    : parseInt(localStorage.getItem(PR_FONT_KEY), 10);
   const idx = PR_FONT_SIZES.indexOf(saved);
   prFontIdx = idx >= 0 ? idx : 3;
 }
@@ -204,6 +206,13 @@ function prApplyFont(){
 }
 
 window.prAdjustFont = function(delta){
+  if(typeof window.__APP_adjustSharedFont === 'function'){
+    const px = window.__APP_adjustSharedFont(delta);
+    const idx = PR_FONT_SIZES.indexOf(px);
+    if(idx >= 0) prFontIdx = idx;
+    prApplyFont();
+    return;
+  }
   const saved = parseInt(localStorage.getItem(PR_FONT_KEY), 10);
   const savedIdx = PR_FONT_SIZES.indexOf(saved);
   if(savedIdx >= 0) prFontIdx = savedIdx;
@@ -212,6 +221,7 @@ window.prAdjustFont = function(delta){
   prFontIdx = next;
   prApplyFont();
 };
+window.prApplyFont = prApplyFont;
 
 function prBuildTabs(){
   const wrap = prG('prayer-tabs');

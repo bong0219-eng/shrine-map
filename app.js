@@ -837,7 +837,7 @@ function syncCoverUpdateVersionState(){
     var box = document.getElementById('cover-update-box');
     var marker = document.getElementById('oai-build-marker');
     if(!btn || !box) return;
-    var target = btn.getAttribute('data-target-version') || 'V1-S-A26';
+    var target = btn.getAttribute('data-target-version') || 'V1-S-A27';
     var current = '';
     if(window.APP_VERSION) current = String(window.APP_VERSION).trim();
     if(!current && marker) current = String(marker.textContent || '').trim();
@@ -1170,7 +1170,7 @@ function openDioceseView(opts){
       if(!restore) try{ frame.contentWindow && frame.contentWindow.resetDioceseFirstPage && frame.contentWindow.resetDioceseFirstPage(); }catch(e){ console.warn("[가톨릭길동무]", e); }
       if(typeof dioceseLoaded==='function') dioceseLoaded();
     };
-    frame.src='diocese.html?v=V1-S-A26';
+    frame.src='diocese.html?v=V1-S-A27';
   }else if(!restore){
     try{ frame.contentWindow && frame.contentWindow.resetDioceseFirstPage && frame.contentWindow.resetDioceseFirstPage(); }catch(e){ console.warn("[가톨릭길동무]", e); }
   }
@@ -1535,7 +1535,7 @@ let PARISHES=[];
 let _parishRawLoaded=false;
 let _parishDioIndexReady=false;
 let _parishDataLoadPromise=null;
-const _PARISH_ASSET_VERSION='V1-S-A26';
+const _PARISH_ASSET_VERSION='V1-S-A27';
 function _buildParishList(raw){
   raw = Array.isArray(raw) ? raw : [];
   return raw.map(r=>{
@@ -4768,6 +4768,13 @@ document.addEventListener('DOMContentLoaded', function bindEvents() {
   function onQ(sel, evt, fn) {
     document.querySelectorAll(sel).forEach(function(el) { el.addEventListener(evt, fn); });
   }
+  function adjustAppFont(delta) {
+    if (typeof window.__APP_adjustSharedFont === 'function') {
+      window.__APP_adjustSharedFont(delta);
+      return;
+    }
+    if (typeof window.prAdjustFont === 'function') window.prAdjustFont(delta);
+  }
 
   // ── 매일미사 ──
   on('missa-close', 'click', function() { closeMissa(); });
@@ -4795,8 +4802,8 @@ document.addEventListener('DOMContentLoaded', function bindEvents() {
   on('pr-back-btn',   'click', function() { try{ history.go(-1); }catch(e){ prCloseDetail(); } });
 
   // ── 커버 글자크기 ──
-  on('cover-sm-btn',  'click', function(e) { e.stopPropagation(); prAdjustFont(-1); });
-  on('cover-lg-btn',  'click', function(e) { e.stopPropagation(); prAdjustFont(1); });
+  on('cover-sm-btn',  'click', function(e) { e.stopPropagation(); adjustAppFont(-1); });
+  on('cover-lg-btn',  'click', function(e) { e.stopPropagation(); adjustAppFont(1); });
 
   // ── 커버 카드 ──
   on('cc-1', 'click', function() { if (typeof openMassQuickMenu === 'function') openMassQuickMenu(); });
