@@ -2167,11 +2167,16 @@ html.app-active #qna-cover-btn { display: none; }
    6. 커버 화면
    ============================================================ */
 #cover { overscroll-behavior-y: contain; }
+html.oai-cover-booting #cover, html.oai-cover-booting #cover * {
+  transition: none;
+  animation: none;
+  scroll-behavior: auto;
+}
 
 .cover-header {
   flex-shrink: 0;
   width: 100%;
-  padding: 0 18px clamp(12px, 1.8vh, 20px);
+  padding: 0 18px clamp(12px, calc(var(--cover-vh, 1dvh) * 1.8), 20px);
   margin: 0;
   text-align: center;
   box-sizing: border-box;
@@ -2198,6 +2203,7 @@ html.app-active #qna-cover-btn { display: none; }
   max-height: 720px;
   min-height: 0;
   width: 100%;
+  contain: layout paint;
   max-width: min(468px, calc(100vw - 20px));
   margin: 0 auto;
   padding: 0 10px 8px;
@@ -2307,10 +2313,12 @@ html.app-active #cover-action-row { display: none; }
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
-  min-width: 0;
-  max-width: calc(100% - 128px);
+  flex: 0 0 168px;
+  min-width: 168px;
+  max-width: 168px;
 }
 #cover-update-btn {
+  width: 100%;
   border: 0;
   border-radius: 999px;
   background: rgba(31,42,68,.10);
