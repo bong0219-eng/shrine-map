@@ -856,7 +856,7 @@ function syncCoverUpdateVersionState(){
     var box = document.getElementById('cover-update-box');
     var marker = document.getElementById('oai-build-marker');
     if(!btn || !box) return;
-    var target = btn.getAttribute('data-target-version') || 'V1-S';
+    var target = btn.getAttribute('data-target-version') || 'V2-S';
     var current = '';
     if(window.APP_VERSION) current = String(window.APP_VERSION).trim();
     if(!current && marker) current = String(marker.textContent || '').trim();
@@ -885,6 +885,14 @@ window.addEventListener('load', syncCoverUpdateVersionState, true);
   var KEY_DISABLED = 'catholicGuideAutoDisabled';
   var KEY_INSTALLED_SHOWN = 'catholicGuideInstalledIntroShown';
   var SOFT_REFRESH_KEY = 'oai_soft_refresh_requested';
+  var FAVORITES_RESET_NOTICE_KEY = 'catholicV2FavoritesResetNoticeShown';
+  var wasInstalledAppUserBeforeThisLoad = false;
+  var skipAutoPopupsThisLoad = false;
+  try{
+    // 설치 직후 첫 실행에서는 기존 사용자로 보지 않는다.
+    // V2-S 안내는 이미 설치 앱을 사용하던 사용자에게만 1회 표시한다.
+    wasInstalledAppUserBeforeThisLoad = localStorage.getItem(KEY_INSTALLED_SHOWN) === '1';
+  }catch(e){ wasInstalledAppUserBeforeThisLoad = false; }
 
   function now(){ return Date.now ? Date.now() : new Date().getTime(); }
   function isStandaloneApp(){
@@ -957,6 +965,46 @@ window.addEventListener('load', syncCoverUpdateVersionState, true);
       setVal(KEY_HIDE_UNTIL, now() + HIDE_DAYS*24*60*60*1000);
     }
   }
+  function isGuideModalOpen(id){
+    var el=document.getElementById(id);
+    return !!(el && el.classList.contains('show') && el.getAttribute('aria-hidden') !== 'true');
+  }
+  function hideFavoritesResetNotice(){
+    var el=document.getElementById('favorites-reset-notice-banner');
+    if(el){
+      el.classList.remove('show');
+      el.setAttribute('hidden', '');
+    }
+  }
+  function closeFavoritesResetNotice(){
+    var el=document.getElementById('favorites-reset-notice-banner');
+    var wasOpen=!!(el && el.classList.contains('show') && !el.hasAttribute('hidden'));
+    hideFavoritesResetNotice();
+    if(wasOpen) setVal(FAVORITES_RESET_NOTICE_KEY, '1');
+  }
+  function shouldShowFavoritesResetNotice(){
+    if(skipAutoPopupsThisLoad) return false;
+    try{
+      // 설치 유도/브라우저/카카오에서는 표시하지 않고, 설치된 앱에서만 표시한다.
+      if(isKakaoBrowser()) return false;
+      if(!isStandaloneApp()) return false;
+      // 설치 직후 첫 앱 실행에는 표시하지 않는다.
+      if(!wasInstalledAppUserBeforeThisLoad) return false;
+      if(localStorage.getItem(FAVORITES_RESET_NOTICE_KEY) === '1') return false;
+    }catch(e){ return false; }
+    if(!isCoverVisible()) return false;
+    if(isGuideModalOpen('guide-intro-modal') || isGuideModalOpen('guide-manual-modal') || isGuideModalOpen('ios-safari-guide-modal')) return false;
+    return true;
+  }
+  function maybeShowFavoritesResetNotice(){
+    if(shouldShowFavoritesResetNotice()){
+      var el=document.getElementById('favorites-reset-notice-banner');
+      if(el){
+        el.removeAttribute('hidden');
+        el.classList.add('show');
+      }
+    }
+  }
   function shouldShowIntro(forceRefresh){
     if(forceRefresh) return false;
     try{
@@ -972,8 +1020,9 @@ window.addEventListener('load', syncCoverUpdateVersionState, true);
     var forceRefresh = hasRecentSoftRefreshRequest();
     if(forceRefresh){
       // V37: 안정형 새로고침 뒤에는 어떤 커버 팝업도 자동으로 다시 띄우지 않는다.
+      skipAutoPopupsThisLoad = true;
       try{ if(typeof closeMassQuickMenu === 'function') closeMassQuickMenu(); }catch(e){ console.warn('[가톨릭길동무]', e); }
-      try{ hideModal('guide-intro-modal'); hideModal('guide-manual-modal'); }catch(e){ console.warn('[가톨릭길동무]', e); }
+      try{ hideModal('guide-intro-modal'); hideModal('guide-manual-modal'); hideFavoritesResetNotice(); }catch(e){ console.warn('[가톨릭길동무]', e); }
       try{ var ios=document.getElementById('ios-safari-guide-modal'); if(ios){ ios.classList.remove('show'); ios.setAttribute('aria-hidden','true'); } }catch(e){ console.warn('[가톨릭길동무]', e); }
       clearSoftRefreshRequest();
       return;
@@ -992,6 +1041,8 @@ window.addEventListener('load', syncCoverUpdateVersionState, true);
     if(later) later.addEventListener('click', function(e){ e.preventDefault(); closeIntroLater(); });
     var ok=document.getElementById('guide-ok-btn');
     if(ok) ok.addEventListener('click', function(e){ e.preventDefault(); closeGuideManual(); });
+    var favOk=document.getElementById('favorites-reset-notice-ok');
+    if(favOk) favOk.addEventListener('click', function(e){ e.preventDefault(); closeFavoritesResetNotice(); });
     document.querySelectorAll('[data-guide-close]').forEach(function(el){
       el.addEventListener('click', function(e){
         e.preventDefault();
@@ -1004,8 +1055,10 @@ window.addEventListener('load', syncCoverUpdateVersionState, true);
       if(e.key !== 'Escape') return;
       hideModal('guide-intro-modal');
       hideModal('guide-manual-modal');
+      closeFavoritesResetNotice();
     });
     setTimeout(maybeShowIntro, 650);
+    setTimeout(maybeShowFavoritesResetNotice, 1150);
   }
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', bindGuide, {once:true});
   else bindGuide();
@@ -1049,7 +1102,7 @@ function openPrayerBook(opts){
   }catch(e){ console.warn("[가톨릭길동무]", e); }
   if(typeof oaiSetMainMapLayerHidden==='function') oaiSetMainMapLayerHidden(true);
   view.classList.add('open');
-  // V1-S: restore 변수 미정의 오류 방지. 주요기도문 초기화가 중간에 끊기면
+  // V2-S: restore 변수 미정의 오류 방지. 주요기도문 초기화가 중간에 끊기면
   // 탭/목록이 비어 보이므로 opts.restore 값을 명확히 계산해서 사용한다.
   var restore = !!(opts && opts.restore);
   if(!restore && typeof oaiEnterView==='function') oaiEnterView(view);
@@ -1213,7 +1266,7 @@ function openDioceseView(opts){
       if(!restore) try{ frame.contentWindow && frame.contentWindow.resetDioceseFirstPage && frame.contentWindow.resetDioceseFirstPage(); }catch(e){ console.warn("[가톨릭길동무]", e); }
       if(typeof dioceseLoaded==='function') dioceseLoaded();
     };
-    frame.src='diocese.html?v=V1-S';
+    frame.src='diocese.html?v=V2-S';
   }else if(!restore){
     try{ frame.contentWindow && frame.contentWindow.resetDioceseFirstPage && frame.contentWindow.resetDioceseFirstPage(); }catch(e){ console.warn("[가톨릭길동무]", e); }
   }
@@ -1347,7 +1400,7 @@ function restoreDioceseExternalState(opts){
     var alreadyOpen=!!(view && view.classList.contains('open'));
     var frameAlive=!!(frame && frame.contentWindow);
 
-    // V1-S stable: frame.contentWindow가 있다는 이유만으로 '살아 있다'고 판단하면 안 된다.
+    // V2-S stable: frame.contentWindow가 있다는 이유만으로 '살아 있다'고 판단하면 안 된다.
     // Android/카카오 WebView에서는 부모 iframe 객체는 남아 있어도, iframe 내부 diocese.html이
     // 새로 초기화되어 목록이 맨 위로 돌아간 상태가 섞인다. 그래서 iframe 내부에 현재 탭/scrollTop이
     // 저장값과 실제로 일치하는지 물어본 뒤, 일치할 때만 웹사이트처럼 아무 복원도 하지 않는다.
@@ -1574,7 +1627,7 @@ let PARISHES=[];
 let _parishRawLoaded=false;
 let _parishDioIndexReady=false;
 let _parishDataLoadPromise=null;
-const _PARISH_ASSET_VERSION='V1-S';
+const _PARISH_ASSET_VERSION='V2-S';
 function _buildParishList(raw){
   raw = Array.isArray(raw) ? raw : [];
   return raw.map(r=>{
@@ -1634,7 +1687,7 @@ function _ensureParishDataLoaded(){
 }
 _initParishDataFromGlobal();
 
-const _PRAYER_ASSET_VERSION='V1-S';
+const _PRAYER_ASSET_VERSION='V2-S';
 let _prayerModuleLoadPromise=null;
 function _isPrayerModuleReady(){
   return typeof window.initPrayerView === 'function' &&
@@ -1679,7 +1732,7 @@ try{ window.ensurePrayerModuleLoaded=ensurePrayerModuleLoaded; }catch(e){ consol
 let _RT_RAW = [];
 let _retreatRawLoaded = false;
 let _retreatDataLoadPromise = null;
-const _RETREAT_ASSET_VERSION='V1-S';
+const _RETREAT_ASSET_VERSION='V2-S';
 
 let RETREATS = [];
 function _buildRetreatList(raw){
@@ -1919,7 +1972,7 @@ const _TY={'A':'성지','B':'순례지','C':'순교 사적지'};
 
 let _shrineRawLoaded = false;
 let _shrineDataLoadPromise = null;
-const _SHRINE_ASSET_VERSION='V1-S';
+const _SHRINE_ASSET_VERSION='V2-S';
 let SHRINES = [];
 let JUKRIMGUL_IDX = -1;
 function _decodeShrineHomePage(hp){
@@ -2257,7 +2310,7 @@ function oaiEnterView(el){
   try{
     var root=document.documentElement;
     if(root.classList.contains('oai-returning')) return;
-    // V1-S: 화면 진입 효과는 안정막으로 덮지 않고, 실제 화면 자체를 아주 짧게 fade-in 한다.
+    // V2-S: 화면 진입 효과는 안정막으로 덮지 않고, 실제 화면 자체를 아주 짧게 fade-in 한다.
     // 뒤로가기/history는 건드리지 않고, 카테고리 첫 진입의 시각 효과만 통일한다.
     el.classList.remove('oai-enter-ready','oai-enter-show','oai-prepaint-view');
     el.classList.add('oai-enter-ready');
