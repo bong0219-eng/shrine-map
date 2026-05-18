@@ -13,6 +13,11 @@
  *  - 카테고리 레이어(시트/카드/모달) → 하나씩 닫기
  *  - 아무것도 없고 앱 활성 → goToCover()
  *  - 커버 상태 → 토스트 → 두 번째 → 앱 종료
+ *
+ *  Step 9-1 기준:
+ *  - 이 파일의 popstate 순서가 현재 정상 흐름의 기준입니다.
+ *  - goToCover/startApp/history 통합은 아직 하지 않습니다.
+ *  - 일반 정리는 이 순서와 기존 화면 상태 판별을 바꾸지 않는 범위에서만 진행합니다.
  * ═══════════════════════════════════════════════════════════
  */
 (function(){
@@ -512,9 +517,9 @@
 
 })();
 
-/* removed auto ?v=Date.now redirect for no-cache mode */
+/* 자동 ?v=Date.now 리디렉션은 사용하지 않음: 버전 문자열과 서비스워커로 캐시를 관리 */
 
-/* OAI removed destructive startup reset: preserves back/external return state. */
+/* 시작 시 강제 상태 초기화는 사용하지 않음: 뒤로가기와 외부사이트 복귀 상태 보존 */
 
 (function(){
   'use strict';
@@ -643,7 +648,7 @@
   window.__APP_FONT_SCALE_GUARD__=true;
   // V1-S: 커버 글자 크기 조절은 prayer.js에 의존하지 않는 공통 함수가 담당한다.
   // prayer.js는 기도문 화면이 열렸을 때 같은 localStorage 값을 읽어 자체 UI를 맞춘다.
-  var QA_URL="qa-firebase.html?v=V1-S-A33";
+  var QA_URL="qa-firebase.html?v=V1-S-A34";
   var FONT_KEY='prayer_font_size';
   var BASE=16;
   var FONT_SIZES=[13,14,15,16,17,18,19,20,21,22,24,26,28,30];

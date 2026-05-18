@@ -480,8 +480,8 @@ function prOpenDetail(prayer){
   content.innerHTML = '<div class="pr-body-title">' + safeTitle + '</div>' + rawContent;
   detail.classList.add('show');
   try{
-    // 본문은 기도문 전용 history state(detail)만 추가한다.
-    // 공통 앱 back trap과 섞지 않는다.
+    // 본문 진입 시 별도 history state를 만들지 않고, 공통 앱 back trap만 보강한다.
+    // 실제 뒤로가기는 patches.js의 공통 컨트롤러가 DOM 상태를 보고 처리한다.
     if(typeof window._oaiPrayerPushDetailState === 'function') window._oaiPrayerPushDetailState('prayer-detail-open');
     else if(typeof window._oaiArmPrayerBackTrap === 'function') window._oaiArmPrayerBackTrap('prayer-detail-open');
   }catch(e){
@@ -535,8 +535,8 @@ window.prCloseDetail = function(opts){
   prRestoreListPosition();
   if(!(opts && opts.skipTrap)){
     try{
-      // 버튼으로 본문을 닫는 경우 현재 history state가 detail일 수 있으므로
-      // 현재 state만 list로 바꾼다. 새 state를 push하지 않는다.
+      // 버튼으로 본문을 닫는 경우에도 별도 state를 만들지 않는다.
+      // 공통 앱 back trap만 유지해 목록 단계에서 앱이 바로 종료되지 않게 한다.
       if(typeof window._oaiPrayerReplaceListState === 'function') window._oaiPrayerReplaceListState('prayer-detail-button-to-list');
       else if(typeof window._oaiArmPrayerBackTrap === 'function') window._oaiArmPrayerBackTrap('prayer-detail-button-to-list');
     }catch(e){

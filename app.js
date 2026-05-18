@@ -138,9 +138,9 @@ function oaiSetMainMapLayerHidden(hidden){
 }
 window.oaiSetMainMapLayerHidden = oaiSetMainMapLayerHidden;
 
-/* ── 뒤로가기 핸들러는 principle-back-controller-20260424 에서 통합 관리 ── */
+/* ── 뒤로가기 처리는 patches.js의 공통 컨트롤러에서 통합 관리 ── */
 
-/* OAI removed old pull-to-refresh handler: unified final handler below */
+/* 기존 pull-to-refresh 핸들러는 아래의 최종 새로고침 핸들러로 통합 관리 */
 
 
 function openMissa(){
@@ -837,7 +837,7 @@ function syncCoverUpdateVersionState(){
     var box = document.getElementById('cover-update-box');
     var marker = document.getElementById('oai-build-marker');
     if(!btn || !box) return;
-    var target = btn.getAttribute('data-target-version') || 'V1-S-A33';
+    var target = btn.getAttribute('data-target-version') || 'V1-S-A34';
     var current = '';
     if(window.APP_VERSION) current = String(window.APP_VERSION).trim();
     if(!current && marker) current = String(marker.textContent || '').trim();
@@ -1181,7 +1181,7 @@ function openDioceseView(opts){
       if(!restore) try{ frame.contentWindow && frame.contentWindow.resetDioceseFirstPage && frame.contentWindow.resetDioceseFirstPage(); }catch(e){ console.warn("[가톨릭길동무]", e); }
       if(typeof dioceseLoaded==='function') dioceseLoaded();
     };
-    frame.src='diocese.html?v=V1-S-A33';
+    frame.src='diocese.html?v=V1-S-A34';
   }else if(!restore){
     try{ frame.contentWindow && frame.contentWindow.resetDioceseFirstPage && frame.contentWindow.resetDioceseFirstPage(); }catch(e){ console.warn("[가톨릭길동무]", e); }
   }
@@ -1546,7 +1546,7 @@ let PARISHES=[];
 let _parishRawLoaded=false;
 let _parishDioIndexReady=false;
 let _parishDataLoadPromise=null;
-const _PARISH_ASSET_VERSION='V1-S-A33';
+const _PARISH_ASSET_VERSION='V1-S-A34';
 function _buildParishList(raw){
   raw = Array.isArray(raw) ? raw : [];
   return raw.map(r=>{
@@ -1606,7 +1606,7 @@ function _ensureParishDataLoaded(){
 }
 _initParishDataFromGlobal();
 
-const _PRAYER_ASSET_VERSION='V1-S-A33';
+const _PRAYER_ASSET_VERSION='V1-S-A34';
 let _prayerModuleLoadPromise=null;
 function _isPrayerModuleReady(){
   return typeof window.initPrayerView === 'function' &&
@@ -1651,7 +1651,7 @@ try{ window.ensurePrayerModuleLoaded=ensurePrayerModuleLoaded; }catch(e){ consol
 let _RT_RAW = [];
 let _retreatRawLoaded = false;
 let _retreatDataLoadPromise = null;
-const _RETREAT_ASSET_VERSION='V1-S-A33';
+const _RETREAT_ASSET_VERSION='V1-S-A34';
 
 let RETREATS = [];
 function _buildRetreatList(raw){
@@ -1891,7 +1891,7 @@ const _TY={'A':'성지','B':'순례지','C':'순교 사적지'};
 
 let _shrineRawLoaded = false;
 let _shrineDataLoadPromise = null;
-const _SHRINE_ASSET_VERSION='V1-S-A33';
+const _SHRINE_ASSET_VERSION='V1-S-A34';
 let SHRINES = [];
 let JUKRIMGUL_IDX = -1;
 function _decodeShrineHomePage(hp){
@@ -2159,7 +2159,7 @@ function triggerPwaInstall(){
   if(_dp){ _dp.prompt(); _dp.userChoice.then(()=>{_dp=null;}); }
 }
 (function(){
-  // history 초기화는 principle-back-controller-20260424 에서 단독 관리
+  // history 초기화는 patches.js의 공통 뒤로가기 컨트롤러에서 단독 관리
   window._appExiting = false;
   window._historyEnterMap = function(){};
 })();
@@ -4870,7 +4870,7 @@ function _fmtTime(s){
   if(m<60) return m+'분';
   return Math.floor(m/60)+'시간'+(m%60?' '+m%60+'분':'');
 }
-/* OAI removed legacy cv-pull handler */
+/* 기존 cover pull handler는 최종 새로고침 핸들러로 통합 관리 */
 // ── 스와이프 탭 이동 (v9-7) ──────────────────────────────────────
 (function(){
   const TABS = ['nearby','list','region','route'];
