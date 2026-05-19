@@ -2606,7 +2606,7 @@ html.app-active #pwa-install-btn { display: none; }
 .guide-mini-list dd { margin: 0; color: #5f6675; font-weight: 600; word-break: keep-all; }
 .guide-ok { flex: 0 0 auto; width: 100%; margin-top: 12px; min-height: 40px; }
 
-/* V2-1: 즐겨찾기 초기화 1회 안내 배너 */
+/* V2-2: 즐겨찾기 초기화 1회 안내 배너 */
 #cover .favorites-reset-banner {
   position: fixed;
   left: max(20px, calc(env(safe-area-inset-left, 0px) + 20px));
@@ -2829,11 +2829,9 @@ html.oai-hide-main-map-layer #app { background: #ede8e0; }
 /* 안정막 */
 html.oai-stability-veil, html.oai-external-return-freeze { background: #f5f0e8 !important; }
 html.oai-stability-veil *, html.oai-external-return-freeze * { transition: none; animation: none; scroll-behavior: auto; }
-html.oai-stability-veil::before,
-html.oai-external-return-freeze::before { content: ""; position: fixed; inset: 0; z-index: 2147483000; background: #f5f0e8; pointer-events: none; opacity: 1; animation: oaiStabilityVeilIn .12s ease-out both; }
+html.oai-stability-veil::before { content: ""; position: fixed; inset: 0; z-index: 2147483000; background: #f5f0e8; pointer-events: none; opacity: 1; animation: oaiStabilityVeilIn .12s ease-out both; }
 html.oai-stability-veil.oai-stability-veil-releasing::before { animation: oaiStabilityVeilOut .18s ease-in both; }
-html.oai-stability-veil::after,
-html.oai-external-return-freeze::after { content: ""; position: fixed; left: 50%; top: 50%; width: 28px; height: 28px; margin: -14px 0 0 -14px; border-radius: 50%; border: 3px solid rgba(31,42,68,.16); border-top-color: #1f2a44; z-index: 2147483001; pointer-events: none; animation: oaiStabilitySpin .75s linear infinite; }
+html.oai-stability-veil::after { content: ""; position: fixed; left: 50%; top: 50%; width: 28px; height: 28px; margin: -14px 0 0 -14px; border-radius: 50%; border: 3px solid rgba(31,42,68,.16); border-top-color: #1f2a44; z-index: 2147483001; pointer-events: none; animation: oaiStabilitySpin .75s linear infinite; }
 @keyframes oaiStabilityVeilIn { from { opacity: 0; } to { opacity: 1; } }
 @keyframes oaiStabilityVeilOut { from { opacity: 1; } to { opacity: 0; } }
 @keyframes oaiStabilitySpin { to { transform: rotate(360deg); } }
