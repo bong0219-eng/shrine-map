@@ -59,12 +59,10 @@
       _trapHref = coverTrapHref();
       _coverHashArming = true;
       window.__OAI_COVER_QUERY_ARMING__ = true;
-      if(isCoverTrapUrl()){
-        history.replaceState({_p:1, oai_cover_trap:reason||'cover-trap'}, '', _trapHref);
-      }else{
-        history.replaceState({_p:0, oai_cover_root:reason||'cover-root'}, '', _href);
-        history.pushState({_p:1, oai_cover_trap:reason||'cover-trap'}, '', _trapHref);
-      }
+      // V2-S: 현재 URL이 이미 trap이어도 항상 base → trap 한 쌍을 다시 보장한다.
+      // trap URL로 앱이 시작된 경우 replace만 하면 첫 Back을 받을 history 항목이 부족해질 수 있다.
+      history.replaceState({_p:0, oai_cover_root:reason||'cover-root'}, '', _href);
+      history.pushState({_p:1, oai_cover_trap:reason||'cover-trap'}, '', _trapHref);
       setTimeout(function(){
         _coverHashArming = false;
         window.__OAI_COVER_QUERY_ARMING__ = false;
@@ -117,11 +115,16 @@
     return document.documentElement.classList.contains('app-active') && !coverVisible();
   }
 
+  function isRefreshDialogOpen(){
+    try{ return !!document.getElementById('oai-refresh-content-dialog'); }catch(e){ return false; }
+  }
   function isGuideModalOpen(){
-    try{ return !!document.querySelector('.guide-modal.show'); }catch(e){ return false; }
+    try{ return !!document.querySelector('.guide-modal.show') || isRefreshDialogOpen(); }catch(e){ return false; }
   }
   function closeGuideModals(){
     try{
+      var rd = $b('oai-refresh-content-dialog');
+      if(rd && rd.parentNode){ rd.parentNode.removeChild(rd); return; }
       var mq = $b('mass-quick-modal');
       if(mq && mq.classList.contains('show') && typeof window.closeMassQuickMenu === 'function'){
         var fromPrayer = false;
@@ -1143,8 +1146,11 @@
       });
     }catch(e){ console.warn('[가톨릭길동무]', e); }
   }
+  function isRefreshDialogOpen(){
+    try{ return !!document.getElementById('oai-refresh-content-dialog'); }catch(e){ return false; }
+  }
   function isGuideModalOpen(){
-    try{ return !!document.querySelector('.guide-modal.show'); }catch(e){ return false; }
+    try{ return !!document.querySelector('.guide-modal.show') || isRefreshDialogOpen(); }catch(e){ return false; }
   }
   function closeGuideModals(){
     try{

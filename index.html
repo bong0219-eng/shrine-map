@@ -81,12 +81,11 @@ html.oai-external-return-freeze::after { content:""; position:fixed; left:50%; t
       var urls = makeUrls();
       arming = true;
       window.__OAI_COVER_QUERY_ARMING__ = true;
-      if(isTrapUrl()){
-        history.replaceState({_p:1, oai_cover_trap:reason||'early-query'}, '', urls.trap);
-      }else{
-        history.replaceState({_p:0, oai_cover_root:reason||'early-query'}, '', urls.base);
-        history.pushState({_p:1, oai_cover_trap:reason||'early-query'}, '', urls.trap);
-      }
+      // V2-S: 현재 URL이 이미 trap이어도 현재 항목을 base로 바꾼 뒤 trap을 다시 push한다.
+      // 설치형 PWA/카카오 재진입이 trap URL에서 시작하면 replace만으로는 뒤로가기 한 칸이 생기지 않아
+      // 첫 표지 Back이 앱 종료로 빠질 수 있다.
+      history.replaceState({_p:0, oai_cover_root:reason||'early-query'}, '', urls.base);
+      history.pushState({_p:1, oai_cover_trap:reason||'early-query'}, '', urls.trap);
       setTimeout(function(){ arming = false; window.__OAI_COVER_QUERY_ARMING__ = false; }, 30);
     }catch(_e){ arming = false; window.__OAI_COVER_QUERY_ARMING__ = false; }
   }
