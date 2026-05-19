@@ -30,7 +30,7 @@
   var _href = location.href.split('#')[0];
 
   /* history 초기화
-     V3-10: 일반 첫 진입 때만 root/trap 한 쌍을 만든다.
+     V3-11: 일반 첫 진입 때만 root/trap 한 쌍을 만든다.
      새로고침 직후에는 현재 히스토리 항목을 trap으로 정리하고 새 항목을 push하지 않는다.
      새로고침마다 root/trap을 다시 push하면 종료 토스트 뒤 이전 커버 문서로 되돌아갈 수 있다. */
   try{
@@ -718,7 +718,7 @@
   window.__APP_FONT_SCALE_GUARD__=true;
   // V2-S-r8: 커버 글자 크기 조절은 prayer.js에 의존하지 않는 공통 함수가 담당한다.
   // prayer.js는 기도문 화면이 열렸을 때 같은 localStorage 값을 읽어 자체 UI를 맞춘다.
-  var QA_URL="qa-firebase.html?v=V3-10";
+  var QA_URL="qa-firebase.html?v=V3-11";
   var FONT_KEY='prayer_font_size';
   var BASE=16;
   var FONT_SIZES=[13,14,15,16,17,18,19,20,21,22,24,26,28,30];

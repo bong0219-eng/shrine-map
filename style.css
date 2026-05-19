@@ -41,6 +41,8 @@
   --oai-std-gap:       8px;
   --oai-std-icon-sz:   28px;
   --oai-std-close-sz:  40px;
+  --oai-category-enter-ms: 1000ms;
+  --oai-panel-enter-ms:    500ms;
   --oai-std-hdr-pad:   calc(10px + env(safe-area-inset-top, 0px));
 
   /* ── 타이포그래피 */
@@ -487,7 +489,7 @@ html.retreat-mode #tabbar .tab-btn.active {
   display: flex;
   flex-direction: column;
   transform: translateY(100%);
-  transition: transform .25s cubic-bezier(.4,0,.2,1);
+  transition: transform var(--oai-panel-enter-ms) cubic-bezier(.4,0,.2,1);
   overflow: hidden;
   will-change: transform;
 }
@@ -495,7 +497,7 @@ html.retreat-mode #tabbar .tab-btn.active {
 .sheet.from-right { transform: translateX(100%); transition: none; }
 .sheet.from-left  { transform: translateX(-100%); transition: none; }
 .sheet.from-right.open,
-.sheet.from-left.open  { transform: none; transition: transform .28s cubic-bezier(.4,0,.2,1); }
+.sheet.from-left.open  { transform: none; transition: transform var(--oai-panel-enter-ms) cubic-bezier(.4,0,.2,1); }
 .sheet.exit-left  { transform: translateX(-100%); }
 .sheet.exit-right { transform: translateX(100%); }
 
@@ -889,7 +891,7 @@ html.retreat-mode #region-body { overflow-x: hidden; }
   justify-content: stretch;
   overscroll-behavior: none;
 }
-#srch-modal.open { display: flex; }
+#srch-modal.open { display: flex; animation: oaiPanelFadeIn var(--oai-panel-enter-ms) ease-out both; }
 .sm-inner { background: #fff; width: 100%; flex: 1; display: flex; flex-direction: column; overflow: hidden; }
 .sm-hd {
   background: var(--mode-header-solid);
@@ -1155,7 +1157,7 @@ html.retreat-mode #srch-modal #sm-tab-bar .sm-tab.active {
   padding-bottom: env(safe-area-inset-bottom, 0);
   will-change: transform;
 }
-#info-card.open { display: block; }
+#info-card.open { display: block; animation: oaiPanelFadeIn var(--oai-panel-enter-ms) ease-out both; }
 #info-card.no-anim { transition: none; }
 
 .ic-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 16px 8px; }
@@ -1324,7 +1326,7 @@ html.retreat-mode .ric-hd { background: linear-gradient(135deg, #2d4a0a, #3d5c1a
 
 /* ── 종료 다이얼로그 */
 #exit-dlg { display: none; position: fixed; inset: 0; z-index: 99999; background: rgba(14,21,53,.82); backdrop-filter: blur(4px); align-items: center; justify-content: center; }
-#exit-dlg.open { display: flex; }
+#exit-dlg.open { display: flex; animation: oaiPanelFadeIn var(--oai-panel-enter-ms) ease-out both; }
 .exit-box { background: #fff; border-radius: 16px; padding: 28px 24px 20px; width: min(320px,88vw); text-align: center; box-shadow: 0 12px 40px rgba(0,0,0,.3); }
 .exit-box h3 { font-size: 17px; font-weight: 700; color: var(--ink); margin-bottom: 8px; }
 .exit-box p { font-size: 13px; color: #666; line-height: 1.6; margin-bottom: 22px; }
@@ -1783,7 +1785,7 @@ html.retreat-mode .ric-hd { background: linear-gradient(135deg, #2d4a0a, #3d5c1a
 .trail-url { font-size: 11px; color: #2563eb; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; min-width: 0; }
 .trail-arr { font-size: 14px; color: #94a3b8; flex-shrink: 0; margin-left: 6px; }
 .trail-loc-btn { position: absolute; right: 14px; bottom: calc(18px + env(safe-area-inset-bottom, 0)); z-index: 5; background: rgba(255,255,255,.94); border: 1.5px solid #dde3ee; border-radius: 24px; box-shadow: 0 2px 10px rgba(0,0,0,.12); padding: 12px 16px; display: flex; align-items: center; gap: 6px; font-family: inherit; font-size: 13px; font-weight: 700; color: #2563eb; cursor: pointer; }
-.trail-sheet { position: absolute; left: 0; right: 0; bottom: 0; z-index: 6; background: linear-gradient(180deg, #fffdf9, #f6efe4); border-radius: 26px 26px 0 0; border-top: 1px solid #eadfce; box-shadow: 0 -16px 32px rgba(0,0,0,.18); padding: 0 0 calc(28px + env(safe-area-inset-bottom, 0)); transform: translateY(110%); transition: transform .25s cubic-bezier(.4,0,.2,1); pointer-events: none; overflow: visible; height: auto; }
+.trail-sheet { position: absolute; left: 0; right: 0; bottom: 0; z-index: 6; background: linear-gradient(180deg, #fffdf9, #f6efe4); border-radius: 26px 26px 0 0; border-top: 1px solid #eadfce; box-shadow: 0 -16px 32px rgba(0,0,0,.18); padding: 0 0 calc(28px + env(safe-area-inset-bottom, 0)); transform: translateY(110%); transition: transform var(--oai-panel-enter-ms) cubic-bezier(.4,0,.2,1); pointer-events: none; overflow: visible; height: auto; }
 .trail-sheet.open { transform: none; pointer-events: all; }
 .trail-sh-handle { width: 36px; height: 4px; border-radius: 2px; background: #e8ecf3; margin: 10px auto 0; }
 .trail-sh-close { position: absolute; top: 12px; right: 14px; width: 30px; height: 30px; border-radius: 50%; background: #f1f5f9; border: 1px solid #e2e8f0; cursor: pointer; font-size: 20px; font-weight: 900; line-height: 1; color: #64748b; display: flex; align-items: center; justify-content: center; }
@@ -2062,7 +2064,7 @@ html.retreat-mode .ric-hd { background: linear-gradient(135deg, #2d4a0a, #3d5c1a
   z-index: 10;
   background: #ede8e0;
   transform: translateX(100%);
-  transition: transform .27s cubic-bezier(.25,.46,.45,.94);
+  transition: transform var(--oai-panel-enter-ms) cubic-bezier(.25,.46,.45,.94);
   overflow-y: auto;
   display: flex;
   flex-direction: column;
@@ -2579,7 +2581,7 @@ html.app-active #pwa-install-btn { display: none; }
    7. 안내 가이드 모달 (커버·iOS 설치)
    ============================================================ */
 .guide-modal { position: fixed; inset: 0; z-index: 10050; display: none; align-items: center; justify-content: center; padding: calc(env(safe-area-inset-top, 0px) + 14px) 18px calc(env(safe-area-inset-bottom, 0px) + 18px); box-sizing: border-box; font-family: 'Apple SD Gothic Neo','Noto Sans KR',sans-serif; }
-.guide-modal.show { display: flex; }
+.guide-modal.show { display: flex; animation: oaiPanelFadeIn var(--oai-panel-enter-ms) ease-out both; }
 .guide-backdrop { position: absolute; inset: 0; background: rgba(31,42,68,.34); backdrop-filter: blur(2px); }
 .guide-panel { position: relative; width: min(100%,430px); max-height: min(86dvh,720px); overflow: hidden; border-radius: 20px; background: #fffdf8; border: 1px solid #e4d8c7; box-shadow: 0 22px 60px rgba(31,42,68,.24); color: #1f2a44; padding: 20px 18px 18px; box-sizing: border-box; }
 .guide-manual-panel { display: flex; flex-direction: column; padding: 22px 16px 16px; }
@@ -2825,12 +2827,14 @@ html.oai-external-return-freeze::after { content: ""; position: fixed; left: 50%
 @keyframes oaiStabilityVeilIn { from { opacity: 0; } to { opacity: 1; } }
 @keyframes oaiStabilityVeilOut { from { opacity: 1; } to { opacity: 0; } }
 @keyframes oaiStabilitySpin { to { transform: rotate(360deg); } }
+
+@keyframes oaiPanelFadeIn { from { opacity: 0; } to { opacity: 1; } }
 html.oai-returning *, html.oai-diocese-returning * { transition: none; animation: none; scroll-behavior: auto; }
 html.oai-cover-resizing #cover, html.oai-cover-resizing #cover * { transition: none; animation: none; }
 
 /* 진입 fade-in */
 .oai-enter-ready { opacity: .01; transform: none; transition: none; will-change: opacity; }
-.oai-enter-ready.oai-enter-show { opacity: 1; transform: none; transition: opacity .22s ease-out; }
+.oai-enter-ready.oai-enter-show { opacity: 1; transform: none; transition: opacity var(--oai-category-enter-ms) ease-out; }
 html.oai-returning .oai-enter-ready { opacity: 1; transform: none; transition: none; }
 @media (prefers-reduced-motion: reduce) { .oai-enter-ready, .oai-enter-ready.oai-enter-show { opacity: 1; transition: none; } }
 
@@ -3320,7 +3324,7 @@ html.retreat-mode .region-item .nearby-num{background:#4f46e5!important}
 #info-card.no-anim{transition:none}
 .sheet.from-right{transform:translateX(100%);transition:none!important}
 .sheet.from-left{transform:translateX(-100%)!important;transition:none!important}
-.sheet.from-right.open,.sheet.from-left.open{transform:translate(0,0)!important;transition:transform .28s cubic-bezier(.4,0,.2,1)}
+.sheet.from-right.open,.sheet.from-left.open{transform:translate(0,0)!important;transition:transform var(--oai-panel-enter-ms) cubic-bezier(.4,0,.2,1)}
 .sheet.exit-left{transform:translateX(-100%)}
 .sheet.exit-right{transform:translateX(100%)}
 #diocese-view{display:none;position:fixed;inset:0;z-index:10000;background:#F8F6F2;flex-direction:column}
@@ -3366,7 +3370,7 @@ html.retreat-mode .region-item .nearby-num{background:#4f46e5!important}
 .pr-star.on{color:#F59E0B}
 .pr-chevron{color:#b0a89e;font-size:12px}
 .pr-empty{text-align:center;padding:44px 20px;color:#b0a89e;font-size:14px;background:#fffbf2;border:1px dashed #ddd5c8;border-radius:11px;line-height:1.9}
-#prayer-detail{position:absolute;inset:0;top:0;z-index:10;background:#EDE8E0;transform:translateX(100%);transition:transform .27s cubic-bezier(.25,.46,.45,.94);overflow-y:auto;display:flex;flex-direction:column;right:0!important;width:100vw!important;max-width:100vw!important}
+#prayer-detail{position:absolute;inset:0;top:0;z-index:10;background:#EDE8E0;transform:translateX(100%);transition:transform var(--oai-panel-enter-ms) cubic-bezier(.25,.46,.45,.94);overflow-y:auto;display:flex;flex-direction:column;right:0!important;width:100vw!important;max-width:100vw!important}
 #prayer-detail.show{transform:none!important;display:flex!important;visibility:visible;pointer-events:auto}
 #prayer-detail-hd{position:sticky;top:0;background:#FFFBF2;border-bottom:1px solid #ddd5c8;display:flex;align-items:center;padding:10px 13px;min-height:60px;z-index:11;gap:9px}
 .pr-back{background:none;border:none;width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;color:#1f2a44!important;cursor:pointer;font-size:28px;font-weight:900;line-height:1}
