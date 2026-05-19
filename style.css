@@ -3496,3 +3496,44 @@ html.app-active #qna-cover-btn{display:none}
 html.ios-device #app #sheet-list .sheet-hd { bottom: 0; }
 /* 키보드 오픈 시 sheet 위치 보정 */
 html.kb-open .sheet.open { bottom: 0; }
+
+/* ── 스플래시 오버레이 ── */
+#oai-splash {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: #0e1535;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  /* 처음엔 보이다가 JS로 oai-splash-hide 클래스 추가 시 fadeout */
+}
+#oai-splash.oai-splash-hide {
+  opacity: 0;
+  transition: opacity 0.45s ease-out;
+}
+#oai-splash.oai-splash-done {
+  display: none;
+}
+#oai-splash-cross {
+  width: 64px;
+  height: 96px;
+  opacity: 1;
+}
+
+/* ── 커버 진입 시 탭바 남색으로 통일 ── */
+html:not(.app-active) #tabbar {
+  background: #0e1535;
+  border-bottom-color: rgba(255,255,255,0.10);
+}
+html:not(.app-active) #tabbar .tab-btn {
+  background: rgba(255,255,255,0.08);
+  border-color: rgba(255,255,255,0.14);
+  color: rgba(255,255,255,0.72);
+}
+html:not(.app-active) #tabbar .tab-btn.active {
+  background: rgba(255,255,255,0.18);
+  border-color: rgba(255,255,255,0.30);
+  color: #fff;
+}
