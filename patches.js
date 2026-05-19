@@ -29,9 +29,11 @@
   window.__OAI_FULL_BACK_CTRL_ACTIVE__ = true;
 
   var _href = location.href.split('#')[0];
+  var _trapHref = _href + '#oai-cover-trap';
 
   /* history 초기화
      V2-1: index.html의 조기 커버 trap이 이미 살아 있으면 중복 push하지 않는다.
+     첫 표지의 trap 항목은 일부 Android/PWA에서 history 항목으로 확실히 인식되도록 #oai-cover-trap URL을 사용한다.
      단, 사용자가 patches.js 로드 전에 Back을 한 번 눌러 root 상태로 내려온 경우에는
      여기서 다시 trap 한 칸을 보장한다. 최종 popstate 처리는 이 파일 한 곳에서 담당한다. */
   try{
@@ -46,10 +48,10 @@
     }catch(_e){}
     var st = history.state || {};
     if(st && st._p === 1){
-      try{ history.replaceState(Object.assign({}, st, {oai_cover_trap: st.oai_cover_trap || refreshReason || 'init'}), '', _href); }catch(_e){}
+      try{ history.replaceState(Object.assign({}, st, {oai_cover_trap: st.oai_cover_trap || refreshReason || 'init'}), '', _trapHref); }catch(_e){}
     }else{
       history.replaceState({_p:0, oai_cover_root: refreshReason ? ('compact-' + refreshReason) : 'init'}, '', _href);
-      history.pushState({_p:1, oai_cover_trap: refreshReason || 'init'}, '', _href);
+      history.pushState({_p:1, oai_cover_trap: refreshReason || 'init'}, '', _trapHref);
     }
   }catch(e){ console.warn("[가톨릭길동무]", e); }
 
@@ -539,7 +541,7 @@
     /* 빠른메뉴/안내 팝업이 열려 있으면 먼저 닫는다. */
     if(isGuideModalOpen()){
       closeGuideModals();
-      try{ if(typeof window._ensureCoverBackTrap === 'function') window._ensureCoverBackTrap(); else history.replaceState({_p:1}, '', _href); }catch(e){ console.warn("[가톨릭길동무]", e); }
+      try{ if(typeof window._ensureCoverBackTrap === 'function') window._ensureCoverBackTrap(); else history.replaceState({_p:1}, '', _trapHref); }catch(e){ console.warn("[가톨릭길동무]", e); }
       return;
     }
 
@@ -547,7 +549,7 @@
     if(!appActive()){
       var exiting = false;
       if(typeof window._showBackToast==='function') exiting = window._showBackToast() === true;
-      if(!exiting){ try{ history.pushState({_p:1}, '', _href); }catch(e){ console.warn("[가톨릭길동무]", e); } }
+      if(!exiting){ try{ history.pushState({_p:1, oai_cover_trap:'cover-toast'}, '', _trapHref); }catch(e){ console.warn("[가톨릭길동무]", e); } }
       return;
     }
 
@@ -583,7 +585,7 @@
       var st = history.state;
       if(st && st._p === 1) return;  // 트랩 유지 중이면 스킵
       history.replaceState({_p:0}, '', _href);
-      history.pushState({_p:1}, '', _href);
+      history.pushState({_p:1, oai_cover_trap:'pageshow'}, '', _trapHref);
     }catch(e){ console.warn("[가톨릭길동무]", e); }
   }, true);
 

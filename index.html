@@ -37,11 +37,14 @@ html.oai-external-return-freeze::after { content:""; position:fixed; left:50%; t
 <script>
 /* V2-1: 표지 첫 진입 직후 patches.js가 로드되기 전에도
    Android/PWA 뒤로가기가 앱을 바로 종료하지 않도록 가장 이른 시점에 커버용 trap을 심는다.
+   같은 URL pushState만으로는 일부 PWA 첫 화면에서 물리 Back이 종료로 빠질 수 있어
+   trap 항목은 #oai-cover-trap URL로 분리한다.
    patches.js가 준비되면 이 조기 핸들러는 즉시 물러나고, 최종 뒤로가기는 patches.js가 담당한다. */
 (function(){
   if(window.__OAI_EARLY_COVER_BACK_TRAP__) return;
   window.__OAI_EARLY_COVER_BACK_TRAP__ = true;
   var href = location.href.split('#')[0];
+  var trapHref = href + '#oai-cover-trap';
   var exitReady = false;
   var exitTimer = 0;
   function showEarlyToast(){
@@ -63,7 +66,7 @@ html.oai-external-return-freeze::after { content:""; position:fixed; left:50%; t
   function armTrap(reason){
     try{
       history.replaceState({_p:0, oai_cover_root: reason || 'early'}, '', href);
-      history.pushState({_p:1, oai_cover_trap: reason || 'early'}, '', href);
+      history.pushState({_p:1, oai_cover_trap: reason || 'early'}, '', trapHref);
       window.__OAI_EARLY_COVER_TRAP_ARMED__ = true;
     }catch(_e){}
   }
