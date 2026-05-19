@@ -255,7 +255,7 @@ function prApplyTabColors(){
   try{ if(typeof window.oaiKeepActiveTabsVisible === 'function') window.oaiKeepActiveTabsVisible('prayer'); }catch(e){ console.warn('[가톨릭길동무]', e); }
 }
 
-// V2-S-r12: 주요기도문 탭 표시 안전장치.
+// V2-S-r13: 주요기도문 탭 표시 안전장치.
 // 일부 화면 전환/캐시 조합에서 목록은 렌더링되지만 탭 컨테이너가 비어 보이는 경우를 막는다.
 function prEnsureTabsVisible(){
   const wrap = prG('prayer-tabs');
@@ -438,10 +438,65 @@ window.prToggleFav = function(id, e){
     if(typeof e.preventDefault === 'function') e.preventDefault();
     if(typeof e.stopPropagation === 'function') e.stopPropagation();
   }
-  prFavorites = prFavorites.includes(id) ? prFavorites.filter(f=>f!==id) : [...prFavorites,id];
+  if(!id) return;
+
+  var lv = prG('prayer-list-view');
+  var keepScroll = lv ? (lv.scrollTop || 0) : 0;
+  var wasFav = prFavorites.includes(id);
+  prFavorites = wasFav ? prFavorites.filter(f=>f!==id) : [...prFavorites,id];
   prSaveFavorites();
-  prRenderList();
-  const lv = prG('prayer-list-view'); if(lv) lv.scrollTop = 0;
+  var isFav = prFavorites.includes(id);
+
+  function prFavSelector(pid){
+    var safe = (window.CSS && typeof window.CSS.escape === 'function') ? window.CSS.escape(pid) : String(pid).replace(/\"/g, '\\"');
+    return '.pr-star[data-pid="' + safe + '"]';
+  }
+
+  var targetBtn = null;
+  if(e && e.target && typeof e.target.closest === 'function') targetBtn = e.target.closest('.pr-star');
+  var selector = prFavSelector(id);
+
+  /* 즐겨찾기 탭에서 해제할 때만 해당 항목을 목록에서 제거한다.
+     다른 탭/검색 목록에서는 전체 목록을 다시 그리지 않고 별표 상태만 바꿔
+     현재 스크롤 위치가 맨 위로 튀지 않게 유지한다. */
+  if(prCurCat === 'favorites' && wasFav && !isFav){
+    var item = targetBtn && typeof targetBtn.closest === 'function' ? targetBtn.closest('.pr-item') : null;
+    if(!item){
+      var listBtn = document.querySelector(selector);
+      item = listBtn && typeof listBtn.closest === 'function' ? listBtn.closest('.pr-item') : null;
+    }
+    if(item){
+      item.remove();
+      var ul = prG('pr-list-ul');
+      if(!ul || !ul.querySelector('.pr-item')){
+        prRenderList();
+      }
+      if(lv){
+        window.requestAnimationFrame(function(){
+          var maxScroll = Math.max(0, lv.scrollHeight - lv.clientHeight);
+          lv.scrollTop = Math.min(keepScroll, maxScroll);
+        });
+      }
+      return;
+    }
+    prRenderList();
+    if(lv){
+      window.requestAnimationFrame(function(){
+        var maxScroll = Math.max(0, lv.scrollHeight - lv.clientHeight);
+        lv.scrollTop = Math.min(keepScroll, maxScroll);
+      });
+    }
+    return;
+  }
+
+  document.querySelectorAll(selector).forEach(function(btn){
+    btn.classList.toggle('on', isFav);
+  });
+  var detailBtn = document.getElementById('pr-detail-star');
+  if(detailBtn && detailBtn.dataset && detailBtn.dataset.pid === id){
+    detailBtn.classList.toggle('on', isFav);
+  }
+  if(lv) lv.scrollTop = keepScroll;
 }
 /* 본문 화면 즐겨찾기 토글 */
 window.prToggleDetailFav = function(e){

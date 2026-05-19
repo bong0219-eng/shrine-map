@@ -99,7 +99,7 @@
   apply(firstVh, !useStored, currentWidth);
   var baseCoverWidth = currentWidth;
 
-  // V2-S-r12: 커버를 움직이거나 숨기지 않고, 별도 네이비 십자가 overlay만 사용한다.
+  // V2-S-r13: 커버를 움직이거나 숨기지 않고, 별도 네이비 십자가 overlay만 사용한다.
   // 앱 내부 새로고침에서는 overlay를 띄우지 않는다.
   var runNavyIntro = !softRefreshRecent;
   if(runNavyIntro) root.classList.add('oai-navy-intro-active');
@@ -228,21 +228,21 @@ window.APP_CONFIG = {
 <meta name="application-name" content="가톨릭길동무">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#0e1535">
-<link rel="manifest" href="manifest.json?v=V2-S-r12">
-<link rel="apple-touch-icon" href="icon-192x192.png?v=V2-S-r12">
+<link rel="manifest" href="manifest.json?v=V2-S-r13">
+<link rel="apple-touch-icon" href="icon-192x192.png?v=V2-S-r13">
 <meta name="format-detection" content="telephone=no">
 <meta name="description" content="가톨릭길동무 - 가톨릭 신앙생활 종합 앱">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="가톨릭길동무">
 <meta property="og:title" content="가톨릭길동무">
 <meta property="og:description" content="성지 · 성당 · 기도문 · 순례길 · 가톨릭 웹사이트 안내">
-<meta property="og:image" content="icon-512x512.png?v=V2-S-r12">
+<meta property="og:image" content="icon-512x512.png?v=V2-S-r13">
 <meta property="og:image:width" content="512">
 <meta property="og:image:height" content="512">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="가톨릭길동무">
 <meta name="twitter:description" content="성지 · 성당 · 기도문 · 순례길 · 가톨릭 웹사이트 안내">
-<meta name="twitter:image" content="icon-512x512.png?v=V2-S-r12">
+<meta name="twitter:image" content="icon-512x512.png?v=V2-S-r13">
 <title>가톨릭길동무</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Crect width=%2232%22 height=%2232%22 fill=%22%230e1535%22/%3E%3Ctext x=%226%22 y=%2226%22 font-size=%2224%22 fill=%22%23d4aa6a%22%3E%E2%9C%9D%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -250,7 +250,7 @@ window.APP_CONFIG = {
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style id="oai-initial-bg">html,body{margin:0;width:100%;height:100%;min-height:100%;background:#0e1535;overflow:hidden;color-scheme:light;}html.oai-skip-navy-intro,html.oai-skip-navy-intro body{background:#f8f6f2;}#app{background:#f8f6f2;display:none;}#oai-navy-intro-overlay{position:fixed;inset:0;z-index:2147482800;display:none;align-items:center;justify-content:center;background:#0e1535;pointer-events:none;}html.oai-navy-intro-active #oai-navy-intro-overlay,html.oai-navy-intro-releasing #oai-navy-intro-overlay{display:flex;}#oai-navy-intro-overlay img{width:clamp(96px,28vw,148px);height:clamp(96px,28vw,148px);object-fit:contain;}</style>
-<link rel="stylesheet" href="style.css?v=V2-S-r12">
+<link rel="stylesheet" href="style.css?v=V2-S-r13">
 </head>
 <body>
 <div id="oai-navy-intro-overlay" aria-hidden="true"><img src="icon-192x192.png" alt=""></div>
@@ -425,30 +425,30 @@ window.APP_CONFIG = {
         <div class="ios-safari-step">
           <b>1</b>
           <span>카카오톡 하단 버튼 4개 중 <strong>오른쪽 끝 버튼</strong>을 누르세요.</span>
-          <img data-src="ios-install-step1-kakao-bottom-buttons.png?v=V2-S-r12" alt="카카오톡 오른쪽 아래 버튼 모양" width="945" height="248" loading="lazy" decoding="async">
+          <img data-src="ios-install-step1-kakao-bottom-buttons.png?v=V2-S-r13" alt="카카오톡 오른쪽 아래 버튼 모양" width="945" height="248" loading="lazy" decoding="async">
         </div>
         <div class="ios-safari-step">
           <b>2</b>
           <span>공유 화면에서 <strong>Safari로 열기</strong>를 누르세요.</span>
-          <img data-src="ios-install-step2-safari-open.png?v=V2-S-r12" alt="Safari로 열기 버튼" width="880" height="755" loading="lazy" decoding="async" fetchpriority="low">
+          <img data-src="ios-install-step2-safari-open.png?v=V2-S-r13" alt="Safari로 열기 버튼" width="880" height="755" loading="lazy" decoding="async" fetchpriority="low">
         </div>
         <div class="ios-safari-step">
           <b>3</b>
           <span>Safari로 열린 뒤, 화면 <strong>오른쪽 아래 ··· 버튼</strong>을 누르세요.</span>
           <div class="ios-safari-shot ios-safari-shot-more">
-            <img data-src="KakaoTalk_20260514_134255658_04.jpg?v=V2-S-r12" alt="Safari 오른쪽 아래 더보기 버튼" width="960" height="307" loading="lazy" decoding="async">
+            <img data-src="KakaoTalk_20260514_134255658_04.jpg?v=V2-S-r13" alt="Safari 오른쪽 아래 더보기 버튼" width="960" height="307" loading="lazy" decoding="async">
             <i class="ios-gold-highlight" aria-hidden="true"></i>
           </div>
         </div>
         <div class="ios-safari-step">
           <b>4</b>
           <span>열린 메뉴에서 <strong>공유</strong>를 누르세요.</span>
-          <img data-src="ios-install-step3-share-menu.png?v=V2-S-r12" alt="Safari 공유 버튼" width="750" height="580" loading="lazy" decoding="async" fetchpriority="low">
+          <img data-src="ios-install-step3-share-menu.png?v=V2-S-r13" alt="Safari 공유 버튼" width="750" height="580" loading="lazy" decoding="async" fetchpriority="low">
         </div>
         <div class="ios-safari-step">
           <b>5</b>
           <span>목록을 아래로 내려 <strong>홈 화면에 추가</strong>를 누르세요.</span>
-          <img data-src="ios-install-step4-home-screen.png?v=V2-S-r12" alt="홈 화면에 추가 버튼" width="865" height="750" loading="lazy" decoding="async" fetchpriority="low">
+          <img data-src="ios-install-step4-home-screen.png?v=V2-S-r13" alt="홈 화면에 추가 버튼" width="865" height="750" loading="lazy" decoding="async" fetchpriority="low">
         </div>
       </div>
     </div>
@@ -474,7 +474,7 @@ window.APP_CONFIG = {
   </div>
 </div>
 
-<!-- V2-S-r12: 설치된 앱 기존 사용자에게만 1회 표시하는 즐겨찾기 초기화 안내 배너 -->
+<!-- V2-S-r13: 설치된 앱 기존 사용자에게만 1회 표시하는 즐겨찾기 초기화 안내 배너 -->
 <div id="favorites-reset-notice-banner" class="favorites-reset-banner" aria-live="polite" hidden>
   <div class="favorites-reset-text">
     <strong>업데이트 안내</strong>
@@ -537,7 +537,7 @@ window.APP_CONFIG = {
   📲 홈 화면에 앱 설치하기
 </button>
 </div>
-<script src="app.js?v=V2-S-r12"></script>
+<script src="app.js?v=V2-S-r13"></script>
 <div id="oai-category-entry-veil" aria-hidden="true"></div>
 <div id="app"><div id="tabbar"><button id="tab-btn-nearby" class="tab-btn" data-tab="nearby"><span class="tab-icon">📍</span><span id="tab-nearby-lbl">내주변</span></button><button id="tab-btn-list" class="tab-btn" data-tab="list"><span class="tab-icon">📋</span><span id="tab-list-lbl">목록</span></button><button id="tab-btn-region" class="tab-btn" data-tab="region"><span class="tab-icon">🔍</span>지역검색
     </button><button id="tab-btn-route" class="tab-btn" data-tab="route"><span class="tab-icon">🧭</span>길찾기
@@ -613,13 +613,13 @@ window.APP_CONFIG = {
     </div>
   </div>
 </div>
-<script src="web.js?v=V2-S-r12"></script>
+<script src="web.js?v=V2-S-r13"></script>
 
 <div id="qna-view" role="dialog" aria-modal="true" aria-label="문의·건의" class="module-view"><div class="module-bar qna"><div class="module-bar-main"><div class="module-bar-ico">✝</div><div class="module-bar-txt"><div class="module-bar-title">문의·건의</div><div class="module-bar-sub">질문, 오류, 수정요청을 남겨주세요</div></div></div><button id="qna-close-btn" class="module-close" aria-label="문의·건의 닫기">×</button></div><div class="qna-body"><div class="qna-tabs"><button id="qna-tab-write" class="qna-tab on" type="button">작성</button></div><div class="qna-list" id="qna-list"></div></div></div>
 
-<script src="patches.js?v=V2-S-r12"></script>
+<script src="patches.js?v=V2-S-r13"></script>
 
-<script src="sw-update.js?v=V2-S-r12"></script>
+<script src="sw-update.js?v=V2-S-r13"></script>
 
 
 
