@@ -2197,16 +2197,16 @@ html.oai-navy-intro-releasing #oai-navy-intro-overlay {
 }
 html.oai-navy-intro-releasing #oai-navy-intro-overlay {
   opacity: 0;
-  transition: opacity .24s ease-out;
+  transition: opacity .28s ease-out;
 }
 #oai-navy-intro-overlay img {
-  width: clamp(78px, 13vw, 104px);
-  height: clamp(78px, 13vw, 104px);
+  width: clamp(92px, 16vw, 122px);
+  height: clamp(92px, 16vw, 122px);
   object-fit: contain;
   display: block;
 }
 @media (prefers-reduced-motion: reduce) {
-  html.oai-navy-intro-releasing #oai-navy-intro-overlay { transition-duration: .12s; }
+  html.oai-navy-intro-releasing #oai-navy-intro-overlay { transition-duration: .14s; }
 }
 
 .cover-header {
@@ -2620,7 +2620,7 @@ html.app-active #pwa-install-btn { display: none; }
 .guide-mini-list dd { margin: 0; color: #5f6675; font-weight: 600; word-break: keep-all; }
 .guide-ok { flex: 0 0 auto; width: 100%; margin-top: 12px; min-height: 40px; }
 
-/* V2-S-r14: 즐겨찾기 초기화 1회 안내 배너 */
+/* V2-S-r15: 즐겨찾기 초기화 1회 안내 배너 */
 #cover .favorites-reset-banner {
   position: fixed;
   left: max(20px, calc(env(safe-area-inset-left, 0px) + 20px));
