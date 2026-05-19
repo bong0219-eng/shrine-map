@@ -2179,13 +2179,18 @@ html.oai-cover-booting body { background: var(--navy); }
 html.oai-cover-booting #cover {
   background-color: var(--navy);
 }
+#cover > * {
+  opacity: 1;
+  transition: opacity .38s ease-out;
+}
 html.oai-cover-booting #cover, html.oai-cover-booting #cover * {
-  transition: none;
   animation: none;
   scroll-behavior: auto;
 }
 html.oai-cover-booting #cover > * {
-  visibility: hidden;
+  opacity: 0;
+  visibility: visible;
+  transition: none;
 }
 
 .cover-header {
