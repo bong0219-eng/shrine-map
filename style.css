@@ -2197,17 +2197,17 @@ html.oai-cover-revealing:not(.app-active) #cover::before {
   z-index: 30;
   background: var(--navy);
   pointer-events: none;
-  animation: oaiNavyIntroFade .48s ease-out forwards;
+  animation: oaiNavyIntroFade .40s ease-out forwards;
 }
 html.oai-cover-revealing:not(.app-active) #cover > * {
-  animation: oaiCoverIntroRise .48s cubic-bezier(.2,.75,.22,1) both;
+  animation: oaiCoverIntroRise .40s cubic-bezier(.2,.75,.22,1) both;
 }
 @keyframes oaiNavyIntroFade {
   from { opacity: 1; }
   to { opacity: 0; }
 }
 @keyframes oaiCoverIntroRise {
-  from { opacity: .01; transform: translateY(14px); }
+  from { opacity: .01; transform: translateY(12px); }
   to { opacity: 1; transform: translateY(0); }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -2628,7 +2628,7 @@ html.app-active #pwa-install-btn { display: none; }
 .guide-mini-list dd { margin: 0; color: #5f6675; font-weight: 600; word-break: keep-all; }
 .guide-ok { flex: 0 0 auto; width: 100%; margin-top: 12px; min-height: 40px; }
 
-/* V2-S-r9: 즐겨찾기 초기화 1회 안내 배너 */
+/* V2-S-r10: 즐겨찾기 초기화 1회 안내 배너 */
 #cover .favorites-reset-banner {
   position: fixed;
   left: max(20px, calc(env(safe-area-inset-left, 0px) + 20px));
