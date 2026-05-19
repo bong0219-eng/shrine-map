@@ -192,7 +192,7 @@
     url = prepareExternalUrl(url);
     if(!url) return;
 
-    // V2-S-r30: 웹사이트/순례길의 기존 화면 상태 저장 흐름은 유지하고, 외부 이동 보호창 방식만 공통 기준을 따른다.
+    // 웹사이트는 기존처럼 자연 복귀, 순례길은 현재 탭/목록 위치만 저장하고 덮개 없이 이동한다.
     if(state && state.module === 'trail'){
       try{
         state.view = trailState.view || state.view || 'map';
@@ -205,8 +205,7 @@
         saveReturnState(state);
       }catch(e){ console.warn("[가톨릭길동무]", e); }
       try{ document.activeElement && document.activeElement.blur && document.activeElement.blur(); }catch(e){ console.warn("[가톨릭길동무]", e); }
-      if(typeof oaiSmoothNavigate === 'function') oaiSmoothNavigate(url, 'trail-external');
-      else { try{ if(typeof markExternalReturnStabilize === 'function') markExternalReturnStabilize('trail-external'); }catch(e){ console.warn("[가톨릭길동무]", e); } try{ location.href = url; }catch(e){ try{ location.assign(url); }catch(_){ } } }
+      try{ location.href = url; }catch(e){ try{ location.assign(url); }catch(_){ } }
       return;
     }
     try{ sessionStorage.removeItem(RETURN_KEY); }catch(e){ console.warn("[가톨릭길동무]", e); }

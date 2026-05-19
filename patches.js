@@ -29,18 +29,10 @@
 
   var _href = location.href.split('#')[0];
 
-  /* history 초기화
-     새로고침 때마다 root/trap을 다시 push하면 이전 커버 기록이 누적되어
-     두 번째 뒤로가기에서 앱 밖으로 나가지 못한다. 현재 항목이 이미 trap이면 재사용한다. */
+  /* history 초기화 */
   try{
-    var _initialState = history.state;
-    if(_initialState && _initialState._p === 1){
-      _initialState.oai_back_ctrl = 'V2-S-r30';
-      history.replaceState(_initialState, '', _href);
-    }else{
-      history.replaceState({_p:0, oai_back_ctrl:'V2-S-r30-root'}, '', _href);
-      history.pushState({_p:1, oai_back_ctrl:'V2-S-r30-trap'}, '', _href);
-    }
+    history.replaceState({_p:0}, '', _href);
+    history.pushState({_p:1}, '', _href);
   }catch(e){ console.warn("[가톨릭길동무]", e); }
 
   function $b(id){ return document.getElementById(id); }
@@ -223,7 +215,7 @@
 
 
   /* ─────────────────────────────────────────────
-     V2-S-r30 기도문 전용 뒤로가기 컨트롤러 — history 단계 분리 제거
+     V2-S-r8 기도문 전용 뒤로가기 컨트롤러 — history 단계 분리 제거
 
      원칙:
      1) 다른 정상 카테고리처럼 실제 history는 공통 root/trap 한 쌍만 사용한다.
@@ -275,7 +267,7 @@
     return !!yes;
   }
   function armPrayerBackTrap(reason){
-    /* 호환용 함수. V2-S-r30부터 기도문 detail/list용 별도 pushState는 만들지 않는다.
+    /* 호환용 함수. V2-S-r8부터 기도문 detail/list용 별도 pushState는 만들지 않는다.
        공통 컨트롤러가 이미 갖고 있는 root/trap을 유지하는 것만 필요하다. */
     try{
       if(isPrayerOpen() && typeof window._ensureAppBackTrap === 'function'){
@@ -330,7 +322,7 @@
     }catch(e){ console.warn('[가톨릭길동무]', e); }
   }
   function settleCoverTrapAfterPrayer(reason){
-    // V2-S-r30: 기도문 팝업 → 커버 후에는 이미 공통 컨트롤러가 history.go(1)로 trap을 복원한 상태다.
+    // V2-S-r8: 기도문 팝업 → 커버 후에는 이미 공통 컨트롤러가 history.go(1)로 trap을 복원한 상태다.
     // 여기서 replaceState/pushState를 강제로 반복하면 Android/PWA에서 다음 Back이 앱 종료로 오판될 수 있다.
     // 따라서 현재 trap이 살아 있으면 그대로 두고, 없을 때만 최소한으로 보강한다.
     function run(tag){
@@ -390,7 +382,7 @@
       var fromQuick = isPrayerQuickSource();
       if(!fromQuick) return resetPrayerToCover(reason || 'prayer-list-cover');
 
-      /* V2-S-r30: 기도문 목록 → 빠른메뉴 팝업 복귀는 직접 팝업을 띄우지 않는다.
+      /* V2-S-r8: 기도문 목록 → 빠른메뉴 팝업 복귀는 직접 팝업을 띄우지 않는다.
          사용자의 Back으로 공통 trap이 일단 소비된 직후라, 이 자리에서 openMassQuickMenu()를
          바로 호출하면 Android/PWA에서 history.go(1) 복원 타이밍과 겹쳐 팝업 Back이 앱 종료로
          먹힐 수 있다. 기존 안정 함수 _returnToMassQuickMenu('prayer')에게 맡기면,
@@ -474,19 +466,7 @@
   }
 
   window.addEventListener('popstate', function(){
-    /* 종료 시도 후 window.close()가 실패해도 일반 Back으로 이전 페이지가 나타나지 않도록 차단한다.
-       종료 처리 중에는 새 커버 history 이동을 만들지 않는다. */
-    if(window._appExiting){
-      try{
-        window.__oaiExitDrainCount = (window.__oaiExitDrainCount || 0) + 1;
-        if(window.__oaiExitDrainCount < 16){
-          setTimeout(function(){ try{ history.back(); }catch(_e){} }, 0);
-        }else{
-          try{ window.open('', '_self'); window.close(); }catch(_e){}
-        }
-      }catch(_e){}
-      return;
-    }
+    if(window._appExiting) return;
 
     /* history.go(1)로 공통 trap을 복원하면서 발생한 popstate는
        어떤 화면 처리도 하지 않고 여기서 끝낸다. 이 순서가 중요하다. */
@@ -545,18 +525,11 @@
       return;
     }
 
-    /* 커버: 첫 Back은 안내만 표시한다.
-       새로고침을 여러 번 눌러 이전 커버 root가 아래에 남아 있으면 두 번째 Back도 popstate로 들어온다.
-       이때는 새 trap을 심지 않고 native Back 방향으로 계속 흘려보내 앱 종료까지 진행한다. */
+    /* 커버: 토스트 → 두 번째에 종료. */
     if(!appActive()){
-      try{
-        if(typeof window._isCoverExitArmed === 'function' && window._isCoverExitArmed()){
-          if(typeof window._oaiStartNativeBackExitDrain === 'function') window._oaiStartNativeBackExitDrain('cover-armed-popstate');
-          else if(typeof window._showBackToast==='function') window._showBackToast();
-          return;
-        }
-      }catch(e){ console.warn('[가톨릭길동무]', e); }
-      if(typeof window._showBackToast==='function') window._showBackToast();
+      var exiting = false;
+      if(typeof window._showBackToast==='function') exiting = window._showBackToast() === true;
+      if(!exiting){ try{ history.pushState({_p:1}, '', _href); }catch(e){ console.warn("[가톨릭길동무]", e); } }
       return;
     }
 
@@ -589,11 +562,10 @@
   // 트랩이 소실되면 다음 뒤로가기에서 앱이 탈출된다.
   window.addEventListener('pageshow', function(){
     try{
-      if(window._appExiting) return;
       var st = history.state;
       if(st && st._p === 1) return;  // 트랩 유지 중이면 스킵
-      history.replaceState({_p:0, oai_back_ctrl:'V2-S-r30-pageshow-root'}, '', _href);
-      history.pushState({_p:1, oai_back_ctrl:'V2-S-r30-pageshow-trap'}, '', _href);
+      history.replaceState({_p:0}, '', _href);
+      history.pushState({_p:1}, '', _href);
     }catch(e){ console.warn("[가톨릭길동무]", e); }
   }, true);
 
@@ -728,9 +700,9 @@
 (function(){
   if(window.__APP_FONT_SCALE_GUARD__) return;
   window.__APP_FONT_SCALE_GUARD__=true;
-  // V2-S-r30: 커버 글자 크기 조절은 prayer.js에 의존하지 않는 공통 함수가 담당한다.
+  // V2-S-r8: 커버 글자 크기 조절은 prayer.js에 의존하지 않는 공통 함수가 담당한다.
   // prayer.js는 기도문 화면이 열렸을 때 같은 localStorage 값을 읽어 자체 UI를 맞춘다.
-  var QA_URL="qa-firebase.html?v=V2-S-r30";
+  var QA_URL="qa-firebase.html?v=V2-S-r8";
   var FONT_KEY='prayer_font_size';
   var BASE=16;
   var FONT_SIZES=[13,14,15,16,17,18,19,20,21,22,24,26,28,30];
