@@ -2812,9 +2812,12 @@ html.oai-hide-main-map-layer #app { background: #ede8e0; }
 /* 안정막 */
 html.oai-stability-veil *, html.oai-external-return-freeze * { transition: none; animation: none; scroll-behavior: auto; }
 html.oai-stability-veil body::before,
-html.oai-external-return-freeze body::before { content: ""; position: fixed; inset: 0; z-index: 2147483000; background: #f5f0e8; pointer-events: none; opacity: 1; }
+html.oai-external-return-freeze body::before { content: ""; position: fixed; inset: 0; z-index: 2147483000; background: #f5f0e8; pointer-events: none; opacity: 1; animation: oaiStabilityVeilIn .12s ease-out both; }
+html.oai-stability-veil.oai-stability-veil-releasing body::before { animation: oaiStabilityVeilOut .18s ease-in both; }
 html.oai-stability-veil body::after,
 html.oai-external-return-freeze body::after { content: ""; position: fixed; left: 50%; top: 50%; width: 28px; height: 28px; margin: -14px 0 0 -14px; border-radius: 50%; border: 3px solid rgba(31,42,68,.16); border-top-color: #1f2a44; z-index: 2147483001; pointer-events: none; animation: oaiStabilitySpin .75s linear infinite; }
+@keyframes oaiStabilityVeilIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes oaiStabilityVeilOut { from { opacity: 1; } to { opacity: 0; } }
 @keyframes oaiStabilitySpin { to { transform: rotate(360deg); } }
 html.oai-returning *, html.oai-diocese-returning * { transition: none; animation: none; scroll-behavior: auto; }
 html.oai-cover-resizing #cover, html.oai-cover-resizing #cover * { transition: none; animation: none; }

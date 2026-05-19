@@ -204,8 +204,8 @@
         }
         saveReturnState(state);
       }catch(e){ console.warn("[가톨릭길동무]", e); }
-      try{ document.activeElement && document.activeElement.blur && document.activeElement.blur(); }catch(e){ console.warn("[가톨릭길동무]", e); }
-      try{ location.href = url; }catch(e){ try{ location.assign(url); }catch(_){ } }
+      if(typeof oaiSmoothNavigate === 'function') oaiSmoothNavigate(url, 'trail-external');
+      else { try{ if(typeof markExternalReturnStabilize === 'function') markExternalReturnStabilize('trail-external'); }catch(e){ console.warn("[가톨릭길동무]", e); } try{ location.href = url; }catch(e){ try{ location.assign(url); }catch(_){ } } }
       return;
     }
     try{ sessionStorage.removeItem(RETURN_KEY); }catch(e){ console.warn("[가톨릭길동무]", e); }

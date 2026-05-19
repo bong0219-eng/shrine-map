@@ -438,10 +438,24 @@ window.prToggleFav = function(id, e){
     if(typeof e.preventDefault === 'function') e.preventDefault();
     if(typeof e.stopPropagation === 'function') e.stopPropagation();
   }
+  const lv = prG('prayer-list-view');
+  const keepScroll = lv ? (lv.scrollTop || 0) : 0;
   prFavorites = prFavorites.includes(id) ? prFavorites.filter(f=>f!==id) : [...prFavorites,id];
   prSaveFavorites();
   prRenderList();
-  const lv = prG('prayer-list-view'); if(lv) lv.scrollTop = 0;
+  if(lv){
+    const restoreScroll = function(){
+      try{
+        lv.style.scrollBehavior = 'auto';
+        lv.scrollTop = keepScroll;
+        lv.style.scrollBehavior = '';
+      }catch(_e){}
+    };
+    restoreScroll();
+    requestAnimationFrame(restoreScroll);
+    setTimeout(restoreScroll, 80);
+    setTimeout(restoreScroll, 220);
+  }
 }
 /* 본문 화면 즐겨찾기 토글 */
 window.prToggleDetailFav = function(e){
