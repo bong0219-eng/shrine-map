@@ -30,7 +30,7 @@
   var _href = location.href.split('#')[0];
 
   /* history 초기화
-     V3-2: 새로고침 직후 현재 문서 안에 root/trap 한 쌍을 다시 만든다.
+     V3-3: 새로고침 직후 현재 문서 안에 root/trap 한 쌍을 다시 만든다.
      V3-1의 단일 trap 압축은 히스토리 누적은 줄였지만, 긴 새로고침처럼 새 문서로 바뀐 뒤
      첫 Back이 이전 문서 항목으로 이동해 앱 종료 흐름이 불안정해질 수 있었다. */
   try{
@@ -714,7 +714,7 @@
   window.__APP_FONT_SCALE_GUARD__=true;
   // V2-S-r8: 커버 글자 크기 조절은 prayer.js에 의존하지 않는 공통 함수가 담당한다.
   // prayer.js는 기도문 화면이 열렸을 때 같은 localStorage 값을 읽어 자체 UI를 맞춘다.
-  var QA_URL="qa-firebase.html?v=V3";
+  var QA_URL="qa-firebase.html?v=V3-3";
   var FONT_KEY='prayer_font_size';
   var BASE=16;
   var FONT_SIZES=[13,14,15,16,17,18,19,20,21,22,24,26,28,30];
