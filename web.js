@@ -192,7 +192,7 @@
     url = prepareExternalUrl(url);
     if(!url) return;
 
-    // 웹사이트는 기존처럼 자연 복귀, 순례길은 현재 탭/목록 위치만 저장하고 덮개 없이 이동한다.
+    // V2-S-r18: 웹사이트/순례길의 기존 화면 상태 저장 흐름은 유지하고, 외부 이동 보호창 방식만 공통 기준을 따른다.
     if(state && state.module === 'trail'){
       try{
         state.view = trailState.view || state.view || 'map';
