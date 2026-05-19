@@ -4,6 +4,19 @@
 
 'use strict';
 
+// V2-S-r26: 긴 캐시 초기화 후 붙는 ?refresh=...는 파일 재요청용 표식일 뿐
+// 앱 내부 history 기준으로 남기면 커버 뒤로가기 트랩이 한 칸 더 생긴 것처럼 보일 수 있다.
+// 앱 로직이 시작되기 전에 주소만 정리하고, 커버/지도/데이터 상태는 건드리지 않는다.
+(function normalizeRefreshQueryForHistory(){
+  try{
+    var url = new URL(location.href);
+    if(!url.searchParams.has('refresh')) return;
+    url.searchParams.delete('refresh');
+    var clean = url.pathname + (url.search ? url.search : '') + (url.hash || '');
+    history.replaceState(history.state || {}, '', clean);
+  }catch(e){ console.warn('[가톨릭길동무]', e); }
+})();
+
 // --- [Fix 1] Reliable Back Button Logic ---
 // We push a history state when leaving the cover so the back button has something to pop.
 function hideCoverAndRun(callback) {
@@ -39,7 +52,7 @@ function oaiMarkExternalActuallyLeft(reason){
 }
 
 function markExternalReturnStabilize(kind){
-  // V2-S-r24: 외부 사이트 이동 직전 보호창을 시작한다.
+  // V2-S-r26: 외부 사이트 이동 직전 보호창을 시작한다.
   // 보호창은 짧은 시간으로 닫지 않고, 앱이 실제로 숨겨진 뒤 돌아왔을 때만 정리한다.
   try{
     var now = oaiNow();
@@ -135,7 +148,7 @@ function oaiClearExternalNavigationState(){
 }
 
 function oaiSmoothNavigate(url, kind){
-  // V2-S-r24: 각 카테고리의 기존 외부 이동 구조는 유지하되,
+  // V2-S-r26: 각 카테고리의 기존 외부 이동 구조는 유지하되,
   // 외부 사이트 진입 직전의 보호창 시작/중복 클릭 방지만 같은 절차로 맞춘다.
   if(!url) return;
   url = String(url || '').trim();
@@ -1135,7 +1148,7 @@ function openPrayerBook(opts){
   }catch(e){ console.warn("[가톨릭길동무]", e); }
   if(typeof oaiSetMainMapLayerHidden==='function') oaiSetMainMapLayerHidden(true);
   view.classList.add('open');
-  // V2-S-r24: restore 변수 미정의 오류 방지. 주요기도문 초기화가 중간에 끊기면
+  // V2-S-r26: restore 변수 미정의 오류 방지. 주요기도문 초기화가 중간에 끊기면
   // 탭/목록이 비어 보이므로 opts.restore 값을 명확히 계산해서 사용한다.
   var restore = !!(opts && opts.restore);
   if(!restore && typeof oaiEnterView==='function') oaiEnterView(view);
@@ -1299,7 +1312,7 @@ function openDioceseView(opts){
       if(!restore) try{ frame.contentWindow && frame.contentWindow.resetDioceseFirstPage && frame.contentWindow.resetDioceseFirstPage(); }catch(e){ console.warn("[가톨릭길동무]", e); }
       if(typeof dioceseLoaded==='function') dioceseLoaded();
     };
-    frame.src='diocese.html?v=V2-S-r24';
+    frame.src='diocese.html?v=V2-S-r26';
   }else if(!restore){
     try{ frame.contentWindow && frame.contentWindow.resetDioceseFirstPage && frame.contentWindow.resetDioceseFirstPage(); }catch(e){ console.warn("[가톨릭길동무]", e); }
   }
@@ -1358,7 +1371,7 @@ function normalizeCatholicExternalUrl(url){
     // 경로 내 이중 슬래시 제거: cathms.kr//E_2/... → cathms.kr/E_2/...
     u.pathname = u.pathname.replace(/\/\/+/g, '/');
     var host = u.hostname.toLowerCase();
-    // V2-S-r24: 원주·인천교구 대표 홈페이지는 공식 등록 주소가 HTTP이므로
+    // V2-S-r26: 원주·인천교구 대표 홈페이지는 공식 등록 주소가 HTTP이므로
     // 프로토콜을 강제로 바꾸지 않는다. www 보정만 수행한다.
     if(host === 'wjcatholic.or.kr') u.hostname = 'www.wjcatholic.or.kr';
     if(host === 'caincheon.or.kr') u.hostname = 'www.caincheon.or.kr';
@@ -1397,7 +1410,7 @@ function openDioceseExternal(url, state){
       try{ frame.contentWindow.__OAI_DIO_EXTERNAL_LEAVING__ = true; }catch(_e){}
     }
   }catch(e){ console.warn('[가톨릭길동무]', e); }
-  // V2-S-r24: 관구·교구 홈페이지도 다른 외부 사이트와 같은 보호창 흐름을 사용한다.
+  // V2-S-r26: 관구·교구 홈페이지도 다른 외부 사이트와 같은 보호창 흐름을 사용한다.
   // 상태 저장은 유지하고, 실제 이동만 공통 함수로 보낸다.
   oaiSmoothNavigate(url, 'diocese-external');
 }
@@ -1431,7 +1444,7 @@ function restoreDioceseExternalState(opts){
     var alreadyOpen=!!(view && view.classList.contains('open'));
     var frameAlive=!!(frame && frame.contentWindow);
 
-    // V2-S-r24 stable: frame.contentWindow가 있다는 이유만으로 '살아 있다'고 판단하면 안 된다.
+    // V2-S-r26 stable: frame.contentWindow가 있다는 이유만으로 '살아 있다'고 판단하면 안 된다.
     // Android/카카오 WebView에서는 부모 iframe 객체는 남아 있어도, iframe 내부 diocese.html이
     // 새로 초기화되어 목록이 맨 위로 돌아간 상태가 섞인다. 그래서 iframe 내부에 현재 탭/scrollTop이
     // 저장값과 실제로 일치하는지 물어본 뒤, 일치할 때만 웹사이트처럼 아무 복원도 하지 않는다.
@@ -1661,7 +1674,7 @@ let _parishDataLoadPromise=null;
 let _parishAllDataLoadPromise=null;
 const _PARISH_SPLIT_LAZY_MODE=true;
 
-// V2-S-r24: 성당 데이터를 교구별 parishes-*.js 파일로 실제 분리한다.
+// V2-S-r26: 성당 데이터를 교구별 parishes-*.js 파일로 실제 분리한다.
 // 지도·마커·길찾기·뒤로가기 로직은 그대로 두고, 데이터 배열만 필요한 시점에 채운다.
 const _PARISH_DIOCESE_ORDER=[
   'SE','IC','SW','UJ','CC','WJ','DJ','CJ',
@@ -1687,7 +1700,7 @@ const _PARISH_DIOCESE_ASSETS={
 };
 const _PARISH_DIOCESE_LOAD_STATE={};
 const _PARISH_DIOCESE_LOAD_PROMISES={};
-const _PARISH_ASSET_VERSION='V2-S-r24';
+const _PARISH_ASSET_VERSION='V2-S-r26';
 function _getParishDioceseAsset(code){
   return _PARISH_DIOCESE_ASSETS[code] || null;
 }
@@ -1850,7 +1863,7 @@ function _ensureParishDataLoaded(){
 }
 _initParishDataFromGlobal();
 
-const _PRAYER_ASSET_VERSION='V2-S-r24';
+const _PRAYER_ASSET_VERSION='V2-S-r26';
 let _prayerModuleLoadPromise=null;
 function _isPrayerModuleReady(){
   return typeof window.initPrayerView === 'function' &&
@@ -1895,7 +1908,7 @@ try{ window.ensurePrayerModuleLoaded=ensurePrayerModuleLoaded; }catch(e){ consol
 let _RT_RAW = [];
 let _retreatRawLoaded = false;
 let _retreatDataLoadPromise = null;
-const _RETREAT_ASSET_VERSION='V2-S-r24';
+const _RETREAT_ASSET_VERSION='V2-S-r26';
 
 let RETREATS = [];
 function _buildRetreatList(raw){
@@ -2136,7 +2149,7 @@ const _TY={'A':'성지','B':'순례지','C':'순교 사적지'};
 
 let _shrineRawLoaded = false;
 let _shrineDataLoadPromise = null;
-const _SHRINE_ASSET_VERSION='V2-S-r24';
+const _SHRINE_ASSET_VERSION='V2-S-r26';
 let SHRINES = [];
 let JUKRIMGUL_IDX = -1;
 function _decodeShrineHomePage(hp){
@@ -2474,7 +2487,7 @@ function oaiEnterView(el){
   try{
     var root=document.documentElement;
     if(root.classList.contains('oai-returning')) return;
-    // V2-S-r24: 화면 진입 효과는 안정막으로 덮지 않고, 실제 화면 자체를 아주 짧게 fade-in 한다.
+    // V2-S-r26: 화면 진입 효과는 안정막으로 덮지 않고, 실제 화면 자체를 아주 짧게 fade-in 한다.
     // 뒤로가기/history는 건드리지 않고, 카테고리 첫 진입의 시각 효과만 통일한다.
     el.classList.remove('oai-enter-ready','oai-enter-show','oai-prepaint-view');
     el.classList.add('oai-enter-ready');
@@ -2771,7 +2784,7 @@ function _onMapReady(){
   else if(_mode==='retreat') _buildRetreatMarkers();
   // _noAutoNearby 플래그: 복귀 시 내주변 탭 자동 열기 방지
   if(!window._noAutoNearby){
-    // V2-S-r24: 성당 첫 진입도 기존 기준대로 내주변 탭을 먼저 연다.
+    // V2-S-r26: 성당 첫 진입도 기존 기준대로 내주변 탭을 먼저 연다.
     // 교구별 분리 구조는 유지하되, 성당찾기 탭으로 자동 전환하지 않는다.
     openTab('nearby');
   }
@@ -3784,7 +3797,7 @@ function _buildParishDioSystem(){
   _parishSysInited=true;
   const lvl=_map.getLevel();
   Object.entries(_DIO_CFG).forEach(([code,cfg])=>{
-    // V2-S-r24: 군종교구는 데이터/검색에는 남기되 지도 위 교구 라벨에서는 제외한다.
+    // V2-S-r26: 군종교구는 데이터/검색에는 남기되 지도 위 교구 라벨에서는 제외한다.
     if(code==='ML') return;
     const el=document.createElement('div');
     el.className='dio-label';
@@ -4288,7 +4301,7 @@ function renderList(){
     const addrNorm=String(s.addr||'').replace(/\s+/g,'');
     let matchAll=false;
     if(_mode==='parish'){
-      /* V2-S-r24: 성당찾기는 선택한 교구 안에서 성당명 첫 글자 일치 또는 주소 포함으로만 찾는다. */
+      /* V2-S-r26: 성당찾기는 선택한 교구 안에서 성당명 첫 글자 일치 또는 주소 포함으로만 찾는다. */
       matchAll = nameNorm.startsWith(nq) || addrNorm.includes(nq);
     } else {
       const tokens=q.trim().split(/\s+/);
@@ -5152,7 +5165,7 @@ function filterModal(q){
     const addrNorm=String(s.addr||'').replace(/\s+/g,'');
     let matchAll=false;
     if(_mode==='parish'){
-      /* V2-S-r24: 성당 길찾기 검색도 선택한 교구 안에서 성당명 첫 글자 일치 또는 주소 포함으로만 찾는다. */
+      /* V2-S-r26: 성당 길찾기 검색도 선택한 교구 안에서 성당명 첫 글자 일치 또는 주소 포함으로만 찾는다. */
       matchAll = nameNorm.startsWith(nq) || addrNorm.includes(nq);
     } else {
       const tokens=q.trim().split(/\s+/);

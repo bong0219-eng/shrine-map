@@ -2616,7 +2616,7 @@ html.app-active #pwa-install-btn { display: none; }
 .guide-mini-list dd { margin: 0; color: #5f6675; font-weight: 600; word-break: keep-all; }
 .guide-ok { flex: 0 0 auto; width: 100%; margin-top: 12px; min-height: 40px; }
 
-/* V2-S-r24: 즐겨찾기 초기화 1회 안내 배너 */
+/* V2-S-r26: 즐겨찾기 초기화 1회 안내 배너 */
 
 /* iOS Safari 설치 안내 */
 #cover .ios-safari-banner { display: none; }
@@ -3460,12 +3460,15 @@ html.ios-device #app #sheet-list .sheet-hd { bottom: 0; }
 html.kb-open .sheet.open { bottom: 0; }
 
 /* ── 스플래시 오버레이 (커버 초기 진입 흔들림 차단) ── */
-/* 기본 스타일은 inline style로 처리, opacity 초기화만 여기서 보장 */
+/* 기본 위치/크기는 index.html의 초기 스타일에서 먼저 잡고, 여기서는 상태만 보강한다. */
 #oai-splash { opacity: 1; }
 
-/* ── 새로고침 진입 시 스플래시를 아이보리로 변경 ── */
+/* ── 새로고침 진입 시 네이비 십자가 스플래시를 다시 보여주지 않음 ── */
 html.oai-soft-refresh-mode #oai-splash {
   background: #f5f0e8 !important;
+}
+html.oai-soft-refresh-mode #oai-splash-cross {
+  display: none !important;
 }
 html.oai-soft-refresh-mode,
 html.oai-soft-refresh-mode body {
