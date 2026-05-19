@@ -192,7 +192,7 @@
     url = prepareExternalUrl(url);
     if(!url) return;
 
-    // 웹사이트는 기존처럼 자연 복귀, 순례길은 현재 탭/목록 위치만 저장하고 덮개 없이 이동한다.
+    // 웹사이트와 순례길 모두 현재 상태를 저장한 뒤 공통 외부 이동 함수로 이동한다.
     if(state && state.module === 'trail'){
       try{
         state.view = trailState.view || state.view || 'map';
@@ -204,8 +204,8 @@
         }
         saveReturnState(state);
       }catch(e){ console.warn("[가톨릭길동무]", e); }
-      try{ document.activeElement && document.activeElement.blur && document.activeElement.blur(); }catch(e){ console.warn("[가톨릭길동무]", e); }
-      try{ location.href = url; }catch(e){ try{ location.assign(url); }catch(_){ } }
+      if(typeof oaiSmoothNavigate === 'function') oaiSmoothNavigate(url, 'trail-external');
+      else { try{ document.activeElement && document.activeElement.blur && document.activeElement.blur(); }catch(e){ console.warn("[가톨릭길동무]", e); } try{ location.href = url; }catch(e){ try{ location.assign(url); }catch(_){ } } }
       return;
     }
     try{ sessionStorage.removeItem(RETURN_KEY); }catch(e){ console.warn("[가톨릭길동무]", e); }

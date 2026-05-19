@@ -2186,6 +2186,7 @@ html.app-active #qna-cover-btn { display: none; }
   align-items: center;
   justify-content: center;
   background: var(--navy);
+  color-scheme: dark;
   pointer-events: none;
   opacity: 1;
   transform: translateZ(0);
@@ -2197,16 +2198,32 @@ html.oai-navy-intro-releasing #oai-navy-intro-overlay {
 }
 html.oai-navy-intro-releasing #oai-navy-intro-overlay {
   opacity: 0;
-  transition: opacity .28s ease-out;
+  transition: opacity .22s ease-out;
+}
+#oai-navy-intro-overlay .oai-navy-intro-mark {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transform: translateY(calc(var(--cover-vh, 1vh) * -1.5));
 }
 #oai-navy-intro-overlay img {
-  width: clamp(92px, 16vw, 122px);
-  height: clamp(92px, 16vw, 122px);
+  width: clamp(104px, 18vw, 132px);
+  height: clamp(104px, 18vw, 132px);
   object-fit: contain;
   display: block;
 }
+#oai-navy-intro-overlay .oai-navy-intro-title {
+  font-family: 'Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+  font-size: clamp(13px, 3.2vw, 16px);
+  font-weight: 700;
+  letter-spacing: .08em;
+  color: #e5c27a;
+  text-shadow: 0 2px 12px rgba(0,0,0,.22);
+}
 @media (prefers-reduced-motion: reduce) {
-  html.oai-navy-intro-releasing #oai-navy-intro-overlay { transition-duration: .14s; }
+  html.oai-navy-intro-releasing #oai-navy-intro-overlay { transition-duration: .12s; }
 }
 
 .cover-header {
@@ -2620,7 +2637,7 @@ html.app-active #pwa-install-btn { display: none; }
 .guide-mini-list dd { margin: 0; color: #5f6675; font-weight: 600; word-break: keep-all; }
 .guide-ok { flex: 0 0 auto; width: 100%; margin-top: 12px; min-height: 40px; }
 
-/* V2-S-r15: 즐겨찾기 초기화 1회 안내 배너 */
+/* V2-S-r16: 즐겨찾기 초기화 1회 안내 배너 */
 #cover .favorites-reset-banner {
   position: fixed;
   left: max(20px, calc(env(safe-area-inset-left, 0px) + 20px));

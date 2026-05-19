@@ -242,7 +242,7 @@ body > header{display:none!important;visibility:hidden!important;height:0!import
 
 html.oai-dio-external-stabilize *,
 html.oai-dio-external-return *{transition:none!important;animation:none!important;scroll-behavior:auto!important;}
-/* V2-S-r15: 부모 앱에서 복귀 상태를 복원하므로 iframe 자체 전체 덮개는 만들지 않는다. */
+/* V2-S-r16: 부모 앱에서 복귀 상태를 복원하므로 iframe 자체 전체 덮개는 만들지 않는다. */
 
 </style>
 <style id="oai-diocese-tab-standard-20260504">
@@ -2044,11 +2044,11 @@ window.addEventListener('pageshow',function(){
     window.__OAI_DIO_EXTERNAL_LEAVING__ = true;
     var state=window.getDioceseReturnState(source||'link', extra || {});
     try{ sessionStorage.setItem('oai_diocese_last_return_state', JSON.stringify(state)); localStorage.setItem('oai_diocese_last_return_state', JSON.stringify(state)); }catch(e){}
-    // 부모 앱 안에서는 입장/복귀 순간의 큰 흔들림을 만들던 iframe 안정막과 부모 보호막을 쓰지 않는다.
-    // 위치 상태 저장 후 웹사이트 모듈처럼 바로 이동한다.
+    // 부모 앱 안에서는 iframe 자체 안정막을 추가하지 않고, 부모 앱의 공통 외부 이동 함수에 맡긴다.
+    // 위치 상태 저장 후 부모에서 보호창/복귀 안정 처리를 통일한다.
     if(window.parent && window.parent!==window && typeof window.parent.openDioceseExternal==='function'){
-      // 부모 앱에서는 안정막/복원 타이머를 정리하지 않고 바로 이동한다.
-      // clear 함수가 focus/pageshow 타이머와 겹치면 진입 직전 화면이 한 번 흔들린다.
+      // 부모 앱에서는 iframe 내부 타이머를 정리하지 않고, 부모 앱 공통 함수로 이동한다.
+      // clear 함수가 focus/pageshow 타이머와 겹치면 진입 직전 화면이 한 번 흔들릴 수 있다.
       document.documentElement.classList.remove('oai-dio-external-stabilize','oai-dio-external-return','oai-dio-returning');
       window.parent.openDioceseExternal(url,state);
     }
