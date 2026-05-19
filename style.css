@@ -2181,7 +2181,7 @@ html.oai-cover-booting #cover {
 }
 #cover > * {
   opacity: 1;
-  transition: opacity .38s ease-out;
+  transition: opacity 1.5s ease-out;
 }
 html.oai-cover-booting #cover, html.oai-cover-booting #cover * {
   animation: none;
