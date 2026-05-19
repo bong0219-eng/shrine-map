@@ -26,7 +26,8 @@ function hideCoverAndRun(callback) {
 
 var OAI_EXTERNAL_LEAVE_HOLD_MS = 16000;
 var OAI_EXTERNAL_LEAVE_HARD_MS = 22000;
-var OAI_REFRESH_VEIL_MS = 700;
+var OAI_REFRESH_VEIL_MS = 1000;
+var OAI_REFRESH_PROGRESS_HOLD_MS = 15000;
 
 function markExternalReturnStabilize(kind){
   // 외부 사이트로 나가기 직전부터, 다시 돌아온 직후까지 화면 재배치가 보이지 않게 표시한다.
@@ -104,11 +105,20 @@ function oaiHoldStabilityVeil(reason, duration){
 window.oaiHoldStabilityVeil = oaiHoldStabilityVeil;
 window.oaiReleaseStabilityVeil = oaiReleaseStabilityVeil;
 
-function oaiPrepareRefreshVeil(reason){
+function oaiMarkRefreshHistoryCompact(reason){
   try{
     var now = Date.now ? Date.now() : new Date().getTime();
-    sessionStorage.setItem('oai_refresh_veil_until', String(now + OAI_REFRESH_VEIL_MS));
-    oaiHoldStabilityVeil(reason || 'refresh', OAI_REFRESH_VEIL_MS);
+    sessionStorage.setItem('oai_refresh_history_compact_until', String(now + 10 * 60 * 1000));
+    sessionStorage.setItem('oai_refresh_history_compact_reason', reason || 'refresh');
+  }catch(e){ console.warn('[가톨릭길동무]', e); }
+}
+function oaiPrepareRefreshVeil(reason, duration){
+  try{
+    var d = Math.max(260, duration || OAI_REFRESH_VEIL_MS);
+    var now = Date.now ? Date.now() : new Date().getTime();
+    sessionStorage.setItem('oai_refresh_veil_until', String(now + d));
+    oaiMarkRefreshHistoryCompact(reason || 'refresh');
+    oaiHoldStabilityVeil(reason || 'refresh', d);
   }catch(e){ console.warn('[가톨릭길동무]', e); }
 }
 function oaiApplyPendingRefreshVeil(){
@@ -124,6 +134,7 @@ function oaiApplyPendingRefreshVeil(){
   }catch(e){ console.warn('[가톨릭길동무]', e); }
 }
 window.oaiPrepareRefreshVeil = oaiPrepareRefreshVeil;
+window.oaiMarkRefreshHistoryCompact = oaiMarkRefreshHistoryCompact;
 if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', oaiApplyPendingRefreshVeil, {once:true});
 else oaiApplyPendingRefreshVeil();
 
@@ -791,6 +802,7 @@ function _runRefreshAppFilesOnly(){
     // V37: 새로고침 전에는 레이아웃/스크롤/모달 DOM을 건드리지 않고,
     // 복귀 상태값만 정리한다. 화면 흔들림은 주로 reload 직전 DOM 조작에서 발생했다.
     sessionStorage.setItem('oai_soft_refresh_requested', String(Date.now ? Date.now() : new Date().getTime()));
+    try{ if(typeof oaiMarkRefreshHistoryCompact === 'function') oaiMarkRefreshHistoryCompact('short-refresh'); }catch(_e){}
     try{ _clearMassQuickReturnForReload(); }catch(_e){}
   }catch(e){
     console.warn('[가톨릭길동무]', e);
@@ -867,7 +879,7 @@ window.refreshAppFilesOnly = refreshAppFilesOnly;
 // 관리용 완전 정리 함수: 일반 새로고침 버튼에서는 호출하지 않는다.
 // 캐시가 심하게 꼬였을 때만 새로고침 버튼 길게 누르기 또는 별도 호출로 사용한다.
 async function _runClearAppFilesCacheCompletely(){
-  try{ if(typeof oaiPrepareRefreshVeil === 'function') oaiPrepareRefreshVeil('long-refresh'); }catch(e){ console.warn('[가톨릭길동무]', e); }
+  try{ if(typeof oaiPrepareRefreshVeil === 'function') oaiPrepareRefreshVeil('long-refresh-progress', OAI_REFRESH_PROGRESS_HOLD_MS); }catch(e){ console.warn('[가톨릭길동무]', e); }
   try{
     if(window.caches && caches.keys){
       var keys = await caches.keys();
@@ -880,7 +892,7 @@ async function _runClearAppFilesCacheCompletely(){
   }catch(e){
     console.warn('[가톨릭길동무]', e);
   }
-  try{ if(typeof oaiPrepareRefreshVeil === 'function') oaiPrepareRefreshVeil('long-refresh-reload'); }catch(e){ console.warn('[가톨릭길동무]', e); }
+  try{ if(typeof oaiPrepareRefreshVeil === 'function') oaiPrepareRefreshVeil('long-refresh-reload', OAI_REFRESH_VEIL_MS); }catch(e){ console.warn('[가톨릭길동무]', e); }
   setTimeout(function(){
     try{
       var url = new URL(location.href);
@@ -934,7 +946,7 @@ function syncCoverUpdateVersionState(){
     var box = document.getElementById('cover-update-box');
     var marker = document.getElementById('oai-build-marker');
     if(!btn || !box) return;
-    var target = btn.getAttribute('data-target-version') || 'V3';
+    var target = btn.getAttribute('data-target-version') || 'V3-1';
     var current = '';
     if(window.APP_VERSION) current = String(window.APP_VERSION).trim();
     if(!current && marker) current = String(marker.textContent || '').trim();
@@ -1344,7 +1356,7 @@ function openDioceseView(opts){
       if(!restore) try{ frame.contentWindow && frame.contentWindow.resetDioceseFirstPage && frame.contentWindow.resetDioceseFirstPage(); }catch(e){ console.warn("[가톨릭길동무]", e); }
       if(typeof dioceseLoaded==='function') dioceseLoaded();
     };
-    frame.src='diocese.html?v=V3';
+    frame.src='diocese.html?v=V3-1';
   }else if(!restore){
     try{ frame.contentWindow && frame.contentWindow.resetDioceseFirstPage && frame.contentWindow.resetDioceseFirstPage(); }catch(e){ console.warn("[가톨릭길동무]", e); }
   }
@@ -1732,7 +1744,7 @@ const _PARISH_DIOCESE_ASSETS={
 };
 const _PARISH_DIOCESE_LOAD_STATE={};
 const _PARISH_DIOCESE_LOAD_PROMISES={};
-const _PARISH_ASSET_VERSION='V3';
+const _PARISH_ASSET_VERSION='V3-1';
 function _getParishDioceseAsset(code){
   return _PARISH_DIOCESE_ASSETS[code] || null;
 }
@@ -1895,7 +1907,7 @@ function _ensureParishDataLoaded(){
 }
 _initParishDataFromGlobal();
 
-const _PRAYER_ASSET_VERSION='V3';
+const _PRAYER_ASSET_VERSION='V3-1';
 let _prayerModuleLoadPromise=null;
 function _isPrayerModuleReady(){
   return typeof window.initPrayerView === 'function' &&
@@ -1940,7 +1952,7 @@ try{ window.ensurePrayerModuleLoaded=ensurePrayerModuleLoaded; }catch(e){ consol
 let _RT_RAW = [];
 let _retreatRawLoaded = false;
 let _retreatDataLoadPromise = null;
-const _RETREAT_ASSET_VERSION='V3';
+const _RETREAT_ASSET_VERSION='V3-1';
 
 let RETREATS = [];
 function _buildRetreatList(raw){
@@ -2181,7 +2193,7 @@ const _TY={'A':'성지','B':'순례지','C':'순교 사적지'};
 
 let _shrineRawLoaded = false;
 let _shrineDataLoadPromise = null;
-const _SHRINE_ASSET_VERSION='V3';
+const _SHRINE_ASSET_VERSION='V3-1';
 let SHRINES = [];
 let JUKRIMGUL_IDX = -1;
 function _decodeShrineHomePage(hp){

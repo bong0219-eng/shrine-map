@@ -29,10 +29,26 @@
 
   var _href = location.href.split('#')[0];
 
-  /* history 초기화 */
+  /* history 초기화
+     새로고침 직후에는 기존 커버 root/trap 구조 위에 다시 root를 쌓지 않는다.
+     반복 짧은 새로고침·긴 새로고침 후 뒤로가기가 여러 단계로 늘어나는 것을 막기 위해
+     현재 칸을 trap(_p:1)으로만 정리하고, 일반 최초 진입 때만 root/trap 한 쌍을 만든다. */
   try{
-    history.replaceState({_p:0}, '', _href);
-    history.pushState({_p:1}, '', _href);
+    var compactRefreshHistory = false;
+    try{
+      var compactUntil = Number(sessionStorage.getItem('oai_refresh_history_compact_until') || 0);
+      compactRefreshHistory = !!(compactUntil && Date.now && Date.now() < compactUntil);
+      if(compactRefreshHistory){
+        sessionStorage.removeItem('oai_refresh_history_compact_until');
+        sessionStorage.removeItem('oai_refresh_history_compact_reason');
+      }
+    }catch(_e){}
+    if(compactRefreshHistory){
+      history.replaceState({_p:1, oai_cover_trap:'refresh-compact'}, '', _href);
+    }else{
+      history.replaceState({_p:0}, '', _href);
+      history.pushState({_p:1}, '', _href);
+    }
   }catch(e){ console.warn("[가톨릭길동무]", e); }
 
   function $b(id){ return document.getElementById(id); }
