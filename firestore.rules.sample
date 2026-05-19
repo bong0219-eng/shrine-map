@@ -1,0 +1,36 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /qa_posts/{postId} {
+      allow read: if true;
+
+      allow create: if
+        request.resource.data.keys().hasOnly([
+          'category',
+          'title',
+          'content',
+          'author',
+          'date',
+          'createdAt'
+        ]) &&
+        request.resource.data.category in ['문의', '수정제안', '개선건의', '칭찬'] &&
+        request.resource.data.title is string &&
+        request.resource.data.title.size() >= 2 &&
+        request.resource.data.title.size() <= 50 &&
+        request.resource.data.content is string &&
+        request.resource.data.content.size() >= 5 &&
+        request.resource.data.content.size() <= 500 &&
+        request.resource.data.author is string &&
+        request.resource.data.author in ['익명의 순례자', '익명의 신자', '익명의 교우'] &&
+        request.resource.data.date is string &&
+        request.resource.data.date.matches('^\\d{4}-\\d{2}-\\d{2}$') &&
+        request.resource.data.createdAt == request.time;
+
+      allow update, delete: if false;
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

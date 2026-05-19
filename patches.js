@@ -215,7 +215,7 @@
 
 
   /* ─────────────────────────────────────────────
-     V2-S-r5 기도문 전용 뒤로가기 컨트롤러 — history 단계 분리 제거
+     V2-S-r7 기도문 전용 뒤로가기 컨트롤러 — history 단계 분리 제거
 
      원칙:
      1) 다른 정상 카테고리처럼 실제 history는 공통 root/trap 한 쌍만 사용한다.
@@ -267,7 +267,7 @@
     return !!yes;
   }
   function armPrayerBackTrap(reason){
-    /* 호환용 함수. V2-S-r5부터 기도문 detail/list용 별도 pushState는 만들지 않는다.
+    /* 호환용 함수. V2-S-r7부터 기도문 detail/list용 별도 pushState는 만들지 않는다.
        공통 컨트롤러가 이미 갖고 있는 root/trap을 유지하는 것만 필요하다. */
     try{
       if(isPrayerOpen() && typeof window._ensureAppBackTrap === 'function'){
@@ -322,7 +322,7 @@
     }catch(e){ console.warn('[가톨릭길동무]', e); }
   }
   function settleCoverTrapAfterPrayer(reason){
-    // V2-S-r5: 기도문 팝업 → 커버 후에는 이미 공통 컨트롤러가 history.go(1)로 trap을 복원한 상태다.
+    // V2-S-r7: 기도문 팝업 → 커버 후에는 이미 공통 컨트롤러가 history.go(1)로 trap을 복원한 상태다.
     // 여기서 replaceState/pushState를 강제로 반복하면 Android/PWA에서 다음 Back이 앱 종료로 오판될 수 있다.
     // 따라서 현재 trap이 살아 있으면 그대로 두고, 없을 때만 최소한으로 보강한다.
     function run(tag){
@@ -382,7 +382,7 @@
       var fromQuick = isPrayerQuickSource();
       if(!fromQuick) return resetPrayerToCover(reason || 'prayer-list-cover');
 
-      /* V2-S-r5: 기도문 목록 → 빠른메뉴 팝업 복귀는 직접 팝업을 띄우지 않는다.
+      /* V2-S-r7: 기도문 목록 → 빠른메뉴 팝업 복귀는 직접 팝업을 띄우지 않는다.
          사용자의 Back으로 공통 trap이 일단 소비된 직후라, 이 자리에서 openMassQuickMenu()를
          바로 호출하면 Android/PWA에서 history.go(1) 복원 타이밍과 겹쳐 팝업 Back이 앱 종료로
          먹힐 수 있다. 기존 안정 함수 _returnToMassQuickMenu('prayer')에게 맡기면,
@@ -700,9 +700,9 @@
 (function(){
   if(window.__APP_FONT_SCALE_GUARD__) return;
   window.__APP_FONT_SCALE_GUARD__=true;
-  // V2-S-r5: 커버 글자 크기 조절은 prayer.js에 의존하지 않는 공통 함수가 담당한다.
+  // V2-S-r7: 커버 글자 크기 조절은 prayer.js에 의존하지 않는 공통 함수가 담당한다.
   // prayer.js는 기도문 화면이 열렸을 때 같은 localStorage 값을 읽어 자체 UI를 맞춘다.
-  var QA_URL="qa-firebase.html?v=V2-S-r5";
+  var QA_URL="qa-firebase.html?v=V2-S-r7";
   var FONT_KEY='prayer_font_size';
   var BASE=16;
   var FONT_SIZES=[13,14,15,16,17,18,19,20,21,22,24,26,28,30];
@@ -773,14 +773,12 @@
   function setEmojiIcons(){var icons={'cc-1':'✝️','cc-2':'⛪','cc-3':'🙏','cc-4':'🌿','cc-5':'🥾','cc-6':'🌐','cc-7':'🧭'};Object.keys(icons).forEach(function(id){var btn=el(id);if(!btn)return;var wrap=btn.querySelector('.cover-icon-wrap');if(wrap)wrap.innerHTML='<span class="cover-emoji" aria-hidden="true">'+icons[id]+'</span>';});}
   function configureQna(){
     window.QNA_FORM_URL=QA_URL;
-    window.QNA_ANSWER_URL=QA_URL;
     var q=el('qna-list');
     if(q&&q.innerHTML.indexOf('Google Form')>=0){
-      q.innerHTML='<div class="qna-card"><div class="qna-kicker">문의 · 수정건의</div><div class="qna-title">문의·건의 페이지 연결</div><div class="qna-text">문의와 수정건의는 가톨릭길동무 문의·건의 페이지에서 작성하고 확인합니다.</div><div class="qna-actions"><button class="primary" type="button" onclick="goQaFirebase()">문의 작성하기</button><button type="button" onclick="goQaFirebase()">답변 보기</button></div></div>';
+      q.innerHTML='<div class="qna-card"><div class="qna-kicker">문의 · 수정건의</div><div class="qna-title">문의·건의 페이지 연결</div><div class="qna-text">문의와 수정건의는 가톨릭길동무 문의·건의 페이지에서 작성하고 확인합니다.</div><div class="qna-actions"><button class="primary" type="button" onclick="goQaFirebase()">문의 작성하기</button></div></div>';
     }
   }
   window.qnaOpenFormUrl=function(){ if(typeof window.goQaFirebase==='function') window.goQaFirebase(); else location.href=QA_URL; };
-  window.qnaOpenAnswerUrl=function(){ if(typeof window.goQaFirebase==='function') window.goQaFirebase(); else location.href=QA_URL; };
   function wireQnaButton(){var btn=el('qna-cover-btn');if(btn)btn.onclick=function(ev){if(ev)ev.preventDefault();window.openQnaView();};}
   window.openQnaView=function(){ location.href=QA_URL; };
   window.goQaFirebase=function(){ location.href=QA_URL; };
@@ -1262,7 +1260,7 @@
     '.trail-foot','.web-card-foot','.trail-sh-foot','.trail-sh-body',
     '#close-btn','.module-close','.sheet-x','.sm-x','.ic-close-btn','.c-x',
     '#qna-cover-btn','#pwa-install-btn','.missa-open-link',
-    '.btn-primary','.btn-secondary','#write-btn','#sb','#admin-pin-check',
+    '.btn-primary','.btn-secondary','#write-btn','#sb',
     '.filter-btn','.cat-opt','.tab','.tab-btn','.trail-tab','.web-cat-btn',
     '#prayer-search-input','#prayer-search-bar button'
   ].join(',');
@@ -1355,7 +1353,7 @@
     root = root || document;
     var nodes = root.querySelectorAll ? root.querySelectorAll('input[type="text"], input[type="search"], input:not([type]), textarea') : [];
     nodes.forEach(function(el){
-      if(el.type === 'password' || el.type === 'number' || el.type === 'tel' || el.type === 'email') return;
+      if(el.type === 'number' || el.type === 'tel' || el.type === 'email') return;
       el.setAttribute('autocomplete','off');
       el.setAttribute('autocorrect','off');
       el.setAttribute('autocapitalize','off');
