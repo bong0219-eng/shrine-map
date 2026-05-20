@@ -1,145 +1,6 @@
 <!DOCTYPE html>
 <html lang="ko" class="oai-font-global" style="background:#0e1535;">
 <head>
-<script id="oai-cover-boot-back-guard">
-/* V2-S-4: 첫 커버에서 아무 조작 없이 Back을 눌러도 먼저 안내를 보이도록
-   문서 최상단에서 실제 hash history 항목을 만든다. 실패했던 query trap은 사용하지 않는다. */
-(function(){
-  'use strict';
-  if(window.__OAI_BOOT_COVER_BACK_GUARD__) return;
-  window.__OAI_BOOT_COVER_BACK_GUARD__ = true;
-
-  var TRAP_HASH = '#__oai_cover_boot_guard';
-  var TOAST_MS = 2500;
-  var toastTimer = 0;
-  var lastHandledAt = 0;
-
-  function now(){ return Date.now ? Date.now() : new Date().getTime(); }
-  function baseHref(){ try{ return location.href.split('#')[0]; }catch(_e){ return location.href; } }
-  function trapHref(){ return baseHref() + TRAP_HASH; }
-  function isTrapHash(){ try{ return location.hash === TRAP_HASH; }catch(_e){ return false; } }
-  function isCoverVisible(){
-    try{
-      if(document.documentElement.classList.contains('app-active')) return false;
-      var cover = document.getElementById('cover');
-      if(!cover) return true;
-      if(cover.classList.contains('hidden')) return false;
-      var st = window.getComputedStyle ? window.getComputedStyle(cover) : null;
-      if(st && (st.display === 'none' || st.visibility === 'hidden')) return false;
-      return true;
-    }catch(_e){
-      try{ return !document.documentElement.classList.contains('app-active'); }catch(__e){ return true; }
-    }
-  }
-  function isRefreshDialogOpen(){
-    try{ return !!document.getElementById('oai-refresh-content-dialog'); }catch(_e){ return false; }
-  }
-  function setExitArmed(on){
-    try{
-      if(on){
-        var until = now() + TOAST_MS;
-        window.__oaiCoverExitUntil = until;
-        sessionStorage.setItem('oai_cover_exit_armed_until', String(until));
-      }else{
-        window.__oaiCoverExitUntil = 0;
-        sessionStorage.removeItem('oai_cover_exit_armed_until');
-      }
-    }catch(_e){}
-  }
-  function isExitArmed(){
-    try{
-      var until = Number(window.__oaiCoverExitUntil || sessionStorage.getItem('oai_cover_exit_armed_until') || 0);
-      return !!(until && now() < until);
-    }catch(_e){ return false; }
-  }
-  function removeToast(){
-    try{
-      clearTimeout(toastTimer);
-      var old = document.getElementById('_bt');
-      if(old && old.parentNode) old.parentNode.removeChild(old);
-      var old2 = document.getElementById('oai-cover-exit-toast');
-      if(old2) old2.classList.remove('show');
-    }catch(_e){}
-  }
-  function showToast(){
-    if(isRefreshDialogOpen()) return;
-    setExitArmed(true);
-    function append(){
-      try{
-        removeToast();
-        if(!document.body) return;
-        var t = document.createElement('div');
-        t.id = '_bt';
-        t.textContent = '한 번 더 누르면 앱이 종료됩니다';
-        t.style.cssText = 'position:fixed;top:50%;left:50%;bottom:auto;transform:translate(-50%,-50%);background:rgba(14,21,53,.94);color:#fff;padding:12px 24px;border-radius:24px;font-size:14px;font-weight:800;z-index:2147483600;white-space:nowrap;pointer-events:none;box-shadow:0 14px 36px rgba(0,0,0,.32);';
-        document.body.appendChild(t);
-        toastTimer = setTimeout(function(){ removeToast(); setExitArmed(false); }, TOAST_MS);
-      }catch(_e){}
-    }
-    if(document.body) append();
-    else document.addEventListener('DOMContentLoaded', append, {once:true});
-  }
-  function attemptExit(){
-    try{ window._appExiting = true; }catch(_e){}
-    removeToast();
-    setExitArmed(false);
-    try{ if(navigator.app && typeof navigator.app.exitApp === 'function'){ navigator.app.exitApp(); return; } }catch(_e){}
-    try{ window.open('', '_self'); window.close(); }catch(_e){}
-    setTimeout(function(){ try{ history.back(); }catch(_e){} }, 30);
-  }
-  function armBootCoverGuard(reason, force){
-    try{
-      if(!force && !isCoverVisible()) return;
-      if(isRefreshDialogOpen()) return;
-      var base = baseHref();
-      var trap = base + TRAP_HASH;
-      var st = history.state;
-      if(!force && isTrapHash() && st && st._p === 1 && st.oai_cover_trap) return;
-      history.replaceState({_p:0, oai_cover_root:reason || 'boot-cover-root'}, '', base);
-      /* pushState보다 실제 hash 이동이 Android/PWA 첫 진입에서 더 안정적으로 history 항목을 만든다. */
-      if(location.href !== trap){
-        location.hash = TRAP_HASH.slice(1);
-      }
-      history.replaceState({_p:1, oai_cover_trap:reason || 'boot-cover-trap', oai_boot_cover_trap:1}, '', trap);
-      window.__OAI_EARLY_COVER_BACK_TRAP_READY__ = true;
-    }catch(e){ try{ console.warn('[가톨릭길동무]', e); }catch(_e){} }
-  }
-  function handleCoverBack(evt, source){
-    try{
-      if(window._appExiting) return false;
-      if(!isCoverVisible()) return false;
-      if(isRefreshDialogOpen()) return false;
-      var t = now();
-      if(t - lastHandledAt < 220) return true;
-      lastHandledAt = t;
-      if(evt && evt.stopImmediatePropagation) evt.stopImmediatePropagation();
-      if(isExitArmed()){ attemptExit(); return true; }
-      showToast();
-      setTimeout(function(){ armBootCoverGuard('boot-cover-toast-' + (source || 'back'), true); }, 0);
-      return true;
-    }catch(e){ try{ console.warn('[가톨릭길동무]', e); }catch(_e){} return false; }
-  }
-
-  window.__oaiArmEarlyCoverBackGuard = armBootCoverGuard;
-  window.__oaiBootCoverBackHandle = handleCoverBack;
-
-  window.addEventListener('popstate', function(evt){
-    handleCoverBack(evt, 'popstate');
-  }, true);
-  window.addEventListener('hashchange', function(evt){
-    try{
-      var oldURL = String(evt && evt.oldURL || '');
-      var newURL = String(evt && evt.newURL || '');
-      if(oldURL.indexOf(TRAP_HASH) === -1 || newURL.indexOf(TRAP_HASH) !== -1) return;
-      handleCoverBack(evt, 'hashchange');
-    }catch(_e){}
-  }, true);
-
-  armBootCoverGuard('boot-init', true);
-  document.addEventListener('DOMContentLoaded', function(){ armBootCoverGuard('boot-dom-ready', false); }, {once:true});
-  window.addEventListener('pageshow', function(){ armBootCoverGuard('boot-pageshow', false); }, true);
-})();
-</script>
 <style id="oai-first-entry-bg">html,body{margin:0;width:100%;min-height:100%;background:#0e1535;color-scheme:light;}body{background:#0e1535;}</style>
 <style id="oai-refresh-veil-early-style">
 /* 새로고침 직후 style.css가 아직 도착하지 않은 첫 페인트도 아이보리 보호막으로 덮는다. */
@@ -170,6 +31,116 @@ html.oai-external-return-freeze::after { content:""; position:fixed; left:50%; t
     var url = location.href;
     location.href = 'intent://' + url.replace(/https?:\/\//i,'') + '#Intent;scheme=https;package=com.android.chrome;end';
   }
+})();
+</script>
+<script>
+/* V2-S-5: patches.js가 로드되기 전 첫 커버 Back도 먼저 잡는 최소 조기 가드.
+   실패했던 hash/query URL trap은 사용하지 않고, 같은 URL의 root/trap 한 쌍만 만든다. */
+(function(){
+  'use strict';
+  if(window.__OAI_EARLY_COVER_BACK_GUARD__) return;
+  window.__OAI_EARLY_COVER_BACK_GUARD__ = true;
+
+  var TOAST_MS = 2500;
+  var toastTimer = 0;
+
+  function now(){ return Date.now ? Date.now() : new Date().getTime(); }
+  function baseHref(){ try{ return location.href.split('#')[0]; }catch(_e){ return location.href; } }
+  function isCoverVisible(){
+    try{
+      if(document.documentElement.classList.contains('app-active')) return false;
+      var cover = document.getElementById('cover');
+      if(!cover) return true;
+      if(cover.classList.contains('hidden')) return false;
+      var st = window.getComputedStyle ? window.getComputedStyle(cover) : null;
+      if(st && (st.display === 'none' || st.visibility === 'hidden')) return false;
+      return true;
+    }catch(_e){ return !document.documentElement.classList.contains('app-active'); }
+  }
+  function isRefreshDialogOpen(){
+    try{ return !!document.getElementById('oai-refresh-content-dialog'); }catch(_e){ return false; }
+  }
+  function removeToast(){
+    try{
+      clearTimeout(toastTimer);
+      var old = document.getElementById('_bt');
+      if(old && old.parentNode) old.parentNode.removeChild(old);
+    }catch(_e){}
+  }
+  function setExitArmed(on){
+    try{
+      if(on){
+        var until = now() + TOAST_MS;
+        window.__oaiCoverExitUntil = until;
+        sessionStorage.setItem('oai_cover_exit_armed_until', String(until));
+      }else{
+        window.__oaiCoverExitUntil = 0;
+        sessionStorage.removeItem('oai_cover_exit_armed_until');
+      }
+    }catch(_e){}
+  }
+  function isExitArmed(){
+    try{
+      var until = Number(window.__oaiCoverExitUntil || sessionStorage.getItem('oai_cover_exit_armed_until') || 0);
+      return !!(until && now() < until);
+    }catch(_e){ return false; }
+  }
+  function showToast(){
+    if(isRefreshDialogOpen()) return;
+    setExitArmed(true);
+    function append(){
+      try{
+        removeToast();
+        if(!document.body) return;
+        var t = document.createElement('div');
+        t.id = '_bt';
+        t.textContent = '한 번 더 누르면 앱이 종료됩니다';
+        t.style.cssText = 'position:fixed;top:50%;left:50%;bottom:auto;transform:translate(-50%,-50%);background:rgba(14,21,53,.94);color:#fff;padding:12px 24px;border-radius:24px;font-size:14px;font-weight:800;z-index:2147483600;white-space:nowrap;pointer-events:none;box-shadow:0 14px 36px rgba(0,0,0,.32);';
+        document.body.appendChild(t);
+        toastTimer = setTimeout(function(){ removeToast(); setExitArmed(false); }, TOAST_MS);
+      }catch(_e){}
+    }
+    if(document.body) append();
+    else document.addEventListener('DOMContentLoaded', append, {once:true});
+  }
+  function attemptExit(){
+    try{ window._appExiting = true; }catch(_e){}
+    removeToast();
+    setExitArmed(false);
+    try{ if(navigator.app && typeof navigator.app.exitApp === 'function'){ navigator.app.exitApp(); return; } }catch(_e){}
+    try{ window.open('', '_self'); window.close(); }catch(_e){}
+    try{ document.documentElement.classList.add('app-exiting'); }catch(_e){}
+    /* 일반 브라우저에서는 window.close가 막힐 수 있어 한 번 더 실제 뒤로가기를 시도한다. */
+    setTimeout(function(){ try{ history.back(); }catch(_e){} }, 30);
+  }
+  function armEarlyCoverBackGuard(reason, force){
+    try{
+      if(!force && !isCoverVisible()) return;
+      var href = baseHref();
+      var st = history.state;
+      if(!force && st && st._p === 1 && st.oai_cover_trap) return;
+      history.replaceState({_p:0, oai_cover_root:reason || 'early-cover-root'}, '', href);
+      history.pushState({_p:1, oai_cover_trap:reason || 'early-cover-trap'}, '', href);
+      window.__OAI_EARLY_COVER_BACK_TRAP_READY__ = true;
+    }catch(e){ try{ console.warn('[가톨릭길동무]', e); }catch(_e){} }
+  }
+  window.__oaiArmEarlyCoverBackGuard = armEarlyCoverBackGuard;
+
+  window.addEventListener('popstate', function(){
+    try{
+      if(window.__OAI_FULL_BACK_CTRL_ACTIVE__) return;
+      if(window._appExiting) return;
+      if(!isCoverVisible()) return;
+      if(isRefreshDialogOpen()) return;
+      if(isExitArmed()){ attemptExit(); return; }
+      showToast();
+      armEarlyCoverBackGuard('early-cover-toast', true);
+    }catch(e){ try{ console.warn('[가톨릭길동무]', e); }catch(_e){} }
+  }, false);
+
+  armEarlyCoverBackGuard('early-init', true);
+  document.addEventListener('DOMContentLoaded', function(){ armEarlyCoverBackGuard('early-dom-ready', false); }, {once:true});
+  window.addEventListener('pageshow', function(){ if(!window.__OAI_FULL_BACK_CTRL_ACTIVE__) armEarlyCoverBackGuard('early-pageshow', false); }, true);
 })();
 </script>
 <script>
@@ -403,21 +374,21 @@ window.APP_CONFIG = {
 <meta name="application-name" content="가톨릭길동무">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#0e1535">
-<link rel="manifest" href="manifest.json?v=V2-S-4">
-<link rel="apple-touch-icon" href="icon-192x192.png?v=V2-S-4">
+<link rel="manifest" href="manifest.json?v=V2-S-5">
+<link rel="apple-touch-icon" href="icon-192x192.png?v=V2-S-5">
 <meta name="format-detection" content="telephone=no">
 <meta name="description" content="가톨릭길동무 - 가톨릭 신앙생활 종합 앱">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="가톨릭길동무">
 <meta property="og:title" content="가톨릭길동무">
 <meta property="og:description" content="성지 · 성당 · 기도문 · 순례길 · 가톨릭 웹사이트 안내">
-<meta property="og:image" content="icon-512x512.png?v=V2-S-4">
+<meta property="og:image" content="icon-512x512.png?v=V2-S-5">
 <meta property="og:image:width" content="512">
 <meta property="og:image:height" content="512">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="가톨릭길동무">
 <meta name="twitter:description" content="성지 · 성당 · 기도문 · 순례길 · 가톨릭 웹사이트 안내">
-<meta name="twitter:image" content="icon-512x512.png?v=V2-S-4">
+<meta name="twitter:image" content="icon-512x512.png?v=V2-S-5">
 <title>가톨릭길동무</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Crect width=%2232%22 height=%2232%22 fill=%22%230e1535%22/%3E%3Ctext x=%226%22 y=%2226%22 font-size=%2224%22 fill=%22%23d4aa6a%22%3E%E2%9C%9D%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -425,7 +396,7 @@ window.APP_CONFIG = {
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style id="oai-initial-bg">html,body{margin:0;width:100%;height:100%;min-height:100%;background:#0e1535;overflow:hidden;color-scheme:light;}#cover{background:#0e1535;min-height:100%;}#app{background:#f8f6f2;display:none;}</style>
-<link rel="stylesheet" href="style.css?v=V2-S-4">
+<link rel="stylesheet" href="style.css?v=V2-S-5">
 </head>
 <body>
 <div id="missa-view" role="dialog" aria-modal="true" aria-label="매일미사">
@@ -569,8 +540,8 @@ window.APP_CONFIG = {
       <!-- 커버 하단 작업줄: 새로고침 + 문의·건의 -->
       <div id="cover-action-row" aria-label="커버 보조 기능">
         <div id="cover-update-box">
-          <button id="cover-update-btn" type="button" data-target-version="V2-S-4" aria-label="짧게 누르면 새로고침, 더 길게 누르면 앱 캐시 초기화">
-            V2-S-4 새로고침
+          <button id="cover-update-btn" type="button" data-target-version="V2-S-5" aria-label="짧게 누르면 새로고침, 더 길게 누르면 앱 캐시 초기화">
+            V2-S-5 새로고침
           </button>
           <div id="cover-update-hint" aria-live="polite">아래 버전과 다릅니다. 눌러서 최신 파일을 다시 받아 주세요.</div>
         </div>
@@ -599,30 +570,30 @@ window.APP_CONFIG = {
         <div class="ios-safari-step">
           <b>1</b>
           <span>카카오톡 하단 버튼 4개 중 <strong>오른쪽 끝 버튼</strong>을 누르세요.</span>
-          <img data-src="ios-install-step1-kakao-bottom-buttons.png?v=V2-S-4" alt="카카오톡 오른쪽 아래 버튼 모양" width="945" height="248" loading="lazy" decoding="async">
+          <img data-src="ios-install-step1-kakao-bottom-buttons.png?v=V2-S-5" alt="카카오톡 오른쪽 아래 버튼 모양" width="945" height="248" loading="lazy" decoding="async">
         </div>
         <div class="ios-safari-step">
           <b>2</b>
           <span>공유 화면에서 <strong>Safari로 열기</strong>를 누르세요.</span>
-          <img data-src="ios-install-step2-safari-open.png?v=V2-S-4" alt="Safari로 열기 버튼" width="880" height="755" loading="lazy" decoding="async" fetchpriority="low">
+          <img data-src="ios-install-step2-safari-open.png?v=V2-S-5" alt="Safari로 열기 버튼" width="880" height="755" loading="lazy" decoding="async" fetchpriority="low">
         </div>
         <div class="ios-safari-step">
           <b>3</b>
           <span>Safari로 열린 뒤, 화면 <strong>오른쪽 아래 ··· 버튼</strong>을 누르세요.</span>
           <div class="ios-safari-shot ios-safari-shot-more">
-            <img data-src="KakaoTalk_20260514_134255658_04.jpg?v=V2-S-4" alt="Safari 오른쪽 아래 더보기 버튼" width="960" height="307" loading="lazy" decoding="async">
+            <img data-src="KakaoTalk_20260514_134255658_04.jpg?v=V2-S-5" alt="Safari 오른쪽 아래 더보기 버튼" width="960" height="307" loading="lazy" decoding="async">
             <i class="ios-gold-highlight" aria-hidden="true"></i>
           </div>
         </div>
         <div class="ios-safari-step">
           <b>4</b>
           <span>열린 메뉴에서 <strong>공유</strong>를 누르세요.</span>
-          <img data-src="ios-install-step3-share-menu.png?v=V2-S-4" alt="Safari 공유 버튼" width="750" height="580" loading="lazy" decoding="async" fetchpriority="low">
+          <img data-src="ios-install-step3-share-menu.png?v=V2-S-5" alt="Safari 공유 버튼" width="750" height="580" loading="lazy" decoding="async" fetchpriority="low">
         </div>
         <div class="ios-safari-step">
           <b>5</b>
           <span>목록을 아래로 내려 <strong>홈 화면에 추가</strong>를 누르세요.</span>
-          <img data-src="ios-install-step4-home-screen.png?v=V2-S-4" alt="홈 화면에 추가 버튼" width="865" height="750" loading="lazy" decoding="async" fetchpriority="low">
+          <img data-src="ios-install-step4-home-screen.png?v=V2-S-5" alt="홈 화면에 추가 버튼" width="865" height="750" loading="lazy" decoding="async" fetchpriority="low">
         </div>
       </div>
     </div>
@@ -648,7 +619,7 @@ window.APP_CONFIG = {
   </div>
 </div>
 
-<!-- V2-S-4: 설치된 앱 기존 사용자에게만 1회 표시하는 즐겨찾기 초기화 안내 배너 -->
+<!-- V2-S-5: 설치된 앱 기존 사용자에게만 1회 표시하는 즐겨찾기 초기화 안내 배너 -->
 <div id="favorites-reset-notice-banner" class="favorites-reset-banner" aria-live="polite" hidden>
   <div class="favorites-reset-text">
     <strong>업데이트 안내</strong>
@@ -711,7 +682,7 @@ window.APP_CONFIG = {
   📲 홈 화면에 앱 설치하기
 </button>
 </div>
-<script src="app.js?v=V2-S-4"></script>
+<script src="app.js?v=V2-S-5"></script>
 <div id="oai-category-entry-veil" aria-hidden="true"></div>
 <div id="app"><div id="tabbar"><button id="tab-btn-nearby" class="tab-btn" data-tab="nearby"><span class="tab-icon">📍</span><span id="tab-nearby-lbl">내주변</span></button><button id="tab-btn-list" class="tab-btn" data-tab="list"><span class="tab-icon">📋</span><span id="tab-list-lbl">목록</span></button><button id="tab-btn-region" class="tab-btn" data-tab="region"><span class="tab-icon">🔍</span>지역검색
     </button><button id="tab-btn-route" class="tab-btn" data-tab="route"><span class="tab-icon">🧭</span>길찾기
@@ -787,13 +758,13 @@ window.APP_CONFIG = {
     </div>
   </div>
 </div>
-<script src="web.js?v=V2-S-4"></script>
+<script src="web.js?v=V2-S-5"></script>
 
 <div id="qna-view" role="dialog" aria-modal="true" aria-label="문의·건의" class="module-view"><div class="module-bar qna"><div class="module-bar-main"><div class="module-bar-ico">✝</div><div class="module-bar-txt"><div class="module-bar-title">문의·건의</div><div class="module-bar-sub">질문, 오류, 수정요청을 남겨주세요</div></div></div><button id="qna-close-btn" class="module-close" aria-label="문의·건의 닫기">×</button></div><div class="qna-body"><div class="qna-tabs"><button id="qna-tab-write" class="qna-tab on" type="button">작성</button></div><div class="qna-list" id="qna-list"></div></div></div>
 
-<script src="patches.js?v=V2-S-4"></script>
+<script src="patches.js?v=V2-S-5"></script>
 
-<script src="sw-update.js?v=V2-S-4"></script>
+<script src="sw-update.js?v=V2-S-5"></script>
 
 
 
