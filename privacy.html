@@ -134,9 +134,76 @@
       font-weight: 800;
       box-shadow: 0 6px 15px rgba(31,42,68,.2);
     }
+  
+    /* V1-13 메뉴 기능 화면 공통 디자인 */
+    body.gp-info-page {
+      background: #f7f0e5;
+      color: #1f2937;
+    }
+    body.gp-info-page .wrap {
+      max-width: 720px;
+      padding: 18px 14px 28px;
+    }
+    body.gp-info-page .hero,
+    body.gp-info-page .card {
+      border-radius: 24px;
+      border: 1.6px solid rgba(183,121,31,.24);
+      background: rgba(255,253,247,.98);
+      box-shadow: 0 14px 32px rgba(31,42,68,.10);
+    }
+    body.gp-info-page .hero {
+      padding: 22px 18px 18px;
+      text-align: center;
+    }
+    body.gp-info-page h1 {
+      color: #111827;
+      letter-spacing: -.045em;
+    }
+    body.gp-info-page .sub,
+    body.gp-info-page .lead,
+    body.gp-info-page p,
+    body.gp-info-page li {
+      color: #5f5145;
+    }
+    body.gp-info-page .card {
+      padding: 20px 18px;
+      margin-top: 14px;
+    }
+    body.gp-info-page .card h2 {
+      color: #1f2a44;
+      font-size: 18px;
+      border-bottom: 1px solid rgba(183,121,31,.16);
+      padding-bottom: 9px;
+      margin-bottom: 12px;
+    }
+    body.gp-info-page .top-back-wrap {
+      margin: 14px 0 0;
+      display: flex;
+      justify-content: center;
+    }
+    body.gp-info-page .back-link-main,
+    body.gp-info-page .back-link-top,
+    body.gp-info-page .back-link {
+      width: min(360px, 100%);
+      min-height: 52px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 16px;
+      background: linear-gradient(135deg, #1f2a44 0%, #263a63 100%);
+      color: #fffaf0 !important;
+      border: 1.5px solid rgba(212,170,106,.45);
+      box-shadow: 0 8px 20px rgba(31,42,68,.18);
+      font-size: 16px;
+      font-weight: 900;
+      text-decoration: none;
+      letter-spacing: -.03em;
+      box-sizing: border-box;
+    }
+
   </style>
 </head>
-<body>
+<body class="gp-info-page">
   <main class="page">
     <section class="hero" aria-labelledby="privacy-title">
       <p class="eyebrow">가톨릭길동무</p>
@@ -145,7 +212,7 @@
     </section>
 
     <div class="top-back-wrap">
-      <a id="privacy-top-back-app-link" class="back-link back-link-top" href="javascript:void(0)" onclick="event.preventDefault(); privacyCloseToApp();">← 앱으로 돌아가기</a>
+      <a id="privacy-top-back-app-link" class="back-link back-link-top" href="javascript:void(0)" onclick="event.preventDefault(); privacyCloseToApp();">앱으로 돌아가기</a>
     </div>
 
     <section class="card">

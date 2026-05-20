@@ -287,7 +287,69 @@
   #qna-cross-icon::after{ content:""; position:absolute; left:50%; background:#fff; border-radius:2px; display:block; }
   #qna-cross-icon::before{ top:50%; width:3px; height:24px; transform:translate(-50%,-50%); }
   #qna-cross-icon::after{ top:42%; width:14px; height:3px; transform:translate(-50%,-50%); }
-</style>
+
+    /* V1-13 메뉴 기능 화면 공통 디자인 */
+    body.gp-info-page {
+      background: #f7f0e5 !important;
+      color: #1f2937 !important;
+    }
+    body.gp-info-page .wrap,
+    body.gp-info-page .container,
+    body.gp-info-page main,
+    body.gp-info-page .page,
+    body.gp-info-page .qna-wrap {
+      max-width: 720px !important;
+      margin-left: auto !important;
+      margin-right: auto !important;
+    }
+    body.gp-info-page .card,
+    body.gp-info-page .panel,
+    body.gp-info-page .box,
+    body.gp-info-page form {
+      border-radius: 24px !important;
+      border: 1.6px solid rgba(183,121,31,.24) !important;
+      background: rgba(255,253,247,.98) !important;
+      box-shadow: 0 14px 32px rgba(31,42,68,.10) !important;
+      box-sizing: border-box !important;
+    }
+    body.gp-info-page h1,
+    body.gp-info-page h2 {
+      color: #111827 !important;
+      letter-spacing: -.045em !important;
+    }
+    body.gp-info-page input,
+    body.gp-info-page textarea,
+    body.gp-info-page select {
+      border-radius: 14px !important;
+      border: 1.4px solid rgba(31,41,55,.18) !important;
+      background: #fffdf8 !important;
+      box-sizing: border-box !important;
+    }
+    body.gp-info-page button,
+    body.gp-info-page .btn,
+    body.gp-info-page .submit-btn {
+      border-radius: 16px !important;
+      font-weight: 900 !important;
+      letter-spacing: -.03em !important;
+    }
+    body.gp-info-page .primary,
+    body.gp-info-page .submit-btn,
+    body.gp-info-page button[type="submit"] {
+      background: linear-gradient(135deg, #1f2a44 0%, #263a63 100%) !important;
+      color: #fffaf0 !important;
+      border: 1.5px solid rgba(212,170,106,.45) !important;
+      min-height: 52px !important;
+      box-shadow: 0 8px 20px rgba(31,42,68,.18) !important;
+    }
+    body.gp-info-page .gp-close-btn,
+    body.gp-info-page .close-btn,
+    body.gp-info-page .back-btn {
+      background: #f3efe7 !important;
+      color: #1f2a44 !important;
+      border: 1.4px solid rgba(31,41,55,.16) !important;
+    }
+
+  </style>
 
 
 <style id="oai-touch-ux-standard-20260506">
@@ -303,7 +365,7 @@
 }
 </style>
 </head>
-<body>
+<body class="gp-info-page gp-qna-page">
 
 <!-- 헤더 -->
 <div id="header">
@@ -312,7 +374,7 @@
     <div class="sub">가톨릭길동무</div>
   </div>
   <button id="write-btn" onclick="goWrite()">✏️ 글쓰기</button>
-  <button id="close-btn" onclick="handleQaBack()" aria-label="닫기">×</button>
+  <button id="close-btn" onclick="handleQaBack()" aria-label="닫기" class="gp-close-btn">×</button>
 </div>
 
 <!-- 목록 뷰 -->
@@ -701,7 +763,7 @@ subscribeList();
 <script id="oai-cache-lifecycle-V23">
 (function(){
   'use strict';
-  var APP_VERSION = 'V1-12';
+  var APP_VERSION = 'V1-13';
   if('serviceWorker' in navigator){
     try{ navigator.serviceWorker.register('./sw.js?v=' + encodeURIComponent(APP_VERSION)).then(function(reg){try{reg.update();}catch(e){}}).catch(function(){}); }catch(e){}
   }
