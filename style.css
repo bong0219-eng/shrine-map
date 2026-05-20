@@ -2596,7 +2596,7 @@ html.app-active #pwa-install-btn { display: none; }
 .guide-mini-list dd { margin: 0; color: #5f6675; font-weight: 600; word-break: keep-all; }
 .guide-ok { flex: 0 0 auto; width: 100%; margin-top: 12px; min-height: 40px; }
 
-/* V3-S-2: 즐겨찾기 초기화 1회 안내 배너 */
+/* V3-S: 즐겨찾기 초기화 1회 안내 배너 */
 #cover .favorites-reset-banner {
   position: fixed;
   left: max(20px, calc(env(safe-area-inset-left, 0px) + 20px));
@@ -2822,21 +2822,16 @@ html.oai-stability-veil *, html.oai-external-return-freeze * { transition: none;
 html.oai-stability-veil::before { content: ""; position: fixed; inset: 0; z-index: 2147483000; background: #f5f0e8; pointer-events: none; opacity: 1; animation: oaiStabilityVeilIn .12s ease-out both; }
 html.oai-stability-veil.oai-stability-veil-releasing::before { animation: oaiStabilityVeilOut .18s ease-in both; }
 html.oai-stability-veil::after { content: ""; position: fixed; left: 50%; top: 50%; width: 28px; height: 28px; margin: -14px 0 0 -14px; border-radius: 50%; border: 3px solid rgba(31,42,68,.16); border-top-color: #1f2a44; z-index: 2147483001; pointer-events: none; animation: oaiStabilitySpin .75s linear infinite; }
+html.oai-stability-veil[data-oai-stability-reason*="refresh"]::before,
+html.oai-stability-veil[data-oai-stability-reason*="reload"]::before,
+html.oai-stability-veil[data-oai-stability-reason*="background"]::before {
+  background: #f5f0e8 url('./refresh-logo.png?v=V3-S') center / 64px auto no-repeat;
+}
 html.oai-stability-veil[data-oai-stability-reason*="refresh"]::after,
 html.oai-stability-veil[data-oai-stability-reason*="reload"]::after,
 html.oai-stability-veil[data-oai-stability-reason*="background"]::after {
-  width: 64px;
-  height: 80px;
-  margin: -40px 0 0 -32px;
-  border: 0;
-  border-radius: 0;
-  background: url('./refresh-logo.png?v=V3-S-2') center / contain no-repeat;
-  animation: oaiStabilityVeilIn .12s ease-out both;
-}
-html.oai-stability-veil.oai-stability-veil-releasing[data-oai-stability-reason*="refresh"]::after,
-html.oai-stability-veil.oai-stability-veil-releasing[data-oai-stability-reason*="reload"]::after,
-html.oai-stability-veil.oai-stability-veil-releasing[data-oai-stability-reason*="background"]::after {
-  animation: oaiStabilityVeilOut .18s ease-in both;
+  content: none;
+  display: none;
 }
 @keyframes oaiStabilityVeilIn { from { opacity: 0; } to { opacity: 1; } }
 @keyframes oaiStabilityVeilOut { from { opacity: 1; } to { opacity: 0; } }
@@ -3460,7 +3455,7 @@ html.ios-device #app #sheet-list .sheet-hd { bottom: 0; }
 /* 키보드 오픈 시 sheet 위치 보정 */
 html.kb-open .sheet.open { bottom: 0; }
 
-/* V3-S-2: 성당 글로시 슬레이트 그레이 · 피정의집 세이지 그린 재조정 */
+/* V3-S: 성당 글로시 슬레이트 그레이 · 피정의집 세이지 그린 재조정 */
 html.parish-mode #srch-modal #sm-tab-bar .sm-tab.active{background:linear-gradient(135deg,#374151,#4B5563)!important;color:#fff!important;border-color:transparent!important}
 html.retreat-mode #srch-modal #sm-tab-bar .sm-tab.active{background:linear-gradient(135deg,#3F6F5A,#4F846C)!important;color:#fff!important;border-color:transparent!important}
 html.parish-mode .nearby-num{background:#4B5563!important;color:#fff!important}
@@ -3469,7 +3464,7 @@ html.parish-mode .nearby-dist,html.parish-mode .region-list-hd,html.parish-mode 
 html.retreat-mode .nearby-dist,html.retreat-mode .region-list-hd,html.retreat-mode .ric-lbl{color:#4F846C!important}
 
 /* ============================================================
-   V3-S-2 색상 정리 — 성지 고유색 유지 / 성당 그레이 / 피정의집 세이지
+   V3-S 색상 정리 — 성지 고유색 유지 / 성당 그레이 / 피정의집 세이지
    - 기능·HTML·JS 변경 없음
    - 성지의 기존 고유색(red/green/blue)은 건드리지 않음
    - 모든 목록 이름은 검정으로 통일
@@ -3639,7 +3634,7 @@ html.retreat-mode #srch-modal #sm-tab-bar .sm-tab.active{
 
 
 /* ============================================================
-   V3-S-2 색상 보정 — 목록명 검정 / 제목 흰색 / 검색 탭바 흰색 / 번호색 통일
+   V3-S 색상 보정 — 목록명 검정 / 제목 흰색 / 검색 탭바 흰색 / 번호색 통일
    - 기능·HTML·JS 변경 없음
    - 성지 고유색(red/green/blue)은 유지
    ============================================================ */
@@ -3763,7 +3758,7 @@ html.retreat-mode .sm-fb.on{
 
 
 /* ============================================================
-   V3-S-2 최종 색상 보정
+   V3-S 최종 색상 보정
    - 성지 고유색은 유지하되 상단 활성 탭만 성지 카테고리색으로 통일
    - 성당 내주변 번호색은 성당 카테고리색으로 통일
    - 피정의집 카테고리색과 내주변 번호색을 동일 기준으로 통일
@@ -3885,7 +3880,7 @@ html.retreat-mode .sm-fb.on{
 
 
 /* ============================================================
-   V3-S-2 현재 위치/피정의집 색상 재정리
+   V3-S 현재 위치/피정의집 색상 재정리
    - 피정의집 카테고리색 = 내주변 번호색(#3F6F5A)
    - 현재 위치는 출발지 라벨에 표시
    ============================================================ */
@@ -3942,7 +3937,7 @@ html.retreat-mode .ic-type-badge{
 
 
 /* ============================================================
-   V3-S-2 인포카드 글자 + 피정의집 글로시 세이지 최종 보정
+   V3-S 인포카드 글자 + 피정의집 글로시 세이지 최종 보정
    - 기능/JS/뒤로가기/보호창/외부복귀 변경 없음
    - 인포카드 텍스트 1px 확대
    - 피정의집 카테고리 색을 파스텔이 아닌 고급 세이지 그린으로 통일
@@ -4046,7 +4041,7 @@ html.retreat-mode .sm-fb.on{
 
 
 /* ============================================================
-   V3-S-2 럭셔리 색상 최종 보강
+   V3-S 럭셔리 색상 최종 보강
    - 성당: 글로시 차콜 그레이
    - 피정의집: 글로시 올리브 세이지
    - 성지 고유색은 변경하지 않음
@@ -4163,7 +4158,7 @@ html.retreat-mode #srch-modal #sm-tab-bar .sm-tab.active{
 
 
 /* ============================================================
-   V3-S-2 최종 색상 보정
+   V3-S 최종 색상 보정
    - 성당: 글로시 차콜 그레이
    - 피정의집: 글로시 올리브 세이지
    - 피정의집 찾기 목록 앞 점: 빨간색
