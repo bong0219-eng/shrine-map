@@ -3630,10 +3630,10 @@ function openInAppRoute(){
   }
   _routeRegionStart=null;
   if(_myLat){
-  doRoute(_myLat, _myLng, '현재 위치');
+  doRoute(_myLat, _myLng, '현위치');
   } else {
   _GEO.getCurrentPosition(
-   p=>{ _setMyLoc(p.coords.latitude, p.coords.longitude); doRoute(p.coords.latitude, p.coords.longitude, '현재 위치'); },
+   p=>{ _setMyLoc(p.coords.latitude, p.coords.longitude); doRoute(p.coords.latitude, p.coords.longitude, '현위치'); },
    ()=>alert('위치를 가져올 수 없습니다.'),
    {enableHighAccuracy:true, timeout:10000}
   );
@@ -3647,7 +3647,7 @@ function openKakaoNav(){
   const navItem = isJuk ? {...item, lat:JUKRIMGUL_PARKING.lat, lng:JUKRIMGUL_PARKING.lng, kw:JUKRIMGUL_PARKING.kw, name:JUKRIMGUL_PARKING.name} : item;
   const ep=_EC(navItem.kw||navItem.name);
   function launch(spLat,spLng){
-  const w=spLat?`https://map.kakao.com/link/from/${_EC('현재 위치')},${spLat},${spLng}/to/${ep},${navItem.lat},${navItem.lng}`:
+  const w=spLat?`https://map.kakao.com/link/from/${_EC('현위치')},${spLat},${spLng}/to/${ep},${navItem.lat},${navItem.lng}`:
          `https://map.kakao.com/link/to/${ep},${navItem.lat},${navItem.lng}`;
   const a=spLat?`kakaomap://route?sp=${spLat},${spLng}&ep=${navItem.lat},${navItem.lng}&by=CAR`:
          `kakaomap://route?ep=${navItem.lat},${navItem.lng}&by=CAR`;
@@ -4897,6 +4897,16 @@ function _hideRouteGuide(){
   g.textContent='';
 }
 
+function _setImplicitCurrentLocationStartLabelVisible(visible){
+  // 길찾기 탭을 처음 열 때 자동으로 잡는 현재 위치는 내부 출발지로만 유지하고,
+  // 사용자가 '현재 위치' 버튼을 누르거나 실제 경로검색을 실행할 때만 문구를 보여 준다.
+  try{
+    if(_rS && (_rS.name === '현재 위치' || _rS.name === '현위치')){
+      _setRouteLabel('start', visible ? '현위치' : '');
+    }
+  }catch(e){ console.warn('[가톨릭길동무]', e); }
+}
+
 function _ensureCurrentLocationStart(){
   if(_rS&&_rS.lat&&_rS.lng) return;
   if(_routeRegionStart&&_routeRegionStart.lat&&_routeRegionStart.lng){
@@ -4907,8 +4917,8 @@ function _ensureCurrentLocationStart(){
     return;
   }
   if(_myLat&&_myLng){
-    _rS={idx:-1,name:'현재 위치',lat:_myLat,lng:_myLng};
-    _setRouteLabel('start','현재 위치');
+    _rS={idx:-1,name:'현재 위치',lat:_myLat,lng:_myLng,isImplicitCurrentLocation:true};
+    _setRouteLabel('start','');
     _refreshRouteTmpMarkers();
     _updateSearchBtn();
     return;
@@ -4917,8 +4927,8 @@ function _ensureCurrentLocationStart(){
   _GEO.getCurrentPosition(p=>{
     _setMyLoc(p.coords.latitude,p.coords.longitude);
     if(!_rS){
-      _rS={idx:-1,name:'현재 위치',lat:p.coords.latitude,lng:p.coords.longitude};
-      _setRouteLabel('start','현재 위치');
+      _rS={idx:-1,name:'현재 위치',lat:p.coords.latitude,lng:p.coords.longitude,isImplicitCurrentLocation:true};
+      _setRouteLabel('start','');
       _refreshRouteTmpMarkers();
       _updateSearchBtn();
       if(!_rE){
@@ -4948,8 +4958,8 @@ function setMyLocAsStart(){
   _setMyLoc(p.coords.latitude,p.coords.longitude);
   _clearRouteTmpMarkers();
   if(_mode==='shrine'&&_rS&&_rS.idx>=0&&_markers[_rS.idx]) _markers[_rS.idx].marker.setImage(_mkrImg(_typeColor(_markers[_rS.idx].shrine.type),false));
-  _rS={idx:-1,name:'현재 위치',lat:p.coords.latitude,lng:p.coords.longitude};
-  _setRouteLabel('start','현재 위치');
+  _rS={idx:-1,name:'현재 위치',lat:p.coords.latitude,lng:p.coords.longitude,isImplicitCurrentLocation:false};
+  _setRouteLabel('start','현위치');
   _refreshRouteTmpMarkers();
   if(_rE) _updateSearchBtn();
   else {
@@ -4976,6 +4986,9 @@ function _updateSearchBtn(){
 }
 
 function doSearchRoute(){ document.activeElement&&document.activeElement.blur();
+  // 출발지가 자동 현재 위치로 잡혀 있는데 라벨만 숨겨져 있던 경우,
+  // 실제 경로 표시 단계에서는 사용자에게 '현재 위치'를 명확히 보여 준다.
+  if(_rS && (_rS.name === '현재 위치' || _rS.name === '현위치')) _setImplicitCurrentLocationStartLabelVisible(true);
   if(_rS&&_rE) setTimeout(function(){ try{ _calcRoute(); }catch(e){ console.warn('[가톨릭길동무]', e); } }, OAI_ROUTE_VISUAL_DELAY_MS);
 }
 
