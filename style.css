@@ -4130,7 +4130,7 @@ html.retreat-mode #srch-modal #sm-tab-bar .sm-tab.active{
 }
 
 /* ============================================================
-   Google Play 커버 메뉴 + 하단 단일 새로고침 (V1-29)
+   Google Play 커버 메뉴 + 하단 단일 새로고침 (V1-30)
    ============================================================ */
 #cover #oai-build-marker,
 #oai-build-marker {
@@ -4393,7 +4393,7 @@ html.app-active #cover-menu-btn { display: none !important; }
 }
 
 /* ============================================================
-   V1-29 커버 상단/하단 안정화
+   V1-30 커버 상단/하단 안정화
    ============================================================ */
 #cover #oai-build-marker,
 #oai-build-marker {
@@ -4583,7 +4583,7 @@ html.app-active #cover-menu-btn { display: none !important; }
 }
 
 /* ============================================================
-   V1-29 커버 버전/하단 정리 최종 보정
+   V1-30 커버 버전/하단 정리 최종 보정
    ============================================================ */
 #cover #oai-build-marker,
 #oai-build-marker {
@@ -4683,9 +4683,9 @@ html.app-active #cover-menu-btn { display: none !important; }
 }
 
 /* ============================================================
-   V1-29 커버 3구역 고정 구조
+   V1-30 커버 3구역 고정 구조
    - 상단: 메뉴/글자 버튼 고정
-   - 중앙: 안내문구~카드~V1-29 새로고침
+   - 중앙: 안내문구~카드~V1-30 새로고침
    - 하단: 고정 안내문
    ============================================================ */
 #cover #oai-build-marker,
@@ -4926,7 +4926,7 @@ html.app-active #cover-menu-btn { display: none !important; }
 }
 
 /* ============================================================
-   V1-29 새로고침 버튼 위치 미세 조정
+   V1-30 새로고침 버튼 위치 미세 조정
    ============================================================ */
 #cover #cover-action-row.cover-action-single {
   transform: translateY(-7px) !important;
@@ -4942,7 +4942,7 @@ html.app-active #cover-menu-btn { display: none !important; }
 
 
 /* ============================================================
-   V1-29 메뉴 팝업 크기 및 높이 확대
+   V1-30 메뉴 팝업 크기 및 높이 확대
    ============================================================ */
 .cover-menu-panel {
   width: min(370px, calc(100vw - 32px)) !important;
@@ -5012,7 +5012,7 @@ html.app-active #cover-menu-btn { display: none !important; }
 
 
 /* ============================================================
-   V1-29 메뉴 버튼 길이 및 뒤로가기 보정
+   V1-30 메뉴 버튼 길이 및 뒤로가기 보정
    ============================================================ */
 #cover #cover-menu-btn.cover-menu-btn {
   min-width: 94px !important;
@@ -5047,37 +5047,76 @@ html.app-active #cover-menu-btn { display: none !important; }
 }
 
 /* ============================================================
-   V1-29 주요기능·개인정보처리방침 디자인 통일
-   - V1-11/V1-28의 안전한 팝업/뒤로가기 구조 유지
-   - 문의·건의 및 카테고리 로직 수정 없음
+   V1-30 주요기능 전체화면 / 바깥 테두리 제거
+   - V1-11/V1-28의 안전한 기존 팝업 구조는 유지
+   - CSS로만 전체 화면 표시
+   - 뒤로가기·카테고리·문의건의 로직 수정 없음
    ============================================================ */
 
-/* 주요기능 팝업: 개인정보처리방침 톤 참고, 단 구조는 기존 팝업 유지 */
-#guide-manual-modal .guide-panel {
-  width: min(720px, calc(100vw - 28px)) !important;
-  max-width: 720px !important;
-  max-height: min(88vh, 820px) !important;
-  padding: 18px 14px 20px !important;
-  border-radius: 24px !important;
-  border: 0 !important;
+/* 주요기능 모달 자체가 화면 전체를 덮도록 처리 */
+#guide-manual-modal.show {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 12000 !important;
+  display: block !important;
+  width: 100vw !important;
+  height: 100dvh !important;
+  margin: 0 !important;
+  padding: 0 !important;
   background: #f5f0e8 !important;
-  box-shadow: 0 18px 42px rgba(31,42,68,.20) !important;
+  overflow: hidden !important;
+  box-sizing: border-box !important;
+}
+
+@supports not (height: 100dvh) {
+  #guide-manual-modal.show { height: 100vh !important; }
+}
+
+/* 팝업 뒤 회색 배경/바깥 테두리 느낌 제거 */
+#guide-manual-modal .guide-backdrop {
+  display: none !important;
+}
+
+/* 바깥 패널은 더 이상 카드가 아니라 화면 전체 */
+#guide-manual-modal .guide-panel {
+  width: 100vw !important;
+  max-width: none !important;
+  height: 100dvh !important;
+  max-height: none !important;
+  min-height: 100dvh !important;
+  margin: 0 !important;
+  padding: calc(env(safe-area-inset-top, 0px) + 18px) 16px calc(env(safe-area-inset-bottom, 0px) + 34px) !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+  background: #f5f0e8 !important;
+  box-sizing: border-box !important;
+  display: block !important;
   overflow-y: auto !important;
   overflow-x: hidden !important;
   -webkit-overflow-scrolling: touch !important;
 }
 
-/* 주요기능 X는 보이지 않게. 버튼/뒤로가기 구조는 유지 */
+@supports not (height: 100dvh) {
+  #guide-manual-modal .guide-panel {
+    height: 100vh !important;
+    min-height: 100vh !important;
+  }
+}
+
+/* 주요기능 X는 보이지 않게 */
 #guide-manual-modal .guide-x {
   display: none !important;
 }
 
+/* 헤더: 안내문과 제목이 겹치지 않도록 정상 흐름으로 배치 */
 #guide-manual-modal .guide-badge {
   display: block !important;
-  width: 100% !important;
-  margin: 0 0 8px !important;
-  padding: 22px 18px 18px !important;
-  border-radius: 22px !important;
+  width: min(720px, 100%) !important;
+  margin: 0 auto !important;
+  padding: 22px 20px 8px !important;
+  border-radius: 22px 22px 0 0 !important;
   background: #0e1535 !important;
   color: #d4aa6a !important;
   box-shadow: 0 10px 28px rgba(14,21,53,.18) !important;
@@ -5088,33 +5127,45 @@ html.app-active #cover-menu-btn { display: none !important; }
   box-sizing: border-box !important;
 }
 
+/* 제목: 음수 margin 제거, 안내문 아래에 자연스럽게 표시 */
 #guide-manual-modal #guide-manual-title {
-  margin: -46px 18px 22px !important;
-  padding-top: 30px !important;
+  display: block !important;
+  width: min(720px, 100%) !important;
+  margin: 0 auto 16px !important;
+  padding: 0 20px 22px !important;
+  border-radius: 0 0 22px 22px !important;
+  background: #0e1535 !important;
   color: #fffaf0 !important;
+  box-shadow: 0 10px 28px rgba(14,21,53,.18) !important;
   font-size: clamp(25px, 7vw, 36px) !important;
   line-height: 1.22 !important;
   font-weight: 900 !important;
   letter-spacing: -.045em !important;
   text-align: left !important;
-  position: relative !important;
-  z-index: 1 !important;
+  box-sizing: border-box !important;
+  position: static !important;
+  transform: none !important;
 }
 
-/* 요청했던 안내 문구는 숨김 */
+/* 요청했던 불필요 안내 문구는 숨김 */
 #guide-manual-modal .guide-lead {
   display: none !important;
 }
 
+/* 본문은 화면 전체 스크롤을 따르고 내부 별도 스크롤 없음 */
 #guide-manual-modal .guide-card-list {
-  overflow: visible !important;
-  max-height: none !important;
+  width: min(720px, 100%) !important;
+  max-width: 720px !important;
   height: auto !important;
-  display: block !important;
+  max-height: none !important;
+  min-height: 0 !important;
+  overflow: visible !important;
   padding: 0 !important;
-  margin: 0 !important;
+  margin: 0 auto !important;
+  display: block !important;
 }
 
+/* 본문 카드 */
 #guide-manual-modal .guide-card {
   margin-top: 16px !important;
   background: #fffdf8 !important;
@@ -5177,11 +5228,29 @@ html.app-active #cover-menu-btn { display: none !important; }
   row-gap: 6px !important;
 }
 
+/* 확인 버튼 영역은 고정/덮기 금지. 내용 아래에 자연스럽게 표시 */
+#guide-manual-modal .guide-actions {
+  position: static !important;
+  left: auto !important;
+  right: auto !important;
+  bottom: auto !important;
+  z-index: auto !important;
+  width: min(720px, 100%) !important;
+  max-width: 720px !important;
+  margin: 18px auto 0 !important;
+  padding: 0 0 20px !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  display: flex !important;
+  justify-content: center !important;
+  box-sizing: border-box !important;
+}
+
 #guide-manual-modal #guide-ok-btn {
   width: min(360px, 100%) !important;
   min-height: 52px !important;
   height: 52px !important;
-  margin: 18px auto 0 !important;
+  margin: 0 auto !important;
   padding: 0 18px !important;
   display: flex !important;
   align-items: center !important;
@@ -5198,12 +5267,7 @@ html.app-active #cover-menu-btn { display: none !important; }
   box-sizing: border-box !important;
 }
 
-/* 개인정보처리방침: 주요기능과 버튼·글꼴 톤 통일 */
-body.gp-info-page .hero,
-body.gp-info-page .card {
-  border-color: #c8b895 !important;
-}
-
+/* 개인정보처리방침 버튼은 이름/색감만 맞춤 */
 body.gp-info-page .back-link,
 body.gp-info-page #privacy-back-app-link {
   width: min(360px, 100%) !important;
@@ -5227,14 +5291,13 @@ body.gp-info-page #privacy-back-app-link {
 
 @media (max-height: 740px) {
   #guide-manual-modal .guide-panel {
-    width: min(720px, calc(100vw - 20px)) !important;
-    max-height: min(90vh, 760px) !important;
-    padding: 14px 12px 18px !important;
+    padding: calc(env(safe-area-inset-top, 0px) + 12px) 12px calc(env(safe-area-inset-bottom, 0px) + 28px) !important;
   }
   #guide-manual-modal .guide-badge {
-    padding: 19px 16px 17px !important;
+    padding: 18px 16px 7px !important;
   }
   #guide-manual-modal #guide-manual-title {
+    padding: 0 16px 18px !important;
     font-size: clamp(23px, 6.5vw, 32px) !important;
   }
   #guide-manual-modal .guide-card {
