@@ -1488,7 +1488,10 @@ function _closePrayerAndReturn(){
   }
   // OAI IOS GUIDE TEST CODE END
   function shouldShow(){
-    return ((isIOS() && isKakao()) || isIosGuideTestMode()) && !isStandalone();
+    var testMode = isIosGuideTestMode();
+    // 테스트 모드는 Android/설치앱/카카오 여부와 무관하게 강제로 보여 준다.
+    if(testMode) return true;
+    return (isIOS() && isKakao()) && !isStandalone();
   }
   function loadIosSafariGuideImages(){
     var m = document.getElementById('ios-safari-guide-modal');
@@ -1519,7 +1522,15 @@ function _closePrayerAndReturn(){
     var banner = document.getElementById('ios-kakao-safari-banner');
     var modal = document.getElementById('ios-safari-guide-modal');
     if(!banner) return;
+    var testMode = isIosGuideTestMode();
     var show = shouldShow();
+    if(testMode){
+      // CSS가 html.ios-device가 없으면 배너/팝업을 숨기므로 테스트 때만 iOS class를 임시로 붙인다.
+      document.documentElement.classList.add('ios-device','ios-guide-test-mode');
+    }else{
+      document.documentElement.classList.remove('ios-guide-test-mode');
+      if(!isIOS()) document.documentElement.classList.remove('ios-device');
+    }
     if(show){
       document.documentElement.classList.add('ios-kakao-inapp');
       banner.hidden = false;
