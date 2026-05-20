@@ -2314,9 +2314,9 @@ html.oai-cover-booting #cover > * {
   width: 100%;
   margin: 0;
   display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 8px;
+  align-items: center;
+  justify-content: stretch;
+  gap: 6px;
   z-index: 10;
   flex-shrink: 0;
 }
@@ -2325,11 +2325,11 @@ html.app-active #cover-action-row { display: none; }
 #cover-update-box {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: stretch;
   justify-content: center;
-  flex: 0 0 108px;
-  min-width: 108px;
-  max-width: 108px;
+  flex: 1 1 0;
+  min-width: 0;
+  max-width: none;
 }
 #cover-update-btn {
   width: 100%;
@@ -2338,18 +2338,21 @@ html.app-active #cover-action-row { display: none; }
   background: rgba(31,42,68,.10);
   color: #1f2a44;
   font-family: inherit;
-  font-size: calc(11.5px * var(--app-font-scale));
+  font-size: calc(10.4px * var(--app-font-scale));
   font-weight: 900;
   line-height: 1;
   min-height: 36px;
   height: 36px;
-  padding: 0 12px;
+  padding: 0 7px;
   box-shadow: inset 0 0 0 1px rgba(31,42,68,.12);
   cursor: pointer;
   user-select: none;
   -webkit-user-select: none;
   -webkit-touch-callout: none;
   touch-action: manipulation;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 #cover-update-box.update-needed #cover-update-btn { background: #dc2626; color: #fff; box-shadow: 0 10px 24px rgba(220,38,38,.22); }
 #cover-update-btn:active { transform: scale(.985); }
@@ -2358,22 +2361,27 @@ html.app-active #cover-action-row { display: none; }
 #cover-update-box.update-needed #cover-update-hint { display: block; }
 
 #cover #privacy-cover-link {
-  flex: 0 1 auto;
+  flex: 1 1 0;
   align-self: center;
-  min-height: 34px;
-  height: 34px;
-  padding: 0 9px;
+  min-width: 0;
+  max-width: none;
+  width: 0;
+  min-height: 36px;
+  height: 36px;
+  padding: 0 6px;
   border-radius: 999px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   text-decoration: none;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   color: #475569;
   background: rgba(255,255,255,.62);
   box-shadow: inset 0 0 0 1px rgba(31,42,68,.10);
   font-family: inherit;
-  font-size: calc(10.2px * var(--app-font-scale));
+  font-size: calc(9.6px * var(--app-font-scale));
   font-weight: 850;
   line-height: 1;
   -webkit-tap-highlight-color: transparent;
@@ -2385,7 +2393,10 @@ html.app-active #cover-action-row { display: none; }
   position: relative;
   right: auto;
   bottom: auto;
-  flex-shrink: 0;
+  flex: 1 1 0;
+  min-width: 0;
+  max-width: none;
+  width: 0;
   align-self: center;
   margin: 0;
   z-index: 10;
@@ -2393,8 +2404,12 @@ html.app-active #cover-action-row { display: none; }
   align-items: center;
   justify-content: center;
   min-height: 36px;
-  padding: 0 13px;
-  font-size: calc(11.5px * var(--app-font-scale));
+  height: 36px;
+  padding: 0 7px;
+  font-size: calc(10.4px * var(--app-font-scale));
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* 커버 하단 고정 요소 */
