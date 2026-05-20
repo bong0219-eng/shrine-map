@@ -8,8 +8,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <!-- ★ Firebase SDK (compat) -->
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js">window.addEventListener('pagehide', function(){ try{ sessionStorage.setItem('oai_returned_from_qna','1'); localStorage.setItem('oai_returned_from_qna','1'); }catch(e){} }, {capture:true});
-</script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 
 <style>
@@ -667,7 +666,6 @@ function escHtml(str) {
 
 /* ═══════════════════ 뒤로가기 처리 ═══════════════════ */
 function handleQaBack(){
-  try{ sessionStorage.setItem('oai_returned_from_qna','1'); localStorage.setItem('oai_returned_from_qna','1'); }catch(e){}
   var active = document.querySelector('.view.active');
   if(active && active.id !== 'list-view'){
     goList({historyMode:'replace'});
@@ -703,7 +701,7 @@ subscribeList();
 <script id="oai-cache-lifecycle-V23">
 (function(){
   'use strict';
-  var APP_VERSION = 'V1-26';
+  var APP_VERSION = 'V1-22';
   if('serviceWorker' in navigator){
     try{ navigator.serviceWorker.register('./sw.js?v=' + encodeURIComponent(APP_VERSION)).then(function(reg){try{reg.update();}catch(e){}}).catch(function(){}); }catch(e){}
   }

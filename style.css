@@ -4130,7 +4130,7 @@ html.retreat-mode #srch-modal #sm-tab-bar .sm-tab.active{
 }
 
 /* ============================================================
-   Google Play 커버 메뉴 + 하단 단일 새로고침 (V1-24)
+   Google Play 커버 메뉴 + 하단 단일 새로고침 (V1-22)
    ============================================================ */
 #cover #oai-build-marker,
 #oai-build-marker {
@@ -4393,7 +4393,7 @@ html.app-active #cover-menu-btn { display: none !important; }
 }
 
 /* ============================================================
-   V1-24 커버 상단/하단 안정화
+   V1-22 커버 상단/하단 안정화
    ============================================================ */
 #cover #oai-build-marker,
 #oai-build-marker {
@@ -4583,7 +4583,7 @@ html.app-active #cover-menu-btn { display: none !important; }
 }
 
 /* ============================================================
-   V1-24 커버 버전/하단 정리 최종 보정
+   V1-22 커버 버전/하단 정리 최종 보정
    ============================================================ */
 #cover #oai-build-marker,
 #oai-build-marker {
@@ -4683,9 +4683,9 @@ html.app-active #cover-menu-btn { display: none !important; }
 }
 
 /* ============================================================
-   V1-24 커버 3구역 고정 구조
+   V1-22 커버 3구역 고정 구조
    - 상단: 메뉴/글자 버튼 고정
-   - 중앙: 안내문구~카드~V1-24 새로고침
+   - 중앙: 안내문구~카드~V1-22 새로고침
    - 하단: 고정 안내문
    ============================================================ */
 #cover #oai-build-marker,
@@ -4926,7 +4926,7 @@ html.app-active #cover-menu-btn { display: none !important; }
 }
 
 /* ============================================================
-   V1-24 새로고침 버튼 위치 미세 조정
+   V1-22 새로고침 버튼 위치 미세 조정
    ============================================================ */
 #cover #cover-action-row.cover-action-single {
   transform: translateY(-7px) !important;
@@ -4941,7 +4941,7 @@ html.app-active #cover-menu-btn { display: none !important; }
 
 
 /* ============================================================
-   V1-24 메뉴 팝업 크기 및 테두리 보정
+   V1-22 메뉴 팝업 크기 및 테두리 보정
    ============================================================ */
 .cover-menu-title {
   font-size: calc(19px * var(--app-font-scale)) !important;
@@ -4979,7 +4979,7 @@ html.app-active #cover-menu-btn { display: none !important; }
 
 
 /* ============================================================
-   V1-24 메뉴 버튼 길이 및 뒤로가기 보정
+   V1-22 메뉴 버튼 길이 및 뒤로가기 보정
    ============================================================ */
 #cover #cover-menu-btn.cover-menu-btn {
   min-width: 94px !important;
@@ -5015,7 +5015,7 @@ html.app-active #cover-menu-btn { display: none !important; }
 
 
 /* ============================================================
-   V1-24 메뉴 팝업 높이 추가 보정
+   V1-22 메뉴 팝업 높이 추가 보정
    ============================================================ */
 .cover-menu-panel {
   padding-top: 20px !important;
@@ -5056,7 +5056,7 @@ html.app-active #cover-menu-btn { display: none !important; }
 }
 
 /* ============================================================
-   V1-24 주요기능 팝업: 개인정보처리방침 구도 기준
+   V1-22 주요기능 팝업: 개인정보처리방침 구도 기준
    문의·건의 디자인은 건드리지 않음
    ============================================================ */
 
@@ -5221,7 +5221,7 @@ html.app-active #cover-menu-btn { display: none !important; }
 
 
 /* ============================================================
-   V1-24 주요기능/개인정보처리방침 버튼명·글꼴 크기 통일
+   V1-22 주요기능/개인정보처리방침 버튼명·글꼴 크기 통일
    문의·건의 디자인은 건드리지 않음
    ============================================================ */
 
@@ -5298,7 +5298,7 @@ body.gp-info-page .bottom-back-wrap {
 }
 
 /* ============================================================
-   V1-24 주요기능: 개인정보처리방침 기준 구도·색상 통일
+   V1-22 주요기능: 개인정보처리방침 기준 구도·색상 통일
    문의·건의 디자인은 건드리지 않음
    ============================================================ */
 
@@ -5484,7 +5484,7 @@ body.gp-info-page .bottom-back-wrap {
 
 
 /* ============================================================
-   V1-24 주요기능/개인정보처리방침 버튼명 '확인' 통일
+   V1-22 주요기능/개인정보처리방침 버튼명 '확인' 통일
    문의·건의 디자인은 건드리지 않음
    ============================================================ */
 #guide-manual-modal #guide-ok-btn,
@@ -5498,7 +5498,7 @@ body.gp-info-page .back-link {
 
 
 /* ============================================================
-   V1-24 확인 버튼·뒤로가기 흐름 유지 보정
+   V1-22 확인 버튼·뒤로가기 흐름 유지 보정
    문의·건의 디자인은 건드리지 않음
    ============================================================ */
 #guide-manual-modal #guide-ok-btn,
@@ -5512,7 +5512,7 @@ body.gp-info-page .back-link {
 
 
 /* ============================================================
-   V1-24 주요기능: 개인정보처리방침 기준 전체 화면화
+   V1-22 주요기능: 개인정보처리방침 기준 전체 화면화
    문의·건의 디자인은 건드리지 않음
    ============================================================ */
 
@@ -5734,13 +5734,13 @@ body.gp-info-page .back-link {
 
 
 /* ============================================================
-   V1-24 주요기능 뒤로가기 = 확인 버튼 흐름
+   V1-22 주요기능 뒤로가기 = 확인 버튼 흐름
    디자인 변경 없음
    ============================================================ */
 
 
 /* ============================================================
-   V1-24 주요기능: 카드형 팝업 제거 + 화면 전체 표시
+   V1-22 주요기능: 카드형 팝업 제거 + 화면 전체 표시
    문의·건의 디자인은 건드리지 않음
    ============================================================ */
 
@@ -5957,207 +5957,6 @@ body.gp-info-page .back-link {
 
 
 /* ============================================================
-   V1-24 주요기능 Back 직접 트랩 복구
+   V1-22 주요기능 Back 직접 트랩 복구
    디자인 변경 없음
    ============================================================ */
-
-/* ============================================================
-   V1-24 주요기능 = 개인정보처리방침 화면 형식 복사
-   문의·건의 디자인은 건드리지 않음
-   ============================================================ */
-
-/* 전체 화면: 팝업 카드가 아니라 개인정보처리방침처럼 한 화면으로 표시 */
-#guide-manual-modal.show {
-  position: fixed !important;
-  inset: 0 !important;
-  z-index: 12000 !important;
-  display: block !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  background: #f5f0e8 !important;
-  overflow: hidden !important;
-  box-sizing: border-box !important;
-}
-
-/* 팝업 느낌을 만드는 바깥 배경은 제거 */
-#guide-manual-modal .guide-backdrop {
-  display: none !important;
-}
-
-/* 개인정보처리방침 .page 형식 그대로: 바깥 테두리/그림자/둥근 팝업 없음 */
-#guide-manual-modal .guide-panel {
-  width: min(920px, 100%) !important;
-  max-width: 920px !important;
-  height: 100dvh !important;
-  min-height: 100dvh !important;
-  max-height: none !important;
-  margin: 0 auto !important;
-  padding: calc(env(safe-area-inset-top, 0px) + 22px) 16px calc(env(safe-area-inset-bottom, 0px) + 42px) !important;
-  border: 0 !important;
-  border-radius: 0 !important;
-  outline: 0 !important;
-  box-shadow: none !important;
-  background: #f5f0e8 !important;
-  box-sizing: border-box !important;
-  display: block !important;
-  overflow-y: auto !important;
-  overflow-x: hidden !important;
-  -webkit-overflow-scrolling: touch !important;
-}
-
-@supports not (height: 100dvh) {
-  #guide-manual-modal .guide-panel {
-    height: 100vh !important;
-    min-height: 100vh !important;
-  }
-}
-
-/* 주요기능 X 숨김 유지 */
-#guide-manual-modal .guide-x {
-  display: none !important;
-}
-
-/* 개인정보처리방침 .hero 형식 그대로 */
-#guide-manual-modal .guide-hero {
-  background: #0e1535 !important;
-  color: #fffaf0 !important;
-  border-radius: 22px !important;
-  padding: 24px 20px 22px !important;
-  box-shadow: 0 10px 28px rgba(14,21,53,.18) !important;
-  margin: 0 0 16px !important;
-  box-sizing: border-box !important;
-}
-
-#guide-manual-modal .guide-eyebrow {
-  margin: 0 0 8px !important;
-  color: #d4aa6a !important;
-  font-size: 14px !important;
-  font-weight: 700 !important;
-  letter-spacing: .02em !important;
-  line-height: 1.35 !important;
-}
-
-#guide-manual-modal #guide-manual-title {
-  margin: 0 !important;
-  color: #fffaf0 !important;
-  font-size: clamp(25px, 7vw, 38px) !important;
-  line-height: 1.22 !important;
-  font-weight: 800 !important;
-  letter-spacing: -.045em !important;
-  text-align: left !important;
-}
-
-/* 삭제 요청 문구는 표시하지 않음 */
-#guide-manual-modal .guide-lead {
-  display: none !important;
-}
-
-/* 개인정보처리방침처럼 페이지 전체가 스크롤되므로 내부 스크롤 제거 */
-#guide-manual-modal .guide-card-list {
-  width: 100% !important;
-  max-width: none !important;
-  height: auto !important;
-  min-height: 0 !important;
-  max-height: none !important;
-  overflow: visible !important;
-  padding: 0 !important;
-  margin: 0 !important;
-  display: block !important;
-}
-
-/* 개인정보처리방침 .card 형식 그대로 */
-#guide-manual-modal .guide-card {
-  margin-top: 16px !important;
-  background: #fffdf8 !important;
-  border: 1.5px solid #c8b895 !important;
-  border-radius: 18px !important;
-  padding: 20px 18px !important;
-  box-shadow: 0 4px 18px rgba(31,41,55,.09) !important;
-  box-sizing: border-box !important;
-}
-
-#guide-manual-modal .guide-card-main {
-  background: #fffdf8 !important;
-  border-color: #c8b895 !important;
-}
-
-#guide-manual-modal .guide-card-head {
-  margin: 0 0 10px !important;
-  display: flex !important;
-  align-items: center !important;
-  gap: 12px !important;
-}
-
-#guide-manual-modal .guide-icon {
-  width: 38px !important;
-  height: 38px !important;
-  flex: 0 0 38px !important;
-  border-radius: 13px !important;
-  background: #f7efe1 !important;
-  box-shadow: inset 0 0 0 1px #e5dccb !important;
-  font-size: 19px !important;
-}
-
-#guide-manual-modal .guide-card h3 {
-  margin: 0 !important;
-  color: #1f2a44 !important;
-  font-size: 17px !important;
-  line-height: 1.35 !important;
-  font-weight: 800 !important;
-  letter-spacing: -.03em !important;
-}
-
-#guide-manual-modal .guide-card p,
-#guide-manual-modal .guide-card dd,
-#guide-manual-modal .guide-card dt {
-  font-size: 14.8px !important;
-  line-height: 1.72 !important;
-}
-
-#guide-manual-modal .guide-card p,
-#guide-manual-modal .guide-card dd {
-  color: #374151 !important;
-  font-weight: 500 !important;
-}
-
-#guide-manual-modal .guide-card dt {
-  color: #1f2a44 !important;
-  font-weight: 800 !important;
-}
-
-#guide-manual-modal .guide-mini-list {
-  display: grid !important;
-  grid-template-columns: 86px 1fr !important;
-  row-gap: 6px !important;
-  column-gap: 10px !important;
-  margin: 8px 0 0 !important;
-}
-
-/* 확인 버튼은 개인정보처리방침의 하단 버튼과 같은 크기·색 */
-#guide-manual-modal #guide-ok-btn {
-  width: min(360px, 100%) !important;
-  min-height: 52px !important;
-  height: 52px !important;
-  margin: 18px auto 0 !important;
-  padding: 0 18px !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  border-radius: 16px !important;
-  background: linear-gradient(135deg, #1f2a44 0%, #263a63 100%) !important;
-  color: #fffaf0 !important;
-  border: 1.5px solid rgba(212,170,106,.45) !important;
-  box-shadow: 0 8px 20px rgba(31,42,68,.18) !important;
-  font-size: 16px !important;
-  font-weight: 900 !important;
-  line-height: 1 !important;
-  letter-spacing: -.02em !important;
-  text-decoration: none !important;
-  box-sizing: border-box !important;
-}
-
-/* 처음 안내 팝업 X도 숨김 유지 */
-#guide-intro-modal .guide-x {
-  display: none !important;
-}
-
