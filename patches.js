@@ -29,32 +29,36 @@
   window.__OAI_FULL_BACK_CTRL_ACTIVE__ = true;
 
   var _href = location.href.split('#')[0];
-  var _coverTrapArming = false;
+  var COVER_TRAP_HASH = '#oai-cover-back-trap';
+
+  function coverBaseHref(){
+    try{ return location.href.split('#')[0]; }catch(_e){ return _href || location.href; }
+  }
+  function coverTrapHref(){ return coverBaseHref() + COVER_TRAP_HASH; }
 
   function armCoverBackTrap(reason, opts){
     try{
       opts = opts || {};
-      var href = location.href.split('#')[0];
-      _href = href;
+      var baseHref = coverBaseHref();
+      var trapHref = coverTrapHref();
+      _href = baseHref;
       if(!opts.force){
         var st = history.state;
-        if(st && st._p === 1) return;
+        if(st && st._p === 1 && st.oai_cover_trap && location.href.split('#')[0] === baseHref) return;
       }
-      _coverTrapArming = true;
-      history.replaceState({_p:0, oai_cover_root:reason||'cover-root'}, '', href);
-      history.pushState({_p:1, oai_cover_trap:reason||'cover-trap'}, '', href);
-      setTimeout(function(){ _coverTrapArming = false; }, 30);
+      /* 같은 URL pushState는 일부 Android/PWA 첫 커버에서 뒤로가기 항목으로 인정되지 않는다.
+         커버에서는 실제 URL이 다른 hash trap 항목을 사용해 첫 Back을 확실히 JS로 받는다. */
+      history.replaceState({_p:0, oai_cover_root:reason||'cover-root'}, '', baseHref);
+      history.pushState({_p:1, oai_cover_trap:reason||'cover-trap'}, '', trapHref);
     }catch(e){
-      _coverTrapArming = false;
       console.warn("[가톨릭길동무]", e);
     }
   }
 
   /* history 초기화
      V2-S: 뒤로가기 최종 판단은 patches.js 한 곳에서만 처리한다.
-     사용자의 첫 터치 전 자동으로 만든 history 항목은 일부 Android/PWA에서 뒤로가기 스택으로
-     인정되지 않을 수 있으므로, 자동 초기화는 기존 호환용으로만 유지하고 첫 사용자 조작 후
-     커버 trap을 한 번 더 확정한다. */
+     커버에서는 같은 URL trap 대신 hash가 붙은 별도 history 항목을 사용해
+     Android/PWA에서도 첫 Back을 popstate/hashchange로 받을 수 있게 한다. */
   try{
     var refreshReason = '';
     try{
@@ -594,7 +598,6 @@
 
     /* 커버: 토스트 → 두 번째에 종료. */
     if(!appActive()){
-      if(_coverTrapArming) return;
       var exiting = false;
       if(typeof window._showBackToast==='function') exiting = window._showBackToast() === true;
       if(!exiting){ armCoverBackTrap('cover-toast'); }
@@ -611,6 +614,23 @@
     if(closeExtOrModule()) return;
     if(closeLayer()) return;
     callGTC();
+  }, false);
+
+
+  /* 일부 모바일 WebView/PWA는 hash가 포함된 pushState를 Back으로 소비할 때
+     popstate 대신 hashchange만 전달하는 경우가 있다. 커버 trap hash가 빠지는
+     상황에서는 같은 원칙으로 종료 안내를 표시하고 trap을 다시 심는다. */
+  window.addEventListener('hashchange', function(ev){
+    try{
+      if(appActive()) return;
+      var oldURL = (ev && ev.oldURL) || '';
+      var newURL = (ev && ev.newURL) || location.href;
+      if(oldURL.indexOf(COVER_TRAP_HASH) === -1) return;
+      if(newURL.indexOf(COVER_TRAP_HASH) !== -1) return;
+      var exiting = false;
+      if(typeof window._showBackToast === 'function') exiting = window._showBackToast() === true;
+      if(!exiting) armCoverBackTrap('cover-hashchange-toast', {force:true});
+    }catch(e){ console.warn('[가톨릭길동무]', e); }
   }, false);
   /* Cordova 물리 백버튼 */
   document.addEventListener('backbutton', function(){

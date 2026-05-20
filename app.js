@@ -1466,8 +1466,29 @@ function _closePrayerAndReturn(){
     try{ return window.matchMedia && window.matchMedia('(display-mode: standalone)').matches; }catch(e){ console.warn('[가톨릭길동무]', e); }
     return false;
   }
+  // OAI IOS GUIDE TEST CODE START
+  // Android에서도 iPhone 설치 안내 배너/팝업을 확인하기 위한 임시 테스트 코드입니다.
+  // 켜기: ?iosGuideTest=1 / 끄기: ?iosGuideTest=0
+  function isIosGuideTestMode(){
+    try{
+      var params = new URLSearchParams(location.search || '');
+      var value = params.get('iosGuideTest');
+      if(value === '1'){
+        sessionStorage.setItem('oai_ios_guide_test', '1');
+        return true;
+      }
+      if(value === '0'){
+        sessionStorage.removeItem('oai_ios_guide_test');
+        return false;
+      }
+      return sessionStorage.getItem('oai_ios_guide_test') === '1';
+    }catch(e){
+      return false;
+    }
+  }
+  // OAI IOS GUIDE TEST CODE END
   function shouldShow(){
-    return isIOS() && isKakao() && !isStandalone();
+    return ((isIOS() && isKakao()) || isIosGuideTestMode()) && !isStandalone();
   }
   function loadIosSafariGuideImages(){
     var m = document.getElementById('ios-safari-guide-modal');
