@@ -516,16 +516,6 @@
   window.addEventListener('popstate', function(){
     if(window._appExiting) return;
 
-    /* V1-14: 메뉴 팝업 Back 직후 따라오는 중복 Back/popstate는 종료 안내로 넘기지 않는다. */
-    try{
-      var menuConsumedUntil = Number(window.__oaiCoverMenuBackConsumedUntil || 0);
-      if(menuConsumedUntil && Date.now && Date.now() < menuConsumedUntil){
-        try{ armCoverBackTrap('cover-menu-back-consumed', {force:true}); }catch(_e){}
-        return;
-      }
-    }catch(e){ console.warn('[가톨릭길동무]', e); }
-
-
     /* history.go(1)로 공통 trap을 복원하면서 발생한 popstate는
        어떤 화면 처리도 하지 않고 여기서 끝낸다. 이 순서가 중요하다. */
     if(_restoring){
@@ -577,16 +567,13 @@
     }
 
 
-    /* V1-14: 커버 메뉴 팝업이 열려 있으면 종료 안내보다 먼저 메뉴만 닫는다. */
+    /* V1-13: 커버 메뉴 팝업이 열려 있으면 종료 안내보다 먼저 메뉴만 닫는다. */
     try{
       if(window.isCoverMenuPopupOpen && window.isCoverMenuPopupOpen()){
         if(window.closeCoverMenuPopup) window.closeCoverMenuPopup();
-        if(window.markCoverMenuBackConsumed) window.markCoverMenuBackConsumed();
-        else window.__oaiCoverMenuBackConsumedUntil = Date.now() + 900;
-        try{ armCoverBackTrap('cover-menu-close', {force:true}); }catch(_e){}
         return;
       }
-    }catch(e){ console.warn('[가톨길동무]', e); }
+    }catch(e){ console.warn('[가톨릭길동무]', e); }
 
     /* 새로고침 확인창이 열려 있으면 종료 안내로 넘기지 말고 확인창만 닫는다. */
     if(closeRefreshDialog()){
@@ -625,21 +612,12 @@
   /* Cordova 물리 백버튼 */
   document.addEventListener('backbutton', function(){
     try{
-      var menuConsumedUntil = Number(window.__oaiCoverMenuBackConsumedUntil || 0);
-      if(menuConsumedUntil && Date.now && Date.now() < menuConsumedUntil){
-        return;
-      }
-    }catch(_e){}
-    try{
       if(window.isCoverMenuPopupOpen && window.isCoverMenuPopupOpen()){
         if(window.closeCoverMenuPopup) window.closeCoverMenuPopup();
-        if(window.markCoverMenuBackConsumed) window.markCoverMenuBackConsumed();
-        else window.__oaiCoverMenuBackConsumedUntil = Date.now() + 900;
-        try{ armCoverBackTrap('cover-menu-hardware-close', {force:true}); }catch(_e){}
         return;
       }
     }catch(e){ console.warn('[가톨릭길동무]', e); }
-if(handlePrayerBack('prayer-hardware-back')) return;
+    if(handlePrayerBack('prayer-hardware-back')) return;
     if(closeRefreshDialog()){ try{ armCoverBackTrap('refresh-dialog-hardware', {force:true}); }catch(e){} return; }
     if(isGuideModalOpen()){ closeGuideModals(); return; }
     if(!appActive()){
@@ -797,7 +775,7 @@ if(handlePrayerBack('prayer-hardware-back')) return;
   window.__APP_FONT_SCALE_GUARD__=true;
   // V3-S: 커버 글자 크기 조절은 prayer.js에 의존하지 않는 공통 함수가 담당한다.
   // prayer.js는 기도문 화면이 열렸을 때 같은 localStorage 값을 읽어 자체 UI를 맞춘다.
-  var QA_URL="qa-firebase.html?v=V1-14";
+  var QA_URL="qa-firebase.html?v=V1-13";
   var FONT_KEY='prayer_font_size';
   var BASE=16;
   var FONT_SIZES=[13,14,15,16,17,18,19,20,21,22,24,26,28,30];
