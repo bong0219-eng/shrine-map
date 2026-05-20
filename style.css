@@ -4130,7 +4130,7 @@ html.retreat-mode #srch-modal #sm-tab-bar .sm-tab.active{
 }
 
 /* ============================================================
-   Google Play 커버 메뉴 + 하단 단일 새로고침 (V1-5)
+   Google Play 커버 메뉴 + 하단 단일 새로고침 (V1-6)
    ============================================================ */
 #cover #oai-build-marker,
 #oai-build-marker {
@@ -4393,7 +4393,7 @@ html.app-active #cover-menu-btn { display: none !important; }
 }
 
 /* ============================================================
-   V1-5 커버 상단/하단 안정화
+   V1-6 커버 상단/하단 안정화
    ============================================================ */
 #cover #oai-build-marker,
 #oai-build-marker {
@@ -4583,7 +4583,7 @@ html.app-active #cover-menu-btn { display: none !important; }
 }
 
 /* ============================================================
-   V1-5 커버 버전/하단 정리 최종 보정
+   V1-6 커버 버전/하단 정리 최종 보정
    ============================================================ */
 #cover #oai-build-marker,
 #oai-build-marker {
@@ -4679,6 +4679,249 @@ html.app-active #cover-menu-btn { display: none !important; }
     bottom: calc(env(safe-area-inset-bottom, 0px) + 6px) !important;
     width: min(620px, calc(100vw - 28px)) !important;
     padding: 0 14px !important;
+  }
+}
+
+/* ============================================================
+   V1-6 커버 3구역 고정 구조
+   - 상단: 메뉴/글자 버튼 고정
+   - 중앙: 안내문구~카드~V1-6 새로고침
+   - 하단: 고정 안내문
+   ============================================================ */
+#cover #oai-build-marker,
+#oai-build-marker {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+#cover {
+  --cover-top-safe: calc(env(safe-area-inset-top, 0px) + clamp(60px, calc(var(--cover-vh, 1vh) * 8.2), 76px)) !important;
+  --cover-bottom-safe: calc(env(safe-area-inset-bottom, 0px) + clamp(46px, calc(var(--cover-vh, 1vh) * 6.0), 58px)) !important;
+  padding-top: var(--cover-top-safe) !important;
+  padding-bottom: var(--cover-bottom-safe) !important;
+  box-sizing: border-box !important;
+}
+
+#cover-font-controls,
+#cover #cover-menu-btn.cover-menu-btn {
+  position: fixed !important;
+  top: calc(env(safe-area-inset-top, 0px) + 12px) !important;
+  height: 38px !important;
+  min-height: 38px !important;
+  max-height: 38px !important;
+  max-width: min(142px, calc(50vw - 18px)) !important;
+  box-sizing: border-box !important;
+  overflow: hidden !important;
+  white-space: nowrap !important;
+  z-index: 180 !important;
+}
+
+#cover #cover-menu-btn.cover-menu-btn {
+  left: 12px !important;
+  width: auto !important;
+  padding: 0 13px !important;
+  border-radius: 16px !important;
+}
+
+#cover-font-controls {
+  right: 12px !important;
+  padding: 2px 3px !important;
+  border-radius: 16px !important;
+}
+
+#cover-font-controls .pr-font-btn,
+#cover-font-controls button {
+  flex: 0 0 34px !important;
+  width: 34px !important;
+  min-width: 34px !important;
+  max-width: 34px !important;
+  height: 30px !important;
+  min-height: 30px !important;
+  max-height: 30px !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  box-sizing: border-box !important;
+}
+
+#cover #cover-menu-btn .cover-menu-label {
+  font-size: calc(12.5px * var(--app-font-scale)) !important;
+  line-height: 1 !important;
+  max-width: 50px !important;
+  overflow: hidden !important;
+}
+
+#cover #cover-menu-btn .cover-menu-hamburger {
+  width: 16px !important;
+  height: 14px !important;
+  flex: 0 0 16px !important;
+  gap: 3px !important;
+}
+
+#cover #cover-menu-btn .cover-menu-hamburger span {
+  width: 16px !important;
+  height: 2px !important;
+}
+
+#cover-main-block {
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  height: 100% !important;
+  max-height: 100% !important;
+  width: 100% !important;
+  max-width: min(500px, calc(100vw - 20px)) !important;
+  margin: 0 auto !important;
+  padding: 0 10px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
+  justify-content: center !important;
+  gap: clamp(5px, calc(var(--cover-vh, 1vh) * 0.75), 8px) !important;
+  box-sizing: border-box !important;
+}
+
+#cover .cover-grid {
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  row-gap: clamp(4px, calc(var(--cover-vh, 1vh) * 0.75), 7px) !important;
+  column-gap: clamp(4px, 1.2vw, 8px) !important;
+}
+
+#cover .cover-grid > #cc-1.cover-card-wide {
+  grid-column: 1 / -1 !important;
+}
+
+#cover #cover-action-row.cover-action-single {
+  position: relative !important;
+  left: auto !important;
+  right: auto !important;
+  top: auto !important;
+  bottom: auto !important;
+  width: 100% !important;
+  height: 34px !important;
+  min-height: 34px !important;
+  max-height: 34px !important;
+  margin: clamp(4px, calc(var(--cover-vh, 1vh) * 0.75), 7px) 0 0 !important;
+  padding: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  flex: 0 0 34px !important;
+  z-index: 20 !important;
+  pointer-events: auto !important;
+  box-sizing: border-box !important;
+}
+
+#cover #cover-action-row.cover-action-single #cover-update-box {
+  flex: 0 0 auto !important;
+  width: clamp(118px, 31vw, 138px) !important;
+  min-width: 118px !important;
+  max-width: 138px !important;
+  height: 34px !important;
+  min-height: 34px !important;
+  max-height: 34px !important;
+  margin: 0 !important;
+  box-sizing: border-box !important;
+}
+
+#cover .cover-refresh-main-btn {
+  width: 100% !important;
+  min-height: 34px !important;
+  height: 34px !important;
+  max-height: 34px !important;
+  padding: 0 12px !important;
+  border-radius: 13px !important;
+  background: linear-gradient(180deg, #ece7de 0%, #ddd6c9 100%) !important;
+  color: #1f2a44 !important;
+  border: 1.5px solid rgba(31,42,68,.16) !important;
+  font-size: calc(13.6px * var(--app-font-scale)) !important;
+  font-weight: 900 !important;
+  line-height: 1 !important;
+  letter-spacing: -.02em !important;
+  box-shadow: 0 6px 12px rgba(31,42,68,.08) !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  box-sizing: border-box !important;
+}
+
+#cover-bottom-note {
+  position: fixed !important;
+  left: 50% !important;
+  right: auto !important;
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 8px) !important;
+  transform: translateX(-50%) !important;
+  width: min(620px, calc(100vw - 32px)) !important;
+  max-width: min(620px, calc(100vw - 32px)) !important;
+  margin: 0 !important;
+  padding: 0 16px !important;
+  text-align: center !important;
+  box-sizing: border-box !important;
+  line-height: 1.28 !important;
+  pointer-events: none !important;
+  z-index: 140 !important;
+}
+
+@media (max-height: 740px) {
+  #cover {
+    --cover-top-safe: calc(env(safe-area-inset-top, 0px) + clamp(54px, calc(var(--cover-vh, 1vh) * 7.2), 66px)) !important;
+    --cover-bottom-safe: calc(env(safe-area-inset-bottom, 0px) + clamp(42px, calc(var(--cover-vh, 1vh) * 5.7), 52px)) !important;
+  }
+  #cover-font-controls,
+  #cover #cover-menu-btn.cover-menu-btn {
+    height: 34px !important;
+    min-height: 34px !important;
+    max-height: 34px !important;
+  }
+  #cover #cover-menu-btn.cover-menu-btn {
+    padding: 0 11px !important;
+  }
+  #cover #cover-menu-btn .cover-menu-label {
+    font-size: calc(11.5px * var(--app-font-scale)) !important;
+  }
+  #cover-main-block {
+    gap: clamp(3px, calc(var(--cover-vh, 1vh) * 0.55), 6px) !important;
+  }
+  #cover .cover-grid {
+    row-gap: clamp(3px, calc(var(--cover-vh, 1vh) * 0.55), 5px) !important;
+  }
+  #cover #cover-action-row.cover-action-single {
+    height: 32px !important;
+    min-height: 32px !important;
+    max-height: 32px !important;
+    flex-basis: 32px !important;
+    margin-top: clamp(3px, calc(var(--cover-vh, 1vh) * 0.55), 5px) !important;
+  }
+  #cover #cover-action-row.cover-action-single #cover-update-box {
+    width: clamp(112px, 31vw, 132px) !important;
+    min-width: 112px !important;
+    max-width: 132px !important;
+    height: 32px !important;
+    min-height: 32px !important;
+    max-height: 32px !important;
+  }
+  #cover .cover-refresh-main-btn {
+    min-height: 32px !important;
+    height: 32px !important;
+    font-size: calc(12.8px * var(--app-font-scale)) !important;
+    padding: 0 10px !important;
+  }
+  #cover-bottom-note {
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 6px) !important;
+    width: min(620px, calc(100vw - 28px)) !important;
+    padding: 0 14px !important;
+  }
+}
+
+@media (max-width: 390px) {
+  #cover-font-controls,
+  #cover #cover-menu-btn.cover-menu-btn {
+    max-width: calc(50vw - 18px) !important;
+  }
+  #cover #cover-action-row.cover-action-single #cover-update-box {
+    width: clamp(112px, 35vw, 132px) !important;
+    max-width: 132px !important;
   }
 }
 
