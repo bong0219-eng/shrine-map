@@ -235,10 +235,22 @@
       <h2>11. 문의처</h2>
       <p>개인정보 관련 문의, 삭제 요청, 정정 요청은 아래 연락처 또는 앱 내 문의 기능을 통해 접수할 수 있습니다.</p>
       <p><strong>개발자 연락처:</strong> catholicgildongmu@gmail.com</p>
-      <a class="back-link" href="index.html">앱으로 돌아가기</a>
+      <a id="privacy-back-app-link" id="privacy-back-app-link" class="back-link" href="index.html" onclick="event.preventDefault(); window.location.replace(\'index.html\');" href="index.html" onclick="event.preventDefault(); window.location.replace(\'index.html\');">앱으로 돌아가기</a>
     </section>
 
     <p class="footer">© 가톨릭길동무</p>
   </main>
+
+<script>
+(function privacyBackToAppReplace(){
+  var el = document.getElementById('privacy-back-app-link');
+  if(!el) return;
+  el.addEventListener('click', function(e){
+    e.preventDefault();
+    window.location.replace('index.html');
+  }, {capture:true});
+})();
+</script>
+
 </body>
 </html>
