@@ -8,9 +8,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <!-- ★ Firebase SDK (compat) -->
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js">window.addEventListener('pagehide', markQnaMenuReturn, {capture:true});
-window.addEventListener('beforeunload', markQnaMenuReturn, {capture:true});
-</script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 
 <style>
@@ -667,25 +665,13 @@ function escHtml(str) {
 }
 
 /* ═══════════════════ 뒤로가기 처리 ═══════════════════ */
-function markQnaMenuReturn(){
-  try{ sessionStorage.setItem('oai_returned_from_qna','1'); }catch(e){}
-  try{ localStorage.setItem('oai_returned_from_qna','1'); }catch(e){}
-  try{ sessionStorage.setItem('oai_force_first_cover_toast','1'); }catch(e){}
-  try{ localStorage.setItem('oai_force_first_cover_toast','1'); }catch(e){}
-}
 function handleQaBack(){
-  markQnaMenuReturn();
   var active = document.querySelector('.view.active');
   if(active && active.id !== 'list-view'){
     goList({historyMode:'replace'});
     return;
   }
-  try{ document.activeElement && document.activeElement.blur && document.activeElement.blur(); }catch(e){}
-  if(document.referrer && document.referrer.indexOf(location.hostname)>=0){
-    history.back();
-  } else {
-    location.href='index.html';
-  }
+  returnQnaToApp();
 }
 
 window.addEventListener('popstate', function(){
@@ -710,7 +696,7 @@ subscribeList();
 <script id="oai-cache-lifecycle-V23">
 (function(){
   'use strict';
-  var APP_VERSION = 'V1-32';
+  var APP_VERSION = 'V1-33';
   if('serviceWorker' in navigator){
     try{ navigator.serviceWorker.register('./sw.js?v=' + encodeURIComponent(APP_VERSION)).then(function(reg){try{reg.update();}catch(e){}}).catch(function(){}); }catch(e){}
   }
@@ -811,5 +797,54 @@ subscribeList();
   }catch(e){}
 })();
 </script>
+
+<script>
+(function(){
+  var returning = false;
+  var guardPushed = false;
+
+  function markQnaReturn(){
+    try{ sessionStorage.setItem('oai_returned_from_qna','1'); }catch(e){}
+  }
+
+  window.returnQnaToApp = function(){
+    if(returning) return;
+    returning = true;
+    markQnaReturn();
+    try{
+      if(guardPushed && window.history && window.history.length > 2){
+        window.history.go(-2);
+        return;
+      }
+    }catch(e){}
+    try{
+      if(window.history && window.history.length > 1){
+        window.history.back();
+        return;
+      }
+    }catch(e){}
+    window.location.href = 'index.html';
+  };
+
+  try{
+    if(window.history && window.history.pushState){
+      window.history.replaceState({oai_qna_root:true}, '', location.href);
+      window.history.pushState({oai_qna_guard:true}, '', location.href);
+      guardPushed = true;
+    }
+  }catch(e){}
+
+  window.addEventListener('popstate', function(){
+    var active = document.querySelector('.view.active');
+    if(active && active.id !== 'list-view'){
+      try{ suppressQaHistory = true; goList({history:false}); suppressQaHistory = false; }catch(e){}
+      try{ history.pushState({oai_qna_guard:true}, '', location.href); guardPushed = true; }catch(e){}
+      return;
+    }
+    window.returnQnaToApp();
+  }, {capture:true});
+})();
+</script>
+
 </body>
 </html>

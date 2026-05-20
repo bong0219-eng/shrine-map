@@ -115,31 +115,7 @@
       box-shadow: 0 6px 15px rgba(31,42,68,.2);
     }
   
-    /* V1-32 privacy confirm button */
-    #privacy-back-app-link.privacy-confirm-button {
-      width: min(360px, 100%);
-      min-height: 52px;
-      height: 52px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      margin: 18px auto 0;
-      padding: 0 18px;
-      border-radius: 16px;
-      background: linear-gradient(135deg, #1f2a44 0%, #263a63 100%);
-      color: #fffaf0 !important;
-      border: 1.5px solid rgba(212,170,106,.45);
-      box-shadow: 0 8px 20px rgba(31,42,68,.18);
-      font-size: 16px;
-      font-weight: 900;
-      line-height: 1;
-      letter-spacing: -.02em;
-      text-decoration: none;
-      box-sizing: border-box;
-    }
-
-  
-    /* V1-32 privacy confirm button solid */
+    /* V1-33 privacy confirm button */
     #privacy-back-app-link.privacy-confirm-button {
       width: min(360px, 100%);
       min-height: 52px;
@@ -290,41 +266,67 @@
   </main>
 
 
+
 <script>
-function markPrivacyMenuReturn(){
-  try{ sessionStorage.setItem('oai_returned_from_privacy','1'); }catch(e){}
-  try{ localStorage.setItem('oai_returned_from_privacy','1'); }catch(e){}
-  try{ sessionStorage.setItem('oai_force_first_cover_toast','1'); }catch(e){}
-  try{ localStorage.setItem('oai_force_first_cover_toast','1'); }catch(e){}
-}
-function privacyCloseToApp(){
-  markPrivacyMenuReturn();
+(function(){
+  var returning = false;
+  var guardPushed = false;
+
+  function markPrivacyReturn(){
+    try{ sessionStorage.setItem('oai_returned_from_privacy','1'); }catch(e){}
+  }
+
+  function returnToApp(){
+    if(returning) return;
+    returning = true;
+    markPrivacyReturn();
+    try{
+      if(guardPushed && window.history && window.history.length > 2){
+        window.history.go(-2);
+        return;
+      }
+    }catch(e){}
+    try{
+      if(window.history && window.history.length > 1){
+        window.history.back();
+        return;
+      }
+    }catch(e){}
+    window.location.href = 'index.html';
+  }
+
+  window.privacyCloseToApp = function(){
+    returnToApp();
+  };
+
   try{
-    if(window.history && window.history.length > 1){
-      window.history.back();
-      return;
+    if(window.history && window.history.pushState){
+      window.history.replaceState({oai_privacy_root:true}, '', location.href);
+      window.history.pushState({oai_privacy_guard:true}, '', location.href);
+      guardPushed = true;
     }
   }catch(e){}
-  window.location.href = 'index.html';
-}
-(function(){
-  var closeTargets = document.querySelectorAll('[data-privacy-close], .privacy-close, #privacy-close-btn');
-  closeTargets.forEach(function(el){
-    el.addEventListener('click', function(e){
-      e.preventDefault();
-      privacyCloseToApp();
-    }, {capture:true});
-  });
+
+  window.addEventListener('popstate', function(){
+    returnToApp();
+  }, {capture:true});
+
   var back = document.getElementById('privacy-back-app-link');
   if(back){
     back.addEventListener('click', function(e){
       e.preventDefault();
-      privacyCloseToApp();
+      returnToApp();
     }, {capture:true});
   }
+
+  var closeTargets = document.querySelectorAll('[data-privacy-close], .privacy-close, #privacy-close-btn');
+  closeTargets.forEach(function(el){
+    el.addEventListener('click', function(e){
+      e.preventDefault();
+      returnToApp();
+    }, {capture:true});
+  });
 })();
-window.addEventListener('pagehide', markPrivacyMenuReturn, {capture:true});
-window.addEventListener('beforeunload', markPrivacyMenuReturn, {capture:true});
 </script>
 
 </body>
