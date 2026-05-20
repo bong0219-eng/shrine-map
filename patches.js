@@ -67,22 +67,6 @@
   }
   try{ window._oaiNormalizeCoverBackAfterReturn = normalizeCoverBackAfterReturn; }catch(_e){}
 
-  function consumePageReturnFlag(){
-    var hit = false;
-    try{
-      if(sessionStorage.getItem('oai_returned_from_privacy') === '1' || sessionStorage.getItem('oai_returned_from_guide') === '1') hit = true;
-      sessionStorage.removeItem('oai_returned_from_privacy');
-      sessionStorage.removeItem('oai_returned_from_guide');
-    }catch(_e){}
-    try{
-      if(localStorage.getItem('oai_returned_from_privacy') === '1' || localStorage.getItem('oai_returned_from_guide') === '1') hit = true;
-      localStorage.removeItem('oai_returned_from_privacy');
-      localStorage.removeItem('oai_returned_from_guide');
-    }catch(_e){}
-    return hit;
-  }
-
-
 
   /* history 초기화
      V3-S: 첫 커버 뒤로가기 실패를 만들던 hash/query trap 흔적을 제거하고,
@@ -551,7 +535,7 @@
   window.addEventListener('popstate', function(){
     if(window._appExiting) return;
 
-    /* V1-25: 메뉴 팝업이 열려 있으면 종료 안내보다 먼저 메뉴만 닫고 이벤트를 소비한다. */
+    /* V1-24: 메뉴 팝업이 열려 있으면 종료 안내보다 먼저 메뉴만 닫고 이벤트를 소비한다. */
     try{
       var menuConsumedUntil = Number(window.__oaiCoverMenuBackConsumedUntil || 0);
       if(menuConsumedUntil && Date.now && Date.now() < menuConsumedUntil){
@@ -569,7 +553,7 @@
 
 
 
-    /* V1-25: 주요기능 화면에서 뒤로가기는 팝업만 닫고 커버 뒤로가기 2단계를 즉시 복구한다. */
+    /* V1-24: 주요기능 화면에서 뒤로가기는 팝업만 닫고 커버 뒤로가기 2단계를 즉시 복구한다. */
     try{
       var guideManual = document.getElementById('guide-manual-modal');
       if(guideManual && guideManual.classList.contains('show') && guideManual.getAttribute('aria-hidden') !== 'true'){
@@ -718,28 +702,14 @@
     callGTC();
   }, false);
 
-
-  /* V1-25 page return visibility/focus guard */
-  function checkPageReturnOnResume(reason){
-    try{
-      if(consumePageReturnFlag()){
-        normalizeCoverBackAfterReturn(reason || 'page-return-resume');
-        setTimeout(function(){ normalizeCoverBackAfterReturn((reason || 'page-return-resume') + '-late'); }, 80);
-      }
-    }catch(e){ console.warn('[가톨릭길동무]', e); }
-  }
-  window.addEventListener('focus', function(){ checkPageReturnOnResume('page-return-focus'); }, true);
-  document.addEventListener('visibilitychange', function(){
-    if(document.visibilityState === 'visible') checkPageReturnOnResume('page-return-visible');
-  }, true);
-
   // 외부 사이트 방문 후 복귀 시 history 트랩 강제 재확립.
   // 트랩이 소실되면 다음 뒤로가기에서 앱이 탈출된다.
   window.addEventListener('pageshow', function(){
     try{
-      if(consumePageReturnFlag()){
-        setTimeout(function(){ normalizeCoverBackAfterReturn('page-return'); }, 0);
-        setTimeout(function(){ normalizeCoverBackAfterReturn('page-return-late'); }, 80);
+      if(sessionStorage.getItem('oai_returned_from_privacy') === '1' || sessionStorage.getItem('oai_returned_from_guide') === '1'){
+        sessionStorage.removeItem('oai_returned_from_privacy');
+        sessionStorage.removeItem('oai_returned_from_guide');
+        normalizeCoverBackAfterReturn('privacy-or-guide-return');
         return;
       }
     }catch(_e){}
@@ -885,7 +855,7 @@
   window.__APP_FONT_SCALE_GUARD__=true;
   // V3-S: 커버 글자 크기 조절은 prayer.js에 의존하지 않는 공통 함수가 담당한다.
   // prayer.js는 기도문 화면이 열렸을 때 같은 localStorage 값을 읽어 자체 UI를 맞춘다.
-  var QA_URL="qa-firebase.html?v=V1-25";
+  var QA_URL="qa-firebase.html?v=V1-24";
   var FONT_KEY='prayer_font_size';
   var BASE=16;
   var FONT_SIZES=[13,14,15,16,17,18,19,20,21,22,24,26,28,30];
