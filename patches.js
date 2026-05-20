@@ -31,7 +31,7 @@
   var _href = location.href.split('#')[0];
 
   function armCoverBackTrap(reason, opts){
-    /* V2-S-7B: 실패한 hash/query cover trap을 제거하고,
+    /* V2-S-7C: 실패한 hash/query cover trap을 제거하고,
        뒤로가기는 다시 공통 root/trap 한 쌍으로 단순화한다.
        index.html의 조기 guard가 이미 준비되어 있으면 그 함수를 우선 사용하고,
        아니면 patches.js가 같은 원칙으로 trap을 보장한다. */
@@ -55,7 +55,7 @@
   }
 
   /* history 초기화
-     V2-S-7B: 첫 커버 뒤로가기 실패를 만들던 hash/query trap 흔적을 제거하고,
+     V2-S-7C: 첫 커버 뒤로가기 실패를 만들던 hash/query trap 흔적을 제거하고,
      최종 뒤로가기 판단은 이 patches.js popstate 컨트롤러로 단일화한다. */
   try{
     var refreshReason = '';
@@ -268,7 +268,7 @@
 
 
   /* ─────────────────────────────────────────────
-     V2-S-7B 기도문 전용 뒤로가기 컨트롤러 — history 단계 분리 제거
+     V2-S-7C 기도문 전용 뒤로가기 컨트롤러 — history 단계 분리 제거
 
      원칙:
      1) 다른 정상 카테고리처럼 실제 history는 공통 root/trap 한 쌍만 사용한다.
@@ -320,7 +320,7 @@
     return !!yes;
   }
   function armPrayerBackTrap(reason){
-    /* 호환용 함수. V2-S-7B부터 기도문 detail/list용 별도 pushState는 만들지 않는다.
+    /* 호환용 함수. V2-S-7C부터 기도문 detail/list용 별도 pushState는 만들지 않는다.
        공통 컨트롤러가 이미 갖고 있는 root/trap을 유지하는 것만 필요하다. */
     try{
       if(isPrayerOpen() && typeof window._ensureAppBackTrap === 'function'){
@@ -375,7 +375,7 @@
     }catch(e){ console.warn('[가톨릭길동무]', e); }
   }
   function settleCoverTrapAfterPrayer(reason){
-    // V2-S-7B: 기도문 팝업 → 커버 후에는 이미 공통 컨트롤러가 history.go(1)로 trap을 복원한 상태다.
+    // V2-S-7C: 기도문 팝업 → 커버 후에는 이미 공통 컨트롤러가 history.go(1)로 trap을 복원한 상태다.
     // 여기서 replaceState/pushState를 강제로 반복하면 Android/PWA에서 다음 Back이 앱 종료로 오판될 수 있다.
     // 따라서 현재 trap이 살아 있으면 그대로 두고, 없을 때만 최소한으로 보강한다.
     function run(tag){
@@ -435,7 +435,7 @@
       var fromQuick = isPrayerQuickSource();
       if(!fromQuick) return resetPrayerToCover(reason || 'prayer-list-cover');
 
-      /* V2-S-7B: 기도문 목록 → 빠른메뉴 팝업 복귀는 직접 팝업을 띄우지 않는다.
+      /* V2-S-7C: 기도문 목록 → 빠른메뉴 팝업 복귀는 직접 팝업을 띄우지 않는다.
          사용자의 Back으로 공통 trap이 일단 소비된 직후라, 이 자리에서 openMassQuickMenu()를
          바로 호출하면 Android/PWA에서 history.go(1) 복원 타이밍과 겹쳐 팝업 Back이 앱 종료로
          먹힐 수 있다. 기존 안정 함수 _returnToMassQuickMenu('prayer')에게 맡기면,
@@ -763,9 +763,9 @@
 (function(){
   if(window.__APP_FONT_SCALE_GUARD__) return;
   window.__APP_FONT_SCALE_GUARD__=true;
-  // V2-S-7B: 커버 글자 크기 조절은 prayer.js에 의존하지 않는 공통 함수가 담당한다.
+  // V2-S-7C: 커버 글자 크기 조절은 prayer.js에 의존하지 않는 공통 함수가 담당한다.
   // prayer.js는 기도문 화면이 열렸을 때 같은 localStorage 값을 읽어 자체 UI를 맞춘다.
-  var QA_URL="qa-firebase.html?v=V2-S-7B";
+  var QA_URL="qa-firebase.html?v=V2-S-7C";
   var FONT_KEY='prayer_font_size';
   var BASE=16;
   var FONT_SIZES=[13,14,15,16,17,18,19,20,21,22,24,26,28,30];
@@ -835,7 +835,7 @@
   }
   function setEmojiIcons(){var icons={'cc-1':'✝️','cc-2':'⛪','cc-3':'🙏','cc-4':'🌿','cc-5':'🥾','cc-6':'🌐','cc-7':'🧭'};Object.keys(icons).forEach(function(id){var btn=el(id);if(!btn)return;var wrap=btn.querySelector('.cover-icon-wrap');if(wrap)wrap.innerHTML='<span class="cover-emoji" aria-hidden="true">'+icons[id]+'</span>';});}
   function configureQna(){
-    // V2-S-7B: 문의·건의 버튼은 중간 안내 카드를 만들지 않고 실제 문의 페이지로 바로 이동한다.
+    // V2-S-7C: 문의·건의 버튼은 중간 안내 카드를 만들지 않고 실제 문의 페이지로 바로 이동한다.
     window.QNA_FORM_URL=QA_URL;
     var q=el('qna-list');
     if(q) q.innerHTML='';
