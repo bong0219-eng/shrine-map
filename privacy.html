@@ -100,6 +100,26 @@
       color: #64748b;
       font-size: 13px;
     }
+
+    .top-back-wrap {
+      margin: 14px 0 0;
+      display: flex;
+      justify-content: center;
+    }
+    .back-link-main,
+    .back-link-top {
+      width: min(360px, 100%);
+      min-height: 52px;
+      font-size: 16px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, #1f2a44 0%, #263a63 100%);
+      color: #fffaf0 !important;
+      border: 1.5px solid rgba(212,170,106,.45);
+    }
+    .back-link-top {
+      box-shadow: 0 8px 20px rgba(31,42,68,.22);
+    }
+
     .back-link {
       display: inline-flex;
       align-items: center;
@@ -123,6 +143,10 @@
       <h1 id="privacy-title">개인정보처리방침</h1>
       <p class="updated">시행일 및 최종 업데이트: 2026년 5월 20일</p>
     </section>
+
+    <div class="top-back-wrap">
+      <a id="privacy-top-back-app-link" class="back-link back-link-top" href="javascript:void(0)" onclick="event.preventDefault(); privacyCloseToApp();">← 앱으로 돌아가기</a>
+    </div>
 
     <section class="card">
       <h2>1. 기본 원칙</h2>
@@ -235,7 +259,7 @@
       <h2>11. 문의처</h2>
       <p>개인정보 관련 문의, 삭제 요청, 정정 요청은 아래 연락처 또는 앱 내 문의 기능을 통해 접수할 수 있습니다.</p>
       <p><strong>개발자 연락처:</strong> catholicgildongmu@gmail.com</p>
-      <a id="privacy-back-app-link" href="javascript:void(0)" onclick="event.preventDefault(); privacyCloseToApp();">앱으로 돌아가기</a>
+      <a id="privacy-back-app-link" class="back-link back-link-main" href="javascript:void(0)" onclick="event.preventDefault(); privacyCloseToApp();">앱으로 돌아가기</a>
     </section>
 
     <p class="footer">© 가톨릭길동무</p>
@@ -260,6 +284,13 @@ function privacyCloseToApp(){
       privacyCloseToApp();
     }, {capture:true});
   });
+  var topBack = document.getElementById('privacy-top-back-app-link');
+  if(topBack){
+    topBack.addEventListener('click', function(e){
+      e.preventDefault();
+      privacyCloseToApp();
+    }, {capture:true});
+  }
   var back = document.getElementById('privacy-back-app-link');
   if(back){
     back.addEventListener('click', function(e){

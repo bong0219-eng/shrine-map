@@ -4130,7 +4130,7 @@ html.retreat-mode #srch-modal #sm-tab-bar .sm-tab.active{
 }
 
 /* ============================================================
-   Google Play 커버 메뉴 + 하단 단일 새로고침 (V1-11)
+   Google Play 커버 메뉴 + 하단 단일 새로고침 (V1-12)
    ============================================================ */
 #cover #oai-build-marker,
 #oai-build-marker {
@@ -4393,7 +4393,7 @@ html.app-active #cover-menu-btn { display: none !important; }
 }
 
 /* ============================================================
-   V1-11 커버 상단/하단 안정화
+   V1-12 커버 상단/하단 안정화
    ============================================================ */
 #cover #oai-build-marker,
 #oai-build-marker {
@@ -4583,7 +4583,7 @@ html.app-active #cover-menu-btn { display: none !important; }
 }
 
 /* ============================================================
-   V1-11 커버 버전/하단 정리 최종 보정
+   V1-12 커버 버전/하단 정리 최종 보정
    ============================================================ */
 #cover #oai-build-marker,
 #oai-build-marker {
@@ -4683,9 +4683,9 @@ html.app-active #cover-menu-btn { display: none !important; }
 }
 
 /* ============================================================
-   V1-11 커버 3구역 고정 구조
+   V1-12 커버 3구역 고정 구조
    - 상단: 메뉴/글자 버튼 고정
-   - 중앙: 안내문구~카드~V1-11 새로고침
+   - 중앙: 안내문구~카드~V1-12 새로고침
    - 하단: 고정 안내문
    ============================================================ */
 #cover #oai-build-marker,
@@ -4926,7 +4926,7 @@ html.app-active #cover-menu-btn { display: none !important; }
 }
 
 /* ============================================================
-   V1-11 새로고침 버튼 위치 미세 조정
+   V1-12 새로고침 버튼 위치 미세 조정
    ============================================================ */
 #cover #cover-action-row.cover-action-single {
   transform: translateY(-7px) !important;
@@ -4941,7 +4941,7 @@ html.app-active #cover-menu-btn { display: none !important; }
 
 
 /* ============================================================
-   V1-11 메뉴 팝업 크기 및 테두리 보정
+   V1-12 메뉴 팝업 크기 및 테두리 보정
    ============================================================ */
 .cover-menu-title {
   font-size: calc(19px * var(--app-font-scale)) !important;
@@ -4979,7 +4979,7 @@ html.app-active #cover-menu-btn { display: none !important; }
 
 
 /* ============================================================
-   V1-11 메뉴 버튼 길이 및 뒤로가기 보정
+   V1-12 메뉴 버튼 길이 및 뒤로가기 보정
    ============================================================ */
 #cover #cover-menu-btn.cover-menu-btn {
   min-width: 94px !important;
@@ -5010,5 +5010,47 @@ html.app-active #cover-menu-btn { display: none !important; }
   #cover #cover-menu-btn.cover-menu-btn {
     min-width: 86px !important;
     max-width: calc(52vw - 14px) !important;
+  }
+}
+
+
+/* ============================================================
+   V1-12 메뉴 팝업 높이 추가 보정
+   ============================================================ */
+.cover-menu-panel {
+  padding-top: 20px !important;
+  padding-bottom: 20px !important;
+  min-height: 310px !important;
+}
+
+.cover-menu-head {
+  padding-bottom: 16px !important;
+}
+
+.cover-menu-list {
+  gap: 11px !important;
+}
+
+.cover-menu-item {
+  min-height: 68px !important;
+}
+
+.cover-menu-icon {
+  width: 40px !important;
+  height: 40px !important;
+}
+
+@media (max-height: 740px) {
+  .cover-menu-panel {
+    padding-top: 18px !important;
+    padding-bottom: 18px !important;
+    min-height: 292px !important;
+  }
+  .cover-menu-item {
+    min-height: 62px !important;
+  }
+  .cover-menu-icon {
+    width: 38px !important;
+    height: 38px !important;
   }
 }
