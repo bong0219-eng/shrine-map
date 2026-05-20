@@ -213,13 +213,14 @@ html.oai-stability-veil::after { content:""; position:fixed; left:50%; top:50%; 
       v = parseFloat(v || 0);
       if(v > 300 && v < 2000) values.push(v);
     }
+    // Google Play/TWA용 커버는 주소창 변화가 아니라 실제 레이아웃 뷰포트를 기준으로 고정한다.
+    // 첫 진입 때 visualViewport가 순간적으로 작게 잡히면 커버 카드가 위로 당겨지고,
+    // 새로고침 후에는 다시 아래로 내려가는 차이가 생기므로 layout viewport 값을 우선한다.
     try{ add(document.documentElement && document.documentElement.clientHeight); }catch(e){}
     try{ add(window.innerHeight); }catch(e){}
-    try{ add(window.visualViewport && window.visualViewport.height); }catch(e){}
+    if(!values.length){ try{ add(window.visualViewport && window.visualViewport.height); }catch(e){} }
     if(!values.length) return 0;
-    // 하단 시스템 내비게이션 바가 잠깐 사라질 때 커지는 높이를 기준으로 잡지 않는다.
-    // 첫 화면은 관측 가능한 값 중 가장 작은 실제 표시 높이를 사용해 내비게이션 바 영역을 침범하지 않는다.
-    var h = Math.min.apply(Math, values);
+    var h = Math.max.apply(Math, values);
     return h ? (h * 0.01) : 0;
   }
   function measureWidth(){
@@ -363,21 +364,21 @@ window.APP_CONFIG = {
 <meta name="application-name" content="가톨릭길동무">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#0e1535">
-<link rel="manifest" href="manifest.json?v=V3-S-GP8">
-<link rel="apple-touch-icon" href="icon-192x192.png?v=V3-S-GP8">
+<link rel="manifest" href="manifest.json?v=V1-1">
+<link rel="apple-touch-icon" href="icon-192x192.png?v=V1-1">
 <meta name="format-detection" content="telephone=no">
 <meta name="description" content="가톨릭길동무 - 가톨릭 신앙생활 종합 앱">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="가톨릭길동무">
 <meta property="og:title" content="가톨릭길동무">
 <meta property="og:description" content="성지 · 성당 · 기도문 · 순례길 · 가톨릭 웹사이트 안내">
-<meta property="og:image" content="icon-512x512.png?v=V3-S-GP8">
+<meta property="og:image" content="icon-512x512.png?v=V1-1">
 <meta property="og:image:width" content="512">
 <meta property="og:image:height" content="512">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="가톨릭길동무">
 <meta name="twitter:description" content="성지 · 성당 · 기도문 · 순례길 · 가톨릭 웹사이트 안내">
-<meta name="twitter:image" content="icon-512x512.png?v=V3-S-GP8">
+<meta name="twitter:image" content="icon-512x512.png?v=V1-1">
 <title>가톨릭길동무</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Crect width=%2232%22 height=%2232%22 fill=%22%230e1535%22/%3E%3Ctext x=%226%22 y=%2226%22 font-size=%2224%22 fill=%22%23d4aa6a%22%3E%E2%9C%9D%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -385,7 +386,7 @@ window.APP_CONFIG = {
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style id="oai-initial-bg">html,body{margin:0;width:100%;height:100%;min-height:100%;background:#0e1535;overflow:hidden;color-scheme:light;}#cover{background:#0e1535;min-height:100%;}#app{background:#f8f6f2;display:none;}</style>
-<link rel="stylesheet" href="style.css?v=V3-S-GP8">
+<link rel="stylesheet" href="style.css?v=V1-1">
 </head>
 <body>
 <div id="missa-view" role="dialog" aria-modal="true" aria-label="매일미사">
@@ -470,7 +471,7 @@ window.APP_CONFIG = {
       <div class="pr-font-divider"></div>
       <button type="button" id="cover-lg-btn" class="pr-font-btn pr-lg">가</button>
     </div>
-    <button id="cover-guide-btn" type="button" aria-label="가톨릭길동무 주요 기능 보기">주요기능</button>
+    <button id="cover-menu-btn" type="button" aria-label="가톨릭길동무 주요 기능 보기">☰</button>
     <div id="mass-quick-modal" class="guide-modal mass-quick-modal" role="dialog" aria-modal="true" aria-label="미사 중 빠른 사용" aria-hidden="true">
       <div class="guide-backdrop" data-mass-quick-close="1"></div>
       <div class="guide-panel mass-quick-panel">
@@ -519,17 +520,13 @@ window.APP_CONFIG = {
           </button>
       </div>
       <!-- 커버 하단 작업줄: 새로고침 + 개인정보처리방침 + 문의·건의 -->
-      <div id="cover-action-row" aria-label="커버 보조 기능">
+      <div id="cover-action-row" class="cover-action-single">
         <div id="cover-update-box">
-          <button id="cover-update-btn" type="button" data-target-version="V3-S-GP8" aria-label="짧게 누르면 새로고침, 더 길게 누르면 앱 캐시 초기화">
-            새로고침
-          </button>
-          <div id="cover-update-hint" aria-live="polite">아래 버전과 다릅니다. 눌러서 최신 파일을 다시 받아 주세요.</div>
+          <button id="cover-update-btn" class="cover-refresh-main-btn" type="button"
+                  data-target-version="V1-1"
+                  aria-label="앱 새로고침">새로고침</button>
+          <div id="cover-update-hint" role="status" aria-live="polite"></div>
         </div>
-        <a id="privacy-cover-link" href="privacy.html" aria-label="개인정보처리방침 열기">개인정보처리방침</a>
-        <button id="qna-cover-btn" type="button" aria-label="문의·건의">
-          💬 문의·건의
-        </button>
       </div>
     </div>
 
@@ -613,7 +610,36 @@ window.APP_CONFIG = {
   </div>
 </div>
 </div>
-<script src="app.js?v=V3-S-GP8"></script>
+
+<!-- Google Play용 커버 메뉴 -->
+<div id="cover-menu-modal" class="cover-menu-modal" aria-hidden="true">
+  <div class="cover-menu-backdrop" data-cover-menu-close="true"></div>
+  <div class="cover-menu-panel" role="dialog" aria-modal="true" aria-labelledby="cover-menu-title">
+    <div class="cover-menu-head">
+      <div>
+        <div id="cover-menu-title" class="cover-menu-title">가톨릭길동무 메뉴</div>
+        <div class="cover-menu-subtitle">필요한 기능을 선택하세요</div>
+      </div>
+      <button id="cover-menu-close" class="cover-menu-close" type="button" aria-label="메뉴 닫기">×</button>
+    </div>
+    <div class="cover-menu-list">
+      <button id="cover-menu-guide-btn" class="cover-menu-item" type="button">
+        <span class="cover-menu-icon">📘</span>
+        <span class="cover-menu-text">주요기능</span>
+      </button>
+      <a id="cover-menu-privacy-link" class="cover-menu-item" href="privacy.html">
+        <span class="cover-menu-icon">🛡</span>
+        <span class="cover-menu-text">개인정보처리방침</span>
+      </a>
+      <button id="cover-menu-qna-btn" class="cover-menu-item" type="button">
+        <span class="cover-menu-icon">💬</span>
+        <span class="cover-menu-text">문의·건의</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<script src="app.js?v=V1-1"></script>
 <div id="oai-category-entry-veil" aria-hidden="true"></div>
 <div id="app"><div id="tabbar"><button id="tab-btn-nearby" class="tab-btn" data-tab="nearby"><span class="tab-icon">📍</span><span id="tab-nearby-lbl">내주변</span></button><button id="tab-btn-list" class="tab-btn" data-tab="list"><span class="tab-icon">📋</span><span id="tab-list-lbl">목록</span></button><button id="tab-btn-region" class="tab-btn" data-tab="region"><span class="tab-icon">🔍</span>지역검색
     </button><button id="tab-btn-route" class="tab-btn" data-tab="route"><span class="tab-icon">🧭</span>길찾기
@@ -689,13 +715,13 @@ window.APP_CONFIG = {
     </div>
   </div>
 </div>
-<script src="web.js?v=V3-S-GP8"></script>
+<script src="web.js?v=V1-1"></script>
 
 <div id="qna-view" role="dialog" aria-modal="true" aria-label="문의·건의" class="module-view"><div class="module-bar qna"><div class="module-bar-main"><div class="module-bar-ico">✝</div><div class="module-bar-txt"><div class="module-bar-title">문의·건의</div><div class="module-bar-sub">질문, 오류, 수정요청을 남겨주세요</div></div></div><button id="qna-close-btn" class="module-close" aria-label="문의·건의 닫기">×</button></div><div class="qna-body"><div class="qna-tabs"><button id="qna-tab-write" class="qna-tab on" type="button">작성</button></div><div class="qna-list" id="qna-list"></div></div></div>
 
-<script src="patches.js?v=V3-S-GP8"></script>
+<script src="patches.js?v=V1-1"></script>
 
-<script src="sw-update.js?v=V3-S-GP8"></script>
+<script src="sw-update.js?v=V1-1"></script>
 
 </body>
 </html>

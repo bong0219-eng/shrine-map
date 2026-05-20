@@ -141,7 +141,7 @@
   --bg-color:   #f7f0e5;
   /* 커버 화면 비율 기준 보호 영역 */
   --cover-top-safe: calc(env(safe-area-inset-top, 0px) + clamp(60px, calc(var(--cover-vh, 1vh) * 9.2), 82px));
-  --cover-bottom-safe: calc(env(safe-area-inset-bottom, 0px) + clamp(34px, calc(var(--cover-vh, 1vh) * 5.0), 50px));
+  --cover-bottom-safe: calc(env(safe-area-inset-bottom, 0px) + clamp(8px, calc(var(--cover-vh, 1vh) * 1.4), 16px));
   --cover-h:    calc(var(--cover-vh, 1vh) * 100);
   --text-main:  #3e362e;
   --text-sub:   #7a7065;
@@ -2438,14 +2438,15 @@ html.app-active #cover-action-row { display: none; }
 
 /* 커버 하단 고정 요소 */
 #cover-bottom-note {
-  position: fixed;
-  left: 0; right: 0;
-  bottom: clamp(14px, calc(var(--cover-vh, 1vh) * 2.0), 26px);
-  flex: none;
+  position: relative;
+  left: auto;
+  right: auto;
+  bottom: auto;
+  flex: 0 0 auto;
   width: 100%;
   max-width: 720px;
-  margin: 0 auto;
-  padding: 3px 22px 0 60px;
+  margin: clamp(8px, calc(var(--cover-vh, 1vh) * 1.2), 14px) auto 0;
+  padding: 0 22px 0 60px;
   text-align: center;
   font-size: clamp(7.8px, calc(var(--cover-vh, 1vh) * 1.1), 9px);
   font-weight: 500;
@@ -2971,7 +2972,7 @@ html.ios-device #cover #cover-action-row { margin-top: 0; }
 html.ios-device #cover #cover-update-btn { min-height: 34px; height: 34px; font-size: calc(10.6px * var(--app-font-scale)); padding-left: 12px; padding-right: 12px; }
 html.ios-device #cover #qna-cover-btn { min-height: 34px; height: 34px; font-size: calc(10.6px * var(--app-font-scale)); padding-left: 12px; padding-right: 12px; }
 html.ios-device #cover #privacy-cover-link { min-height: 34px; height: 34px; font-size: calc(9.8px * var(--app-font-scale)); padding-left: 8px; padding-right: 8px; }
-html.ios-device #cover #cover-bottom-note { padding: 3px 16px calc(8px + env(safe-area-inset-bottom, 0px)) 16px; font-size: 8.35px; line-height: 1.32; letter-spacing: -.045em; max-width: 430px; }
+html.ios-device #cover #cover-bottom-note { padding: 0 16px; font-size: 8.35px; line-height: 1.32; letter-spacing: -.045em; max-width: 430px; }
 html.ios-device #prayer-bar-ttl,
 html.ios-device #prayer-bar .module-bar-title,
 html.ios-device #web-view .module-bar-title,
@@ -3101,7 +3102,7 @@ html.oai-font-global #region-body .dio-hd { font-size: calc(17px * var(--app-inn
   .mass-quick-panel .guide-badge { font-size: calc(18px * var(--app-font-scale)); min-height: 40px; margin-bottom: 16px; }
 }
 @media (max-height: 650px) {
-  #cover { --cover-top-safe: calc(env(safe-area-inset-top, 0px) + clamp(58px, calc(var(--cover-vh, 1vh) * 9.4), 74px)); --cover-bottom-safe: calc(env(safe-area-inset-bottom, 0px) + clamp(32px, calc(var(--cover-vh, 1vh) * 4.8), 48px)); padding-top: var(--cover-top-safe); padding-bottom: var(--cover-bottom-safe); }
+  #cover { --cover-top-safe: calc(env(safe-area-inset-top, 0px) + clamp(58px, calc(var(--cover-vh, 1vh) * 9.4), 74px)); --cover-bottom-safe: calc(env(safe-area-inset-bottom, 0px) + clamp(8px, calc(var(--cover-vh, 1vh) * 1.3), 15px)); padding-top: var(--cover-top-safe); padding-bottom: var(--cover-bottom-safe); }
   #cover .cover-header { padding-bottom: 12px; }
   #cover .cover-title { font-size: clamp(18px, 5vw, 24px); }
   #cover .cover-subtitle { font-size: 10px; }
@@ -4127,3 +4128,193 @@ html.retreat-mode #srch-modal #sm-tab-bar .sm-tab.active{
   color:#fff!important;
   border-color:transparent!important;
 }
+
+/* ============================================================
+   Google Play 커버 메뉴 + 하단 단일 새로고침
+   ============================================================ */
+#cover .cover-menu-btn {
+  min-width: 54px;
+  padding: 0 17px;
+  font-size: calc(22px * var(--app-font-scale));
+  font-weight: 900;
+  line-height: 1;
+}
+
+#cover #cover-action-row.cover-action-single {
+  justify-content: flex-end;
+  height: 42px;
+  min-height: 42px;
+  max-height: 42px;
+}
+
+#cover #cover-action-row.cover-action-single #cover-update-box {
+  flex: 0 0 min(210px, 34vw);
+  max-width: min(210px, 34vw);
+  height: 100%;
+}
+
+#cover .cover-refresh-main-btn {
+  width: 100%;
+  min-height: 42px;
+  height: 42px;
+  border-radius: 999px;
+  border: 1px solid rgba(15, 23, 42, .16);
+  background: linear-gradient(135deg, #1f2a44 0%, #263a63 100%);
+  color: #ffffff;
+  font-size: calc(14px * var(--app-font-scale));
+  font-weight: 900;
+  letter-spacing: -.03em;
+  box-shadow: 0 8px 18px rgba(31,42,68,.18);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+#cover .cover-refresh-main-btn:active {
+  transform: translateY(1px);
+}
+
+.cover-menu-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 10020;
+  display: none;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: calc(env(safe-area-inset-top, 0px) + 66px) 18px 18px;
+  box-sizing: border-box;
+}
+
+.cover-menu-modal.show {
+  display: flex;
+}
+
+.cover-menu-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, .22);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+}
+
+.cover-menu-panel {
+  position: relative;
+  width: min(330px, calc(100vw - 36px));
+  background: rgba(255, 253, 247, .98);
+  border: 1px solid rgba(183, 121, 31, .23);
+  border-radius: 22px;
+  box-shadow: 0 20px 42px rgba(15, 23, 42, .24);
+  padding: 16px 14px 14px;
+  box-sizing: border-box;
+  animation: coverMenuIn .16s ease-out;
+}
+
+@keyframes coverMenuIn {
+  from { opacity: 0; transform: translateY(-8px) scale(.985); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.cover-menu-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 2px 2px 12px;
+}
+
+.cover-menu-title {
+  font-size: calc(18px * var(--app-font-scale));
+  font-weight: 900;
+  color: #111827;
+  letter-spacing: -.04em;
+}
+
+.cover-menu-subtitle {
+  margin-top: 4px;
+  font-size: calc(11px * var(--app-font-scale));
+  font-weight: 700;
+  color: #7c6f61;
+  letter-spacing: -.03em;
+}
+
+.cover-menu-close {
+  flex: 0 0 auto;
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  border: 1px solid rgba(31, 41, 55, .12);
+  background: #f3efe7;
+  color: #1f2937;
+  font-size: 24px;
+  font-weight: 900;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.cover-menu-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 9px;
+}
+
+.cover-menu-item {
+  width: 100%;
+  min-height: 54px;
+  padding: 0 16px;
+  border-radius: 17px;
+  border: 1px solid rgba(31, 41, 55, .10);
+  background: #ffffff;
+  box-shadow: 0 4px 10px rgba(15, 23, 42, .05);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #1f2937;
+  text-decoration: none;
+  font-size: calc(15px * var(--app-font-scale));
+  font-weight: 900;
+  letter-spacing: -.035em;
+  box-sizing: border-box;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.cover-menu-item:active {
+  transform: translateY(1px);
+}
+
+.cover-menu-icon {
+  flex: 0 0 auto;
+  width: 34px;
+  height: 34px;
+  border-radius: 12px;
+  background: #f8f3ea;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+
+.cover-menu-text {
+  flex: 1 1 auto;
+  text-align: left;
+}
+
+@media (max-height: 740px) {
+  .cover-menu-modal {
+    padding-top: calc(env(safe-area-inset-top, 0px) + 54px);
+  }
+  #cover #cover-action-row.cover-action-single {
+    height: 38px;
+    min-height: 38px;
+    max-height: 38px;
+  }
+  #cover #cover-action-row.cover-action-single #cover-update-box {
+    flex-basis: min(188px, 34vw);
+    max-width: min(188px, 34vw);
+  }
+  #cover .cover-refresh-main-btn {
+    min-height: 38px;
+    height: 38px;
+    font-size: calc(13px * var(--app-font-scale));
+  }
+}
+
