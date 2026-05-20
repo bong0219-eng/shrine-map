@@ -4130,7 +4130,7 @@ html.retreat-mode #srch-modal #sm-tab-bar .sm-tab.active{
 }
 
 /* ============================================================
-   Google Play 커버 메뉴 + 하단 단일 새로고침 (V1-13)
+   Google Play 커버 메뉴 + 하단 단일 새로고침 (V1-14)
    ============================================================ */
 #cover #oai-build-marker,
 #oai-build-marker {
@@ -4393,7 +4393,7 @@ html.app-active #cover-menu-btn { display: none !important; }
 }
 
 /* ============================================================
-   V1-13 커버 상단/하단 안정화
+   V1-14 커버 상단/하단 안정화
    ============================================================ */
 #cover #oai-build-marker,
 #oai-build-marker {
@@ -4583,7 +4583,7 @@ html.app-active #cover-menu-btn { display: none !important; }
 }
 
 /* ============================================================
-   V1-13 커버 버전/하단 정리 최종 보정
+   V1-14 커버 버전/하단 정리 최종 보정
    ============================================================ */
 #cover #oai-build-marker,
 #oai-build-marker {
@@ -4683,9 +4683,9 @@ html.app-active #cover-menu-btn { display: none !important; }
 }
 
 /* ============================================================
-   V1-13 커버 3구역 고정 구조
+   V1-14 커버 3구역 고정 구조
    - 상단: 메뉴/글자 버튼 고정
-   - 중앙: 안내문구~카드~V1-13 새로고침
+   - 중앙: 안내문구~카드~V1-14 새로고침
    - 하단: 고정 안내문
    ============================================================ */
 #cover #oai-build-marker,
@@ -4926,7 +4926,7 @@ html.app-active #cover-menu-btn { display: none !important; }
 }
 
 /* ============================================================
-   V1-13 새로고침 버튼 위치 미세 조정
+   V1-14 새로고침 버튼 위치 미세 조정
    ============================================================ */
 #cover #cover-action-row.cover-action-single {
   transform: translateY(-7px) !important;
@@ -4941,7 +4941,7 @@ html.app-active #cover-menu-btn { display: none !important; }
 
 
 /* ============================================================
-   V1-13 메뉴 팝업 크기 및 테두리 보정
+   V1-14 메뉴 팝업 크기 및 테두리 보정
    ============================================================ */
 .cover-menu-title {
   font-size: calc(19px * var(--app-font-scale)) !important;
@@ -4979,7 +4979,7 @@ html.app-active #cover-menu-btn { display: none !important; }
 
 
 /* ============================================================
-   V1-13 메뉴 버튼 길이 및 뒤로가기 보정
+   V1-14 메뉴 버튼 길이 및 뒤로가기 보정
    ============================================================ */
 #cover #cover-menu-btn.cover-menu-btn {
   min-width: 94px !important;
@@ -5015,7 +5015,7 @@ html.app-active #cover-menu-btn { display: none !important; }
 
 
 /* ============================================================
-   V1-13 메뉴 팝업 높이 추가 보정
+   V1-14 메뉴 팝업 높이 추가 보정
    ============================================================ */
 .cover-menu-panel {
   padding-top: 20px !important;
@@ -5054,3 +5054,167 @@ html.app-active #cover-menu-btn { display: none !important; }
     height: 38px !important;
   }
 }
+
+/* ============================================================
+   V1-14 주요기능 팝업: 개인정보처리방침 구도 기준
+   문의·건의 디자인은 건드리지 않음
+   ============================================================ */
+
+/* 주요기능 팝업 전체는 개인정보처리방침처럼 '큰 헤더 + 카드 본문 + 하단 OK' 구도 */
+#guide-intro-modal .guide-panel,
+#guide-manual-modal .guide-panel {
+  width: min(720px, calc(100vw - 28px)) !important;
+  max-width: 720px !important;
+  height: min(86vh, 760px) !important;
+  max-height: min(86vh, 760px) !important;
+  padding: 18px 14px 18px !important;
+  border-radius: 24px !important;
+  border: 1.6px solid rgba(183,121,31,.24) !important;
+  background: #f7f0e5 !important;
+  box-shadow: 0 18px 42px rgba(31,42,68,.20) !important;
+  box-sizing: border-box !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+}
+
+/* X는 주요기능에서 표시하지 않음 */
+#guide-intro-modal .guide-x,
+#guide-manual-modal .guide-x {
+  display: none !important;
+}
+
+/* 헤더를 개인정보처리방침처럼 크게, 앞쪽에 보이게 */
+#guide-intro-modal .guide-badge,
+#guide-manual-modal .guide-badge {
+  flex: 0 0 auto !important;
+  display: block !important;
+  width: 100% !important;
+  margin: 0 0 14px !important;
+  padding: 22px 18px 18px !important;
+  border-radius: 24px !important;
+  border: 1.6px solid rgba(183,121,31,.24) !important;
+  background: rgba(255,253,247,.98) !important;
+  box-shadow: 0 14px 32px rgba(31,42,68,.10) !important;
+  color: #111827 !important;
+  text-align: center !important;
+  font-size: calc(24px * var(--app-font-scale)) !important;
+  font-weight: 900 !important;
+  line-height: 1.25 !important;
+  letter-spacing: -.045em !important;
+  box-sizing: border-box !important;
+}
+
+/* 본문은 흰색 사각 카드 안에서만 스크롤 */
+#guide-intro-modal .guide-content,
+#guide-manual-modal .guide-content,
+#guide-intro-modal .guide-body,
+#guide-manual-modal .guide-body,
+#guide-intro-modal .guide-list,
+#guide-manual-modal .guide-list {
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  border-radius: 24px !important;
+  border: 1.6px solid rgba(183,121,31,.24) !important;
+  background: rgba(255,253,247,.98) !important;
+  box-shadow: 0 14px 32px rgba(31,42,68,.10) !important;
+  padding: 20px 18px !important;
+  box-sizing: border-box !important;
+}
+
+/* guide-content/body/list 래퍼가 없는 경우를 대비해 패널 내부 텍스트 블록도 카드처럼 안정화 */
+#guide-intro-modal .guide-panel > p,
+#guide-manual-modal .guide-panel > p,
+#guide-intro-modal .guide-panel > ul,
+#guide-manual-modal .guide-panel > ul,
+#guide-intro-modal .guide-panel > ol,
+#guide-manual-modal .guide-panel > ol {
+  color: #5f5145 !important;
+}
+
+/* 주요기능의 설명 카드/항목 톤 */
+#guide-intro-modal .guide-card,
+#guide-manual-modal .guide-card,
+#guide-intro-modal .guide-item,
+#guide-manual-modal .guide-item {
+  border-radius: 18px !important;
+  border: 1.4px solid rgba(31,41,55,.16) !important;
+  background: #fffdf8 !important;
+  box-shadow: 0 5px 12px rgba(15,23,42,.055) !important;
+  box-sizing: border-box !important;
+}
+
+/* 하단 버튼 영역은 고정, OK 버튼만 보이게 */
+#guide-intro-modal .guide-actions,
+#guide-manual-modal .guide-actions {
+  flex: 0 0 auto !important;
+  margin-top: 14px !important;
+  display: flex !important;
+  justify-content: center !important;
+  gap: 10px !important;
+}
+
+#guide-intro-modal .guide-primary,
+#guide-intro-modal .guide-ok,
+#guide-manual-modal .guide-primary,
+#guide-manual-modal .guide-ok,
+#guide-manual-modal #guide-ok-btn {
+  width: min(360px, 100%) !important;
+  min-height: 52px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 16px !important;
+  background: linear-gradient(135deg, #1f2a44 0%, #263a63 100%) !important;
+  color: #fffaf0 !important;
+  border: 1.5px solid rgba(212,170,106,.45) !important;
+  box-shadow: 0 8px 20px rgba(31,42,68,.18) !important;
+  font-size: calc(16px * var(--app-font-scale)) !important;
+  font-weight: 900 !important;
+  text-decoration: none !important;
+  letter-spacing: -.03em !important;
+  box-sizing: border-box !important;
+}
+
+/* 주요기능 안의 보조 버튼은 개인정보처리방침 카드 톤에 맞춤 */
+#guide-intro-modal .guide-secondary,
+#guide-manual-modal .guide-secondary,
+#guide-intro-modal .guide-detail-btn,
+#guide-manual-modal .guide-detail-btn {
+  border-radius: 16px !important;
+  border: 1.4px solid rgba(31,41,55,.16) !important;
+  background: #f3efe7 !important;
+  color: #1f2a44 !important;
+  font-weight: 900 !important;
+}
+
+/* 모바일 높이가 낮을 때도 헤더와 OK는 고정, 본문만 스크롤 */
+@media (max-height: 740px) {
+  #guide-intro-modal .guide-panel,
+  #guide-manual-modal .guide-panel {
+    height: min(88vh, 690px) !important;
+    max-height: min(88vh, 690px) !important;
+    padding: 14px 12px !important;
+  }
+  #guide-intro-modal .guide-badge,
+  #guide-manual-modal .guide-badge {
+    padding: 18px 14px 15px !important;
+    font-size: calc(21px * var(--app-font-scale)) !important;
+    margin-bottom: 10px !important;
+  }
+  #guide-intro-modal .guide-content,
+  #guide-manual-modal .guide-content,
+  #guide-intro-modal .guide-body,
+  #guide-manual-modal .guide-body,
+  #guide-intro-modal .guide-list,
+  #guide-manual-modal .guide-list {
+    padding: 16px 14px !important;
+  }
+  #guide-intro-modal .guide-actions,
+  #guide-manual-modal .guide-actions {
+    margin-top: 10px !important;
+  }
+}
+
