@@ -115,7 +115,7 @@
       box-shadow: 0 6px 15px rgba(31,42,68,.2);
     }
   
-    /* V1-34 privacy confirm button */
+    /* V1-35 privacy confirm button */
     #privacy-back-app-link.privacy-confirm-button {
       width: min(360px, 100%);
       min-height: 52px;
@@ -267,76 +267,32 @@
 
 
 
-
 <script>
-(function(){
-  var returning = false;
-  var guardPushed = false;
-
-  function markPrivacyReturn(){
-    try{ sessionStorage.setItem('oai_returned_from_privacy','1'); }catch(e){}
-  }
-
-  function returnToApp(source){
-    if(returning) return;
-    returning = true;
-    markPrivacyReturn();
-
-    try{
-      var st = history.state || {};
-      if(guardPushed && st && st.oai_privacy_guard && window.history && window.history.length > 2){
-        // 확인 버튼/X처럼 guard 위에서 닫을 때: guard + privacy root 두 칸을 빠져 index trap으로 복귀
-        window.history.go(-2);
-        return;
-      }
-      if(guardPushed && st && st.oai_privacy_root && window.history && window.history.length > 1){
-        // 기기 뒤로가기로 이미 guard를 한 칸 소비해 privacy root에 온 경우: 한 칸만 더 빠져 index trap으로 복귀
-        window.history.back();
-        return;
-      }
-    }catch(e){}
-
-    try{
-      if(window.history && window.history.length > 1){
-        window.history.back();
-        return;
-      }
-    }catch(e){}
-    window.location.href = 'index.html';
-  }
-
-  window.privacyCloseToApp = function(){
-    returnToApp('button');
-  };
-
+function markPrivacyReturn(){
+  try{ sessionStorage.setItem('oai_returned_from_privacy','1'); }catch(e){}
+  try{ localStorage.setItem('oai_returned_from_privacy','1'); }catch(e){}
+}
+function privacyCloseToApp(){
+  markPrivacyReturn();
   try{
-    if(window.history && window.history.pushState){
-      window.history.replaceState({oai_privacy_root:true}, '', location.href);
-      window.history.pushState({oai_privacy_guard:true}, '', location.href);
-      guardPushed = true;
+    if(window.history && window.history.length > 1){
+      window.history.back();
+      return;
     }
   }catch(e){}
-
-  window.addEventListener('popstate', function(){
-    returnToApp('hardware-back');
-  }, {capture:true});
-
+  window.location.href = 'index.html';
+}
+(function(){
   var back = document.getElementById('privacy-back-app-link');
   if(back){
     back.addEventListener('click', function(e){
       e.preventDefault();
-      returnToApp('button');
+      privacyCloseToApp();
     }, {capture:true});
   }
-
-  var closeTargets = document.querySelectorAll('[data-privacy-close], .privacy-close, #privacy-close-btn');
-  closeTargets.forEach(function(el){
-    el.addEventListener('click', function(e){
-      e.preventDefault();
-      returnToApp('close');
-    }, {capture:true});
-  });
 })();
+window.addEventListener('pagehide', markPrivacyReturn, {capture:true});
+window.addEventListener('beforeunload', markPrivacyReturn, {capture:true});
 </script>
 
 </body>
