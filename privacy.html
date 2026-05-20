@@ -115,7 +115,7 @@
       box-shadow: 0 6px 15px rgba(31,42,68,.2);
     }
   
-    /* V1-33 privacy confirm button */
+    /* V1-34 privacy confirm button */
     #privacy-back-app-link.privacy-confirm-button {
       width: min(360px, 100%);
       min-height: 52px;
@@ -267,6 +267,7 @@
 
 
 
+
 <script>
 (function(){
   var returning = false;
@@ -276,16 +277,25 @@
     try{ sessionStorage.setItem('oai_returned_from_privacy','1'); }catch(e){}
   }
 
-  function returnToApp(){
+  function returnToApp(source){
     if(returning) return;
     returning = true;
     markPrivacyReturn();
+
     try{
-      if(guardPushed && window.history && window.history.length > 2){
+      var st = history.state || {};
+      if(guardPushed && st && st.oai_privacy_guard && window.history && window.history.length > 2){
+        // 확인 버튼/X처럼 guard 위에서 닫을 때: guard + privacy root 두 칸을 빠져 index trap으로 복귀
         window.history.go(-2);
         return;
       }
+      if(guardPushed && st && st.oai_privacy_root && window.history && window.history.length > 1){
+        // 기기 뒤로가기로 이미 guard를 한 칸 소비해 privacy root에 온 경우: 한 칸만 더 빠져 index trap으로 복귀
+        window.history.back();
+        return;
+      }
     }catch(e){}
+
     try{
       if(window.history && window.history.length > 1){
         window.history.back();
@@ -296,7 +306,7 @@
   }
 
   window.privacyCloseToApp = function(){
-    returnToApp();
+    returnToApp('button');
   };
 
   try{
@@ -308,14 +318,14 @@
   }catch(e){}
 
   window.addEventListener('popstate', function(){
-    returnToApp();
+    returnToApp('hardware-back');
   }, {capture:true});
 
   var back = document.getElementById('privacy-back-app-link');
   if(back){
     back.addEventListener('click', function(e){
       e.preventDefault();
-      returnToApp();
+      returnToApp('button');
     }, {capture:true});
   }
 
@@ -323,7 +333,7 @@
   closeTargets.forEach(function(el){
     el.addEventListener('click', function(e){
       e.preventDefault();
-      returnToApp();
+      returnToApp('close');
     }, {capture:true});
   });
 })();
