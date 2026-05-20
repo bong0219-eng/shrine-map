@@ -242,7 +242,7 @@ body > header{display:none!important;visibility:hidden!important;height:0!import
 
 html.oai-dio-external-stabilize *,
 html.oai-dio-external-return *{transition:none!important;animation:none!important;scroll-behavior:auto!important;}
-/* V3-S: 부모 앱에서 복귀 상태를 복원하므로 iframe 자체 전체 덮개는 만들지 않는다. */
+/* V3-S-1: 부모 앱에서 복귀 상태를 복원하므로 iframe 자체 전체 덮개는 만들지 않는다. */
 
 </style>
 <style id="oai-diocese-tab-standard-20260504">
@@ -2054,7 +2054,7 @@ window.addEventListener('pageshow',function(){
     var state=window.getDioceseReturnState(source||'link', extra || {});
     try{ sessionStorage.setItem('oai_diocese_last_return_state', JSON.stringify(state)); localStorage.setItem('oai_diocese_last_return_state', JSON.stringify(state)); }catch(e){}
     if(window.parent && window.parent!==window){
-      // V3-S: iframe 내부 클릭은 부모의 지연 이동에 맡기지 않고, 클릭 흐름 안에서 top을 즉시 이동한다.
+      // V3-S-1: iframe 내부 클릭은 부모의 지연 이동에 맡기지 않고, 클릭 흐름 안에서 top을 즉시 이동한다.
       // 이렇게 해야 웹페이지 카테고리처럼 Android/PWA에서도 외부 교구 홈페이지가 바로 열린다.
       try{
         if(typeof window.parent.prepareExternalUrl === 'function') url = window.parent.prepareExternalUrl(url) || url;

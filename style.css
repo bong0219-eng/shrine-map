@@ -141,7 +141,7 @@
   --bg-color:   #f7f0e5;
   /* 커버 화면 비율 기준 보호 영역 */
   --cover-top-safe: calc(env(safe-area-inset-top, 0px) + clamp(60px, calc(var(--cover-vh, 1vh) * 9.2), 82px));
-  --cover-bottom-safe: calc(env(safe-area-inset-bottom, 0px) + clamp(8px, calc(var(--cover-vh, 1vh) * 1.4), 16px));
+  --cover-bottom-safe: calc(env(safe-area-inset-bottom, 0px) + clamp(52px, calc(var(--cover-vh, 1vh) * 7.6), 72px));
   --cover-h:    calc(var(--cover-vh, 1vh) * 100);
   --text-main:  #3e362e;
   --text-sub:   #7a7065;
@@ -2260,9 +2260,6 @@ html.oai-cover-booting #cover > * {
   outline: none;
   box-sizing: border-box;
 }
-#cover .cover-grid > #cc-1.cover-card-wide {
-  grid-column: 1 / -1 !important;
-}
 .cover-card.app-pressing { transform: translateY(8px) scale(.974); box-shadow: 0 2px 3px rgba(0,0,0,.02); filter: brightness(.94); transition: transform .16s, filter .16s; }
 
 .cover-icon-wrap {
@@ -2317,27 +2314,22 @@ html.oai-cover-booting #cover > * {
   width: 100%;
   margin: 0;
   display: flex;
-  align-items: center;
-  justify-content: stretch;
-  gap: 6px;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 8px;
   z-index: 10;
   flex-shrink: 0;
-  height: 36px;
-  min-height: 36px;
-  max-height: 36px;
 }
 html.app-active #cover-action-row { display: none; }
 
 #cover-update-box {
-  position: relative;
   display: flex;
   flex-direction: column;
-  align-items: stretch;
+  align-items: flex-start;
   justify-content: center;
-  flex: 1 1 0;
-  min-width: 0;
-  max-width: none;
-  height: 100%;
+  flex: 0 0 108px;
+  min-width: 108px;
+  max-width: 108px;
 }
 #cover-update-btn {
   width: 100%;
@@ -2346,81 +2338,30 @@ html.app-active #cover-action-row { display: none; }
   background: rgba(31,42,68,.10);
   color: #1f2a44;
   font-family: inherit;
-  font-size: calc(10.4px * var(--app-font-scale));
+  font-size: calc(11.5px * var(--app-font-scale));
   font-weight: 900;
   line-height: 1;
   min-height: 36px;
   height: 36px;
-  padding: 0 7px;
+  padding: 0 12px;
   box-shadow: inset 0 0 0 1px rgba(31,42,68,.12);
   cursor: pointer;
   user-select: none;
   -webkit-user-select: none;
   -webkit-touch-callout: none;
   touch-action: manipulation;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 #cover-update-box.update-needed #cover-update-btn { background: #dc2626; color: #fff; box-shadow: 0 10px 24px rgba(220,38,38,.22); }
 #cover-update-btn:active { transform: scale(.985); }
 #cover-update-btn:disabled { opacity: .62; }
-#cover-update-hint {
-  display: none;
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: calc(100% + 4px);
-  margin-top: 0;
-  padding-left: 2px;
-  color: #dc2626;
-  font-size: 9.5px;
-  font-weight: 800;
-  line-height: 1.15;
-  white-space: normal;
-  max-width: 100%;
-  word-break: keep-all;
-  pointer-events: none;
-}
+#cover-update-hint { display: none; margin-top: 4px; padding-left: 2px; color: #dc2626; font-size: 9.5px; font-weight: 800; line-height: 1.15; white-space: normal; max-width: 100%; word-break: keep-all; }
 #cover-update-box.update-needed #cover-update-hint { display: block; }
-
-#cover #privacy-cover-link {
-  flex: 1 1 0;
-  align-self: center;
-  min-width: 0;
-  max-width: none;
-  width: 0;
-  min-height: 36px;
-  height: 36px;
-  padding: 0 6px;
-  border-radius: 999px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  text-decoration: none;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  color: #475569;
-  background: rgba(255,255,255,.62);
-  box-shadow: inset 0 0 0 1px rgba(31,42,68,.10);
-  font-family: inherit;
-  font-size: calc(9.6px * var(--app-font-scale));
-  font-weight: 850;
-  line-height: 1;
-  -webkit-tap-highlight-color: transparent;
-  touch-action: manipulation;
-}
-#cover #privacy-cover-link:active { transform: scale(.985); opacity: .82; }
 
 #cover #qna-cover-btn {
   position: relative;
   right: auto;
   bottom: auto;
-  flex: 1 1 0;
-  min-width: 0;
-  max-width: none;
-  width: 0;
+  flex-shrink: 0;
   align-self: center;
   margin: 0;
   z-index: 10;
@@ -2428,25 +2369,19 @@ html.app-active #cover-action-row { display: none; }
   align-items: center;
   justify-content: center;
   min-height: 36px;
-  height: 36px;
-  padding: 0 7px;
-  font-size: calc(10.4px * var(--app-font-scale));
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  padding: 0 13px;
+  font-size: calc(11.5px * var(--app-font-scale));
 }
 
 /* 커버 하단 고정 요소 */
 #cover-bottom-note {
-  position: relative;
-  left: auto;
-  right: auto;
-  bottom: auto;
-  flex: 0 0 auto;
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  flex: none;
   width: 100%;
   max-width: 720px;
-  margin: clamp(8px, calc(var(--cover-vh, 1vh) * 1.2), 14px) auto 0;
-  padding: 0 22px 0 60px;
+  margin: 0 auto;
+  padding: 3px 22px calc(7px + env(safe-area-inset-bottom, 0px)) 60px;
   text-align: center;
   font-size: clamp(7.8px, calc(var(--cover-vh, 1vh) * 1.1), 9px);
   font-weight: 500;
@@ -2553,6 +2488,40 @@ html.app-active #cover-guide-btn { display: none; }
   transition: opacity .16s, transform .16s;
 }
 #oai-cover-exit-toast.show { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+
+/* PWA 설치 버튼 */
+#pwa-install-btn {
+  display: none;
+  width: calc(100vw - 32px);
+  max-width: 380px;
+  margin: 0;
+  padding: 0 20px;
+  height: 72px;
+  background: linear-gradient(135deg, #ff6b35 0%, #f7931e 40%, #ffcc02 100%);
+  color: #1a0a00;
+  border: 1px solid rgba(255,255,255,.66);
+  border-radius: 22px;
+  font-size: 18px;
+  font-weight: 900;
+  font-family: inherit;
+  letter-spacing: -.3px;
+  cursor: pointer;
+  box-shadow: 0 0 0 100vmax rgba(244,239,228,.34), 0 6px 0 rgba(180,80,0,.35), 0 12px 32px rgba(255,107,53,.55), 0 4px 12px rgba(255,107,53,.30);
+  text-align: center;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  z-index: 10020;
+  transform: translate(-50%, -50%);
+  overflow: hidden;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  -webkit-tap-highlight-color: transparent;
+  animation: pwa-install-bounce 2s ease-in-out infinite;
+}
+@media (display-mode: standalone) { #pwa-install-btn { display: none; } }
+html.app-active #pwa-install-btn { display: none; }
 /* 빠른 메뉴 */
 .mass-quick-panel {
   width: min(640px, calc(100vw - 14px));
@@ -2627,7 +2596,7 @@ html.app-active #cover-guide-btn { display: none; }
 .guide-mini-list dd { margin: 0; color: #5f6675; font-weight: 600; word-break: keep-all; }
 .guide-ok { flex: 0 0 auto; width: 100%; margin-top: 12px; min-height: 40px; }
 
-/* V3-S: 즐겨찾기 초기화 1회 안내 배너 */
+/* V3-S-1: 즐겨찾기 초기화 1회 안내 배너 */
 #cover .favorites-reset-banner {
   position: fixed;
   left: max(20px, calc(env(safe-area-inset-left, 0px) + 20px));
@@ -2671,6 +2640,121 @@ html.app-active #cover-guide-btn { display: none; }
   box-shadow: 0 7px 16px rgba(31,42,68,.20);
 }
 #cover #favorites-reset-notice-ok:active { transform: scale(.985); }
+
+/* iOS Safari 설치 안내 */
+#cover .ios-safari-banner { display: none; }
+html.ios-kakao-inapp #cover .ios-safari-banner {
+  position: fixed;
+  left: max(18px, calc(env(safe-area-inset-left, 0px) + 18px));
+  right: max(18px, calc(env(safe-area-inset-right, 0px) + 18px));
+  top: 50%;
+  transform: translateY(-38%);
+  z-index: 520;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+  gap: 12px;
+  width: auto;
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 24px 18px 20px;
+  border: 3px solid rgba(212,170,106,.96);
+  border-radius: 28px;
+  background: linear-gradient(180deg, #ffffff, #fffaf1);
+  color: #1f2a44;
+  box-shadow: 0 30px 70px rgba(14,21,53,.34), 0 0 0 1px rgba(31,42,68,.08);
+  box-sizing: border-box;
+  pointer-events: auto;
+}
+#cover .ios-safari-banner[hidden],
+html.ios-kakao-inapp #cover .ios-safari-banner[hidden] { display: none; }
+#cover .ios-safari-banner-x {
+  position: absolute;
+  top: 10px; right: 10px;
+  width: 40px; height: 40px;
+  border: 0; border-radius: 50%;
+  background: rgba(31,42,68,.10);
+  color: #1f2a44;
+  font-family: inherit;
+  font-size: 28px; font-weight: 900; line-height: 1;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 12px rgba(31,42,68,.10);
+}
+#cover .ios-safari-banner-text {
+  min-width: 0; display: flex; flex-direction: column; align-items: center;
+  gap: 8px; text-align: center; line-height: 1.28; padding: 8px 36px 0;
+}
+#cover .ios-safari-banner-text strong { font-size: calc(24px * var(--app-font-scale)); font-weight: 900; letter-spacing: -.04em; word-break: keep-all; }
+#cover .ios-safari-banner-text span { font-size: calc(16px * var(--app-font-scale)); font-weight: 850; color: rgba(31,42,68,.72); word-break: keep-all; }
+#cover #ios-kakao-safari-help {
+  display: flex; align-items: center; justify-content: center;
+  width: 100%; min-height: 62px; padding: 0 18px;
+  border: 0; border-radius: 20px;
+  background: linear-gradient(135deg, #1f2a44, #31446c);
+  border: 1.5px solid rgba(212,170,106,.82);
+  color: #fff; font-family: inherit;
+  font-size: calc(21px * var(--app-font-scale)); font-weight: 900;
+  line-height: 1.18; white-space: normal;
+  box-shadow: 0 12px 24px rgba(31,42,68,.26);
+}
+#cover #ios-kakao-safari-help:active, #cover .ios-safari-banner-x:active { transform: scale(.985); }
+html:not(.ios-device) #ios-kakao-safari-banner,
+html:not(.ios-device) #ios-safari-guide-modal { display: none; }
+
+.ios-safari-guide-panel {
+  display: flex;
+  flex-direction: column;
+  width: min(94vw, 520px);
+  max-height: min(88dvh, 820px);
+  background: linear-gradient(180deg, #172347, #0e1535);
+  border: 3px solid #d4aa6a;
+  box-shadow: 0 34px 90px rgba(0,0,0,.50), 0 0 0 1px rgba(255,255,255,.10) inset;
+  color: #fffaf1;
+  padding: 20px 16px 16px;
+}
+.ios-safari-guide-panel .guide-badge { background: #fffaf1; color: #1f2a44; border: 1.5px solid #d4aa6a; flex: 0 0 auto; }
+.ios-safari-guide-panel h2 { color: #fffaf1; margin-bottom: 6px; padding-right: 24px; flex: 0 0 auto; }
+.ios-safari-guide-panel .guide-lead {
+  display: block; position: relative; z-index: 2;
+  margin: 0 0 12px; padding: 8px 10px;
+  border-radius: 12px; background: rgba(255,250,241,.10);
+  color: #fff4de; font-weight: 850; line-height: 1.45;
+  font-size: 13px; box-sizing: border-box; flex: 0 0 auto;
+}
+.ios-safari-guide-panel .guide-actions { flex: 0 0 auto; margin-top: 12px; padding-top: 8px; border-top: 1px solid rgba(212,170,106,.45); }
+.ios-safari-guide-panel .guide-primary { background: #fffaf1; color: #1f2a44; border: 2px solid #d4aa6a; box-shadow: 0 10px 22px rgba(0,0,0,.26); }
+#ios-safari-guide-modal .guide-backdrop { background: rgba(14,21,53,.76); backdrop-filter: blur(4px); }
+#ios-safari-guide-modal .guide-x { background: #fffaf1; color: #111; border: 2px solid #111; box-shadow: 0 8px 18px rgba(0,0,0,.24); display: flex; align-items: center; justify-content: center; }
+.ios-safari-scroll { flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; padding: 0 2px 8px; margin-top: 2px; box-sizing: border-box; }
+.ios-safari-scroll .guide-lead { margin: 0 0 12px; }
+.ios-safari-scroll .ios-safari-steps { overflow: visible; flex: 0 0 auto; min-height: auto; padding: 0 0 2px; }
+.ios-safari-steps { flex: 1 1 auto; min-height: 0; margin-top: 0; padding: 2px 2px 8px; gap: 10px; overflow: auto; -webkit-overflow-scrolling: touch; display: flex; flex-direction: column; }
+.ios-safari-step {
+  display: grid;
+  grid-template-columns: 26px 1fr;
+  grid-template-rows: auto auto;
+  align-items: start;
+  gap: 7px 9px;
+  padding: 10px 11px;
+  border-radius: 16px;
+  background: #fffaf1;
+  border: 2px solid rgba(212,170,106,.70);
+  box-shadow: 0 8px 20px rgba(0,0,0,.13);
+}
+.ios-safari-step b { display: flex; align-items: center; justify-content: center; width: 26px; height: 26px; border-radius: 50%; background: #1f2a44; color: #fff; font-size: 13px; line-height: 1; }
+.ios-safari-step span { min-width: 0; font-size: 13px; font-weight: 800; line-height: 1.36; color: #3e362e; word-break: keep-all; }
+.ios-safari-step img { grid-column: 1 / 3; justify-self: center; display: block; max-width: 100%; max-height: 180px; object-fit: contain; border-radius: 14px; background: #fffaf1; box-shadow: 0 6px 18px rgba(31,42,68,.10); }
+.ios-safari-shot { grid-column: 1 / 3; justify-self: center; position: relative; display: block; max-width: 100%; border-radius: 14px; background: #fffaf1; box-shadow: 0 6px 18px rgba(31,42,68,.10); overflow: hidden; }
+.ios-safari-shot img { grid-column: auto; width: 100%; height: auto; max-width: 100%; border-radius: 14px; box-shadow: none; background: transparent; }
+.ios-gold-highlight { position: absolute; right: 2.6%; top: 8%; width: 24.5%; height: 84%; border: 4px solid #d4aa6a; border-radius: 28px; box-shadow: 0 0 0 1px rgba(255,255,255,.75) inset, 0 2px 8px rgba(31,42,68,.16); pointer-events: none; box-sizing: border-box; }
+.ios-safari-step:nth-child(1) img { max-height: 150px; }
+.ios-safari-step:nth-child(2) img { max-height: 210px; }
+.ios-safari-step:nth-child(3) img { max-height: 260px; }
+.ios-safari-step:nth-child(4) img { max-height: 225px; }
+.ios-safari-step:nth-child(5) img { max-height: 245px; }
+.ios-safari-step b { width: 26px; height: 26px; font-size: 13px; }
+.ios-safari-step { grid-template-columns: 26px 1fr; }
 
 /* ============================================================
    8. 카테고리 진입 베일 / 성능 최적화
@@ -2738,6 +2822,17 @@ html.oai-stability-veil *, html.oai-external-return-freeze * { transition: none;
 html.oai-stability-veil::before { content: ""; position: fixed; inset: 0; z-index: 2147483000; background: #f5f0e8; pointer-events: none; opacity: 1; animation: oaiStabilityVeilIn .12s ease-out both; }
 html.oai-stability-veil.oai-stability-veil-releasing::before { animation: oaiStabilityVeilOut .18s ease-in both; }
 html.oai-stability-veil::after { content: ""; position: fixed; left: 50%; top: 50%; width: 28px; height: 28px; margin: -14px 0 0 -14px; border-radius: 50%; border: 3px solid rgba(31,42,68,.16); border-top-color: #1f2a44; z-index: 2147483001; pointer-events: none; animation: oaiStabilitySpin .75s linear infinite; }
+html.oai-stability-veil[data-oai-stability-reason*="refresh"]::after,
+html.oai-stability-veil[data-oai-stability-reason*="reload"]::after,
+html.oai-stability-veil[data-oai-stability-reason*="background"]::after {
+  width: 64px;
+  height: 80px;
+  margin: -40px 0 0 -32px;
+  border: 0;
+  border-radius: 0;
+  background: url('./refresh-logo.png?v=V3-S-1') center / contain no-repeat;
+  animation: none;
+}
 @keyframes oaiStabilityVeilIn { from { opacity: 0; } to { opacity: 1; } }
 @keyframes oaiStabilityVeilOut { from { opacity: 1; } to { opacity: 0; } }
 @keyframes oaiStabilitySpin { to { transform: rotate(360deg); } }
@@ -2971,8 +3066,7 @@ html.ios-device #cover .cover-name { font-size: calc(14px * var(--app-font-scale
 html.ios-device #cover #cover-action-row { margin-top: 0; }
 html.ios-device #cover #cover-update-btn { min-height: 34px; height: 34px; font-size: calc(10.6px * var(--app-font-scale)); padding-left: 12px; padding-right: 12px; }
 html.ios-device #cover #qna-cover-btn { min-height: 34px; height: 34px; font-size: calc(10.6px * var(--app-font-scale)); padding-left: 12px; padding-right: 12px; }
-html.ios-device #cover #privacy-cover-link { min-height: 34px; height: 34px; font-size: calc(9.8px * var(--app-font-scale)); padding-left: 8px; padding-right: 8px; }
-html.ios-device #cover #cover-bottom-note { padding: 0 16px; font-size: 8.35px; line-height: 1.32; letter-spacing: -.045em; max-width: 430px; }
+html.ios-device #cover #cover-bottom-note { padding: 3px 16px calc(8px + env(safe-area-inset-bottom, 0px)) 16px; font-size: 8.35px; line-height: 1.32; letter-spacing: -.045em; max-width: 430px; }
 html.ios-device #prayer-bar-ttl,
 html.ios-device #prayer-bar .module-bar-title,
 html.ios-device #web-view .module-bar-title,
@@ -3102,7 +3196,7 @@ html.oai-font-global #region-body .dio-hd { font-size: calc(17px * var(--app-inn
   .mass-quick-panel .guide-badge { font-size: calc(18px * var(--app-font-scale)); min-height: 40px; margin-bottom: 16px; }
 }
 @media (max-height: 650px) {
-  #cover { --cover-top-safe: calc(env(safe-area-inset-top, 0px) + clamp(58px, calc(var(--cover-vh, 1vh) * 9.4), 74px)); --cover-bottom-safe: calc(env(safe-area-inset-bottom, 0px) + clamp(8px, calc(var(--cover-vh, 1vh) * 1.3), 15px)); padding-top: var(--cover-top-safe); padding-bottom: var(--cover-bottom-safe); }
+  #cover { --cover-top-safe: calc(env(safe-area-inset-top, 0px) + clamp(58px, calc(var(--cover-vh, 1vh) * 9.4), 74px)); --cover-bottom-safe: calc(env(safe-area-inset-bottom, 0px) + clamp(48px, calc(var(--cover-vh, 1vh) * 7.2), 64px)); padding-top: var(--cover-top-safe); padding-bottom: var(--cover-bottom-safe); }
   #cover .cover-header { padding-bottom: 12px; }
   #cover .cover-title { font-size: clamp(18px, 5vw, 24px); }
   #cover .cover-subtitle { font-size: 10px; }
@@ -3111,8 +3205,6 @@ html.oai-font-global #region-body .dio-hd { font-size: calc(17px * var(--app-inn
   #cover .cover-emoji { font-size: 22px; }
   #cover .cover-name { font-size: 12px; }
   #cover #qna-cover-btn { min-height: 34px; font-size: calc(10.5px * var(--app-font-scale)); }
-#cover #cover-action-row { height: 32px; min-height: 32px; max-height: 32px; }
-#cover #privacy-cover-link { min-height: 32px; height: 32px; font-size: calc(9.2px * var(--app-font-scale)); padding: 0 7px; }
   #cover #cover-update-btn { min-height: 32px; height: 32px; font-size: calc(10.2px * var(--app-font-scale)); padding: 0 10px; }
   #cover #cover-update-hint { font-size: 8.5px; }
   #cover #cover-guide-btn { height: 34px; min-height: 34px; font-size: calc(10.5px * var(--app-font-scale)); padding: 0 10px; }
@@ -3332,9 +3424,19 @@ html.oai-font-global .trail-nm,html.oai-font-global .trail-sh-name{font-size:cal
 html.oai-font-global .trail-reg,html.oai-font-global .trail-url,html.oai-font-global .trail-sh-sub,html.oai-font-global .trail-sh-url{font-size:calc(12px * var(--app-inner-font-scale,1))!important}
 .lv-parish-count,.oai-parish-count{font-size:calc(8px * var(--app-inner-font-scale,1))!important;font-weight:400!important;letter-spacing:0;white-space:nowrap;gap:0!important}
 .lv-parish-count b,.oai-parish-count b{font-weight:400!important;margin:0!important}
+   OAI 표준화: 주요기도문·웹사이트·순례길·관구교구 공통 규격
+   - 기능/데이터/색상 변경 없음
+   - 높이, 제목/서브 글자, 탭/버튼 높이와 디자인만 통일
+========================================================= */
 /* ============================================================
    14. 기타 누락 블록
    ============================================================ */
+@keyframes pwa-install-bounce {
+  0%,100% { transform: translate(-50%,-50%); box-shadow: 0 0 0 100vmax rgba(244,239,228,.34), 0 6px 0 rgba(180,80,0,.35), 0 12px 32px rgba(255,107,53,.55), 0 4px 12px rgba(255,107,53,.30); }
+  45%      { transform: translate(-50%,calc(-50% - 5px)); box-shadow: 0 0 0 100vmax rgba(244,239,228,.34), 0 11px 0 rgba(180,80,0,.20), 0 20px 44px rgba(255,107,53,.65), 0 8px 18px rgba(255,107,53,.34); }
+  55%      { transform: translate(-50%,calc(-50% - 5px)); box-shadow: 0 0 0 100vmax rgba(244,239,228,.34), 0 11px 0 rgba(180,80,0,.20), 0 20px 44px rgba(255,107,53,.65), 0 8px 18px rgba(255,107,53,.34); }
+}
+.cover-card-wide{grid-column:1/-1}
 @keyframes oaiSwipeSoftFlash{0%{opacity:1}100%{opacity:1}}
 .route-restore-marker{background:var(--gold, #d4aa6a);border-color:var(--gold2, #b8965a)!important}
 @keyframes oaiFinalSwipeFlash{0%{opacity:1}100%{opacity:1}}
@@ -3353,7 +3455,7 @@ html.ios-device #app #sheet-list .sheet-hd { bottom: 0; }
 /* 키보드 오픈 시 sheet 위치 보정 */
 html.kb-open .sheet.open { bottom: 0; }
 
-/* V3-S: 성당 글로시 슬레이트 그레이 · 피정의집 세이지 그린 재조정 */
+/* V3-S-1: 성당 글로시 슬레이트 그레이 · 피정의집 세이지 그린 재조정 */
 html.parish-mode #srch-modal #sm-tab-bar .sm-tab.active{background:linear-gradient(135deg,#374151,#4B5563)!important;color:#fff!important;border-color:transparent!important}
 html.retreat-mode #srch-modal #sm-tab-bar .sm-tab.active{background:linear-gradient(135deg,#3F6F5A,#4F846C)!important;color:#fff!important;border-color:transparent!important}
 html.parish-mode .nearby-num{background:#4B5563!important;color:#fff!important}
@@ -3362,7 +3464,7 @@ html.parish-mode .nearby-dist,html.parish-mode .region-list-hd,html.parish-mode 
 html.retreat-mode .nearby-dist,html.retreat-mode .region-list-hd,html.retreat-mode .ric-lbl{color:#4F846C!important}
 
 /* ============================================================
-   V3-S 색상 정리 — 성지 고유색 유지 / 성당 그레이 / 피정의집 세이지
+   V3-S-1 색상 정리 — 성지 고유색 유지 / 성당 그레이 / 피정의집 세이지
    - 기능·HTML·JS 변경 없음
    - 성지의 기존 고유색(red/green/blue)은 건드리지 않음
    - 모든 목록 이름은 검정으로 통일
@@ -3532,7 +3634,7 @@ html.retreat-mode #srch-modal #sm-tab-bar .sm-tab.active{
 
 
 /* ============================================================
-   V3-S 색상 보정 — 목록명 검정 / 제목 흰색 / 검색 탭바 흰색 / 번호색 통일
+   V3-S-1 색상 보정 — 목록명 검정 / 제목 흰색 / 검색 탭바 흰색 / 번호색 통일
    - 기능·HTML·JS 변경 없음
    - 성지 고유색(red/green/blue)은 유지
    ============================================================ */
@@ -3656,7 +3758,7 @@ html.retreat-mode .sm-fb.on{
 
 
 /* ============================================================
-   V3-S 최종 색상 보정
+   V3-S-1 최종 색상 보정
    - 성지 고유색은 유지하되 상단 활성 탭만 성지 카테고리색으로 통일
    - 성당 내주변 번호색은 성당 카테고리색으로 통일
    - 피정의집 카테고리색과 내주변 번호색을 동일 기준으로 통일
@@ -3778,7 +3880,7 @@ html.retreat-mode .sm-fb.on{
 
 
 /* ============================================================
-   V3-S 현재 위치/피정의집 색상 재정리
+   V3-S-1 현재 위치/피정의집 색상 재정리
    - 피정의집 카테고리색 = 내주변 번호색(#3F6F5A)
    - 현재 위치는 출발지 라벨에 표시
    ============================================================ */
@@ -3835,7 +3937,7 @@ html.retreat-mode .ic-type-badge{
 
 
 /* ============================================================
-   V3-S 인포카드 글자 + 피정의집 글로시 세이지 최종 보정
+   V3-S-1 인포카드 글자 + 피정의집 글로시 세이지 최종 보정
    - 기능/JS/뒤로가기/보호창/외부복귀 변경 없음
    - 인포카드 텍스트 1px 확대
    - 피정의집 카테고리 색을 파스텔이 아닌 고급 세이지 그린으로 통일
@@ -3939,7 +4041,7 @@ html.retreat-mode .sm-fb.on{
 
 
 /* ============================================================
-   V3-S 럭셔리 색상 최종 보강
+   V3-S-1 럭셔리 색상 최종 보강
    - 성당: 글로시 차콜 그레이
    - 피정의집: 글로시 올리브 세이지
    - 성지 고유색은 변경하지 않음
@@ -4056,7 +4158,7 @@ html.retreat-mode #srch-modal #sm-tab-bar .sm-tab.active{
 
 
 /* ============================================================
-   V3-S 최종 색상 보정
+   V3-S-1 최종 색상 보정
    - 성당: 글로시 차콜 그레이
    - 피정의집: 글로시 올리브 세이지
    - 피정의집 찾기 목록 앞 점: 빨간색
@@ -4128,813 +4230,3 @@ html.retreat-mode #srch-modal #sm-tab-bar .sm-tab.active{
   color:#fff!important;
   border-color:transparent!important;
 }
-
-/* ============================================================
-   Google Play 커버 메뉴 + 하단 단일 새로고침 (V1-9)
-   ============================================================ */
-#cover #oai-build-marker,
-#oai-build-marker {
-  display: none !important;
-  visibility: hidden !important;
-  opacity: 0 !important;
-  width: 0 !important;
-  height: 0 !important;
-  min-width: 0 !important;
-  padding: 0 !important;
-  overflow: hidden !important;
-  pointer-events: none !important;
-}
-
-#cover-font-controls {
-  position: absolute;
-  right: 12px;
-  top: calc(env(safe-area-inset-top, 0px) + 12px);
-  z-index: 80;
-  display: inline-flex;
-  align-items: center;
-  gap: 0;
-  background: #fffbf2;
-  border: 1.5px solid #ddd5c8;
-  border-radius: 16px;
-  padding: 2px 3px;
-  height: 38px;
-  min-height: 38px;
-  max-width: min(150px, calc(50vw - 18px));
-  box-sizing: border-box;
-  overflow: hidden;
-  box-shadow: 0 6px 14px rgba(31,42,68,.10);
-}
-
-#cover #cover-menu-btn.cover-menu-btn {
-  position: absolute;
-  left: 12px;
-  top: calc(env(safe-area-inset-top, 0px) + 12px);
-  z-index: 82;
-  height: 38px;
-  min-height: 38px;
-  max-width: min(150px, calc(50vw - 18px));
-  padding: 0 14px;
-  border: 1.5px solid rgba(31,42,68,.16);
-  border-radius: 16px;
-  background: #fffbf2;
-  color: #1f2a44;
-  font-family: inherit;
-  font-size: calc(12px * var(--app-font-scale));
-  font-weight: 900;
-  line-height: 1;
-  box-sizing: border-box;
-  box-shadow: 0 6px 14px rgba(31,42,68,.10);
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 7px;
-  white-space: nowrap;
-  overflow: hidden;
-}
-html.app-active #cover-menu-btn { display: none !important; }
-#cover #cover-menu-btn.cover-menu-btn:active { transform: scale(.985); }
-#cover #cover-menu-btn .cover-menu-label {
-  display: inline-flex;
-  align-items: center;
-  font-size: calc(12.8px * var(--app-font-scale));
-  font-weight: 900;
-  letter-spacing: -.02em;
-}
-#cover #cover-menu-btn .cover-menu-hamburger {
-  display: inline-flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 3px;
-  width: 16px;
-  height: 14px;
-  flex: 0 0 16px;
-}
-#cover #cover-menu-btn .cover-menu-hamburger span {
-  display: block;
-  width: 16px;
-  height: 2px;
-  border-radius: 2px;
-  background: #1f2a44;
-}
-
-#cover #cover-action-row.cover-action-single {
-  justify-content: flex-end;
-  height: 38px;
-  min-height: 38px;
-  max-height: 38px;
-  padding-right: 0;
-  box-sizing: border-box;
-}
-#cover #cover-action-row.cover-action-single #cover-update-box {
-  flex: 0 0 min(132px, 34vw);
-  max-width: min(132px, 34vw);
-  min-width: 108px;
-  height: 100%;
-  margin-left: auto;
-  box-sizing: border-box;
-}
-#cover .cover-refresh-main-btn {
-  width: 100%;
-  min-height: 38px;
-  height: 38px;
-  padding: 0 16px;
-  border-radius: 14px;
-  border: 1.5px solid rgba(31,42,68,.16);
-  background: linear-gradient(180deg, #ece7de 0%, #ddd6c9 100%);
-  color: #1f2a44;
-  font-size: calc(15px * var(--app-font-scale));
-  font-weight: 900;
-  letter-spacing: -.03em;
-  box-shadow: 0 6px 12px rgba(31,42,68,.08);
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-  box-sizing: border-box;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-#cover .cover-refresh-main-btn:active { transform: translateY(1px); }
-
-.cover-menu-modal {
-  position: fixed;
-  inset: 0;
-  z-index: 10020;
-  display: none;
-  align-items: flex-start;
-  justify-content: flex-start;
-  padding: calc(env(safe-area-inset-top, 0px) + 66px) 18px 18px;
-  box-sizing: border-box;
-}
-.cover-menu-modal.show { display: flex; }
-.cover-menu-backdrop {
-  position: absolute;
-  inset: 0;
-  background: rgba(15, 23, 42, .22);
-  backdrop-filter: blur(3px);
-  -webkit-backdrop-filter: blur(3px);
-}
-.cover-menu-panel {
-  position: relative;
-  width: min(330px, calc(100vw - 36px));
-  background: rgba(255, 253, 247, .98);
-  border: 1px solid rgba(183, 121, 31, .23);
-  border-radius: 22px;
-  box-shadow: 0 20px 42px rgba(15, 23, 42, .24);
-  padding: 16px 14px 14px;
-  box-sizing: border-box;
-  animation: coverMenuIn .16s ease-out;
-}
-@keyframes coverMenuIn {
-  from { opacity: 0; transform: translateY(-8px) scale(.985); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
-}
-.cover-menu-head {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 2px 2px 12px;
-}
-.cover-menu-title {
-  font-size: calc(18px * var(--app-font-scale));
-  font-weight: 900;
-  color: #111827;
-  letter-spacing: -.04em;
-}
-.cover-menu-subtitle {
-  margin-top: 4px;
-  font-size: calc(11px * var(--app-font-scale));
-  font-weight: 700;
-  color: #7c6f61;
-  letter-spacing: -.03em;
-}
-.cover-menu-close {
-  flex: 0 0 auto;
-  width: 36px;
-  height: 36px;
-  border-radius: 999px;
-  border: 1px solid rgba(31, 41, 55, .12);
-  background: #f3efe7;
-  color: #1f2937;
-  font-size: 24px;
-  font-weight: 900;
-  line-height: 1;
-  cursor: pointer;
-}
-.cover-menu-list {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 9px;
-}
-.cover-menu-item {
-  width: 100%;
-  min-height: 54px;
-  padding: 0 16px;
-  border-radius: 17px;
-  border: 1px solid rgba(31, 41, 55, .10);
-  background: #ffffff;
-  box-shadow: 0 4px 10px rgba(15, 23, 42, .05);
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  color: #1f2937;
-  text-decoration: none;
-  font-size: calc(15px * var(--app-font-scale));
-  font-weight: 900;
-  letter-spacing: -.035em;
-  box-sizing: border-box;
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-}
-.cover-menu-item:active { transform: translateY(1px); }
-.cover-menu-icon {
-  flex: 0 0 auto;
-  width: 34px;
-  height: 34px;
-  border-radius: 12px;
-  background: #f8f3ea;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 18px;
-}
-.cover-menu-text { flex: 1 1 auto; text-align: left; }
-
-@media (max-height: 740px) {
-  #cover-font-controls,
-  #cover #cover-menu-btn.cover-menu-btn { height: 34px; min-height: 34px; }
-  #cover-font-controls { max-width: min(138px, calc(50vw - 18px)); }
-  #cover #cover-menu-btn.cover-menu-btn { max-width: min(138px, calc(50vw - 18px)); padding: 0 12px; }
-  #cover #cover-menu-btn .cover-menu-label { font-size: calc(11.5px * var(--app-font-scale)); }
-  #cover #cover-action-row.cover-action-single { height: 34px; min-height: 34px; max-height: 34px; }
-  #cover #cover-action-row.cover-action-single #cover-update-box {
-    flex-basis: min(124px, 34vw);
-    max-width: min(124px, 34vw);
-    min-width: 104px;
-  }
-  #cover .cover-refresh-main-btn {
-    min-height: 34px;
-    height: 34px;
-    padding: 0 13px;
-    font-size: calc(14px * var(--app-font-scale));
-  }
-}
-
-@media (max-width: 390px) {
-  #cover-font-controls,
-  #cover #cover-menu-btn.cover-menu-btn { max-width: calc(50vw - 18px); }
-  #cover #cover-action-row.cover-action-single #cover-update-box {
-    flex-basis: min(122px, 35vw);
-    max-width: min(122px, 35vw);
-    min-width: 102px;
-  }
-}
-
-/* ============================================================
-   V1-9 커버 상단/하단 안정화
-   ============================================================ */
-#cover #oai-build-marker,
-#oai-build-marker {
-  position: fixed !important;
-  left: 12px !important;
-  bottom: calc(env(safe-area-inset-bottom, 0px) + 8px) !important;
-  z-index: 160 !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  min-width: 56px !important;
-  height: 22px !important;
-  padding: 0 9px !important;
-  border-radius: 999px !important;
-  background: rgba(31,42,68,.62) !important;
-  color: #fff !important;
-  font-size: 10.5px !important;
-  font-weight: 900 !important;
-  line-height: 1 !important;
-  letter-spacing: -.02em !important;
-  opacity: .9 !important;
-  visibility: visible !important;
-  pointer-events: none !important;
-  box-sizing: border-box !important;
-}
-
-#cover-font-controls {
-  right: 12px !important;
-  top: calc(env(safe-area-inset-top, 0px) + 12px) !important;
-  height: 38px !important;
-  min-height: 38px !important;
-  max-height: 38px !important;
-  max-width: min(142px, calc(50vw - 18px)) !important;
-  padding: 2px 3px !important;
-  border-radius: 16px !important;
-  box-sizing: border-box !important;
-  overflow: hidden !important;
-  white-space: nowrap !important;
-}
-#cover-font-controls .pr-font-btn,
-#cover-font-controls button {
-  flex: 0 0 34px !important;
-  width: 34px !important;
-  min-width: 34px !important;
-  max-width: 34px !important;
-  height: 30px !important;
-  min-height: 30px !important;
-  max-height: 30px !important;
-  padding: 0 !important;
-  overflow: hidden !important;
-  box-sizing: border-box !important;
-}
-#cover-font-controls #cover-sm-btn { font-size: 11px !important; }
-#cover-font-controls #cover-lg-btn { font-size: 22px !important; }
-#cover-font-controls .pr-font-divider { flex: 0 0 1px !important; }
-
-#cover #cover-menu-btn.cover-menu-btn {
-  left: 12px !important;
-  top: calc(env(safe-area-inset-top, 0px) + 12px) !important;
-  height: 38px !important;
-  min-height: 38px !important;
-  max-height: 38px !important;
-  width: auto !important;
-  max-width: min(142px, calc(50vw - 18px)) !important;
-  padding: 0 13px !important;
-  border-radius: 16px !important;
-  box-sizing: border-box !important;
-  overflow: hidden !important;
-  white-space: nowrap !important;
-}
-#cover #cover-menu-btn .cover-menu-label {
-  font-size: calc(12.5px * var(--app-font-scale)) !important;
-  line-height: 1 !important;
-  max-width: 50px !important;
-  overflow: hidden !important;
-}
-#cover #cover-menu-btn .cover-menu-hamburger {
-  width: 16px !important;
-  height: 14px !important;
-  flex: 0 0 16px !important;
-  gap: 3px !important;
-}
-#cover #cover-menu-btn .cover-menu-hamburger span {
-  width: 16px !important;
-  height: 2px !important;
-}
-
-/* 새로고침은 커버 카드 흐름에서 분리해 중앙 블록을 위로 밀지 않게 고정 */
-#cover #cover-action-row.cover-action-single {
-  position: fixed !important;
-  right: 38px !important;
-  bottom: calc(env(safe-area-inset-bottom, 0px) + 64px) !important;
-  z-index: 150 !important;
-  width: auto !important;
-  height: 34px !important;
-  min-height: 34px !important;
-  max-height: 34px !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: flex-end !important;
-  pointer-events: auto !important;
-  box-sizing: border-box !important;
-}
-#cover #cover-action-row.cover-action-single #cover-update-box {
-  flex: 0 0 auto !important;
-  width: clamp(104px, 24vw, 124px) !important;
-  min-width: 104px !important;
-  max-width: 124px !important;
-  height: 34px !important;
-  min-height: 34px !important;
-  max-height: 34px !important;
-  margin: 0 !important;
-  box-sizing: border-box !important;
-}
-#cover .cover-refresh-main-btn {
-  width: 100% !important;
-  min-height: 34px !important;
-  height: 34px !important;
-  max-height: 34px !important;
-  padding: 0 14px !important;
-  border-radius: 13px !important;
-  background: linear-gradient(180deg, #ece7de 0%, #ddd6c9 100%) !important;
-  color: #1f2a44 !important;
-  border: 1.5px solid rgba(31,42,68,.16) !important;
-  font-size: calc(15px * var(--app-font-scale)) !important;
-  font-weight: 900 !important;
-  line-height: 1 !important;
-  box-shadow: 0 6px 12px rgba(31,42,68,.08) !important;
-  box-sizing: border-box !important;
-  white-space: nowrap !important;
-  overflow: hidden !important;
-  text-overflow: ellipsis !important;
-}
-
-#cover-bottom-note {
-  position: fixed !important;
-  left: 50% !important;
-  right: auto !important;
-  bottom: calc(env(safe-area-inset-bottom, 0px) + 26px) !important;
-  transform: translateX(-50%) !important;
-  width: min(620px, calc(100vw - 36px)) !important;
-  max-width: min(620px, calc(100vw - 36px)) !important;
-  margin: 0 !important;
-  padding: 0 18px !important;
-  text-align: center !important;
-  box-sizing: border-box !important;
-}
-
-@media (max-height: 740px) {
-  #cover #cover-action-row.cover-action-single {
-    bottom: calc(env(safe-area-inset-bottom, 0px) + 58px) !important;
-    height: 32px !important;
-    min-height: 32px !important;
-    max-height: 32px !important;
-  }
-  #cover #cover-action-row.cover-action-single #cover-update-box {
-    width: clamp(98px, 25vw, 116px) !important;
-    min-width: 98px !important;
-    max-width: 116px !important;
-    height: 32px !important;
-    min-height: 32px !important;
-    max-height: 32px !important;
-  }
-  #cover .cover-refresh-main-btn {
-    min-height: 32px !important;
-    height: 32px !important;
-    font-size: calc(14px * var(--app-font-scale)) !important;
-    padding: 0 12px !important;
-  }
-  #cover-bottom-note {
-    bottom: calc(env(safe-area-inset-bottom, 0px) + 22px) !important;
-    width: min(620px, calc(100vw - 34px)) !important;
-    padding: 0 17px !important;
-  }
-}
-
-@media (max-width: 390px) {
-  #cover-font-controls,
-  #cover #cover-menu-btn.cover-menu-btn {
-    max-width: calc(50vw - 18px) !important;
-  }
-  #cover #cover-menu-btn.cover-menu-btn { padding: 0 11px !important; }
-  #cover #cover-menu-btn .cover-menu-label { font-size: calc(11.5px * var(--app-font-scale)) !important; }
-  #cover #cover-action-row.cover-action-single { right: 32px !important; }
-}
-
-/* ============================================================
-   V1-9 커버 버전/하단 정리 최종 보정
-   ============================================================ */
-#cover #oai-build-marker,
-#oai-build-marker {
-  display: none !important;
-  visibility: hidden !important;
-  opacity: 0 !important;
-  pointer-events: none !important;
-}
-
-#cover-main-block {
-  padding-bottom: 92px !important;
-  box-sizing: border-box !important;
-}
-
-#cover #cover-action-row.cover-action-single {
-  position: fixed !important;
-  right: 26px !important;
-  bottom: calc(env(safe-area-inset-bottom, 0px) + 42px) !important;
-  z-index: 150 !important;
-  width: auto !important;
-  height: 34px !important;
-  min-height: 34px !important;
-  max-height: 34px !important;
-}
-
-#cover #cover-action-row.cover-action-single #cover-update-box {
-  width: clamp(118px, 31vw, 138px) !important;
-  min-width: 118px !important;
-  max-width: 138px !important;
-  height: 34px !important;
-  min-height: 34px !important;
-  max-height: 34px !important;
-}
-
-#cover .cover-refresh-main-btn {
-  width: 100% !important;
-  min-height: 34px !important;
-  height: 34px !important;
-  max-height: 34px !important;
-  padding: 0 12px !important;
-  border-radius: 13px !important;
-  background: linear-gradient(180deg, #ece7de 0%, #ddd6c9 100%) !important;
-  color: #1f2a44 !important;
-  border: 1.5px solid rgba(31,42,68,.16) !important;
-  font-size: calc(13.6px * var(--app-font-scale)) !important;
-  font-weight: 900 !important;
-  line-height: 1 !important;
-  letter-spacing: -.02em !important;
-  box-shadow: 0 6px 12px rgba(31,42,68,.08) !important;
-  white-space: nowrap !important;
-  overflow: hidden !important;
-  text-overflow: ellipsis !important;
-}
-
-#cover-bottom-note {
-  position: fixed !important;
-  left: 50% !important;
-  right: auto !important;
-  bottom: calc(env(safe-area-inset-bottom, 0px) + 8px) !important;
-  transform: translateX(-50%) !important;
-  width: min(620px, calc(100vw - 32px)) !important;
-  max-width: min(620px, calc(100vw - 32px)) !important;
-  margin: 0 !important;
-  padding: 0 16px !important;
-  text-align: center !important;
-  box-sizing: border-box !important;
-  line-height: 1.28 !important;
-}
-
-@media (max-height: 740px) {
-  #cover-main-block { padding-bottom: 84px !important; }
-  #cover #cover-action-row.cover-action-single {
-    bottom: calc(env(safe-area-inset-bottom, 0px) + 38px) !important;
-    height: 32px !important;
-    min-height: 32px !important;
-    max-height: 32px !important;
-  }
-  #cover #cover-action-row.cover-action-single #cover-update-box {
-    width: clamp(112px, 31vw, 132px) !important;
-    min-width: 112px !important;
-    max-width: 132px !important;
-    height: 32px !important;
-    min-height: 32px !important;
-    max-height: 32px !important;
-  }
-  #cover .cover-refresh-main-btn {
-    min-height: 32px !important;
-    height: 32px !important;
-    font-size: calc(12.8px * var(--app-font-scale)) !important;
-    padding: 0 10px !important;
-  }
-  #cover-bottom-note {
-    bottom: calc(env(safe-area-inset-bottom, 0px) + 6px) !important;
-    width: min(620px, calc(100vw - 28px)) !important;
-    padding: 0 14px !important;
-  }
-}
-
-/* ============================================================
-   V1-9 커버 3구역 고정 구조
-   - 상단: 메뉴/글자 버튼 고정
-   - 중앙: 안내문구~카드~V1-9 새로고침
-   - 하단: 고정 안내문
-   ============================================================ */
-#cover #oai-build-marker,
-#oai-build-marker {
-  display: none !important;
-  visibility: hidden !important;
-  opacity: 0 !important;
-  pointer-events: none !important;
-}
-
-#cover {
-  --cover-top-safe: calc(env(safe-area-inset-top, 0px) + clamp(60px, calc(var(--cover-vh, 1vh) * 8.2), 76px)) !important;
-  --cover-bottom-safe: calc(env(safe-area-inset-bottom, 0px) + clamp(46px, calc(var(--cover-vh, 1vh) * 6.0), 58px)) !important;
-  padding-top: var(--cover-top-safe) !important;
-  padding-bottom: var(--cover-bottom-safe) !important;
-  box-sizing: border-box !important;
-}
-
-#cover-font-controls,
-#cover #cover-menu-btn.cover-menu-btn {
-  position: fixed !important;
-  top: calc(env(safe-area-inset-top, 0px) + 12px) !important;
-  height: 38px !important;
-  min-height: 38px !important;
-  max-height: 38px !important;
-  max-width: min(142px, calc(50vw - 18px)) !important;
-  box-sizing: border-box !important;
-  overflow: hidden !important;
-  white-space: nowrap !important;
-  z-index: 180 !important;
-}
-
-#cover #cover-menu-btn.cover-menu-btn {
-  left: 12px !important;
-  width: auto !important;
-  padding: 0 13px !important;
-  border-radius: 16px !important;
-}
-
-#cover-font-controls {
-  right: 12px !important;
-  padding: 2px 3px !important;
-  border-radius: 16px !important;
-}
-
-#cover-font-controls .pr-font-btn,
-#cover-font-controls button {
-  flex: 0 0 34px !important;
-  width: 34px !important;
-  min-width: 34px !important;
-  max-width: 34px !important;
-  height: 30px !important;
-  min-height: 30px !important;
-  max-height: 30px !important;
-  padding: 0 !important;
-  overflow: hidden !important;
-  box-sizing: border-box !important;
-}
-
-#cover #cover-menu-btn .cover-menu-label {
-  font-size: calc(12.5px * var(--app-font-scale)) !important;
-  line-height: 1 !important;
-  max-width: 50px !important;
-  overflow: hidden !important;
-}
-
-#cover #cover-menu-btn .cover-menu-hamburger {
-  width: 16px !important;
-  height: 14px !important;
-  flex: 0 0 16px !important;
-  gap: 3px !important;
-}
-
-#cover #cover-menu-btn .cover-menu-hamburger span {
-  width: 16px !important;
-  height: 2px !important;
-}
-
-#cover-main-block {
-  flex: 1 1 auto !important;
-  min-height: 0 !important;
-  height: 100% !important;
-  max-height: 100% !important;
-  width: 100% !important;
-  max-width: min(500px, calc(100vw - 20px)) !important;
-  margin: 0 auto !important;
-  padding: 0 10px !important;
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: stretch !important;
-  justify-content: center !important;
-  gap: clamp(5px, calc(var(--cover-vh, 1vh) * 0.75), 8px) !important;
-  box-sizing: border-box !important;
-}
-
-#cover .cover-grid {
-  flex: 1 1 auto !important;
-  min-height: 0 !important;
-  row-gap: clamp(4px, calc(var(--cover-vh, 1vh) * 0.75), 7px) !important;
-  column-gap: clamp(4px, 1.2vw, 8px) !important;
-}
-
-#cover .cover-grid > #cc-1.cover-card-wide {
-  grid-column: 1 / -1 !important;
-}
-
-#cover #cover-action-row.cover-action-single {
-  position: relative !important;
-  left: auto !important;
-  right: auto !important;
-  top: auto !important;
-  bottom: auto !important;
-  width: 100% !important;
-  height: 34px !important;
-  min-height: 34px !important;
-  max-height: 34px !important;
-  margin: clamp(4px, calc(var(--cover-vh, 1vh) * 0.75), 7px) 0 0 !important;
-  padding: 0 !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: flex-end !important;
-  flex: 0 0 34px !important;
-  z-index: 20 !important;
-  pointer-events: auto !important;
-  box-sizing: border-box !important;
-}
-
-#cover #cover-action-row.cover-action-single #cover-update-box {
-  flex: 0 0 auto !important;
-  width: clamp(118px, 31vw, 138px) !important;
-  min-width: 118px !important;
-  max-width: 138px !important;
-  height: 34px !important;
-  min-height: 34px !important;
-  max-height: 34px !important;
-  margin: 0 !important;
-  box-sizing: border-box !important;
-}
-
-#cover .cover-refresh-main-btn {
-  width: 100% !important;
-  min-height: 34px !important;
-  height: 34px !important;
-  max-height: 34px !important;
-  padding: 0 12px !important;
-  border-radius: 13px !important;
-  background: linear-gradient(180deg, #ece7de 0%, #ddd6c9 100%) !important;
-  color: #1f2a44 !important;
-  border: 1.5px solid rgba(31,42,68,.16) !important;
-  font-size: calc(13.6px * var(--app-font-scale)) !important;
-  font-weight: 900 !important;
-  line-height: 1 !important;
-  letter-spacing: -.02em !important;
-  box-shadow: 0 6px 12px rgba(31,42,68,.08) !important;
-  white-space: nowrap !important;
-  overflow: hidden !important;
-  text-overflow: ellipsis !important;
-  box-sizing: border-box !important;
-}
-
-#cover-bottom-note {
-  position: fixed !important;
-  left: 50% !important;
-  right: auto !important;
-  bottom: calc(env(safe-area-inset-bottom, 0px) + 8px) !important;
-  transform: translateX(-50%) !important;
-  width: min(620px, calc(100vw - 32px)) !important;
-  max-width: min(620px, calc(100vw - 32px)) !important;
-  margin: 0 !important;
-  padding: 0 16px !important;
-  text-align: center !important;
-  box-sizing: border-box !important;
-  line-height: 1.28 !important;
-  pointer-events: none !important;
-  z-index: 140 !important;
-}
-
-@media (max-height: 740px) {
-  #cover {
-    --cover-top-safe: calc(env(safe-area-inset-top, 0px) + clamp(54px, calc(var(--cover-vh, 1vh) * 7.2), 66px)) !important;
-    --cover-bottom-safe: calc(env(safe-area-inset-bottom, 0px) + clamp(42px, calc(var(--cover-vh, 1vh) * 5.7), 52px)) !important;
-  }
-  #cover-font-controls,
-  #cover #cover-menu-btn.cover-menu-btn {
-    height: 34px !important;
-    min-height: 34px !important;
-    max-height: 34px !important;
-  }
-  #cover #cover-menu-btn.cover-menu-btn {
-    padding: 0 11px !important;
-  }
-  #cover #cover-menu-btn .cover-menu-label {
-    font-size: calc(11.5px * var(--app-font-scale)) !important;
-  }
-  #cover-main-block {
-    gap: clamp(3px, calc(var(--cover-vh, 1vh) * 0.55), 6px) !important;
-  }
-  #cover .cover-grid {
-    row-gap: clamp(3px, calc(var(--cover-vh, 1vh) * 0.55), 5px) !important;
-  }
-  #cover #cover-action-row.cover-action-single {
-    height: 32px !important;
-    min-height: 32px !important;
-    max-height: 32px !important;
-    flex-basis: 32px !important;
-    margin-top: clamp(3px, calc(var(--cover-vh, 1vh) * 0.55), 5px) !important;
-  }
-  #cover #cover-action-row.cover-action-single #cover-update-box {
-    width: clamp(112px, 31vw, 132px) !important;
-    min-width: 112px !important;
-    max-width: 132px !important;
-    height: 32px !important;
-    min-height: 32px !important;
-    max-height: 32px !important;
-  }
-  #cover .cover-refresh-main-btn {
-    min-height: 32px !important;
-    height: 32px !important;
-    font-size: calc(12.8px * var(--app-font-scale)) !important;
-    padding: 0 10px !important;
-  }
-  #cover-bottom-note {
-    bottom: calc(env(safe-area-inset-bottom, 0px) + 6px) !important;
-    width: min(620px, calc(100vw - 28px)) !important;
-    padding: 0 14px !important;
-  }
-}
-
-@media (max-width: 390px) {
-  #cover-font-controls,
-  #cover #cover-menu-btn.cover-menu-btn {
-    max-width: calc(50vw - 18px) !important;
-  }
-  #cover #cover-action-row.cover-action-single #cover-update-box {
-    width: clamp(112px, 35vw, 132px) !important;
-    max-width: 132px !important;
-  }
-}
-
-/* ============================================================
-   V1-9 새로고침 버튼 위치 미세 조정
-   ============================================================ */
-#cover #cover-action-row.cover-action-single {
-  transform: translateY(-7px) !important;
-}
-
-@media (max-height: 740px) {
-  #cover #cover-action-row.cover-action-single {
-    transform: translateY(-6px) !important;
-  }
-}
-
