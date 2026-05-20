@@ -76,39 +76,6 @@
     }
   }catch(e){ console.warn("[가톨릭길동무]", e); }
 
-  /* ★ 첫 진입 Back 즉시 탈출 버그 수정 (2가지 원인 대응)
-     원인 1: 일부 Android/PWA 환경에서 스크립트 실행 중 pushState가
-             navigation history에 등록되지 않아 Back이 popstate 없이 앱 종료로 빠짐.
-             → DOMContentLoaded 이후 트랩 재확인 및 재등록으로 대응.
-     원인 2: 이전 세션에서 종료 대기 상태(oai_cover_exit_armed_until)가
-             sessionStorage에 남아 복귀 시 첫 Back에서 즉시 종료로 오판.
-             → 시작 시 만료된 armed 상태 즉시 정리. */
-  try{
-    // 이전 세션 종료 대기 상태가 남아 있으면 정리 (세션 재개 시 오판 방지)
-    var _armedUntil = Number(sessionStorage.getItem('oai_cover_exit_armed_until') || 0);
-    if(!_armedUntil || (Date.now && Date.now() > _armedUntil)){
-      sessionStorage.removeItem('oai_cover_exit_armed_until');
-      window.__oaiCoverExitUntil = 0;
-    }
-  }catch(_e){}
-  (function(){
-    function _rearmCoverTrapIfNeeded(){
-      try{
-        if(appActive()) return;
-        var st = history.state;
-        // 트랩이 이미 정상 등록돼 있으면 스킵
-        if(st && st._p === 1 && st.oai_cover_trap) return;
-        // 미등록 상태 → 재시도 (DOMContentLoaded 후라면 pushState 정상 작동)
-        armCoverBackTrap('init-rearm', {force:true});
-      }catch(e){ console.warn('[가톨릭길동무]', e); }
-    }
-    if(document.readyState === 'loading'){
-      document.addEventListener('DOMContentLoaded', _rearmCoverTrapIfNeeded, {once:true});
-    } else {
-      setTimeout(_rearmCoverTrapIfNeeded, 0);
-    }
-  })();
-
   function armCoverTrapAfterUserActivation(){
     try{
       if(appActive()) return;
