@@ -2319,10 +2319,14 @@ html.oai-cover-booting #cover > * {
   gap: 6px;
   z-index: 10;
   flex-shrink: 0;
+  height: 36px;
+  min-height: 36px;
+  max-height: 36px;
 }
 html.app-active #cover-action-row { display: none; }
 
 #cover-update-box {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: stretch;
@@ -2330,6 +2334,7 @@ html.app-active #cover-action-row { display: none; }
   flex: 1 1 0;
   min-width: 0;
   max-width: none;
+  height: 100%;
 }
 #cover-update-btn {
   width: 100%;
@@ -2357,7 +2362,23 @@ html.app-active #cover-action-row { display: none; }
 #cover-update-box.update-needed #cover-update-btn { background: #dc2626; color: #fff; box-shadow: 0 10px 24px rgba(220,38,38,.22); }
 #cover-update-btn:active { transform: scale(.985); }
 #cover-update-btn:disabled { opacity: .62; }
-#cover-update-hint { display: none; margin-top: 4px; padding-left: 2px; color: #dc2626; font-size: 9.5px; font-weight: 800; line-height: 1.15; white-space: normal; max-width: 100%; word-break: keep-all; }
+#cover-update-hint {
+  display: none;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(100% + 4px);
+  margin-top: 0;
+  padding-left: 2px;
+  color: #dc2626;
+  font-size: 9.5px;
+  font-weight: 800;
+  line-height: 1.15;
+  white-space: normal;
+  max-width: 100%;
+  word-break: keep-all;
+  pointer-events: none;
+}
 #cover-update-box.update-needed #cover-update-hint { display: block; }
 
 #cover #privacy-cover-link {
@@ -3119,6 +3140,7 @@ html.oai-font-global #region-body .dio-hd { font-size: calc(17px * var(--app-inn
   #cover .cover-emoji { font-size: 22px; }
   #cover .cover-name { font-size: 12px; }
   #cover #qna-cover-btn { min-height: 34px; font-size: calc(10.5px * var(--app-font-scale)); }
+#cover #cover-action-row { height: 32px; min-height: 32px; max-height: 32px; }
 #cover #privacy-cover-link { min-height: 32px; height: 32px; font-size: calc(9.2px * var(--app-font-scale)); padding: 0 7px; }
   #cover #cover-update-btn { min-height: 32px; height: 32px; font-size: calc(10.2px * var(--app-font-scale)); padding: 0 10px; }
   #cover #cover-update-hint { font-size: 8.5px; }
