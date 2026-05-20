@@ -193,31 +193,39 @@
     <p class="footer">© 가톨릭길동무</p>
   </main>
 
+
 <script>
-function markGuideReturn(){
-  try{ sessionStorage.setItem('oai_returned_from_guide','1'); }catch(e){}
-}
-function guideCloseToApp(){
-  markGuideReturn();
-  try{
-    if(window.history && window.history.length > 1){
-      window.history.back();
-      return;
-    }
-  }catch(e){}
-  window.location.href = 'index.html';
-}
 (function(){
+  var KEY = 'oai_returned_from_guide';
+  function markGuideReturn(){
+    try{ sessionStorage.setItem(KEY,'1'); }catch(e){}
+    try{ localStorage.setItem(KEY,'1'); }catch(e){}
+  }
+  window.markGuideReturn = markGuideReturn;
+  window.guideCloseToApp = function(){
+    markGuideReturn();
+    try{
+      if(window.history && window.history.length > 1){
+        window.history.back();
+        return;
+      }
+    }catch(e){}
+    window.location.href = 'index.html';
+  };
   var back = document.getElementById('guide-back-app-link');
   if(back){
     back.addEventListener('click', function(e){
       e.preventDefault();
-      guideCloseToApp();
+      window.guideCloseToApp();
     }, {capture:true});
   }
+  window.addEventListener('pagehide', markGuideReturn, {capture:true});
+  window.addEventListener('beforeunload', markGuideReturn, {capture:true});
+  document.addEventListener('visibilitychange', function(){
+    if(document.visibilityState === 'hidden') markGuideReturn();
+  }, {capture:true});
 })();
-window.addEventListener('pagehide', function(){ markGuideReturn(); });
-window.addEventListener('beforeunload', function(){ markGuideReturn(); });
 </script>
+
 </body>
 </html>

@@ -261,38 +261,45 @@
   </main>
 
 
+
 <script>
-function markPrivacyReturn(){
-  try{ sessionStorage.setItem('oai_returned_from_privacy','1'); }catch(e){}
-}
-function privacyCloseToApp(){
-  markPrivacyReturn();
-  try{
-    if(window.history && window.history.length > 1){
-      window.history.back();
-      return;
-    }
-  }catch(e){}
-  window.location.href = 'index.html';
-}
 (function(){
+  var KEY = 'oai_returned_from_privacy';
+  function markPrivacyReturn(){
+    try{ sessionStorage.setItem(KEY,'1'); }catch(e){}
+    try{ localStorage.setItem(KEY,'1'); }catch(e){}
+  }
+  window.markPrivacyReturn = markPrivacyReturn;
+  window.privacyCloseToApp = function(){
+    markPrivacyReturn();
+    try{
+      if(window.history && window.history.length > 1){
+        window.history.back();
+        return;
+      }
+    }catch(e){}
+    window.location.href = 'index.html';
+  };
   var closeTargets = document.querySelectorAll('[data-privacy-close], .privacy-close, #privacy-close-btn');
   closeTargets.forEach(function(el){
     el.addEventListener('click', function(e){
       e.preventDefault();
-      privacyCloseToApp();
+      window.privacyCloseToApp();
     }, {capture:true});
   });
-var back = document.getElementById('privacy-back-app-link');
+  var back = document.getElementById('privacy-back-app-link');
   if(back){
     back.addEventListener('click', function(e){
       e.preventDefault();
-      privacyCloseToApp();
+      window.privacyCloseToApp();
     }, {capture:true});
   }
+  window.addEventListener('pagehide', markPrivacyReturn, {capture:true});
+  window.addEventListener('beforeunload', markPrivacyReturn, {capture:true});
+  document.addEventListener('visibilitychange', function(){
+    if(document.visibilityState === 'hidden') markPrivacyReturn();
+  }, {capture:true});
 })();
-window.addEventListener('pagehide', function(){ markPrivacyReturn(); });
-window.addEventListener('beforeunload', function(){ markPrivacyReturn(); });
 </script>
 
 </body>
