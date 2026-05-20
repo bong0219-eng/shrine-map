@@ -64,7 +64,7 @@
   /* ── 컴포넌트 색상 */
   --oai-shrine-header:  #1f2a44;
   --oai-parish-header:  #4B5563;
-  --oai-retreat-header: #7A8F7A;
+  --oai-retreat-header: #6B8F71;
   --oai-gold:           #d4aa6a;
   --oai-gold-border:    #c49a57;
   --oai-btn:            #eef1f4;
@@ -114,11 +114,11 @@
   --church-soft-2:  #F8FAFC;
 
   /* ── 피정의집 모드 */
-  --retreat-bg:      #7A8F7A;
-  --retreat-main:    #7A8F7A;
+  --retreat-bg:      #6B8F71;
+  --retreat-main:    #6B8F71;
   --retreat-main-2:  #557A5C;
   --retreat-soft:    #E6F0E8;
-  --retreat-active:  #7A8F7A;
+  --retreat-active:  #6B8F71;
   --retreat-accent:  #E6F0E8;
   --retreat-soft-2:  #F7FBF8;
   --dist-retreat:    #6F836F;
@@ -132,7 +132,7 @@
   --color-2: #1f2a44;
   --color-3: #b8965a;
   --color-4: #374151;
-  --color-5: #7A8F7A;
+  --color-5: #6B8F71;
   --color-6: #5c4a37;
   --color-7: #1a3560;
   --color-8: #374151;
@@ -3466,7 +3466,7 @@ html.retreat-mode .nearby-dist,html.retreat-mode .region-list-hd,html.retreat-mo
   --cathedral-dark:#374151;
   --cathedral-soft:#F1F5F9;
   --cathedral-badge:#E5E7EB;
-  --retreat-primary:#7A8F7A;
+  --retreat-primary:#6B8F71;
   --retreat-secondary:#8FA390;
   --retreat-dark:#6B7F6B;
   --retreat-soft-final:#EFF4EF;
@@ -3628,7 +3628,7 @@ html.retreat-mode #srch-modal #sm-tab-bar .sm-tab.active{
    - 성지 고유색(red/green/blue)은 유지
    ============================================================ */
 :root{
-  --retreat-category-final:#7A8F7A;
+  --retreat-category-final:#6B8F71;
   --retreat-category-soft-final:#E8F0E8;
   --cathedral-category-final:#475569;
   --cathedral-category-soft-final:#E5E7EB;
@@ -3751,13 +3751,13 @@ html.retreat-mode .sm-fb.on{
    - 성지 고유색은 유지하되 상단 활성 탭만 성지 카테고리색으로 통일
    - 성당 내주변 번호색은 성당 카테고리색으로 통일
    - 피정의집 카테고리색과 내주변 번호색을 동일 기준으로 통일
-   - 출발지 현재위치 기능은 JS에서 유지하고 표시 텍스트만 숨김
+   - 출발지 현재위치 기능은 JS에서 유지하고 현재 위치 문구를 표시
    ============================================================ */
 :root{
   --cathedral-category-final:#475569;
   --cathedral-category-dark:#374151;
   --cathedral-category-soft-final:#E5E7EB;
-  --retreat-category-final:#7A8F7A;
+  --retreat-category-final:#6B8F71;
   --retreat-category-soft-final:#E8F0E8;
 }
 
@@ -3865,4 +3865,61 @@ html.retreat-mode .sm-fb.on{
 #app .sm-place-name,
 #app .ic-name{
   color:#111827!important;
+}
+
+
+/* ============================================================
+   V2-S 현재 위치/피정의집 색상 재정리
+   - 피정의집 카테고리색 = 내주변 번호색(#6B8F71)
+   - 현재 위치는 출발지 라벨에 표시
+   ============================================================ */
+:root{
+  --retreat-category-final:#6B8F71;
+  --retreat-category-soft-final:#E8F0E8;
+}
+html.retreat-mode{
+  --retreat-primary:var(--retreat-category-final);
+  --retreat-dark:var(--retreat-category-final);
+  --mode-header-bg:var(--retreat-category-final);
+  --mode-header-solid:var(--retreat-category-final);
+  --mode-active-bg:var(--retreat-category-final);
+  --mode-tab-active-bg:var(--retreat-category-final);
+  --mode-badge-bg:var(--retreat-category-soft-final);
+  --mode-badge-color:var(--retreat-category-final);
+  --mode-dist-color:var(--retreat-category-final);
+  --mode-num-bg:var(--retreat-category-final);
+  --mode-srch-modal-bg:var(--retreat-category-final);
+}
+html.retreat-mode #tabbar .tab-btn.active,
+html.retreat-mode .srch-bar,
+html.retreat-mode .filter-bar,
+html.retreat-mode .sheet-hd,
+html.retreat-mode .region-wrap,
+html.retreat-mode .sm-hd,
+html.retreat-mode .ric-hd{
+  background:var(--retreat-category-final)!important;
+  color:#fff!important;
+  border-color:transparent!important;
+}
+html.retreat-mode #nearby-body .nearby-num,
+html.retreat-mode .nearby-num,
+html.retreat-mode #region-body .nearby-num,
+html.retreat-mode #region-body .region-item .nearby-num{
+  background:var(--retreat-category-final)!important;
+  color:#fff!important;
+}
+html.retreat-mode .nearby-dist,
+html.retreat-mode #region-body .nearby-dist,
+html.retreat-mode .region-list-hd,
+html.retreat-mode .ric-lbl,
+html.retreat-mode .dio-hd{
+  color:var(--retreat-category-final)!important;
+}
+html.retreat-mode .li-badge,
+html.retreat-mode .nearby-type,
+html.retreat-mode #region-body .nearby-type,
+html.retreat-mode #region-body .region-item .nearby-type,
+html.retreat-mode .ic-type-badge{
+  background:var(--retreat-category-soft-final)!important;
+  color:var(--retreat-category-final)!important;
 }

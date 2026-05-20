@@ -2235,7 +2235,7 @@ function _getCurrentItems(){return _mode==='shrine'?SHRINES:(_mode==='retreat'?R
 function _getModeTypeText(){return _mode==='shrine'?'성지':(_mode==='retreat'?'피정의 집':'성당');}
 function _getModeTypeLabel(item){return _mode==='shrine'?item.type:(_mode==='retreat'?'🏔 피정의 집':'⛪ 성당');}
 const _RETREAT_DIO_COLORS={'SE':'#c0392b','IC':'#c0392b','SW':'#c0392b','UJ':'#c0392b','CC':'#1565c0','WJ':'#1565c0','DJ':'#c0392b','CJ':'#1565c0','DG':'#1b7a3e','AD':'#1b7a3e','BS':'#1565c0','MS':'#1b7a3e','GJ':'#1b7a3e','JJ':'#1b7a3e','JE':'#1b7a3e','ML':'#c0392b'};
-function _getRetreatColor(item){return '#7A8F7A';}
+function _getRetreatColor(item){return '#6B8F71';}
 function _getModeMarkerColor(item){return _mode==='shrine'?(TC[item.type]||'#555'):(_mode==='retreat'?_getRetreatColor(item):'#475569');}
 function _getRouteGuideTarget(){return _mode==='shrine'?'성지':(_mode==='retreat'?'피정의 집':'성당');}
 const OAI_ROUTE_VISUAL_DELAY_MS = 260;
@@ -3630,10 +3630,10 @@ function openInAppRoute(){
   }
   _routeRegionStart=null;
   if(_myLat){
-  doRoute(_myLat, _myLng, '📍 현위치');
+  doRoute(_myLat, _myLng, '현재 위치');
   } else {
   _GEO.getCurrentPosition(
-   p=>{ _setMyLoc(p.coords.latitude, p.coords.longitude); doRoute(p.coords.latitude, p.coords.longitude, '📍 현위치'); },
+   p=>{ _setMyLoc(p.coords.latitude, p.coords.longitude); doRoute(p.coords.latitude, p.coords.longitude, '현재 위치'); },
    ()=>alert('위치를 가져올 수 없습니다.'),
    {enableHighAccuracy:true, timeout:10000}
   );
@@ -3647,7 +3647,7 @@ function openKakaoNav(){
   const navItem = isJuk ? {...item, lat:JUKRIMGUL_PARKING.lat, lng:JUKRIMGUL_PARKING.lng, kw:JUKRIMGUL_PARKING.kw, name:JUKRIMGUL_PARKING.name} : item;
   const ep=_EC(navItem.kw||navItem.name);
   function launch(spLat,spLng){
-  const w=spLat?`https://map.kakao.com/link/from/${_EC('현재위치')},${spLat},${spLng}/to/${ep},${navItem.lat},${navItem.lng}`:
+  const w=spLat?`https://map.kakao.com/link/from/${_EC('현재 위치')},${spLat},${spLng}/to/${ep},${navItem.lat},${navItem.lng}`:
          `https://map.kakao.com/link/to/${ep},${navItem.lat},${navItem.lng}`;
   const a=spLat?`kakaomap://route?sp=${spLat},${spLng}&ep=${navItem.lat},${navItem.lng}&by=CAR`:
          `kakaomap://route?ep=${navItem.lat},${navItem.lng}&by=CAR`;
@@ -4907,8 +4907,8 @@ function _ensureCurrentLocationStart(){
     return;
   }
   if(_myLat&&_myLng){
-    _rS={idx:-1,name:'📍 현위치',lat:_myLat,lng:_myLng};
-    _setRouteLabel('start','📍 현위치');
+    _rS={idx:-1,name:'현재 위치',lat:_myLat,lng:_myLng};
+    _setRouteLabel('start','현재 위치');
     _refreshRouteTmpMarkers();
     _updateSearchBtn();
     return;
@@ -4917,8 +4917,8 @@ function _ensureCurrentLocationStart(){
   _GEO.getCurrentPosition(p=>{
     _setMyLoc(p.coords.latitude,p.coords.longitude);
     if(!_rS){
-      _rS={idx:-1,name:'📍 현위치',lat:p.coords.latitude,lng:p.coords.longitude};
-      _setRouteLabel('start','📍 현위치');
+      _rS={idx:-1,name:'현재 위치',lat:p.coords.latitude,lng:p.coords.longitude};
+      _setRouteLabel('start','현재 위치');
       _refreshRouteTmpMarkers();
       _updateSearchBtn();
       if(!_rE){
@@ -4948,8 +4948,8 @@ function setMyLocAsStart(){
   _setMyLoc(p.coords.latitude,p.coords.longitude);
   _clearRouteTmpMarkers();
   if(_mode==='shrine'&&_rS&&_rS.idx>=0&&_markers[_rS.idx]) _markers[_rS.idx].marker.setImage(_mkrImg(_typeColor(_markers[_rS.idx].shrine.type),false));
-  _rS={idx:-1,name:'📍 현위치',lat:p.coords.latitude,lng:p.coords.longitude};
-  _setRouteLabel('start','📍 현위치');
+  _rS={idx:-1,name:'현재 위치',lat:p.coords.latitude,lng:p.coords.longitude};
+  _setRouteLabel('start','현재 위치');
   _refreshRouteTmpMarkers();
   if(_rE) _updateSearchBtn();
   else {
@@ -4962,10 +4962,8 @@ function _setRouteLabel(role,name){
   const el=$(`rs-${role}-lbl`);
   if(!el) return;
   const rawName = name || '';
-  const hideCurrentStart = role === 'start' && /현위치|현재위치/.test(String(rawName));
-  const visibleName = hideCurrentStart ? '' : rawName;
-  el.textContent = visibleName || (role==='start' ? (hideCurrentStart ? '' : '출발지를 선택하세요') : '도착지를 선택하세요');
-  el.className='rs-lbl'+((rawName || hideCurrentStart)?' filled':' empty');
+  el.textContent = rawName || (role==='start' ? '출발지를 선택하세요' : '도착지를 선택하세요');
+  el.className='rs-lbl'+(rawName?' filled':' empty');
   if(role==='end') $('rs-end-x').style.display=name?'inline':'none';
   _updateSearchBtn();
 }
