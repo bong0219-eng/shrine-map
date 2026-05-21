@@ -115,7 +115,7 @@
       box-shadow: 0 6px 15px rgba(31,42,68,.2);
     }
   
-    /* V1-36 privacy confirm button only */
+    /* V1-37 privacy confirm button only */
     #privacy-back-app-link.privacy-confirm-button {
       width: min(360px, 100%);
       min-height: 52px;
@@ -140,6 +140,20 @@
     }
     #privacy-back-app-link.privacy-confirm-button:active {
       transform: translateY(1px);
+    }
+
+  
+    /* V1-37 privacy confirm no effect */
+    #privacy-back-app-link.privacy-confirm-button {
+      transition: none !important;
+      animation: none !important;
+      transform: none !important;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+    }
+    #privacy-back-app-link.privacy-confirm-button:active {
+      transform: none !important;
+      filter: none !important;
     }
 
   </style>
@@ -263,7 +277,7 @@
       <h2>11. 문의처</h2>
       <p>개인정보 관련 문의, 삭제 요청, 정정 요청은 아래 연락처 또는 앱 내 문의 기능을 통해 접수할 수 있습니다.</p>
       <p><strong>개발자 연락처:</strong> catholicgildongmu@gmail.com</p>
-      <a id="privacy-back-app-link" class="back-link privacy-confirm-button" href="javascript:void(0)" onclick="event.preventDefault(); privacyCloseToApp();">확인</a>
+      <a id="privacy-back-app-link" class="back-link privacy-confirm-button" href="javascript:void(0)">확인</a>
     </section>
 
     <p class="footer">© 가톨릭길동무</p>
@@ -271,7 +285,10 @@
 
 
 <script>
+var oaiPrivacyReturning = false;
 function privacyCloseToApp(){
+  if(oaiPrivacyReturning) return;
+  oaiPrivacyReturning = true;
   try{
     if(window.history && window.history.length > 1){
       window.history.back();

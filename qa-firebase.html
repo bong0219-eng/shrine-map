@@ -8,9 +8,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <!-- ★ Firebase SDK (compat) -->
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js">window.addEventListener('pagehide', markQnaReturn, {capture:true});
-window.addEventListener('beforeunload', markQnaReturn, {capture:true});
-</script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 
 <style>
@@ -289,6 +287,14 @@ window.addEventListener('beforeunload', markQnaReturn, {capture:true});
   #qna-cross-icon::after{ content:""; position:absolute; left:50%; background:#fff; border-radius:2px; display:block; }
   #qna-cross-icon::before{ top:50%; width:3px; height:24px; transform:translate(-50%,-50%); }
   #qna-cross-icon::after{ top:42%; width:14px; height:3px; transform:translate(-50%,-50%); }
+
+  /* V1-37 qna no return effect */
+  html.returning-to-cover *,
+  body.returning-to-cover * {
+    transition: none !important;
+    animation: none !important;
+  }
+
 </style>
 
 
@@ -667,12 +673,7 @@ function escHtml(str) {
 }
 
 /* ═══════════════════ 뒤로가기 처리 ═══════════════════ */
-function markQnaReturn(){
-  try{ sessionStorage.setItem('oai_returned_from_qna','1'); }catch(e){}
-  try{ localStorage.setItem('oai_returned_from_qna','1'); }catch(e){}
-}
 function handleQaBack(){
-  try{ markQnaReturn(); }catch(e){}
   var active = document.querySelector('.view.active');
   if(active && active.id !== 'list-view'){
     goList({historyMode:'replace'});
@@ -708,7 +709,7 @@ subscribeList();
 <script id="oai-cache-lifecycle-V23">
 (function(){
   'use strict';
-  var APP_VERSION = 'V1-35';
+  var APP_VERSION = 'V1-37';
   if('serviceWorker' in navigator){
     try{ navigator.serviceWorker.register('./sw.js?v=' + encodeURIComponent(APP_VERSION)).then(function(reg){try{reg.update();}catch(e){}}).catch(function(){}); }catch(e){}
   }
