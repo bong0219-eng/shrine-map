@@ -8,9 +8,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <!-- ★ Firebase SDK (compat) -->
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js">window.addEventListener('pagehide', markQnaReturn, {capture:true});
-window.addEventListener('beforeunload', markQnaReturn, {capture:true});
-</script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 
 <style>
@@ -289,14 +287,6 @@ window.addEventListener('beforeunload', markQnaReturn, {capture:true});
   #qna-cross-icon::after{ content:""; position:absolute; left:50%; background:#fff; border-radius:2px; display:block; }
   #qna-cross-icon::before{ top:50%; width:3px; height:24px; transform:translate(-50%,-50%); }
   #qna-cross-icon::after{ top:42%; width:14px; height:3px; transform:translate(-50%,-50%); }
-
-  /* V1-45 qna no return effect */
-  html.returning-to-cover *,
-  body.returning-to-cover * {
-    transition: none !important;
-    animation: none !important;
-  }
-
 </style>
 
 
@@ -675,10 +665,6 @@ function escHtml(str) {
 }
 
 /* ═══════════════════ 뒤로가기 처리 ═══════════════════ */
-function markQnaReturn(){
-  try{ sessionStorage.setItem('oai_external_menu_return_needs_fresh_trap','qna'); }catch(e){}
-}
-
 function handleQaBack(){
   var active = document.querySelector('.view.active');
   if(active && active.id !== 'list-view'){
@@ -686,7 +672,6 @@ function handleQaBack(){
     return;
   }
   try{ document.activeElement && document.activeElement.blur && document.activeElement.blur(); }catch(e){}
-  markQnaReturn();
   if(document.referrer && document.referrer.indexOf(location.hostname)>=0){
     history.back();
   } else {
@@ -716,7 +701,7 @@ subscribeList();
 <script id="oai-cache-lifecycle-V23">
 (function(){
   'use strict';
-  var APP_VERSION = 'V1-45';
+  var APP_VERSION = 'V3-S-2';
   if('serviceWorker' in navigator){
     try{ navigator.serviceWorker.register('./sw.js?v=' + encodeURIComponent(APP_VERSION)).then(function(reg){try{reg.update();}catch(e){}}).catch(function(){}); }catch(e){}
   }
@@ -817,6 +802,5 @@ subscribeList();
   }catch(e){}
 })();
 </script>
-
 </body>
 </html>

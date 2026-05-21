@@ -31,7 +31,7 @@
   var _href = location.href.split('#')[0];
 
   function armCoverBackTrap(reason, opts){
-    /* V3-S: patches.js를 커버 뒤로가기 trap 생성의 최종 기준으로 둔다.
+    /* V3-S-2: patches.js를 커버 뒤로가기 trap 생성의 최종 기준으로 둔다.
        index.html의 조기 guard는 patches.js가 로드되기 전 첫 화면 안전망으로만 사용하고,
        patches.js 로드 이후에는 여기서 직접 root/trap 한 쌍을 관리한다. */
     try{
@@ -50,7 +50,7 @@
   try{ window._oaiArmCoverBackTrap = armCoverBackTrap; }catch(_e){}
 
   /* history 초기화
-     V3-S: 첫 커버 뒤로가기 실패를 만들던 hash/query trap 흔적을 제거하고,
+     V3-S-2: 첫 커버 뒤로가기 실패를 만들던 hash/query trap 흔적을 제거하고,
      최종 뒤로가기 판단은 이 patches.js popstate 컨트롤러로 단일화한다. */
   try{
     var refreshReason = '';
@@ -263,7 +263,7 @@
 
 
   /* ─────────────────────────────────────────────
-     V3-S 기도문 전용 뒤로가기 컨트롤러 — history 단계 분리 제거
+     V3-S-2 기도문 전용 뒤로가기 컨트롤러 — history 단계 분리 제거
 
      원칙:
      1) 다른 정상 카테고리처럼 실제 history는 공통 root/trap 한 쌍만 사용한다.
@@ -315,7 +315,7 @@
     return !!yes;
   }
   function armPrayerBackTrap(reason){
-    /* 호환용 함수. V3-S부터 기도문 detail/list용 별도 pushState는 만들지 않는다.
+    /* 호환용 함수. V3-S-2부터 기도문 detail/list용 별도 pushState는 만들지 않는다.
        공통 컨트롤러가 이미 갖고 있는 root/trap을 유지하는 것만 필요하다. */
     try{
       if(isPrayerOpen() && typeof window._ensureAppBackTrap === 'function'){
@@ -370,7 +370,7 @@
     }catch(e){ console.warn('[가톨릭길동무]', e); }
   }
   function settleCoverTrapAfterPrayer(reason){
-    // V3-S: 기도문 팝업 → 커버 후에는 이미 공통 컨트롤러가 history.go(1)로 trap을 복원한 상태다.
+    // V3-S-2: 기도문 팝업 → 커버 후에는 이미 공통 컨트롤러가 history.go(1)로 trap을 복원한 상태다.
     // 여기서 replaceState/pushState를 강제로 반복하면 Android/PWA에서 다음 Back이 앱 종료로 오판될 수 있다.
     // 따라서 현재 trap이 살아 있으면 그대로 두고, 없을 때만 최소한으로 보강한다.
     function run(tag){
@@ -430,7 +430,7 @@
       var fromQuick = isPrayerQuickSource();
       if(!fromQuick) return resetPrayerToCover(reason || 'prayer-list-cover');
 
-      /* V3-S: 기도문 목록 → 빠른메뉴 팝업 복귀는 직접 팝업을 띄우지 않는다.
+      /* V3-S-2: 기도문 목록 → 빠른메뉴 팝업 복귀는 직접 팝업을 띄우지 않는다.
          사용자의 Back으로 공통 trap이 일단 소비된 직후라, 이 자리에서 openMassQuickMenu()를
          바로 호출하면 Android/PWA에서 history.go(1) 복원 타이밍과 겹쳐 팝업 Back이 앱 종료로
          먹힐 수 있다. 기존 안정 함수 _returnToMassQuickMenu('prayer')에게 맡기면,
@@ -515,22 +515,6 @@
 
   window.addEventListener('popstate', function(){
     if(window._appExiting) return;
-
-    /* V1-43: 커버 메뉴 팝업 back은 메뉴만 닫고, 같은 popstate에서 종료 안내로 넘어가지 않는다. */
-    try{
-      var menuConsumedUntil = Number(window.__oaiCoverMenuBackConsumedUntil || 0);
-      if(menuConsumedUntil && Date.now && Date.now() < menuConsumedUntil){
-        try{ armCoverBackTrap('cover-menu-back-consumed', {force:true}); }catch(_e){}
-        return;
-      }
-      if(window.isCoverMenuPopupOpen && window.isCoverMenuPopupOpen()){
-        if(window.closeCoverMenuPopup) window.closeCoverMenuPopup();
-        if(window.markCoverMenuBackConsumed) window.markCoverMenuBackConsumed('cover-menu-patches-popstate');
-        try{ armCoverBackTrap('cover-menu-popstate', {force:true}); }catch(_e){}
-        return;
-      }
-    }catch(e){ console.warn('[가톨릭길동무]', e); }
-
 
     /* history.go(1)로 공통 trap을 복원하면서 발생한 popstate는
        어떤 화면 처리도 하지 않고 여기서 끝낸다. 이 순서가 중요하다. */
@@ -618,16 +602,6 @@
 
   /* Cordova 물리 백버튼 */
   document.addEventListener('backbutton', function(){
-
-    try{
-      if(window.isCoverMenuPopupOpen && window.isCoverMenuPopupOpen()){
-        if(window.closeCoverMenuPopup) window.closeCoverMenuPopup();
-        if(window.markCoverMenuBackConsumed) window.markCoverMenuBackConsumed('cover-menu-hardware');
-        try{ armCoverBackTrap('cover-menu-hardware', {force:true}); }catch(_e){}
-        return;
-      }
-    }catch(e){ console.warn('[가톨릭길동무]', e); }
-
     if(handlePrayerBack('prayer-hardware-back')) return;
     if(closeRefreshDialog()){ try{ armCoverBackTrap('refresh-dialog-hardware', {force:true}); }catch(e){} return; }
     if(isGuideModalOpen()){ closeGuideModals(); return; }
@@ -784,9 +758,9 @@
 (function(){
   if(window.__APP_FONT_SCALE_GUARD__) return;
   window.__APP_FONT_SCALE_GUARD__=true;
-  // V3-S: 커버 글자 크기 조절은 prayer.js에 의존하지 않는 공통 함수가 담당한다.
+  // V3-S-2: 커버 글자 크기 조절은 prayer.js에 의존하지 않는 공통 함수가 담당한다.
   // prayer.js는 기도문 화면이 열렸을 때 같은 localStorage 값을 읽어 자체 UI를 맞춘다.
-  var QA_URL="qa-firebase.html?v=V1-43";
+  var QA_URL="qa-firebase.html?v=V3-S-2";
   var FONT_KEY='prayer_font_size';
   var BASE=16;
   var FONT_SIZES=[13,14,15,16,17,18,19,20,21,22,24,26,28,30];
@@ -856,7 +830,7 @@
   }
   function setEmojiIcons(){var icons={'cc-1':'✝️','cc-2':'⛪','cc-3':'🙏','cc-4':'🌿','cc-5':'🥾','cc-6':'🌐','cc-7':'🧭'};Object.keys(icons).forEach(function(id){var btn=el(id);if(!btn)return;var wrap=btn.querySelector('.cover-icon-wrap');if(wrap)wrap.innerHTML='<span class="cover-emoji" aria-hidden="true">'+icons[id]+'</span>';});}
   function configureQna(){
-    // V3-S: 문의·건의 버튼은 중간 안내 카드를 만들지 않고 실제 문의 페이지로 바로 이동한다.
+    // V3-S-2: 문의·건의 버튼은 중간 안내 카드를 만들지 않고 실제 문의 페이지로 바로 이동한다.
     window.QNA_FORM_URL=QA_URL;
     var q=el('qna-list');
     if(q) q.innerHTML='';
@@ -875,7 +849,69 @@
 
 // user-cache mode: keep app cache stable; refresh changed files through versioned URLs.
 
-// Google Play 정리본: 별도 설치 버튼/설치 유도 로직 제거.
+// ── PWA 설치 버튼 로직 ──
+(function(){
+  /* PWA 설치 버튼 통합 컨트롤러
+     ① standalone(설치된 앱) 상태이면 버튼 즉시 숨기고 종료
+     ② 아닌 경우: beforeinstallprompt 감지 → 버튼 표시
+        app-active 클래스·matchMedia 변화 → 즉시 재평가 */
+  if(window.__APP_PWA_INSTALL_GUARD__) return;
+  window.__APP_PWA_INSTALL_GUARD__ = true;
+
+  var prompt = null;
+
+  function isStandaloneNow(){
+    return window.matchMedia('(display-mode: standalone)').matches ||
+           window.navigator.standalone === true ||
+           document.documentElement.classList.contains('app-active');
+  }
+
+  function getBtn(){ return document.getElementById('pwa-install-btn'); }
+
+  function hideInstallBtn(){
+    var btn = getBtn();
+    if(btn) btn.style.setProperty('display','none','important');
+  }
+
+  function applyVisibility(){
+    if(isStandaloneNow()) hideInstallBtn();
+  }
+
+  if(isStandaloneNow()){ hideInstallBtn(); return; }
+
+  window.addEventListener('beforeinstallprompt', function(e){
+    e.preventDefault();
+    prompt = e;
+    if(!isStandaloneNow()){
+      var btn = getBtn();
+      if(btn) btn.style.display = 'flex';
+    }
+  });
+
+  window.addEventListener('appinstalled', function(){
+    hideInstallBtn();
+    prompt = null;
+  });
+
+  window.triggerPwaInstall = function(){
+    if(!prompt) return;
+    prompt.prompt();
+    prompt.userChoice.then(function(r){
+      if(r.outcome === 'accepted') hideInstallBtn();
+      prompt = null;
+    });
+  };
+
+  new MutationObserver(applyVisibility)
+    .observe(document.documentElement, {attributes:true, attributeFilter:['class']});
+
+  try{
+    window.matchMedia('(display-mode: standalone)').addEventListener('change', applyVisibility);
+  }catch(e){ console.warn("[가톨릭길동무]", e); }
+
+  window.addEventListener('load', applyVisibility);
+  window.addEventListener('pageshow', applyVisibility);
+})();
 
 /* ====== 성능 최적화 보정 ====== */
 (function(){
@@ -1287,7 +1323,7 @@
     '.btn-kakao-route','.btn-kakao-nav','.c-btn',
     '.trail-foot','.web-card-foot','.trail-sh-foot','.trail-sh-body',
     '#close-btn','.module-close','.sheet-x','.sm-x','.ic-close-btn','.c-x',
-    '#qna-cover-btn','.missa-open-link',
+    '#qna-cover-btn','#pwa-install-btn','.missa-open-link',
     '.btn-primary','.btn-secondary','#write-btn','#sb',
     '.filter-btn','.cat-opt','.tab','.tab-btn','.trail-tab','.web-cat-btn',
     '#prayer-search-input','#prayer-search-bar button'
