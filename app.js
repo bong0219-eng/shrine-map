@@ -1187,48 +1187,9 @@ document.addEventListener('DOMContentLoaded', function(){
 }, true);
 window.addEventListener('load', syncCoverUpdateVersionState, true);
 
-// V37: 커버 전용 주요 기능 안내. 별도 파일 없이 작은 자동 안내 + 자세한 카드형 팝업을 제공한다.
+// V3-S: 커버 전용 주요 기능 안내. 자동 배너는 제거하고, 사용자가 주요기능 버튼을 누를 때만 상세 안내를 연다.
 (function(){
   'use strict';
-  var HIDE_DAYS = 7;
-  var MAX_LATER_COUNT = 3;
-  var KEY_COUNT = 'catholicGuideLaterCount';
-  var KEY_HIDE_UNTIL = 'catholicGuideHideUntil';
-  var KEY_DISABLED = 'catholicGuideAutoDisabled';
-  var KEY_INSTALLED_SHOWN = 'catholicGuideInstalledIntroShown';
-  var SOFT_REFRESH_KEY = 'oai_soft_refresh_requested';
-  var FAVORITES_RESET_NOTICE_KEY = 'catholicV2SFavoritesResetNoticeShown';
-  var skipAutoPopupsThisLoad = false;
-
-  function now(){ return Date.now ? Date.now() : new Date().getTime(); }
-  function isStandaloneApp(){
-    try{ if(window.navigator.standalone === true) return true; }catch(e){}
-    try{ return !!(window.matchMedia && window.matchMedia('(display-mode: standalone)').matches); }catch(e){}
-    return false;
-  }
-  function isKakaoBrowser(){
-    try{ return (navigator.userAgent || '').toLowerCase().indexOf('kakaotalk') > -1; }catch(e){ return false; }
-  }
-  function hasRecentSoftRefreshRequest(){
-    try{
-      var raw = sessionStorage.getItem(SOFT_REFRESH_KEY);
-      var t = parseInt(raw || '0', 10) || 0;
-      return !!t && (now() - t) < 120000;
-    }catch(e){ return false; }
-  }
-  function clearSoftRefreshRequest(){
-    try{ sessionStorage.removeItem(SOFT_REFRESH_KEY); }catch(e){ console.warn('[가톨릭길동무]', e); }
-  }
-  function getInt(key){
-    try{ return parseInt(localStorage.getItem(key) || '0', 10) || 0; }catch(e){ return 0; }
-  }
-  function setVal(key, value){ try{ localStorage.setItem(key, String(value)); }catch(e){ console.warn('[가톨릭길동무]', e); } }
-  function isCoverVisible(){
-    try{
-      var cover=document.getElementById('cover');
-      return !!cover && !document.documentElement.classList.contains('app-active') && cover.style.display !== 'none';
-    }catch(e){ return false; }
-  }
   function resetGuideScroll(id){
     try{
       var root=document.getElementById(id);
@@ -1255,125 +1216,22 @@ window.addEventListener('load', syncCoverUpdateVersionState, true);
     el.classList.remove('show');
     el.setAttribute('aria-hidden','true');
   }
-  function openGuideManual(){
-    hideModal('guide-intro-modal');
-    showModal('guide-manual-modal');
-    // 주요 기능을 확인한 사용자는 일주일간 자동 안내를 다시 띄우지 않는다.
-    setVal(KEY_HIDE_UNTIL, now() + HIDE_DAYS*24*60*60*1000);
-  }
+  function openGuideManual(){ showModal('guide-manual-modal'); }
   function closeGuideManual(){ hideModal('guide-manual-modal'); }
-  function closeIntroLater(){
-    hideModal('guide-intro-modal');
-    var count = getInt(KEY_COUNT) + 1;
-    setVal(KEY_COUNT, count);
-    if(count >= MAX_LATER_COUNT){
-      setVal(KEY_DISABLED, '1');
-    }else{
-      setVal(KEY_HIDE_UNTIL, now() + HIDE_DAYS*24*60*60*1000);
-    }
-  }
-  function isGuideModalOpen(id){
-    var el=document.getElementById(id);
-    return !!(el && el.classList.contains('show') && el.getAttribute('aria-hidden') !== 'true');
-  }
-  function hideFavoritesResetNotice(){
-    var el=document.getElementById('favorites-reset-notice-banner');
-    if(el){
-      el.classList.remove('show');
-      el.setAttribute('hidden', '');
-    }
-  }
-  function closeFavoritesResetNotice(){
-    var el=document.getElementById('favorites-reset-notice-banner');
-    var wasOpen=!!(el && el.classList.contains('show') && !el.hasAttribute('hidden'));
-    hideFavoritesResetNotice();
-    if(wasOpen) setVal(FAVORITES_RESET_NOTICE_KEY, '1');
-  }
-  function shouldShowFavoritesResetNotice(){
-    try{
-      // 설치 유도/브라우저/카카오에서는 표시하지 않고, 설치된 앱에서만 표시한다.
-      if(isKakaoBrowser()) return false;
-      if(!isStandaloneApp()) return false;
-      // 새로 설치하는 사용자는 appinstalled 시점에 이미 확인 처리한다.
-      if(localStorage.getItem(FAVORITES_RESET_NOTICE_KEY) === '1') return false;
-    }catch(e){ return false; }
-    if(!isCoverVisible()) return false;
-    if(isGuideModalOpen('guide-intro-modal') || isGuideModalOpen('guide-manual-modal') || isGuideModalOpen('ios-safari-guide-modal')) return false;
-    return true;
-  }
-  function maybeShowFavoritesResetNotice(){
-    if(shouldShowFavoritesResetNotice()){
-      var el=document.getElementById('favorites-reset-notice-banner');
-      if(el){
-        el.removeAttribute('hidden');
-        el.classList.add('show');
-      }
-    }
-  }
-  function shouldShowIntro(forceRefresh){
-    if(forceRefresh) return false;
-    try{
-      // 주요기능 자동 안내는 카카오/일반 브라우저에서는 띄우지 않고,
-      // 홈 화면에 설치된 앱에서 처음 열린 경우에만 Android/iPhone 공통으로 1회 표시한다.
-      if(isKakaoBrowser()) return false;
-      if(!isStandaloneApp()) return false;
-      if(localStorage.getItem(KEY_INSTALLED_SHOWN) === '1') return false;
-    }catch(e){ return false; }
-    return isCoverVisible();
-  }
-  function maybeShowIntro(){
-    var forceRefresh = hasRecentSoftRefreshRequest();
-    if(forceRefresh){
-      // V37: 안정형 새로고침 뒤에는 어떤 커버 팝업도 자동으로 다시 띄우지 않는다.
-      skipAutoPopupsThisLoad = true;
-      try{ if(typeof closeMassQuickMenu === 'function') closeMassQuickMenu(); }catch(e){ console.warn('[가톨릭길동무]', e); }
-      try{ hideModal('guide-intro-modal'); hideModal('guide-manual-modal'); hideFavoritesResetNotice(); }catch(e){ console.warn('[가톨릭길동무]', e); }
-      try{ var ios=document.getElementById('ios-safari-guide-modal'); if(ios){ ios.classList.remove('show'); ios.setAttribute('aria-hidden','true'); } }catch(e){ console.warn('[가톨릭길동무]', e); }
-      clearSoftRefreshRequest();
-      return;
-    }
-    if(shouldShowIntro(false)){
-      setVal(KEY_INSTALLED_SHOWN, '1');
-      showModal('guide-intro-modal');
-    }
-  }
-  try{
-    window.addEventListener('appinstalled', function(){
-      // 새로 설치한 사용자는 즐겨찾기 초기화 안내 대상이 아니므로, 설치 시점에 1회 안내를 완료 처리한다.
-      setVal(FAVORITES_RESET_NOTICE_KEY, '1');
-      hideFavoritesResetNotice();
-    });
-  }catch(e){ console.warn('[가톨릭길동무]', e); }
-
   function bindGuide(){
     var btn=document.getElementById('cover-guide-btn');
     if(btn) btn.addEventListener('click', function(e){ e.preventDefault(); e.stopPropagation(); openGuideManual(); });
-    var detail=document.getElementById('guide-open-detail-btn');
-    if(detail) detail.addEventListener('click', function(e){ e.preventDefault(); openGuideManual(); });
-    var later=document.getElementById('guide-later-btn');
-    if(later) later.addEventListener('click', function(e){ e.preventDefault(); closeIntroLater(); });
     var ok=document.getElementById('guide-ok-btn');
     if(ok) ok.addEventListener('click', function(e){ e.preventDefault(); closeGuideManual(); });
-    var favOk=document.getElementById('favorites-reset-notice-ok');
-    if(favOk) favOk.addEventListener('click', function(e){ e.preventDefault(); closeFavoritesResetNotice(); });
     document.querySelectorAll('[data-guide-close]').forEach(function(el){
       el.addEventListener('click', function(e){
         e.preventDefault();
-        var target=el.getAttribute('data-guide-close');
-        if(target==='intro') closeIntroLater();
-        else if(target==='manual') closeGuideManual();
+        if(el.getAttribute('data-guide-close') === 'manual') closeGuideManual();
       });
     });
     document.addEventListener('keydown', function(e){
-      if(e.key !== 'Escape') return;
-      hideModal('guide-intro-modal');
-      hideModal('guide-manual-modal');
-      closeFavoritesResetNotice();
+      if(e.key === 'Escape') closeGuideManual();
     });
-    // V3-S: 첫 접속 시 자동으로 뜨던 주요기능/업데이트 안내 배너는 표시하지 않는다.
-    // 커버의 '주요기능' 버튼을 누르면 기존 상세 안내는 그대로 볼 수 있다.
-    // setTimeout(maybeShowIntro, 650);
-    // setTimeout(maybeShowFavoritesResetNotice, 1150);
   }
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', bindGuide, {once:true});
   else bindGuide();
