@@ -516,7 +516,7 @@
   window.addEventListener('popstate', function(){
     if(window._appExiting) return;
 
-    /* V1-39: 커버 메뉴 팝업 back은 메뉴만 닫고, 같은 popstate에서 종료 안내로 넘어가지 않는다. */
+    /* V1-41: 커버 메뉴 팝업 back은 메뉴만 닫고, 같은 popstate에서 종료 안내로 넘어가지 않는다. */
     try{
       var menuConsumedUntil = Number(window.__oaiCoverMenuBackConsumedUntil || 0);
       if(menuConsumedUntil && Date.now && Date.now() < menuConsumedUntil){
@@ -786,7 +786,7 @@
   window.__APP_FONT_SCALE_GUARD__=true;
   // V3-S: 커버 글자 크기 조절은 prayer.js에 의존하지 않는 공통 함수가 담당한다.
   // prayer.js는 기도문 화면이 열렸을 때 같은 localStorage 값을 읽어 자체 UI를 맞춘다.
-  var QA_URL="qa-firebase.html?v=V1-39";
+  var QA_URL="qa-firebase.html?v=V1-41";
   var FONT_KEY='prayer_font_size';
   var BASE=16;
   var FONT_SIZES=[13,14,15,16,17,18,19,20,21,22,24,26,28,30];

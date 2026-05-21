@@ -115,7 +115,7 @@
       box-shadow: 0 6px 15px rgba(31,42,68,.2);
     }
   
-    /* V1-39 privacy confirm button only */
+    /* V1-41 privacy confirm button only */
     #privacy-back-app-link.privacy-confirm-button {
       width: min(360px, 100%);
       min-height: 52px;
@@ -143,13 +143,45 @@
     }
 
   
-    /* V1-39 privacy confirm no effect */
+    /* V1-41 privacy confirm no effect */
     #privacy-back-app-link.privacy-confirm-button {
       transition: none !important;
       animation: none !important;
       transform: none !important;
       -webkit-tap-highlight-color: transparent;
       touch-action: manipulation;
+    }
+    #privacy-back-app-link.privacy-confirm-button:active {
+      transform: none !important;
+      filter: none !important;
+    }
+
+  
+    /* V1-41 privacy OK as close button */
+    #privacy-back-app-link.privacy-confirm-button {
+      width: min(360px, 100%);
+      min-height: 52px;
+      height: 52px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin: 18px auto 0;
+      padding: 0 18px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, #1f2a44 0%, #263a63 100%);
+      color: #fffaf0 !important;
+      border: 1.5px solid rgba(212,170,106,.45);
+      box-shadow: 0 8px 20px rgba(31,42,68,.18);
+      font-size: 16px;
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: -.02em;
+      text-decoration: none;
+      box-sizing: border-box;
+      text-align: center;
+      transition: none !important;
+      animation: none !important;
+      transform: none !important;
     }
     #privacy-back-app-link.privacy-confirm-button:active {
       transform: none !important;
@@ -277,7 +309,7 @@
       <h2>11. 문의처</h2>
       <p>개인정보 관련 문의, 삭제 요청, 정정 요청은 아래 연락처 또는 앱 내 문의 기능을 통해 접수할 수 있습니다.</p>
       <p><strong>개발자 연락처:</strong> catholicgildongmu@gmail.com</p>
-      <a id="privacy-back-app-link" class="back-link privacy-confirm-button" href="javascript:void(0)">확인</a>
+      <a id="privacy-back-app-link" class="back-link privacy-confirm-button" href="javascript:void(0)" data-privacy-close="1">OK</a>
     </section>
 
     <p class="footer">© 가톨릭길동무</p>
@@ -305,13 +337,6 @@ function privacyCloseToApp(){
       privacyCloseToApp();
     }, {capture:true});
   });
-  var back = document.getElementById('privacy-back-app-link');
-  if(back){
-    back.addEventListener('click', function(e){
-      e.preventDefault();
-      privacyCloseToApp();
-    }, {capture:true});
-  }
 })();
 </script>
 
