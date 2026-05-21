@@ -115,7 +115,7 @@
       box-shadow: 0 6px 15px rgba(31,42,68,.2);
     }
   
-    /* V1-45 privacy confirm button only */
+    /* V1-46 privacy confirm button only */
     #privacy-back-app-link.privacy-confirm-button {
       width: min(360px, 100%);
       min-height: 52px;
@@ -143,7 +143,7 @@
     }
 
   
-    /* V1-45 privacy confirm no effect */
+    /* V1-46 privacy confirm no effect */
     #privacy-back-app-link.privacy-confirm-button {
       transition: none !important;
       animation: none !important;
@@ -157,7 +157,7 @@
     }
 
   
-    /* V1-45 privacy OK as close button */
+    /* V1-46 privacy OK as close button */
     #privacy-back-app-link.privacy-confirm-button {
       width: min(360px, 100%);
       min-height: 52px;
@@ -325,6 +325,7 @@
 
   function markPrivacyReturn(){
     try{ sessionStorage.setItem('oai_external_menu_return_needs_fresh_trap','privacy'); }catch(e){}
+    try{ localStorage.setItem('oai_external_menu_return_needs_fresh_trap','privacy'); }catch(e){}
   }
 
   function privacyCloseToApp(){
