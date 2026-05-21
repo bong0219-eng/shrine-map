@@ -115,7 +115,7 @@
       box-shadow: 0 6px 15px rgba(31,42,68,.2);
     }
   
-    /* V1-35 privacy confirm button */
+    /* V1-36 privacy confirm button only */
     #privacy-back-app-link.privacy-confirm-button {
       width: min(360px, 100%);
       min-height: 52px;
@@ -136,6 +136,10 @@
       letter-spacing: -.02em;
       text-decoration: none;
       box-sizing: border-box;
+      text-align: center;
+    }
+    #privacy-back-app-link.privacy-confirm-button:active {
+      transform: translateY(1px);
     }
 
   </style>
@@ -266,14 +270,8 @@
   </main>
 
 
-
 <script>
-function markPrivacyReturn(){
-  try{ sessionStorage.setItem('oai_returned_from_privacy','1'); }catch(e){}
-  try{ localStorage.setItem('oai_returned_from_privacy','1'); }catch(e){}
-}
 function privacyCloseToApp(){
-  markPrivacyReturn();
   try{
     if(window.history && window.history.length > 1){
       window.history.back();
@@ -283,6 +281,13 @@ function privacyCloseToApp(){
   window.location.href = 'index.html';
 }
 (function(){
+  var closeTargets = document.querySelectorAll('[data-privacy-close], .privacy-close, #privacy-close-btn');
+  closeTargets.forEach(function(el){
+    el.addEventListener('click', function(e){
+      e.preventDefault();
+      privacyCloseToApp();
+    }, {capture:true});
+  });
   var back = document.getElementById('privacy-back-app-link');
   if(back){
     back.addEventListener('click', function(e){
@@ -291,8 +296,6 @@ function privacyCloseToApp(){
     }, {capture:true});
   }
 })();
-window.addEventListener('pagehide', markPrivacyReturn, {capture:true});
-window.addEventListener('beforeunload', markPrivacyReturn, {capture:true});
 </script>
 
 </body>
