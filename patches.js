@@ -516,7 +516,7 @@
   window.addEventListener('popstate', function(){
     if(window._appExiting) return;
 
-    /* V1-38: 커버 메뉴 팝업 back은 메뉴만 닫고, 같은 popstate에서 종료 안내로 넘어가지 않는다. */
+    /* V1-39: 커버 메뉴 팝업 back은 메뉴만 닫고, 같은 popstate에서 종료 안내로 넘어가지 않는다. */
     try{
       var menuConsumedUntil = Number(window.__oaiCoverMenuBackConsumedUntil || 0);
       if(menuConsumedUntil && Date.now && Date.now() < menuConsumedUntil){
@@ -588,19 +588,6 @@
       return;
     }
 
-
-    try{
-      if(window.shouldReturnGuideToCoverMenu && window.shouldReturnGuideToCoverMenu()){
-        var gm = document.getElementById('guide-manual-modal');
-        var gi = document.getElementById('guide-intro-modal');
-        if((gm && gm.classList.contains('show')) || (gi && gi.classList.contains('show'))){
-          if(window.returnGuideToCoverMenu) window.returnGuideToCoverMenu('guide-back');
-          else closeGuideModals();
-          return;
-        }
-      }
-    }catch(e){ console.warn('[가톨릭길동무]', e); }
-
     /* 빠른메뉴/안내 팝업이 열려 있으면 먼저 닫는다. */
     if(isGuideModalOpen()){
       closeGuideModals();
@@ -641,17 +628,6 @@
       }
     }catch(e){ console.warn('[가톨릭길동무]', e); }
 
-    try{
-      if(window.shouldReturnGuideToCoverMenu && window.shouldReturnGuideToCoverMenu()){
-        var gm = document.getElementById('guide-manual-modal');
-        var gi = document.getElementById('guide-intro-modal');
-        if((gm && gm.classList.contains('show')) || (gi && gi.classList.contains('show'))){
-          if(window.returnGuideToCoverMenu) window.returnGuideToCoverMenu('guide-hardware-back');
-          else closeGuideModals();
-          return;
-        }
-      }
-    }catch(e){ console.warn('[가톨릭길동무]', e); }
     if(handlePrayerBack('prayer-hardware-back')) return;
     if(closeRefreshDialog()){ try{ armCoverBackTrap('refresh-dialog-hardware', {force:true}); }catch(e){} return; }
     if(isGuideModalOpen()){ closeGuideModals(); return; }
@@ -810,7 +786,7 @@
   window.__APP_FONT_SCALE_GUARD__=true;
   // V3-S: 커버 글자 크기 조절은 prayer.js에 의존하지 않는 공통 함수가 담당한다.
   // prayer.js는 기도문 화면이 열렸을 때 같은 localStorage 값을 읽어 자체 UI를 맞춘다.
-  var QA_URL="qa-firebase.html?v=V1-38";
+  var QA_URL="qa-firebase.html?v=V1-39";
   var FONT_KEY='prayer_font_size';
   var BASE=16;
   var FONT_SIZES=[13,14,15,16,17,18,19,20,21,22,24,26,28,30];
