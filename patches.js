@@ -515,6 +515,7 @@
 
   window.addEventListener('popstate', function(){
     if(window._appExiting) return;
+
     /* history.go(1)로 공통 trap을 복원하면서 발생한 popstate는
        어떤 화면 처리도 하지 않고 여기서 끝낸다. 이 순서가 중요하다. */
     if(_restoring){
@@ -574,10 +575,10 @@
     /* 빠른메뉴/안내 팝업이 열려 있으면 먼저 닫는다. */
     if(isGuideModalOpen()){
       closeGuideModals();
+      try{ if(typeof window._clearCoverExitArmed === 'function') window._clearCoverExitArmed(); }catch(e){ console.warn('[가톨릭길동무]', e); }
       try{ if(typeof window._ensureCoverBackTrap === 'function') window._ensureCoverBackTrap('guide-modal'); else armCoverBackTrap('guide-modal'); }catch(e){ console.warn("[가톨릭길동무]", e); }
       return;
     }
-
 
     /* 커버 메뉴 팝업 처리: guide-modal 클래스 없어 isGuideModalOpen에 안 잡힘.
        !appActive() 체크 전에 처리해야 토스트가 잘못 발동되지 않는다. */
@@ -611,7 +612,7 @@
 
   /* Cordova 물리 백버튼 */
   document.addEventListener('backbutton', function(){
-if(handlePrayerBack('prayer-hardware-back')) return;
+    if(handlePrayerBack('prayer-hardware-back')) return;
     if(closeRefreshDialog()){ try{ armCoverBackTrap('refresh-dialog-hardware', {force:true}); }catch(e){} return; }
     if(isGuideModalOpen()){ closeGuideModals(); return; }
     if(!appActive()){
@@ -769,7 +770,7 @@ if(handlePrayerBack('prayer-hardware-back')) return;
   window.__APP_FONT_SCALE_GUARD__=true;
   // V3-S: 커버 글자 크기 조절은 prayer.js에 의존하지 않는 공통 함수가 담당한다.
   // prayer.js는 기도문 화면이 열렸을 때 같은 localStorage 값을 읽어 자체 UI를 맞춘다.
-  var QA_URL="qa-firebase.html?v=V1-54";
+  var QA_URL="qa-firebase.html?v=V1-55";
   var FONT_KEY='prayer_font_size';
   var BASE=16;
   var FONT_SIZES=[13,14,15,16,17,18,19,20,21,22,24,26,28,30];
