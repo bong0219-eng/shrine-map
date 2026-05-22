@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>문의 · 건의 | 가톨릭길동무</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- ★ Firebase SDK (compat) -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+
+<style>
+  /* ── 리셋 & 기본 ── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --blue:   #0e1535;
+    --blue-l: #f0f2f8;
+    --blue-b: #c8cfe8;
+    --green:  #2A8040;
+    --green-l:#F0FDF4;
+    --green-b:#BBF7D0;
+    --gold:   #d4aa6a;
+    --gold-l: #fdf6e8;
+    --gray-50:#F8FAFC; --gray-100:#F1F5F9; --gray-200:#E2E8F0;
+    --gray-400:#94A3B8; --gray-500:#64748B; --gray-700:#374151;
+    --gray-900:#0F172A;
+    --radius: 14px; --shadow: 0 2px 12px rgba(0,0,0,0.08);
+    --d:#1F2A44;
+    --bg:#EDE8E0;
+    --card:#FFFBF2;
+    --card-sub:#F5F0E8;
+    --bdr:#DDD5C8;
+    --tab-h:55px;
+    --tab-btn-h:40px;
+    --icon-size:35px;
+    --icon-r:12px;
+    --icon-fs:15px;
+    --fs-header:22px;
+    --fs-tab:15px;
+    --fs-sub:10px;
+  }
+  html, body { height: 100%; overflow: hidden; }
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background: var(--bg);
+    height: 100dvh;
+    min-height: 100dvh;
+    width: 100%;
+    max-width: 720px;
+    margin: 0 auto;
+    color: var(--gray-900);
+    -webkit-tap-highlight-color: transparent;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── 헤더 ── */
+  #header {
+    width: 100%; max-width: none; box-sizing: border-box;
+    background: var(--d); color: #fff;
+    height: var(--header-h,70px); min-height: var(--header-h,70px); padding: 0 16px;
+    display: flex; align-items: center; gap: 10px; flex: 0 0 auto;
+    position: relative; top: auto; z-index: 100;
+    border-radius: 0; border-bottom: none; box-shadow: none;
+  }
+  #qna-cross-icon {
+    width: var(--icon-size); height: var(--icon-size); min-width: var(--icon-size); flex: 0 0 var(--icon-size);
+    border-radius: var(--icon-r); background: rgba(255,255,255,.18); border: 1px solid rgba(255,255,255,.28);
+    color: #fff; display: flex; align-items: center; justify-content: center;
+    font-size: var(--icon-fs); font-weight: 900; line-height: 1;
+  }
+  #header-texts {
+    min-width: 0; flex: 1; display: flex; flex-direction: column;
+    align-items: flex-start; justify-content: center; gap: 1px;
+  }
+  #header-texts .title {
+    font-size: var(--fs-header); font-weight: 700; line-height: 1.2; letter-spacing: -.03em;
+    color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin: 0;
+  }
+  #header-texts .sub {
+    font-size: var(--fs-sub); font-weight: 500; line-height: 1.4; margin-top: 0;
+    color: rgba(255,255,255,.75); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; letter-spacing:.02em;
+  }
+  #close-btn {
+    width: 40px; height: 40px; min-width: 40px; flex: 0 0 40px;
+    border-radius: 50%; background: rgba(255,255,255,.13); border: 1px solid rgba(255,255,255,.22);
+    color: rgba(212,170,106,.95); font-size: 28px; font-weight: 900; line-height: 1;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; box-shadow: none; -webkit-tap-highlight-color: transparent;
+  }
+  #write-btn {
+    position: fixed; right: 18px;
+    bottom: calc(22px + env(safe-area-inset-bottom,0px));
+    z-index: 300; height: 52px; min-height: 52px; padding: 0 18px;
+    border-radius: 999px; background: #1f2a44; border: 1px solid rgba(212,170,106,.55);
+    color: #fff; font-family: 'Noto Sans KR', sans-serif;
+    font-size: 15px; font-weight: 800; line-height: 1; cursor: pointer;
+    box-shadow: 0 10px 24px rgba(15,23,42,.24);
+  }
+  #write-btn:active { transform: scale(.97); }
+
+  /* ── 뷰 전환 ── */
+  .view { display: none; min-height: 0; padding: 0 0 80px; }
+  .view.active {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: block;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  #list-view.view.active {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    padding-bottom: 0;
+  }
+
+  /* ── 필터 ── */
+  #filter-bar {
+    height: var(--tab-h); min-height: var(--tab-h); max-height: var(--tab-h);
+    display: flex; align-items: center; gap: 6px; padding: 0 10px;
+    background: var(--card);
+    border-top: 1px solid var(--bdr); border-bottom: 2px solid var(--bdr);
+    overflow-x: auto; overflow-y: hidden; scrollbar-width: none;
+    box-sizing: border-box;
+    position: relative;
+    top: auto;
+    z-index: 90;
+    flex: 0 0 var(--tab-h);
+    overscroll-behavior: contain;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+  }
+  #filter-bar::-webkit-scrollbar { display: none; }
+  .filter-btn {
+    flex: 1 0 auto; min-width: 62px; height: var(--tab-btn-h); min-height: var(--tab-btn-h);
+    border: 1.5px solid var(--d); border-radius: 10px;
+    padding: 0 8px; font-size: var(--fs-tab); background: var(--card-sub); color: var(--d);
+    cursor: pointer; font-weight: 600; font-family: inherit; transition: opacity .15s,transform .12s,box-shadow .15s;
+    display: flex; align-items: center; justify-content: center; gap: 4px; line-height: 1; white-space: nowrap; letter-spacing: -.02em;
+    box-shadow: none;
+  }
+  .filter-btn.active { background: var(--d); color: #fff; border-color: transparent; font-weight: 700; box-shadow: 0 2px 8px rgba(31,42,68,.28); }
+  .filter-btn:active { transform: scale(.992); }
+  .filter-btn.active,.filter-btn.active:active { transform: none!important; }
+
+  /* ── 게시글 목록 ── */
+  #post-list {
+    flex: 1 1 auto;
+    min-height: 0;
+    padding: 4px 14px calc(92px + env(safe-area-inset-bottom, 0px));
+    overflow-y: hidden;
+    overscroll-behavior: contain;
+    touch-action: pan-y;
+  }
+  #post-list.qa-scrollable {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .card {
+    background: #fffaf2; border:1px solid #e6dccb; border-radius: var(--radius); padding: 14px 16px;
+    margin-bottom: 10px; box-shadow: var(--shadow); cursor: pointer;
+    animation: fadeUp .25s ease both; transition: transform .12s;
+  }
+  .card:active { transform: scale(.98); }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .card-top { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-bottom: 7px; }
+  .card-title { font-size: 16px; font-weight: 600; color: #1E293B; line-height: 1.45; margin-bottom: 5px; }
+  .card-meta  { font-size: 16px; color: var(--gray-400); }
+  .card-date  { margin-left: auto; font-size: 16px; color: var(--gray-400); }
+
+  /* 배지 공통 */
+  .badge {
+    border-radius: 20px; padding: 3px 10px; font-size: 16px; font-weight: 700;
+    display: inline-flex; align-items: center; gap: 3px;
+  }
+  .badge-문의     { background:#EFF6FF; color:#1D4ED8; border:1px solid #BFDBFE; }
+  .badge-수정제안 { background:#FEF9C3; color:#92400E; border:1px solid #FDE68A; }
+  .badge-개선건의 { background:#F0FDF4; color:#166534; border:1px solid #BBF7D0; }
+  .badge-칭찬     { background:#FDF4FF; color:#7E22CE; border:1px solid #E9D5FF; }
+  .badge-lock  { background:#F3F4F6; color:#6B7280; border:1px solid #E5E7EB; font-weight:500; }
+  .badge-done  { background:#F0FDF4; color:#166534; border:1px solid #BBF7D0; font-weight:600; }
+  .badge-wait  { background:#FEF9C3; color:#92400E; border:1px solid #FDE68A; font-weight:500; }
+
+  /* ── 상세 ── */
+  #detail-view { padding: 16px; background:var(--bg); }
+  .detail-head {
+    background: #fffaf2; border:1px solid #e6dccb; border-radius: var(--radius);
+    padding: 16px; margin-bottom: 12px; box-shadow: var(--shadow);
+  }
+  .detail-title { font-size: 16px; font-weight: 700; color: #1E293B; margin: 10px 0 6px; line-height: 1.4; }
+  .detail-meta  { font-size: 16px; color: var(--gray-400); }
+  .detail-body  {
+    background: #f6efe4; border-radius: var(--radius); padding: 16px;
+    font-size: 16px; line-height: 1.85; color: #334155;
+    margin-bottom: 12px; box-shadow: var(--shadow); white-space: pre-wrap; border:1px solid #e6dccb;
+  }
+  /* ── 글쓰기 ── */
+  #write-view { padding: 16px; background:var(--bg); }
+  .field-group { margin-bottom: 18px; }
+  .field-label { display: block; font-size: 16px; font-weight: 700; color: var(--gray-700); margin-bottom: 8px; }
+  .cat-row { display: flex; gap: 8px; flex-wrap: wrap; }
+  .cat-opt {
+    border: 1.5px solid var(--gray-200); border-radius: 20px;
+    padding: 7px 16px; font-size: 16px; background: #fffaf2;
+    color: var(--gray-500); cursor: pointer; font-weight: 500; font-family: inherit;
+    transition: all .15s;
+  }
+  .cat-opt.active-문의     { background:#EFF6FF; color:#1D4ED8; border-color:#BFDBFE; font-weight:700; }
+  .cat-opt.active-수정제안 { background:#FEF9C3; color:#92400E; border-color:#FDE68A; font-weight:700; }
+  .cat-opt.active-개선건의 { background:#F0FDF4; color:#166534; border-color:#BBF7D0; font-weight:700; }
+  .cat-opt.active-칭찬     { background:#FDF4FF; color:#7E22CE; border-color:#E9D5FF; font-weight:700; }
+  input[type=text], input[type=number], textarea {
+    width: 100%; border: 1.5px solid #e6dccb; border-radius: 10px;
+    padding: 11px 14px; font-size: 16px; font-family: inherit; outline: none;
+    background: #fffaf2; transition: border-color .15s;
+  }
+  input[type=text]:focus, input[type=number]:focus, textarea:focus { border-color: var(--gold); }
+  textarea { resize: vertical; line-height: 1.75; }
+  .char-count { text-align: right; font-size: 16px; color: var(--gray-400); margin-top: 4px; }
+  .error-msg { color: #DC2626; font-size: 16px; margin-bottom: 12px; }
+  .notice-txt { text-align: center; font-size: 16px; color: var(--gray-400); margin-top: 12px; }
+
+  /* ── 버튼 ── */
+  .btn-primary {
+    width: 100%; background: var(--blue); color: #fff; border: none;
+    border-radius: 12px; padding: 13px; font-size: 16px; font-weight: 700;
+    cursor: pointer; font-family: inherit; transition: opacity .15s;
+  }
+  .btn-primary:active { opacity: .85; }
+  .btn-secondary {
+    flex: 1; background: var(--gray-100); color: var(--gray-500); border: none;
+    border-radius: 12px; padding: 12px; font-size: 16px; font-weight: 600;
+    cursor: pointer; font-family: inherit;
+  }
+  .btn-row { display: flex; gap: 8px; margin-top: 10px; }
+
+  /* ── 성공 화면 ── */
+  #success-view { padding: 60px 24px; text-align: center; display: none; }
+  #success-view .icon { font-size: 52px; margin-bottom: 16px; }
+  #success-view .ttl  { font-size: 16px; font-weight: 700; color: var(--blue); margin-bottom: 8px; }
+  #success-view .sub  { font-size: 16px; color: var(--gray-500); line-height: 1.8; margin-bottom: 28px; }
+
+  /* ── 로딩 / 빈화면 ── */
+  .loading-box { text-align: center; padding: 60px 0; color: var(--gray-400); font-size: 16px; }
+  .spinner {
+    width: 28px; height: 28px; border: 3px solid var(--gray-200);
+    border-top-color: var(--gold); border-radius: 50%;
+    animation: spin .7s linear infinite; margin: 0 auto 12px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+
+  /* ── 반응형 / safe-area ── */
+  html { min-height: 100%; }
+  body { overflow-x: hidden; }
+  .view { padding-bottom: calc(92px + env(safe-area-inset-bottom, 0px)); }
+  #list-view.view { padding-bottom: 0; }
+  #post-list, #write-view, #detail-view { width: 100%; max-width: 680px; margin: 0 auto; }
+  @media (min-width: 600px) {
+    #filter-bar { max-width: 680px; margin: 0 auto; width: 100%; }
+    .card { padding: 16px 18px; }
+  }
+  @media (min-width: 720px) {
+    #write-btn { right: calc((100vw - 680px)/2 + 18px); }
+  }
+  @media (max-width: 380px) {
+    #header-texts .title { font-size: 18px; }
+  }
+  @media (max-height: 720px) {
+    .field-group { margin-bottom: 12px; }
+    #write-view { padding-top: 12px; }
+    textarea { min-height: 96px; }
+  }
+
+
+  /* v1: 문의 헤더 십자가는 iOS/Android 모두 흰색 단색 CSS 십자가로 표시 */
+  #qna-cross-icon{ position:relative; font-size:0!important; line-height:1!important; display:flex; align-items:center; justify-content:center; }
+  #qna-cross-icon::before,
+  #qna-cross-icon::after{ content:""; position:absolute; left:50%; background:#fff; border-radius:2px; display:block; }
+  #qna-cross-icon::before{ top:50%; width:3px; height:24px; transform:translate(-50%,-50%); }
+  #qna-cross-icon::after{ top:42%; width:14px; height:3px; transform:translate(-50%,-50%); }
+
+  /* V1-59 qna no return effect */
+  html.returning-to-cover *,
+  body.returning-to-cover * {
+    transition: none !important;
+    animation: none !important;
+  }
+
+</style>
+
+
+<style id="oai-touch-ux-standard-20260506">
+/* OAI 20260506: 공통 터치 UX 표준화 */
+.oai-touch-pressed{
+  transform:scale(.965)!important;
+  filter:brightness(.96)!important;
+  transition:transform .12s ease, filter .12s ease!important;
+}
+.oai-touchable{
+  transition:transform .12s ease, filter .12s ease!important;
+  will-change:transform;
+}
+</style>
+</head>
+<body>
+
+<!-- 헤더 -->
+<div id="header">
+  <div id="qna-cross-icon" aria-hidden="true"></div><div id="header-texts">
+    <div class="title" id="header-title">문의 · 건의</div>
+    <div class="sub">가톨릭길동무</div>
+  </div>
+  <button id="write-btn" onclick="goWrite()">✏️ 글쓰기</button>
+  <button id="close-btn" onclick="handleQaBack()" aria-label="닫기">×</button>
+</div>
+
+<!-- 목록 뷰 -->
+<div id="list-view" class="view active">
+  <div id="filter-bar"></div>
+  <div id="post-list"><div class="loading-box"><div class="spinner"></div>불러오는 중…</div></div>
+</div>
+
+<!-- 상세 뷰 -->
+<div id="detail-view-wrap" class="view">
+  <div id="detail-view"></div>
+</div>
+
+<!-- 글쓰기 뷰 -->
+<div id="write-view" class="view">
+  <div class="field-group">
+    <label class="field-label">분류</label>
+    <div class="cat-row" id="cat-row"></div>
+  </div>
+  <div class="field-group">
+    <label class="field-label">제목</label>
+    <input type="text" id="f-title" placeholder="간단하게 제목을 적어주세요" maxlength="50">
+  </div>
+  <div class="field-group">
+    <label class="field-label">내용</label>
+    <textarea id="f-content" rows="6" placeholder="문의 내용이나 건의사항을 자유롭게 적어주세요.&#10;공개 게시판이므로 개인정보는 입력하지 마세요." maxlength="500"
+      oninput="document.getElementById('char-cnt').textContent=this.value.length"></textarea>
+    <div class="char-count"><span id="char-cnt">0</span> / 500</div>
+  </div>
+  <div id="form-error" class="error-msg" style="display:none;"></div>
+  <button class="btn-primary" onclick="submitPost()">접수하기</button>
+  <div class="notice-txt">✓ 공개 게시판입니다 &nbsp;·&nbsp; ✓ 개인정보 입력 금지</div>
+</div>
+
+<!-- 접수 완료 -->
+<div id="success-view">
+  <div class="icon">🙏</div>
+  <div class="ttl">접수되었습니다</div>
+  <div class="sub">소중한 의견 감사합니다.<br>빠르게 검토하겠습니다.</div>
+  <button class="btn-primary" onclick="goList()">목록으로</button>
+</div>
+
+
+
+<script>
+/* ══════════════════════════════════════════════
+   ★ 1. Firebase 설정 — 아래 값만 교체하면 됩니다
+   ══════════════════════════════════════════════ */
+const FIREBASE_CONFIG = {
+  apiKey:            "AIzaSyCGUwhWXTgc09ghEtOcvinpQKrr577zAhM",
+  authDomain:        "catholic-6c7d8.firebaseapp.com",
+  projectId:         "catholic-6c7d8",
+  storageBucket:     "catholic-6c7d8.firebasestorage.app",
+  messagingSenderId: "952327785327",
+  appId:             "1:952327785327:web:1576bc6d678ba42f8a369a"
+};
+
+/* ══════════════════════════════════════════════ */
+
+firebase.initializeApp(FIREBASE_CONFIG);
+const db = firebase.firestore();
+const COL = db.collection("qa_posts");
+
+/* ─── 상수 ─── */
+const CATEGORIES  = ["문의","수정제안","개선건의","칭찬"];
+const ANON_NAMES  = ["익명의 순례자","익명의 신자","익명의 교우"];
+const FILTERS     = ["전체", ...CATEGORIES];
+
+/* ─── 상태 ─── */
+let currentFilter  = "전체";
+let currentPost    = null;
+let selectedCat    = "문의";
+let unsubscribe    = null;
+
+function updatePostListScrollState(){
+  const list = document.getElementById('post-list');
+  if(!list) return;
+  requestAnimationFrame(function(){
+    try{
+      const needsScroll = list.scrollHeight > list.clientHeight + 2;
+      list.classList.toggle('qa-scrollable', !!needsScroll);
+      if(!needsScroll) list.scrollTop = 0;
+    }catch(e){}
+  });
+}
+
+function moveFilterTab(dir){
+  const idx = FILTERS.indexOf(currentFilter);
+  if(idx < 0 || !FILTERS.length) return;
+  const next = (idx + dir + FILTERS.length) % FILTERS.length;
+  if(next === idx) return;
+  currentFilter = FILTERS[next];
+  buildFilterBar();
+  renderList(window._cachedPosts || []);
+}
+
+function initFilterSwipe(){
+  const area = document.getElementById('post-list');
+  if(!area || area.__qaFilterSwipeBound) return;
+  area.__qaFilterSwipeBound = true;
+  let sx = 0, sy = 0, st = 0;
+  area.addEventListener('touchstart', function(e){
+    if(!e.touches || e.touches.length !== 1) return;
+    const t = e.touches[0];
+    sx = t.clientX; sy = t.clientY; st = Date.now();
+  }, {passive:true});
+  area.addEventListener('touchend', function(e){
+    if(!e.changedTouches || e.changedTouches.length !== 1) return;
+    const t = e.changedTouches[0];
+    const dx = t.clientX - sx;
+    const dy = t.clientY - sy;
+    if(Date.now() - st > 700) return;
+    if(Math.abs(dx) < 52 || Math.abs(dx) < Math.abs(dy) * 1.35) return;
+    if(dx < 0) moveFilterTab(1);
+    else moveFilterTab(-1);
+  }, {passive:true});
+}
+
+/* ═══════════════════ 뷰 전환 ═══════════════════ */
+let qaHistoryReady = false;
+let suppressQaHistory = false;
+
+function qaBaseUrl(){
+  return location.pathname + location.search;
+}
+
+function setQaHistory(id, mode){
+  if(suppressQaHistory) return;
+  try{
+    const state = { qaView: id };
+    const url = id === 'list-view' ? qaBaseUrl() : qaBaseUrl() + '#'+(id === 'write-view' ? 'write' : 'detail');
+    if(mode === 'replace' || !qaHistoryReady){
+      history.replaceState(state, '', url);
+      qaHistoryReady = true;
+    }else if(id !== 'list-view'){
+      history.pushState(state, '', url);
+    }else{
+      history.replaceState(state, '', qaBaseUrl());
+    }
+  }catch(e){}
+}
+
+function showView(id, opt) {
+  opt = opt || {};
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  const el = document.getElementById(id);
+  if (el) el.classList.add('active');
+
+  const isList   = id === 'list-view';
+  const isWrite  = id === 'write-view';
+
+  document.getElementById('write-btn').style.display = isList ? '' : 'none';
+  document.getElementById('success-view').style.display = 'none';
+
+  var closeBtn = document.getElementById('close-btn');
+  if(closeBtn){
+    closeBtn.onclick = isList ? function(){ handleQaBack(); } : function(){ goList(); };
+  }
+
+  const titles = { 'list-view':'문의 · 건의', 'detail-view-wrap':'상세보기', 'write-view':'글 작성' };
+  document.getElementById('header-title').textContent = titles[id] || '문의 · 건의';
+
+  if(opt.history !== false){
+    setQaHistory(id, opt.historyMode || (isList ? 'replace' : 'push'));
+  }
+}
+
+function goList(opt)   {
+  try{ document.activeElement && document.activeElement.blur && document.activeElement.blur(); }catch(e){}
+  opt = opt || {};
+  showView('list-view', { history: opt.history !== false, historyMode: opt.historyMode || 'replace' });
+  currentPost = null;
+}
+function goWrite()  {
+  resetForm();
+  showView('write-view', { historyMode:'push' });
+  var titleInput = document.getElementById('f-title');
+  if(titleInput){
+    setTimeout(function(){
+      try{ titleInput.focus({preventScroll:true}); }
+      catch(e){ try{ titleInput.focus(); }catch(_){} }
+    },120);
+  }
+}
+function goDetail() { showView('detail-view-wrap', { historyMode:'push' }); }
+
+/* ═══════════════════ 필터 바 ═══════════════════ */
+function buildFilterBar() {
+  const bar = document.getElementById('filter-bar');
+  bar.innerHTML = '';
+  FILTERS.forEach(f => {
+    const btn = document.createElement('button');
+    btn.className = 'filter-btn' + (f === currentFilter ? ' active' : '');
+    btn.textContent = f;
+    btn.onclick = () => { currentFilter = f; buildFilterBar(); renderList(window._cachedPosts || []); };
+    bar.appendChild(btn);
+  });
+  requestAnimationFrame(function(){
+    try{
+      const active = bar.querySelector('.filter-btn.active');
+      if(active) active.scrollIntoView({block:'nearest', inline:'center'});
+    }catch(e){}
+  });
+}
+
+/* ═══════════════════ 목록 렌더링 ═══════════════════ */
+window._cachedPosts = [];
+
+function renderList(posts) {
+  window._cachedPosts = posts;
+  const filtered = currentFilter === '전체' ? posts : posts.filter(p => p.category === currentFilter);
+  const container = document.getElementById('post-list');
+
+  if (filtered.length === 0) {
+    container.innerHTML = '<div class="loading-box" style="color:#94A3B8;">게시글이 없습니다.</div>';
+    updatePostListScrollState();
+    return;
+  }
+
+  container.innerHTML = filtered.map((p, i) => {
+    return `
+      <div class="card" style="animation-delay:${i*0.04}s" onclick="openPost('${p.id}')">
+        <div class="card-top">
+          <span class="badge badge-${escHtml(p.category)}">${escHtml(p.category)}</span>
+          <span class="card-date">${escHtml(p.date)}</span>
+        </div>
+        <div class="card-title">${escHtml(p.title)}</div>
+        <div class="card-meta">${escHtml(p.author)}</div>
+      </div>`;
+  }).join('');
+  updatePostListScrollState();
+}
+
+/* ═══════════════════ 실시간 구독 ═══════════════════ */
+function subscribeList() {
+  if (unsubscribe) unsubscribe();
+  document.getElementById('post-list').innerHTML =
+    '<div class="loading-box"><div class="spinner"></div>불러오는 중…</div>';
+
+  unsubscribe = COL
+    .orderBy('createdAt', 'desc')
+    .onSnapshot(snap => {
+      const posts = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      renderList(posts);
+    }, err => {
+      console.error(err);
+      document.getElementById('post-list').innerHTML =
+        '<div class="loading-box">데이터를 불러오지 못했습니다.<br>Firebase 설정을 확인해주세요.</div>';
+    });
+}
+
+/* ═══════════════════ 게시글 열기 ═══════════════════ */
+function openPost(id) {
+  const post = window._cachedPosts.find(p => p.id === id);
+  if (!post) return;
+  showDetailView(post);
+}
+
+function showDetailView(post) {
+  currentPost = post;
+
+  const contentHTML = escHtml(post.content);
+
+  document.getElementById('detail-view').innerHTML = `
+    <div style="padding:16px;">
+      <div class="detail-head">
+        <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+          <span class="badge badge-${escHtml(post.category)}">${escHtml(post.category)}</span>
+        </div>
+        <div class="detail-title">${escHtml(post.title)}</div>
+        <div class="detail-meta">${escHtml(post.author)} · ${escHtml(post.date)}</div>
+      </div>
+
+      <div class="detail-body">${contentHTML}</div>
+    </div>`;
+
+  goDetail();
+}
+
+/* ═══════════════════ 글쓰기 ═══════════════════ */
+function buildCatRow() {
+  const row = document.getElementById('cat-row');
+  row.innerHTML = '';
+  CATEGORIES.forEach(c => {
+    const btn = document.createElement('button');
+    btn.className = 'cat-opt' + (c === selectedCat ? ` active-${c}` : '');
+    btn.textContent = c;
+    btn.onclick = () => { selectedCat = c; buildCatRow(); };
+    row.appendChild(btn);
+  });
+}
+function resetForm() {
+  selectedCat = '문의';
+  buildCatRow();
+  document.getElementById('f-title').value   = '';
+  document.getElementById('f-content').value = '';
+  document.getElementById('char-cnt').textContent = '0';
+  document.getElementById('form-error').style.display = 'none';
+}
+
+var titleInput = document.getElementById('f-title');
+if(titleInput){
+  titleInput.addEventListener('keydown', function(e){
+    if(e.key === 'Enter'){
+      e.preventDefault();
+      try{ titleInput.blur(); }catch(_){}
+    }
+  });
+}
+
+async function submitPost() {
+  try{ document.activeElement && document.activeElement.blur && document.activeElement.blur(); }catch(e){}
+  const title   = document.getElementById('f-title').value.trim();
+  const content = document.getElementById('f-content').value.trim();
+  const errEl   = document.getElementById('form-error');
+
+  if (!title || !content) {
+    errEl.textContent = '제목과 내용을 입력해주세요.'; errEl.style.display = 'block'; return;
+  }
+  if (title.length < 2 || title.length > 50) {
+    errEl.textContent = '제목은 2자 이상 50자 이하로 입력해주세요.'; errEl.style.display = 'block'; return;
+  }
+  if (content.length < 5 || content.length > 500) {
+    errEl.textContent = '내용은 5자 이상 500자 이하로 입력해주세요.'; errEl.style.display = 'block'; return;
+  }
+  if (CATEGORIES.indexOf(selectedCat) < 0) selectedCat = '문의';
+  errEl.style.display = 'none';
+
+  const author = ANON_NAMES[Math.floor(Math.random() * ANON_NAMES.length)];
+  const today  = new Date().toISOString().slice(0, 10);
+
+  const data = {
+    category: selectedCat, title, content, author, date: today,
+    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+  };
+
+  try {
+    await COL.add(data);
+    // 글 작성 완료 후에는 별도 완료 화면이나 커버로 가지 않고 목록으로 복귀
+    goList();
+  } catch(e) {
+    errEl.textContent = '저장 실패: ' + e.message; errEl.style.display = 'block';
+  }
+}
+
+/* ═══════════════════ 유틸 ═══════════════════ */
+function escHtml(str) {
+  return (str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;').replace(/\n/g,'<br>');
+}
+
+/* ═══════════════════ 뒤로가기 처리 ═══════════════════ */
+function handleQaBack(){
+  var active = document.querySelector('.view.active');
+  if(active && active.id !== 'list-view'){
+    goList({historyMode:'replace'});
+    return;
+  }
+  try{ document.activeElement && document.activeElement.blur && document.activeElement.blur(); }catch(e){}
+  if(document.referrer && document.referrer.indexOf(location.hostname)>=0){
+    history.back();
+  } else {
+    location.href='index.html';
+  }
+}
+
+window.addEventListener('popstate', function(){
+  var active = document.querySelector('.view.active');
+  if(active && active.id !== 'list-view'){
+    suppressQaHistory = true;
+    goList({history:false});
+    suppressQaHistory = false;
+  }
+});
+
+
+/* ═══════════════════ 초기화 ═══════════════════ */
+buildFilterBar();
+buildCatRow();
+initFilterSwipe();
+window.addEventListener('resize', updatePostListScrollState, {passive:true});
+showView('list-view', { historyMode:'replace' });
+subscribeList();
+</script>
+
+<script id="oai-cache-lifecycle-V23">
+(function(){
+  'use strict';
+  var APP_VERSION = 'V1-59';
+  if('serviceWorker' in navigator){
+    try{ navigator.serviceWorker.register('./sw.js?v=' + encodeURIComponent(APP_VERSION)).then(function(reg){try{reg.update();}catch(e){}}).catch(function(){}); }catch(e){}
+  }
+})();
+</script>
+
+
+<script id="oai-touch-ux-keyboard-20260506">
+(function(){
+  if(window.__oaiTouchUxKeyboard20260506) return;
+  window.__oaiTouchUxKeyboard20260506 = true;
+
+  var DELAY_MS = 105;
+  var delayedSelectors = [
+    '.cv-hotspot','.cv-extra-btn','.cv-btn',
+    '.prayer-item','.prayer-card','.prayer-list-item',
+    '.list-item','.nearby-item','.region-item',
+    '.sm-item','.sm-place-item',
+    '.trail-card','.trail-sh-body',
+    '.lv-card','.si-r','.card',
+    '.filter-btn','.cat-opt','.tab','.tab-btn','.trail-tab','.web-cat-btn'
+  ].join(',');
+
+  var directSelectors = [
+    'a','input','textarea','select','label',
+    '.ic-link-btn','.ic-hp-btn','.ic-guide-btn',
+    '.btn-kakao-route','.btn-kakao-nav','.c-btn',
+    '.web-card','.trail-foot','.web-card-foot','.trail-sh-foot',
+    '#close-btn','.module-close','.sheet-x','.sm-x','.ic-close-btn','.c-x',
+    '.btn-primary','.btn-secondary','#write-btn','#sb'
+  ].join(',');
+
+  function closest(el, sel){
+    try{return el && el.closest ? el.closest(sel) : null;}catch(e){return null;}
+  }
+  function press(el){
+    if(!el || el.__oaiPressing) return;
+    el.__oaiPressing = true;
+    el.classList.add('oai-touchable','oai-touch-pressed');
+    setTimeout(function(){
+      try{el.classList.remove('oai-touch-pressed');}catch(e){}
+      el.__oaiPressing = false;
+    }, DELAY_MS + 45);
+  }
+
+  document.addEventListener('pointerdown', function(e){
+    var el = closest(e.target, delayedSelectors);
+    if(!el) return;
+    press(el);
+  }, true);
+
+  document.addEventListener('click', function(e){
+    if(e.__oaiTouchReplay) return;
+    if(closest(e.target, directSelectors)) return;
+    var el = closest(e.target, delayedSelectors);
+    if(!el) return;
+    if(el.__oaiClickDelay) return;
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    press(el);
+    el.__oaiClickDelay = true;
+    setTimeout(function(){
+      try{
+        var ev = new MouseEvent('click', {bubbles:true,cancelable:true,view:window});
+        ev.__oaiTouchReplay = true;
+        el.dispatchEvent(ev);
+      }catch(err){
+        try{ el.click(); }catch(_e){}
+      }
+      setTimeout(function(){ el.__oaiClickDelay = false; }, 0);
+    }, DELAY_MS);
+  }, true);
+
+  function disableKeyboardSuggestions(root){
+    root = root || document;
+    var nodes = root.querySelectorAll ? root.querySelectorAll('input[type="text"], input[type="search"], input:not([type]), textarea') : [];
+    nodes.forEach(function(el){
+      if(el.type === 'number' || el.type === 'tel' || el.type === 'email') return;
+      el.setAttribute('autocomplete','off');
+      el.setAttribute('autocorrect','off');
+      el.setAttribute('autocapitalize','off');
+      el.setAttribute('spellcheck','false');
+      el.setAttribute('enterkeyhint','done');
+    });
+  }
+  disableKeyboardSuggestions(document);
+  document.addEventListener('DOMContentLoaded', function(){ disableKeyboardSuggestions(document); });
+  try{
+    var mo = new MutationObserver(function(muts){
+      for(var i=0;i<muts.length;i++){
+        for(var j=0;j<muts[i].addedNodes.length;j++){
+          var n=muts[i].addedNodes[j];
+          if(n && n.nodeType===1) disableKeyboardSuggestions(n);
+        }
+      }
+    });
+    mo.observe(document.documentElement,{childList:true,subtree:true});
+  }catch(e){}
+})();
+</script>
+</body>
+</html>
