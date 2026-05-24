@@ -909,7 +909,7 @@ function _runRefreshAppFilesOnly(){
   try{
     if(btn){
       btn.disabled = true;
-      btn.textContent = ((btn.getAttribute('data-target-version') || 'V1-78') + ' 새로고침 중');
+      btn.textContent = ((btn.getAttribute('data-target-version') || 'V1-79') + ' 새로고침 중');
     }
     if(document.activeElement && document.activeElement.blur) document.activeElement.blur();
     // V37: 새로고침 전에는 레이아웃/스크롤/모달 DOM을 건드리지 않고,
@@ -1015,7 +1015,7 @@ async function _runClearAppFilesCacheCompletely(){
   }catch(e){
     console.warn('[가톨릭길동무]', e);
   }
-  // V1-78: 긴 새로고침도 보호막을 다시 예약하지 않고 현재 문서에서 1회만 유지한다.
+  // V1-79: 긴 새로고침도 보호막을 다시 예약하지 않고 현재 문서에서 1회만 유지한다.
   try{
     // 현재 히스토리 항목을 그대로 reload한다.
     // location.replace(?refresh=...)는 이전 root 항목과 URL이 갈라져
@@ -1068,7 +1068,7 @@ function syncCoverUpdateVersionState(){
     var box = document.getElementById('cover-update-box');
     var marker = document.getElementById('oai-build-marker');
     if(!btn || !box) return;
-        var target = btn.getAttribute('data-target-version') || 'V1-78';
+        var target = btn.getAttribute('data-target-version') || 'V1-79';
     var current = '';
     if(window.APP_VERSION) current = String(window.APP_VERSION).trim();
     if(!current && marker) current = String(marker.textContent || '').trim();
@@ -1077,7 +1077,7 @@ function syncCoverUpdateVersionState(){
     btn.textContent = mismatch ? (target + ' 업데이트 필요') : (target + ' 새로고침');
     box.classList.toggle('update-needed', mismatch);
     if(marker){
-      marker.textContent = target || 'V1-78';
+      marker.textContent = target || 'V1-79';
       marker.setAttribute('hidden', 'hidden');
       marker.setAttribute('aria-hidden','true');
       marker.style.display = 'none';
@@ -1413,7 +1413,7 @@ function openDioceseView(opts){
       if(!restore) try{ frame.contentWindow && frame.contentWindow.resetDioceseFirstPage && frame.contentWindow.resetDioceseFirstPage(); }catch(e){ console.warn("[가톨릭길동무]", e); }
       if(typeof dioceseLoaded==='function') dioceseLoaded();
     };
-    frame.src='diocese.html?v=V1-78';
+    frame.src='diocese.html?v=V1-79';
   }else if(!restore){
     try{ frame.contentWindow && frame.contentWindow.resetDioceseFirstPage && frame.contentWindow.resetDioceseFirstPage(); }catch(e){ console.warn("[가톨릭길동무]", e); }
   }
@@ -1810,7 +1810,7 @@ const _PARISH_DIOCESE_ASSETS={
 };
 const _PARISH_DIOCESE_LOAD_STATE={};
 const _PARISH_DIOCESE_LOAD_PROMISES={};
-const _PARISH_ASSET_VERSION='V1-78';
+const _PARISH_ASSET_VERSION='V1-79';
 function _getParishDioceseAsset(code){
   return _PARISH_DIOCESE_ASSETS[code] || null;
 }
@@ -1973,7 +1973,7 @@ function _ensureParishDataLoaded(){
 }
 _initParishDataFromGlobal();
 
-const _PRAYER_ASSET_VERSION='V1-78';
+const _PRAYER_ASSET_VERSION='V1-79';
 let _prayerModuleLoadPromise=null;
 function _isPrayerModuleReady(){
   return typeof window.initPrayerView === 'function' &&
@@ -2018,7 +2018,7 @@ try{ window.ensurePrayerModuleLoaded=ensurePrayerModuleLoaded; }catch(e){ consol
 let _RT_RAW = [];
 let _retreatRawLoaded = false;
 let _retreatDataLoadPromise = null;
-const _RETREAT_ASSET_VERSION='V1-78';
+const _RETREAT_ASSET_VERSION='V1-79';
 
 let RETREATS = [];
 function _buildRetreatList(raw){
@@ -2266,7 +2266,7 @@ const _TY={'A':'성지','B':'순례지','C':'순교 사적지'};
 
 let _shrineRawLoaded = false;
 let _shrineDataLoadPromise = null;
-const _SHRINE_ASSET_VERSION='V1-78';
+const _SHRINE_ASSET_VERSION='V1-79';
 let SHRINES = [];
 let JUKRIMGUL_IDX = -1;
 function _decodeShrineHomePage(hp){
@@ -3262,7 +3262,9 @@ function selectItem(idx, opts={}){
   _curFromRegion = !!(opts.fromRegion && _regionLat);
   closeAllTabs();
   if(_mode==='shrine'){
-  if(opts.fromRegion || fromSearchList){
+  if(opts.fromRegion){
+   if(!_showRegionSelectionMapIfActive()) _restoreAllCategoryMarkersForSelection();
+  } else if(fromSearchList){
    _restoreAllCategoryMarkersForSelection();
   } else if(opts.fromNearby && _nearbyCache.length>0){
    _showItemsOnMap(_nearbyCache);
@@ -3271,9 +3273,12 @@ function selectItem(idx, opts={}){
   }
   _selectShrineMarker(idx);
   } else if(_mode==='parish') {
+  if(opts.fromRegion) _showRegionSelectionMapIfActive();
   _selectParishMarker(item);
   } else {
-  if(opts.fromRegion || fromSearchList) _restoreAllCategoryMarkersForSelection();
+  if(opts.fromRegion){
+   if(!_showRegionSelectionMapIfActive()) _restoreAllCategoryMarkersForSelection();
+  } else if(fromSearchList) _restoreAllCategoryMarkersForSelection();
   _selectRetreatMarker(item);
   }
   _showInfoCard(item, idx);
@@ -3660,6 +3665,30 @@ function showRegionPlaceOnMap(){
 }
 try{ window.showRegionPlaceOnMap=showRegionPlaceOnMap; }catch(e){ console.warn('[가톨릭길동무]', e); }
 
+function _isRegionItemContextActive(item){
+  // 지역검색 지도 상태에서 성지/피정/성당 마커를 눌렀을 때
+  // 인포카드·길찾기 출발지를 현재 위치가 아니라 검색 위치로 유지한다.
+  // 새 이벤트를 덧씌우지 않고 기존 마커 클릭 판단 안에서만 지역검색 컨텍스트를 판별한다.
+  try{
+    if(!item || !_regionLat || !_regionLng || !_routeRegionStart || !_routeRegionStart.lat) return false;
+    if(!Array.isArray(_regionCache) || !_regionCache.length) return false;
+    if(_regionCache.indexOf(item) >= 0) return true;
+    return _regionCache.some(function(p){
+      return p && Number(p.lat)===Number(item.lat) && Number(p.lng)===Number(item.lng) && p.name===item.name;
+    });
+  }catch(e){ console.warn('[가톨릭길동무]', e); return false; }
+}
+
+function _showRegionSelectionMapIfActive(){
+  try{
+    if(_regionLat && _regionLng && _regionCache && _regionCache.length){
+      _showRegionItemsOnMap(_regionCache, _regionLat, _regionLng, {center:false});
+      return true;
+    }
+  }catch(e){ console.warn('[가톨릭길동무]', e); }
+  return false;
+}
+
 function _buildShrineMarkers(){
   _markers=new Array(SHRINES.length).fill(null);
   const BATCH=30;
@@ -3677,7 +3706,7 @@ function _buildShrineMarkers(){
    (function(index){
     kakao.maps.event.addListener(mk,'click',()=>{
      if(_routeMode) _selectRouteItem(index);
-     else selectItem(index);
+     else selectItem(index,{fromRegion:_isRegionItemContextActive(SHRINES[index])});
     });
    })(i);
    _markers[i]={marker:mk,shrine:s,index:i};
@@ -4233,7 +4262,7 @@ function _showParishDioMkrs(code){
       kakao.maps.event.addListener(mk,'click',function(){
         const idx=PARISHES.indexOf(p);
         if(_routeMode) _selectRouteItem(idx);
-        else selectItem(idx,{fromNearby:false,fromRegion:false});
+        else selectItem(idx,{fromNearby:false,fromRegion:_isRegionItemContextActive(p)});
       });
       // setMap은 _updateParishViewport에서 뷰포트 기준으로 처리
       _dioMkrs[code].push(mk);
@@ -4291,7 +4320,7 @@ function _buildRetreatMarkers(){
       });
       (function(idx){kakao.maps.event.addListener(mk,'click',function(){
         if(_routeMode) _selectRouteItem(idx);
-        else selectItem(idx,{fromNearby:false,fromRegion:false});
+        else selectItem(idx,{fromNearby:false,fromRegion:_isRegionItemContextActive(p)});
       });})(i);
       _retreatMarkers.push({marker:mk,item:p,index:i});
     });
@@ -4655,6 +4684,27 @@ function renderList(){
     });
     return;
   }
+
+  // 검색어가 없을 때도 성지·성당·피정의집 찾기 기본 목록을 표시한다.
+  // 기존 renderList 내부에서 빠져 있던 기본 렌더링 흐름을 복원해,
+  // 탭을 처음 열었을 때 빈 화면처럼 보이지 않게 한다.
+  body.innerHTML='';
+  Object.entries(groups).forEach(([dio,items])=>{
+    const hd=document.createElement('div');
+    hd.className='dio-hd'; hd.textContent=dio;
+    body.appendChild(hd);
+    items.forEach(({s,i})=>{
+      const c=_getModeMarkerColor(s);
+      const dotColor=(_mode==='retreat')?OAI_RETREAT_LIST_DOT_COLOR:c;
+      const d=document.createElement('div');
+      d.className='list-item';
+      d.innerHTML=`<div class="li-dot" style="background:${dotColor}"></div>
+    <div class="li-info"><div class="li-name">${s.name}</div><div class="li-sub">${s.addr.substring(0,28)}${s.addr.length>28?'…':''}</div></div>
+    <span class="li-badge" style="background:${c}18!important;color:${c}!important">${_mode==='shrine'?s.type:(_mode==='retreat'?'피정의 집':'성당')}</span>`;
+      d.onclick=()=>selectItem(i);
+      body.appendChild(d);
+    });
+  });
 
 }
 
