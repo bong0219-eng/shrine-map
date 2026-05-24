@@ -1,0 +1,8 @@
+[{
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "kr.catholic.gildonmu",
+        "sha256_cert_fingerprints": ["DB:1C:BB:82:F1:1D:84:1B:34:FD:6C:E5:21:F7:E1:AE:FA:51:BB:BC:2A:6B:8E:CB:05:5B:5D:0F:4E:8A:64:56"]
+      }
+    }]

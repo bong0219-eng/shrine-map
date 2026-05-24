@@ -909,7 +909,7 @@ function _runRefreshAppFilesOnly(){
   try{
     if(btn){
       btn.disabled = true;
-      btn.textContent = ((btn.getAttribute('data-target-version') || 'V1-76') + ' 새로고침 중');
+      btn.textContent = ((btn.getAttribute('data-target-version') || 'V1-77') + ' 새로고침 중');
     }
     if(document.activeElement && document.activeElement.blur) document.activeElement.blur();
     // V37: 새로고침 전에는 레이아웃/스크롤/모달 DOM을 건드리지 않고,
@@ -1015,7 +1015,7 @@ async function _runClearAppFilesCacheCompletely(){
   }catch(e){
     console.warn('[가톨릭길동무]', e);
   }
-  // V1-76: 긴 새로고침도 보호막을 다시 예약하지 않고 현재 문서에서 1회만 유지한다.
+  // V1-77: 긴 새로고침도 보호막을 다시 예약하지 않고 현재 문서에서 1회만 유지한다.
   try{
     // 현재 히스토리 항목을 그대로 reload한다.
     // location.replace(?refresh=...)는 이전 root 항목과 URL이 갈라져
@@ -1068,7 +1068,7 @@ function syncCoverUpdateVersionState(){
     var box = document.getElementById('cover-update-box');
     var marker = document.getElementById('oai-build-marker');
     if(!btn || !box) return;
-        var target = btn.getAttribute('data-target-version') || 'V1-76';
+        var target = btn.getAttribute('data-target-version') || 'V1-77';
     var current = '';
     if(window.APP_VERSION) current = String(window.APP_VERSION).trim();
     if(!current && marker) current = String(marker.textContent || '').trim();
@@ -1077,7 +1077,7 @@ function syncCoverUpdateVersionState(){
     btn.textContent = mismatch ? (target + ' 업데이트 필요') : (target + ' 새로고침');
     box.classList.toggle('update-needed', mismatch);
     if(marker){
-      marker.textContent = target || 'V1-76';
+      marker.textContent = target || 'V1-77';
       marker.setAttribute('hidden', 'hidden');
       marker.setAttribute('aria-hidden','true');
       marker.style.display = 'none';
@@ -1413,7 +1413,7 @@ function openDioceseView(opts){
       if(!restore) try{ frame.contentWindow && frame.contentWindow.resetDioceseFirstPage && frame.contentWindow.resetDioceseFirstPage(); }catch(e){ console.warn("[가톨릭길동무]", e); }
       if(typeof dioceseLoaded==='function') dioceseLoaded();
     };
-    frame.src='diocese.html?v=V1-76';
+    frame.src='diocese.html?v=V1-77';
   }else if(!restore){
     try{ frame.contentWindow && frame.contentWindow.resetDioceseFirstPage && frame.contentWindow.resetDioceseFirstPage(); }catch(e){ console.warn("[가톨릭길동무]", e); }
   }
@@ -1810,7 +1810,7 @@ const _PARISH_DIOCESE_ASSETS={
 };
 const _PARISH_DIOCESE_LOAD_STATE={};
 const _PARISH_DIOCESE_LOAD_PROMISES={};
-const _PARISH_ASSET_VERSION='V1-76';
+const _PARISH_ASSET_VERSION='V1-77';
 function _getParishDioceseAsset(code){
   return _PARISH_DIOCESE_ASSETS[code] || null;
 }
@@ -1973,7 +1973,7 @@ function _ensureParishDataLoaded(){
 }
 _initParishDataFromGlobal();
 
-const _PRAYER_ASSET_VERSION='V1-76';
+const _PRAYER_ASSET_VERSION='V1-77';
 let _prayerModuleLoadPromise=null;
 function _isPrayerModuleReady(){
   return typeof window.initPrayerView === 'function' &&
@@ -2018,7 +2018,7 @@ try{ window.ensurePrayerModuleLoaded=ensurePrayerModuleLoaded; }catch(e){ consol
 let _RT_RAW = [];
 let _retreatRawLoaded = false;
 let _retreatDataLoadPromise = null;
-const _RETREAT_ASSET_VERSION='V1-76';
+const _RETREAT_ASSET_VERSION='V1-77';
 
 let RETREATS = [];
 function _buildRetreatList(raw){
@@ -2266,7 +2266,7 @@ const _TY={'A':'성지','B':'순례지','C':'순교 사적지'};
 
 let _shrineRawLoaded = false;
 let _shrineDataLoadPromise = null;
-const _SHRINE_ASSET_VERSION='V1-76';
+const _SHRINE_ASSET_VERSION='V1-77';
 let SHRINES = [];
 let JUKRIMGUL_IDX = -1;
 function _decodeShrineHomePage(hp){
@@ -2641,7 +2641,7 @@ function oaiPreopenNearbySheetForCategory(){
       sheet.classList.add('open','oai-preopen-nearby');
     }
     if(body){
-      body.innerHTML='<div class="empty-msg">📍 위치를 확인하는 중...</div>';
+      body.innerHTML='<div class="empty-msg">📍 위치 권한 상태를 확인하는 중...</div>';
       try{ body.scrollTop=0; }catch(_e){}
     }
     if(typeof _updateTabBtns==='function') _updateTabBtns('nearby');
@@ -3415,9 +3415,10 @@ function openInAppRoute(){
   if(_myLat){
   doRoute(_myLat, _myLng, '현위치');
   } else {
+  if(!_GEO){ alert('위치 정보를 지원하지 않습니다.'); return; }
   _GEO.getCurrentPosition(
    p=>{ _setMyLoc(p.coords.latitude, p.coords.longitude); doRoute(p.coords.latitude, p.coords.longitude, '현위치'); },
-   ()=>alert('위치를 가져올 수 없습니다.'),
+   function(err){ alert(_geoErrorMessage(err)); },
    {enableHighAccuracy:true, timeout:10000}
   );
   }
@@ -4183,30 +4184,77 @@ function _clearParishMarkers(){
   _hideDioOverlays();
 }
 
+function _isInstalledLikeApp(){
+  try{
+    if(window.matchMedia && (window.matchMedia('(display-mode: standalone)').matches || window.matchMedia('(display-mode: fullscreen)').matches)) return true;
+    if(navigator.standalone === true) return true;
+  }catch(e){ console.warn('[가톨릭길동무]', e); }
+  return false;
+}
+function _geoPermissionState(){
+  try{
+    if(!navigator.permissions || !navigator.permissions.query) return Promise.resolve('unknown');
+    return navigator.permissions.query({name:'geolocation'}).then(function(result){
+      return result && result.state ? result.state : 'unknown';
+    }).catch(function(){ return 'unknown'; });
+  }catch(e){
+    return Promise.resolve('unknown');
+  }
+}
+function _geoDeniedGuideText(){
+  if(_isInstalledLikeApp()){
+    return '휴대폰 설정 > 앱 > 가톨릭길동무 > 권한 > 위치에서 허용으로 변경한 뒤 앱을 완전히 종료하고 다시 실행해 주세요.';
+  }
+  return '브라우저 또는 앱의 사이트 설정에서 위치 권한을 허용한 뒤 다시 시도해 주세요.';
+}
+function _geoErrorMessage(err){
+  if(err && err.code===1) return '위치 권한이 꺼져 있습니다.\n' + _geoDeniedGuideText();
+  if(err && err.code===3) return '위치 확인 시간이 초과되었습니다. GPS와 네트워크 상태를 확인한 뒤 다시 시도해 주세요.';
+  return '위치를 가져올 수 없습니다. GPS와 네트워크 상태를 확인한 뒤 다시 시도해 주세요.';
+}
+function _nearbyGeoActionHtml(state, err){
+  const noun=_modeTargetLabel ? _modeTargetLabel() : '장소';
+  const denied = state==='denied' || (err && err.code===1);
+  const title = denied ? '위치 권한이 꺼져 있습니다' : (err ? '위치를 가져올 수 없습니다' : '내 주변 '+noun+'를 보려면 위치 권한이 필요합니다');
+  const icon = denied ? '⚠️' : '📍';
+  const msg = denied
+    ? _geoDeniedGuideText()
+    : (err ? _geoErrorMessage(err) : '아래 버튼을 누르면 위치 권한 요청창이 열립니다. 권한창이 뜨면 허용을 선택해 주세요.');
+  return `<div class="nearby-permission-card" style="padding:28px 20px;text-align:center;">
+    <div style="font-size:36px;margin-bottom:12px">${icon}</div>
+    <div style="font-size:15px;font-weight:800;color:#0e1535;margin-bottom:8px">${title}</div>
+    <div style="font-size:12px;color:#666;line-height:1.75;margin:0 auto 18px;max-width:310px;word-break:keep-all;white-space:pre-line">${msg}</div>
+    <div style="display:flex;flex-direction:column;gap:8px;align-items:center">
+      <button onclick="_loadNearby({request:true})" style="background:#0e1535;color:#d4aa6a;border:none;border-radius:20px;padding:10px 22px;font-size:13px;font-weight:800;cursor:pointer;font-family:inherit;min-width:210px;">위치 권한 허용하고 보기</button>
+      <button onclick="openTab('region',{keyboard:true})" style="background:#fff;color:#0e1535;border:1.5px solid #d8cbb9;border-radius:20px;padding:9px 20px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;min-width:210px;">지역검색으로 찾기</button>
+      <button onclick="openTab('list',{keyboard:true})" style="background:#fff;color:#5b5148;border:1.5px solid #e1d7ca;border-radius:20px;padding:9px 20px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;min-width:210px;">목록에서 찾기</button>
+    </div>
+  </div>`;
+}
 function _autoLocate(){
   if(!_GEO) return;
-  _GEO.getCurrentPosition(p=>{
-  _setMyLoc(p.coords.latitude,p.coords.longitude);
-  if(_mode==='shrine'){
-   _map.setLevel(8);
-   if(typeof _setMapCenterByInfoCardStandard==='function') _setMapCenterByInfoCardStandard(new _LL(p.coords.latitude,p.coords.longitude));
-   else _map.setCenter(new _LL(p.coords.latitude,p.coords.longitude));
-  } else if(_mode==='parish'){
-   _map.setLevel(6);
-   if(typeof _focusParishPointAround==='function') _focusParishPointAround(p.coords.latitude,p.coords.longitude,{level:6});
-   else _map.setCenter(new _LL(p.coords.latitude,p.coords.longitude));
-  } else if(_mode==='retreat'){
-   _map.setLevel(9);
-   if(typeof _setMapCenterByInfoCardStandard==='function') _setMapCenterByInfoCardStandard(new _LL(p.coords.latitude,p.coords.longitude));
-   else _map.setCenter(new _LL(p.coords.latitude,p.coords.longitude));
-  }
-  },()=>{},
-  _GO2);
-  setTimeout(()=>{
-  _GEO.getCurrentPosition(p=>{
-   _setMyLoc(p.coords.latitude,p.coords.longitude);
-  },()=>{},{enableHighAccuracy:true,timeout:10000,maximumAge:0});
-  },500);
+  // Google Play/TWA 환경에서는 카테고리 진입과 동시에 위치 권한창을 자동으로 띄우지 않는다.
+  // 이미 권한이 허용된 경우에만 현재 위치 마커를 조용히 갱신하고,
+  // prompt/denied/unknown 상태는 내 주변 시트의 명시 버튼에서 사용자가 직접 요청한다.
+  _geoPermissionState().then(function(state){
+    if(state!=='granted') return;
+    _GEO.getCurrentPosition(function(p){
+      _setMyLoc(p.coords.latitude,p.coords.longitude);
+      if(_mode==='shrine'){
+        _map.setLevel(8);
+        if(typeof _setMapCenterByInfoCardStandard==='function') _setMapCenterByInfoCardStandard(new _LL(p.coords.latitude,p.coords.longitude));
+        else _map.setCenter(new _LL(p.coords.latitude,p.coords.longitude));
+      } else if(_mode==='parish'){
+        _map.setLevel(6);
+        if(typeof _focusParishPointAround==='function') _focusParishPointAround(p.coords.latitude,p.coords.longitude,{level:6});
+        else _map.setCenter(new _LL(p.coords.latitude,p.coords.longitude));
+      } else if(_mode==='retreat'){
+        _map.setLevel(9);
+        if(typeof _setMapCenterByInfoCardStandard==='function') _setMapCenterByInfoCardStandard(new _LL(p.coords.latitude,p.coords.longitude));
+        else _map.setCenter(new _LL(p.coords.latitude,p.coords.longitude));
+      }
+    }, function(){}, _GO2);
+  }).catch(function(e){ console.warn('[가톨릭길동무] 위치 권한 상태 확인 실패', e); });
 }
 
 function _nearestDioCode(lat,lng){
@@ -4265,50 +4313,55 @@ function goMyLoc(){
   if(typeof _setMapCenterByInfoCardStandard==='function') _setMapCenterByInfoCardStandard(new _LL(p.coords.latitude,p.coords.longitude));
   else _map.setCenter(new _LL(p.coords.latitude,p.coords.longitude));
   },err=>{
-  alert(err.code===1?'위치 권한을 허용해 주세요.':'위치를 가져올 수 없습니다.');
+  alert(_geoErrorMessage(err));
   },_GO1);
 }
 
-function _loadNearby(){
+function _loadNearby(opts){
+  opts = opts || {};
   const body=$('nearby-body');
-  body.innerHTML='<div class="empty-msg">📍 위치를 확인하는 중...</div>';
+  if(!body) return;
 
   if(!_GEO){
-  body.innerHTML='<div style="padding:30px;text-align:center;color:#c0392b;font-size:13px">⚠️ 위치 기능을 지원하지 않습니다</div>';
-  return;
+    body.innerHTML=`<div style="padding:28px 20px;text-align:center;">
+      <div style="font-size:36px;margin-bottom:12px">⚠️</div>
+      <div style="font-size:15px;font-weight:800;color:#0e1535;margin-bottom:8px">위치 기능을 지원하지 않습니다</div>
+      <div style="font-size:12px;color:#666;line-height:1.75;margin-bottom:18px">이 기기 또는 현재 실행 환경에서 위치 기능을 사용할 수 없습니다.<br>지역검색이나 목록에서 찾아 주세요.</div>
+      <button onclick="openTab('region',{keyboard:true})" style="background:#0e1535;color:#d4aa6a;border:none;border-radius:20px;padding:10px 22px;font-size:13px;font-weight:800;cursor:pointer;font-family:inherit;">지역검색으로 찾기</button>
+    </div>`;
+    return;
   }
 
   const go=(lat,lng)=>{
-  _myLat=lat;_myLng=lng;
-  if(_mode==='shrine') _loadNearbyShrines(lat,lng);
-  else if(_mode==='retreat') _loadNearbyRetreats(lat,lng);
-  else _loadNearbyParishes(lat,lng);
+    _myLat=lat;_myLng=lng;
+    if(_mode==='shrine') _loadNearbyShrines(lat,lng);
+    else if(_mode==='retreat') _loadNearbyRetreats(lat,lng);
+    else _loadNearbyParishes(lat,lng);
   };
 
   if(_myLat) { go(_myLat,_myLng); return; }
 
-  _GEO.getCurrentPosition(p=>{
-  _setMyLoc(p.coords.latitude,p.coords.longitude);
-  go(p.coords.latitude,p.coords.longitude);
-  },err=>{
-  if(err.code===1){
-    body.innerHTML=`<div style="padding:28px 20px;text-align:center;">
-      <div style="font-size:36px;margin-bottom:12px">📍</div>
-      <div style="font-size:14px;font-weight:700;color:#c0392b;margin-bottom:8px">위치 권한이 거부되어 있습니다</div>
-      <div style="font-size:12px;color:#888;line-height:1.7;margin-bottom:18px">
-        브라우저 주소창 왼쪽의 🔒 아이콘을 탭한 뒤<br>
-        <b>위치</b> 권한을 <b>허용</b>으로 변경하고 새로고침하세요.
-      </div>
-      <button onclick="_loadNearby()" style="background:#0e1535;color:#d4aa6a;border:none;border-radius:20px;padding:10px 22px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;">↺ 다시 시도</button>
-    </div>`;
-  } else {
-    body.innerHTML=`<div style="padding:28px 20px;text-align:center;">
-      <div style="font-size:36px;margin-bottom:12px">😔</div>
-      <div style="font-size:14px;font-weight:700;color:#c0392b;margin-bottom:8px">위치를 가져올 수 없습니다</div>
-      <div style="font-size:12px;color:#888;line-height:1.7;margin-bottom:18px">GPS 신호가 약하거나 네트워크 문제일 수 있습니다.<br>잠시 후 다시 시도해보세요.</div>
-      <button onclick="_loadNearby()" style="background:#0e1535;color:#d4aa6a;border:none;border-radius:20px;padding:10px 22px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;">↺ 다시 시도</button>
-    </div>`;
+  if(!opts.request){
+    body.innerHTML='<div class="empty-msg">📍 위치 권한 상태를 확인하는 중...</div>';
+    _geoPermissionState().then(function(state){
+      if(_myLat){ go(_myLat,_myLng); return; }
+      if(state==='granted'){
+        _loadNearby({request:true, granted:true});
+      }else{
+        body.innerHTML=_nearbyGeoActionHtml(state);
+      }
+    }).catch(function(){
+      body.innerHTML=_nearbyGeoActionHtml('unknown');
+    });
+    return;
   }
+
+  body.innerHTML='<div class="empty-msg">📍 위치를 확인하는 중...</div>';
+  _GEO.getCurrentPosition(function(p){
+    _setMyLoc(p.coords.latitude,p.coords.longitude);
+    go(p.coords.latitude,p.coords.longitude);
+  },function(err){
+    body.innerHTML=_nearbyGeoActionHtml(null, err);
   },{enableHighAccuracy:true,timeout:12000,maximumAge:60000});
 }
 
@@ -4722,18 +4775,21 @@ function _ensureCurrentLocationStart(){
     return;
   }
   if(!_GEO) return;
-  _GEO.getCurrentPosition(p=>{
-    _setMyLoc(p.coords.latitude,p.coords.longitude);
-    if(!_rS){
-      _rS={idx:-1,name:'현재 위치',lat:p.coords.latitude,lng:p.coords.longitude,isImplicitCurrentLocation:true};
-      _setRouteLabel('start','');
-      _refreshRouteTmpMarkers();
-      _updateSearchBtn();
-      if(!_rE){
-        _showRouteGuideText(`도착 ${_getRouteGuideTarget()}를 탭하세요`);
+  _geoPermissionState().then(function(state){
+    if(state!=='granted' || (_rS&&_rS.lat&&_rS.lng)) return;
+    _GEO.getCurrentPosition(function(p){
+      _setMyLoc(p.coords.latitude,p.coords.longitude);
+      if(!_rS){
+        _rS={idx:-1,name:'현재 위치',lat:p.coords.latitude,lng:p.coords.longitude,isImplicitCurrentLocation:true};
+        _setRouteLabel('start','');
+        _refreshRouteTmpMarkers();
+        _updateSearchBtn();
+        if(!_rE){
+          _showRouteGuideText(`도착 ${_getRouteGuideTarget()}를 탭하세요`);
+        }
       }
-    }
-  },()=>{},_GO1);
+    },function(){},_GO1);
+  }).catch(function(e){ console.warn('[가톨릭길동무] 길찾기 위치 권한 상태 확인 실패', e); });
 }
 
 /* ═══════════════════════════════════════════════
@@ -4766,7 +4822,7 @@ function setMyLocAsStart(){
   else {
    _showRouteGuideText(`도착 ${_getRouteGuideTarget()}를 탭하세요`);
   }
-  },()=>alert('위치를 가져올 수 없습니다.'),_GO1);
+  },function(err){ alert(_geoErrorMessage(err)); },_GO1);
 }
 
 function _setRouteLabel(role,name){
