@@ -214,7 +214,7 @@ html.oai-stability-veil::after { content:""; position:fixed; left:50%; top:50%; 
   }
   function measure(){
     /*
-       V1-79: 커버 높이는 실제로 보이는 viewport를 우선한다.
+       V1-80: 커버 높이는 실제로 보이는 viewport를 우선한다.
        카카오/Chrome Custom Tab 첫 진입에서는 layout viewport가 실제 화면보다 크게
        잡히는 순간이 있어 하단 새로고침/안내문이 밀릴 수 있다.
        visualViewport가 신뢰 가능한 값이면 그 값을 우선하고, 없을 때만 layout 값을 사용한다.
@@ -265,7 +265,7 @@ html.oai-stability-veil::after { content:""; position:fixed; left:50%; top:50%; 
     softRefreshRecent = !!sr && (now() - sr < 120000);
   }catch(e){}
   var widthMatches = !!(stored.width && currentWidth && Math.abs(stored.width - currentWidth) < 24);
-  // V1-79: 이전에 저장된 커버 높이는 현재 측정값이 없을 때만 보조값으로 사용한다.
+  // V1-80: 이전에 저장된 커버 높이는 현재 측정값이 없을 때만 보조값으로 사용한다.
   // 첫 진입/외부 브라우저 상단바 상태에서는 현재 visualViewport 기준값을 우선해야 한다.
   var useStored = false;
   var firstVh = measured || ((widthMatches || softRefreshRecent) ? stored.vh : 0) || 0;
@@ -301,7 +301,7 @@ html.oai-stability-veil::after { content:""; position:fixed; left:50%; top:50%; 
     var diff = cur ? Math.abs(next - cur) : 99;
     if(cur && diff < 0.25) return;
 
-    // V1-79: 첫 진입 때 layout viewport가 실제 화면보다 크게 잡힌 경우만,
+    // V1-80: 첫 진입 때 layout viewport가 실제 화면보다 크게 잡힌 경우만,
     // 가로폭 변화가 없어도 한 번 줄여서 복구한다. 일반 주소창 접힘에 따른 확대는 막는다.
     var earlyHeightRepair = !!(cur && next < cur && diff >= 0.25 && !didHeightRepair && now() < firstCoverHeightSettleUntil);
     if(!widthChanged && !orientationChanged && !earlyHeightRepair) return;
@@ -400,21 +400,21 @@ window.APP_CONFIG = {
 <meta name="application-name" content="가톨릭길동무">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#0e1535">
-<link rel="manifest" href="manifest.json?v=V1-79">
-<link rel="apple-touch-icon" href="icon-192x192.png?v=V1-79">
+<link rel="manifest" href="manifest.json?v=V1-80">
+<link rel="apple-touch-icon" href="icon-192x192.png?v=V1-80">
 <meta name="format-detection" content="telephone=no">
 <meta name="description" content="가톨릭길동무 - 가톨릭 신앙생활 종합 앱">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="가톨릭길동무">
 <meta property="og:title" content="가톨릭길동무">
 <meta property="og:description" content="성지 · 성당 · 기도문 · 순례길 · 가톨릭 웹사이트 안내">
-<meta property="og:image" content="icon-512x512.png?v=V1-79">
+<meta property="og:image" content="icon-512x512.png?v=V1-80">
 <meta property="og:image:width" content="512">
 <meta property="og:image:height" content="512">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="가톨릭길동무">
 <meta name="twitter:description" content="성지 · 성당 · 기도문 · 순례길 · 가톨릭 웹사이트 안내">
-<meta name="twitter:image" content="icon-512x512.png?v=V1-79">
+<meta name="twitter:image" content="icon-512x512.png?v=V1-80">
 <title>가톨릭길동무</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Crect width=%2232%22 height=%2232%22 fill=%22%230e1535%22/%3E%3Ctext x=%226%22 y=%2226%22 font-size=%2224%22 fill=%22%23d4aa6a%22%3E%E2%9C%9D%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -422,7 +422,7 @@ window.APP_CONFIG = {
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style id="oai-initial-bg">html,body{margin:0;width:100%;height:100%;min-height:100%;background:#0e1535;overflow:hidden;color-scheme:light;}#cover{background:#0e1535;min-height:100%;}#app{background:#f8f6f2;display:none;}</style>
-<link rel="stylesheet" href="style.css?v=V1-79">
+<link rel="stylesheet" href="style.css?v=V1-80">
 </head>
 <body>
 <div id="missa-view" role="dialog" aria-modal="true" aria-label="매일미사">
@@ -493,7 +493,7 @@ window.APP_CONFIG = {
   </div>
 </div>
 <div id="cover">
-<div id="oai-build-marker" aria-label="현재 버전" role="status" hidden aria-hidden="true">V1-79</div>
+<div id="oai-build-marker" aria-label="현재 버전" role="status" hidden aria-hidden="true">V1-80</div>
   <div id="cv-pull-modern" aria-hidden="true">
   <div class="cv-pull-ring">
     <svg viewBox="0 0 24 24" class="cv-pull-icon">
@@ -559,8 +559,8 @@ window.APP_CONFIG = {
       <div id="cover-action-row" class="cover-action-single">
         <div id="cover-update-box">
           <button id="cover-update-btn" class="cover-refresh-main-btn" type="button"
-                  data-target-version="V1-79"
-                  aria-label="V1-79 앱 새로고침">V1-79 새로고침</button>
+                  data-target-version="V1-80"
+                  aria-label="V1-80 앱 새로고침">V1-80 새로고침</button>
           <div id="cover-update-hint" role="status" aria-live="polite"></div>
         </div>
       </div>
@@ -673,9 +673,9 @@ window.APP_CONFIG = {
   </div>
 </div>
 
-<script src="constants.js?v=V1-79"></script>
-<script src="core.js?v=V1-79"></script>
-<script src="app.js?v=V1-79"></script>
+<script src="constants.js?v=V1-80"></script>
+<script src="core.js?v=V1-80"></script>
+<script src="app.js?v=V1-80"></script>
 <div id="oai-category-entry-veil" aria-hidden="true"></div>
 <div id="app"><div id="tabbar"><button id="tab-btn-nearby" class="tab-btn" data-tab="nearby"><span class="tab-icon">📍</span><span id="tab-nearby-lbl">내주변</span></button><button id="tab-btn-list" class="tab-btn" data-tab="list"><span class="tab-icon">📋</span><span id="tab-list-lbl">목록</span></button><button id="tab-btn-region" class="tab-btn" data-tab="region"><span class="tab-icon">🔍</span>지역검색
     </button><button id="tab-btn-route" class="tab-btn" data-tab="route"><span class="tab-icon">🧭</span>길찾기
@@ -751,13 +751,13 @@ window.APP_CONFIG = {
     </div>
   </div>
 </div>
-<script src="web.js?v=V1-79"></script>
+<script src="web.js?v=V1-80"></script>
 
 <div id="qna-view" role="dialog" aria-modal="true" aria-label="문의·건의" class="module-view"><div class="module-bar qna"><div class="module-bar-main"><div class="module-bar-ico">✝</div><div class="module-bar-txt"><div class="module-bar-title">문의·건의</div><div class="module-bar-sub">질문, 오류, 수정요청을 남겨주세요</div></div></div><button id="qna-close-btn" class="module-close" aria-label="문의·건의 닫기">×</button></div><div class="qna-body"><div class="qna-tabs"><button id="qna-tab-write" class="qna-tab on" type="button">작성</button></div><div class="qna-list" id="qna-list"></div></div></div>
 
-<script src="patches.js?v=V1-79"></script>
+<script src="patches.js?v=V1-80"></script>
 
-<script src="sw-update.js?v=V1-79"></script>
+<script src="sw-update.js?v=V1-80"></script>
 
 </body>
 </html>

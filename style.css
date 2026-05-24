@@ -4130,7 +4130,7 @@ html.retreat-mode #srch-modal #sm-tab-bar .sm-tab.active{
 }
 
 /* ============================================================
-   Google Play 커버 메뉴 + 하단 단일 새로고침 (V1-79)
+   Google Play 커버 메뉴 + 하단 단일 새로고침 (V1-80)
    ============================================================ */
 #cover #oai-build-marker,
 #oai-build-marker {
@@ -4393,7 +4393,7 @@ html.app-active #cover-menu-btn { display: none !important; }
 }
 
 /* ============================================================
-   V1-79 커버 상단/하단 안정화
+   V1-80 커버 상단/하단 안정화
    ============================================================ */
 #cover #oai-build-marker,
 #oai-build-marker {
@@ -4482,7 +4482,7 @@ html.app-active #cover-menu-btn { display: none !important; }
 }
 
 /* 새로고침은 커버 카드 흐름에서 분리해 중앙 블록을 위로 밀지 않게 고정 */
-/* V1-79: cover-action-row fixed 제거 */
+/* V1-80: cover-action-row fixed 제거 */
 #cover #cover-action-row.cover-action-single #cover-update-box {
   flex: 0 0 auto !important;
   width: clamp(104px, 24vw, 124px) !important;
@@ -4515,7 +4515,7 @@ html.app-active #cover-menu-btn { display: none !important; }
 }
 
 #cover-bottom-note {
-  /* V1-79: flex 흐름 안 — fixed 제거 */
+  /* V1-80: flex 흐름 안 — fixed 제거 */
 }
 
 @media (max-height: 740px) {
@@ -4539,7 +4539,7 @@ html.app-active #cover-menu-btn { display: none !important; }
     font-size: calc(14px * var(--app-font-scale)) !important;
     padding: 0 12px !important;
   }
-  /* V1-79: cover-bottom-note fixed 제거 */
+  /* V1-80: cover-bottom-note fixed 제거 */
 }
 
 @media (max-width: 390px) {
@@ -4553,7 +4553,7 @@ html.app-active #cover-menu-btn { display: none !important; }
 }
 
 /* ============================================================
-   V1-79 커버 버전/하단 정리 최종 보정
+   V1-80 커버 버전/하단 정리 최종 보정
    ============================================================ */
 #cover #oai-build-marker,
 #oai-build-marker {
@@ -4568,7 +4568,7 @@ html.app-active #cover-menu-btn { display: none !important; }
   box-sizing: border-box !important;
 }
 
-/* V1-79: cover-action-row fixed 제거 */
+/* V1-80: cover-action-row fixed 제거 */
 
 #cover #cover-action-row.cover-action-single #cover-update-box {
   width: clamp(118px, 31vw, 138px) !important;
@@ -4600,7 +4600,7 @@ html.app-active #cover-menu-btn { display: none !important; }
 }
 
 #cover-bottom-note {
-  /* V1-79: flex 흐름 안 — fixed 제거 */
+  /* V1-80: flex 흐름 안 — fixed 제거 */
 }
 
 @media (max-height: 740px) {
@@ -4624,13 +4624,13 @@ html.app-active #cover-menu-btn { display: none !important; }
     font-size: calc(12.8px * var(--app-font-scale)) !important;
     padding: 0 10px !important;
   }
-  /* V1-79: cover-bottom-note fixed 제거 */
+  /* V1-80: cover-bottom-note fixed 제거 */
 }
 
 /* ============================================================
-   V1-79 커버 3구역 고정 구조
+   V1-80 커버 3구역 고정 구조
    - 상단: 메뉴/글자 버튼 고정
-   - 중앙: 안내문구~카드~V1-79 새로고침
+   - 중앙: 안내문구~카드~V1-80 새로고침
    - 하단: 고정 안내문
    ============================================================ */
 #cover #oai-build-marker,
@@ -4855,7 +4855,7 @@ html.app-active #cover-menu-btn { display: none !important; }
     font-size: calc(12.8px * var(--app-font-scale)) !important;
     padding: 0 10px !important;
   }
-  /* V1-79: cover-bottom-note fixed 제거 */
+  /* V1-80: cover-bottom-note fixed 제거 */
 }
 
 @media (max-width: 390px) {
@@ -4870,15 +4870,15 @@ html.app-active #cover-menu-btn { display: none !important; }
 }
 
 /* ============================================================
-   V1-79 새로고침 버튼 위치 미세 조정
+   V1-80 새로고침 버튼 위치 미세 조정
    ============================================================ */
-/* V1-79: cover-action-row transform 제거 — flex 흐름으로 자연 배치 */
+/* V1-80: cover-action-row transform 제거 — flex 흐름으로 자연 배치 */
 
 
 
 
 /* ============================================================
-   V1-79 메뉴 팝업 크기 및 높이 확대
+   V1-80 메뉴 팝업 크기 및 높이 확대
    ============================================================ */
 .cover-menu-panel {
   width: min(370px, calc(100vw - 32px)) !important;
@@ -4948,7 +4948,7 @@ html.app-active #cover-menu-btn { display: none !important; }
 
 
 /* ============================================================
-   V1-79 메뉴 버튼 길이 및 뒤로가기 보정
+   V1-80 메뉴 버튼 길이 및 뒤로가기 보정
    ============================================================ */
 #cover #cover-menu-btn.cover-menu-btn {
   min-width: 94px !important;
@@ -4983,8 +4983,8 @@ html.app-active #cover-menu-btn { display: none !important; }
 }
 
 /* ============================================================
-   V1-79 주요기능 전체화면 / 바깥 테두리 제거
-   - V1-79/V1-79의 안전한 기존 팝업 구조는 유지
+   V1-80 주요기능 전체화면 / 바깥 테두리 제거
+   - V1-80/V1-80의 안전한 기존 팝업 구조는 유지
    - CSS로만 전체 화면 표시
    - 뒤로가기·카테고리·문의건의 로직 수정 없음
    ============================================================ */
