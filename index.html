@@ -303,7 +303,7 @@ html.oai-stability-veil::after { content:""; position:fixed; left:50%; top:50%; 
 
     // V1-83: 첫 진입 때 layout viewport가 실제 화면보다 크게 잡힌 경우만,
     // 가로폭 변화가 없어도 한 번 줄여서 복구한다. 일반 주소창 접힘에 따른 확대는 막는다.
-    var earlyHeightRepair = !!(cur && diff >= 0.25 && !didHeightRepair && now() < firstCoverHeightSettleUntil);
+    var earlyHeightRepair = !!(cur && next < cur && diff >= 0.25 && !didHeightRepair && now() < firstCoverHeightSettleUntil);
     if(!widthChanged && !orientationChanged && !earlyHeightRepair) return;
 
     apply(next, true, width);
@@ -337,8 +337,6 @@ html.oai-stability-veil::after { content:""; position:fixed; left:50%; top:50%; 
   window.addEventListener('pageshow', function(){ scheduleSettle('pageshow'); }, {passive:true});
   setTimeout(function(){ settleCoverSize('first-paint'); }, 160);
   setTimeout(function(){ settleCoverSize('first-paint-late'); }, 520);
-  setTimeout(function(){ settleCoverSize('first-paint-1500'); }, 1500);
-  setTimeout(function(){ settleCoverSize('first-paint-3000'); }, 3000);
   window.oaiSettleCoverSize = settleCoverSize;
 })();
 </script>
