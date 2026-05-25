@@ -55,12 +55,12 @@
   try{
     var refreshReason = '';
     try{
-      var compactUntil = Number(sessionStorage.getItem('oai_refresh_history_compact_until') || 0);
+      var compactUntil = Number(sessionStorage.getItem(SS.REFRESH_HISTORY_COMPACT_UNTIL) || 0);
       if(compactUntil && Date.now && Date.now() < compactUntil){
-        refreshReason = sessionStorage.getItem('oai_refresh_history_compact_reason') || 'refresh';
+        refreshReason = sessionStorage.getItem(SS.REFRESH_HISTORY_COMPACT_REASON) || 'refresh';
       }
-      sessionStorage.removeItem('oai_refresh_history_compact_until');
-      sessionStorage.removeItem('oai_refresh_history_compact_reason');
+      sessionStorage.removeItem(SS.REFRESH_HISTORY_COMPACT_UNTIL);
+      sessionStorage.removeItem(SS.REFRESH_HISTORY_COMPACT_REASON);
     }catch(_e){}
     if(refreshReason){
       history.replaceState({_p:1, oai_cover_trap: refreshReason}, '', _href);
@@ -290,14 +290,14 @@
     var yes = false;
     try{ if(pv && pv.dataset && pv.dataset.quickSource === 'mass') yes = true; }catch(_e){}
     try{ if(window.__OAI_PRAYER_FROM_QUICK_LOCK__ === true) yes = true; }catch(_e){}
-    try{ if(sessionStorage.getItem('oai_prayer_from_quick_lock') === '1') yes = true; }catch(_e){}
+    try{ if(sessionStorage.getItem(SS.PRAYER_FROM_QUICK_LOCK) === '1') yes = true; }catch(_e){}
     try{ if(typeof window._shouldPrayerQuickReturn === 'function' && window._shouldPrayerQuickReturn()) yes = true; }catch(_e){}
     return !!yes;
   }
   function keepPrayerQuickSource(on){
     try{ if(typeof window._setPrayerQuickReturn === 'function') window._setPrayerQuickReturn(!!on); }catch(_e){}
     try{ window.__OAI_PRAYER_FROM_QUICK_LOCK__ = !!on; }catch(_e){}
-    try{ if(on) sessionStorage.setItem('oai_prayer_from_quick_lock','1'); else sessionStorage.removeItem('oai_prayer_from_quick_lock'); }catch(_e){}
+    try{ if(on) sessionStorage.setItem(SS.PRAYER_FROM_QUICK_LOCK,'1'); else sessionStorage.removeItem(SS.PRAYER_FROM_QUICK_LOCK); }catch(_e){}
     try{
       var pv = prayerView();
       if(pv && pv.dataset){
@@ -354,7 +354,7 @@
     try{ if(typeof window._clearPrayerQuickReturn === 'function') window._clearPrayerQuickReturn(); }catch(_e){}
     try{ if(typeof window._clearMassQuickReturnForReload === 'function') window._clearMassQuickReturnForReload(); }catch(_e){}
     try{ window.__OAI_PRAYER_FROM_QUICK_LOCK__ = false; }catch(_e){}
-    try{ sessionStorage.removeItem('oai_prayer_from_quick_lock'); }catch(_e){}
+    try{ sessionStorage.removeItem(SS.PRAYER_FROM_QUICK_LOCK); }catch(_e){}
     try{ window.__OAI_PRAYER_POPUP_COVER_GUARD_UNTIL__ = 0; }catch(_e){}
     try{ window.__OAI_PRAYER_COVER_FORCE_FIRST_TOAST_UNTIL__ = 0; }catch(_e){}
   }

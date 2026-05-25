@@ -21,19 +21,19 @@ function _resetCoverExitReady(){
 function _clearCoverExitArmed(){
   try{
     window.__oaiCoverExitUntil = 0;
-    sessionStorage.removeItem('oai_cover_exit_armed_until');
+    sessionStorage.removeItem(SS.COVER_EXIT_ARMED_UNTIL);
   }catch(e){ console.warn('[가톨릭길동무]', e); }
 }
 function _armCoverExitWindow(){
   try{
     var until = Date.now() + 2500;
     window.__oaiCoverExitUntil = until;
-    sessionStorage.setItem('oai_cover_exit_armed_until', String(until));
+    sessionStorage.setItem(SS.COVER_EXIT_ARMED_UNTIL, String(until));
   }catch(e){ console.warn('[가톨릭길동무]', e); }
 }
 function _isCoverExitArmed(){
   try{
-    var until = Number(window.__oaiCoverExitUntil || sessionStorage.getItem('oai_cover_exit_armed_until') || 0);
+    var until = Number(window.__oaiCoverExitUntil || sessionStorage.getItem(SS.COVER_EXIT_ARMED_UNTIL) || 0);
     return !!(until && Date.now() < until);
   }catch(e){ return false; }
 }
@@ -165,8 +165,8 @@ function attemptAppExit(){
   window._appExiting = true;
   var bt = document.getElementById('_bt');
   if(bt) bt.remove();
-  try{ sessionStorage.removeItem('catholic_core_return_v1'); }catch(e){ console.warn('[가톨릭길동무]', e); }
-  try{ sessionStorage.removeItem('catholic_integrated_return_v2'); }catch(e){ console.warn('[가톨릭길동무]', e); }
+  try{ sessionStorage.removeItem(SS.CATHOLIC_CORE_RETURN); }catch(e){ console.warn('[가톨릭길동무]', e); }
+  try{ sessionStorage.removeItem(SS.CATHOLIC_INTEGRATED_RETURN); }catch(e){ console.warn('[가톨릭길동무]', e); }
   try{ if(navigator.app && typeof navigator.app.exitApp === 'function'){ navigator.app.exitApp(); return; } }catch(e){ console.warn('[가톨릭길동무]', e); }
   try{ window.open('', '_self'); window.close(); }catch(e){ console.warn('[가톨릭길동무]', e); }
   try{ document.documentElement.classList.add('app-exiting'); }catch(e){ console.warn('[가톨릭길동무]', e); }
@@ -205,4 +205,4 @@ window.doExit                 = doExit;
 /* ── 초기화: 앱 로드 시 종료 상태 리셋 ── */
 window._exitReady = false;
 window.__oaiCoverExitUntil = 0;
-try{ sessionStorage.removeItem('oai_cover_exit_armed_until'); }catch(_e){}
+try{ sessionStorage.removeItem(SS.COVER_EXIT_ARMED_UNTIL); }catch(_e){}
