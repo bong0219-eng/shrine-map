@@ -161,40 +161,6 @@
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
   }
-  .list-limit-note {
-    flex: 0 0 auto;
-    padding: 8px 14px 6px;
-    font-size: 12px;
-    line-height: 1.35;
-    color: #64748B;
-    background: var(--card);
-    border-bottom: 1px solid rgba(221,213,200,.7);
-    text-align: center;
-  }
-  .qa-more-wrap {
-    padding: 8px 0 18px;
-    text-align: center;
-  }
-  .qa-more-btn {
-    min-width: 132px;
-    height: 42px;
-    border: 1.5px solid var(--d);
-    border-radius: 999px;
-    background: #fffaf2;
-    color: var(--d);
-    font-size: 15px;
-    font-weight: 700;
-    font-family: inherit;
-    box-shadow: 0 2px 8px rgba(0,0,0,.06);
-    cursor: pointer;
-  }
-  .qa-more-btn:active { transform: scale(.98); }
-  .qa-more-status {
-    padding: 10px 12px 2px;
-    color: #94A3B8;
-    font-size: 14px;
-    line-height: 1.45;
-  }
   .card {
     background: #fffaf2; border:1px solid #e6dccb; border-radius: var(--radius); padding: 14px 16px;
     margin-bottom: 10px; box-shadow: var(--shadow); cursor: pointer;
@@ -360,7 +326,6 @@
 <!-- 목록 뷰 -->
 <div id="list-view" class="view active">
   <div id="filter-bar"></div>
-  <div id="list-limit-note" class="list-limit-note">최근 30개를 먼저 표시하고, 더보기로 이전 글을 30개씩 추가합니다.</div>
   <div id="post-list"><div class="loading-box"><div class="spinner"></div>불러오는 중…</div></div>
 </div>
 
@@ -405,7 +370,7 @@
    ★ 1. Firebase 설정 — 아래 값만 교체하면 됩니다
    ══════════════════════════════════════════════ */
 const FIREBASE_CONFIG = {
-  apiKey:            "AIzaSyCGUwhWXTgc09ghEtOcvinpQKrr577zAhM",
+  apiKey:            "YOUR_FIREBASE_API_KEY",
   authDomain:        "catholic-6c7d8.firebaseapp.com",
   projectId:         "catholic-6c7d8",
   storageBucket:     "catholic-6c7d8.firebasestorage.app",
@@ -421,7 +386,6 @@ const COL = db.collection("qa_posts");
 
 /* ─── 상수 ─── */
 const CATEGORIES  = ["문의","수정제안","개선건의","칭찬"];
-const QA_LIST_LIMIT = 30; // V1-10: 처음 30개를 빠르게 표시하고, 더보기로 이전 글을 30개씩 추가한다.
 const ANON_NAMES  = ["익명의 순례자","익명의 신자","익명의 교우"];
 const FILTERS     = ["전체", ...CATEGORIES];
 
@@ -564,56 +528,21 @@ function buildFilterBar() {
 
 /* ═══════════════════ 목록 렌더링 ═══════════════════ */
 window._cachedPosts = [];
-let qaLivePosts = [];
-let qaOlderPosts = [];
-let qaLastDoc = null;
-let qaHasMorePosts = true;
-let qaLoadingMore = false;
-let qaMoreErrorMessage = '';
-
-function mergeLoadedPosts() {
-  const map = new Map();
-  qaLivePosts.concat(qaOlderPosts).forEach(p => {
-    if (p && p.id && !map.has(p.id)) map.set(p.id, p);
-  });
-  return Array.from(map.values());
-}
-
-function renderLoadMoreControls(totalLoaded) {
-  if (qaMoreErrorMessage) {
-    return '<div class="qa-more-wrap"><div class="qa-more-status">' + escHtml(qaMoreErrorMessage) + '</div>' +
-           '<button type="button" class="qa-more-btn" onclick="loadMorePosts()">다시 더보기</button></div>';
-  }
-  if (qaLoadingMore) {
-    return '<div class="qa-more-wrap"><div class="qa-more-status"><div class="spinner" style="margin:0 auto 8px;"></div>이전 글을 불러오는 중…</div></div>';
-  }
-  if (qaHasMorePosts) {
-    return '<div class="qa-more-wrap"><button type="button" class="qa-more-btn" onclick="loadMorePosts()">더보기</button></div>';
-  }
-  if (totalLoaded > 0) {
-    return '<div class="qa-more-wrap"><div class="qa-more-status">모든 글을 불러왔습니다.</div></div>';
-  }
-  return '';
-}
 
 function renderList(posts) {
   window._cachedPosts = posts;
   const filtered = currentFilter === '전체' ? posts : posts.filter(p => p.category === currentFilter);
   const container = document.getElementById('post-list');
-  const moreControls = renderLoadMoreControls(posts.length);
 
   if (filtered.length === 0) {
-    const msg = posts.length === 0
-      ? '게시글이 없습니다.'
-      : '현재 필터에 표시할 게시글이 없습니다.<br>더보기를 누르면 이전 글을 더 확인할 수 있습니다.';
-    container.innerHTML = '<div class="loading-box" style="color:#94A3B8;">' + msg + '</div>' + moreControls;
+    container.innerHTML = '<div class="loading-box" style="color:#94A3B8;">게시글이 없습니다.</div>';
     updatePostListScrollState();
     return;
   }
 
   container.innerHTML = filtered.map((p, i) => {
     return `
-      <div class="card" style="animation-delay:${Math.min(i, 12)*0.04}s" onclick="openPost('${p.id}')">
+      <div class="card" style="animation-delay:${i*0.04}s" onclick="openPost('${p.id}')">
         <div class="card-top">
           <span class="badge badge-${escHtml(p.category)}">${escHtml(p.category)}</span>
           <span class="card-date">${escHtml(p.date)}</span>
@@ -621,71 +550,26 @@ function renderList(posts) {
         <div class="card-title">${escHtml(p.title)}</div>
         <div class="card-meta">${escHtml(p.author)}</div>
       </div>`;
-  }).join('') + moreControls;
+  }).join('');
   updatePostListScrollState();
 }
 
-/* ═══════════════════ 실시간 구독 + 더보기 ═══════════════════ */
+/* ═══════════════════ 실시간 구독 ═══════════════════ */
 function subscribeList() {
   if (unsubscribe) unsubscribe();
-  qaLivePosts = [];
-  qaOlderPosts = [];
-  qaLastDoc = null;
-  qaHasMorePosts = true;
-  qaLoadingMore = false;
-  qaMoreErrorMessage = '';
   document.getElementById('post-list').innerHTML =
     '<div class="loading-box"><div class="spinner"></div>불러오는 중…</div>';
 
   unsubscribe = COL
     .orderBy('createdAt', 'desc')
-    .limit(QA_LIST_LIMIT)
     .onSnapshot(snap => {
-      qaLivePosts = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-      if (qaOlderPosts.length === 0) {
-        qaLastDoc = snap.docs.length ? snap.docs[snap.docs.length - 1] : null;
-        qaHasMorePosts = snap.docs.length === QA_LIST_LIMIT;
-      } else if (!qaLastDoc && snap.docs.length) {
-        qaLastDoc = snap.docs[snap.docs.length - 1];
-      }
-      renderList(mergeLoadedPosts());
+      const posts = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      renderList(posts);
     }, err => {
       console.error(err);
       document.getElementById('post-list').innerHTML =
         '<div class="loading-box">데이터를 불러오지 못했습니다.<br>Firebase 설정을 확인해주세요.</div>';
     });
-}
-
-async function loadMorePosts() {
-  if (qaLoadingMore || !qaHasMorePosts) return;
-  if (!qaLastDoc) {
-    qaHasMorePosts = false;
-    renderList(mergeLoadedPosts());
-    return;
-  }
-
-  qaLoadingMore = true;
-  qaMoreErrorMessage = '';
-  renderList(mergeLoadedPosts());
-
-  try {
-    const snap = await COL
-      .orderBy('createdAt', 'desc')
-      .startAfter(qaLastDoc)
-      .limit(QA_LIST_LIMIT)
-      .get();
-
-    const morePosts = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-    qaOlderPosts = qaOlderPosts.concat(morePosts);
-    if (snap.docs.length) qaLastDoc = snap.docs[snap.docs.length - 1];
-    if (snap.docs.length < QA_LIST_LIMIT) qaHasMorePosts = false;
-  } catch (err) {
-    console.error(err);
-    qaMoreErrorMessage = '이전 글을 불러오지 못했습니다.';
-  } finally {
-    qaLoadingMore = false;
-    renderList(mergeLoadedPosts());
-  }
 }
 
 /* ═══════════════════ 게시글 열기 ═══════════════════ */
@@ -822,10 +706,10 @@ showView('list-view', { historyMode:'replace' });
 subscribeList();
 </script>
 
-<script id="oai-cache-lifecycle-V1-10">
+<script id="oai-cache-lifecycle-V23">
 (function(){
   'use strict';
-  var APP_VERSION = 'V1-10';
+  var APP_VERSION = 'V1-83';
   if('serviceWorker' in navigator){
     try{ navigator.serviceWorker.register('./sw.js?v=' + encodeURIComponent(APP_VERSION)).then(function(reg){try{reg.update();}catch(e){}}).catch(function(){}); }catch(e){}
   }
