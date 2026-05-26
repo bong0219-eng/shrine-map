@@ -3025,11 +3025,11 @@ html.oai-font-global .ic-sub,
 html.oai-font-global .ic-addr-lbl,
 html.oai-font-global .ic-dist-lbl { font-size: var(--app-fs-sub); line-height: 1.35; }
 
-html.oai-font-global .tab-btn { font-size: calc(13px * var(--app-inner-font-scale)); }
+html.oai-font-global .tab-btn { font-size: 13px; }
 html.oai-font-global .web-cat-btn,
 html.oai-font-global .trail-tab { font-size: calc(15px * var(--app-inner-font-scale)); }
-html.oai-font-global .tab-icon { font-size: calc(20px * var(--app-inner-font-scale)); }
-html.oai-font-global .tab-btn.active .tab-icon { font-size: calc(22px * var(--app-inner-font-scale)); }
+html.oai-font-global .tab-icon { font-size: 20px; }
+html.oai-font-global .tab-btn.active .tab-icon { font-size: 22px; }
 html.oai-font-global .nearby-type,
 html.oai-font-global .li-badge,
 html.oai-font-global .ic-type-badge,
