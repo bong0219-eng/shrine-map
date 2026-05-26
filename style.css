@@ -4957,3 +4957,42 @@ body.gp-info-page #privacy-back-app-link {
   font-style: normal;
   line-height: 1;
 }
+
+/* V1-9: Google Play 커버 하단 문구를 PWA처럼 화면 하단에 고정하고, 새로고침 버튼과 간격 확보 */
+#cover {
+  --cover-bottom-safe: calc(env(safe-area-inset-bottom, 0px) + clamp(52px, calc(var(--cover-vh, 1vh) * 7.6), 72px)) !important;
+  padding-bottom: var(--cover-bottom-safe) !important;
+}
+
+#cover #cover-action-row.cover-action-single {
+  margin-top: clamp(8px, calc(var(--cover-vh, 1vh) * 1.05), 12px) !important;
+  margin-bottom: clamp(12px, calc(var(--cover-vh, 1vh) * 1.5), 18px) !important;
+}
+
+#cover-bottom-note {
+  position: fixed !important;
+  left: 50% !important;
+  right: auto !important;
+  bottom: 0 !important;
+  transform: translateX(-50%) !important;
+  flex: none !important;
+  width: min(100vw, 720px) !important;
+  max-width: min(100vw, 720px) !important;
+  margin: 0 auto !important;
+  padding: 3px max(18px, env(safe-area-inset-left, 0px)) calc(8px + env(safe-area-inset-bottom, 0px)) max(18px, env(safe-area-inset-right, 0px)) !important;
+  text-align: center !important;
+  line-height: 1.28 !important;
+  letter-spacing: -.02em !important;
+  pointer-events: none !important;
+  z-index: 130 !important;
+  box-sizing: border-box !important;
+}
+
+@media (max-height: 740px) {
+  #cover {
+    --cover-bottom-safe: calc(env(safe-area-inset-bottom, 0px) + clamp(48px, calc(var(--cover-vh, 1vh) * 7.2), 64px)) !important;
+  }
+  #cover #cover-action-row.cover-action-single {
+    margin-bottom: clamp(10px, calc(var(--cover-vh, 1vh) * 1.25), 15px) !important;
+  }
+}
