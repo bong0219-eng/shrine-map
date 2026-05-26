@@ -818,7 +818,7 @@
   window.__APP_FONT_SCALE_GUARD__=true;
   // V3-S: 커버 글자 크기 조절은 prayer.js에 의존하지 않는 공통 함수가 담당한다.
   // prayer.js는 기도문 화면이 열렸을 때 같은 localStorage 값을 읽어 자체 UI를 맞춘다.
-  var QA_URL="qa-firebase.html?v=V1-5";
+  var QA_URL="qa-firebase.html?v=V1-6";
   var FONT_KEY='prayer_font_size';
   var BASE=16;
   var FONT_SIZES=[13,14,15,16,17,18,19,20,21,22,24,26,28,30];
@@ -1058,19 +1058,8 @@
   window.addEventListener('load', init);
   window.addEventListener('pageshow', init);
 })();
-(function(){
-  'use strict';
-  if(window.__APP_PRECISE_GUARD__) return;
-  window.__APP_PRECISE_GUARD__ = true;
-  function byId(id){ return document.getElementById(id); }
-  function openNewTab(url){ if(!url) return; try{ var w=window.open(url,'_blank','noopener'); if(w) return; }catch(e){ console.warn("[가톨릭길동무]", e); } try{ var a=document.createElement('a'); a.href=url; a.target='_blank'; a.rel='noopener'; document.body.appendChild(a); a.click(); setTimeout(function(){try{a.remove();}catch(e){ console.warn("[가톨릭길동무]", e); }},300); }catch(e){ alert('새창 열기가 차단되었습니다. 브라우저의 팝업 허용을 확인해 주세요.'); } }
-  /* openDioceseExternal 중복 덮어쓰기 제거: 위쪽의 상태보존/복귀안정화 버전을 그대로 사용 */
-  function rememberRouteDest(){ try{ if(_rE&&_rE.lat) return {lat:_rE.lat,lng:_rE.lng,idx:_rE.idx,name:_rE.name}; if(_curInfoItem&&_curInfoItem.item) return {lat:_curInfoItem.item.lat,lng:_curInfoItem.item.lng,idx:_curInfoItem.idx,item:_curInfoItem.item,name:_curInfoItem.item.name}; }catch(e){ console.warn("[가톨릭길동무]", e); } return null; }
-  function restoreDest(dest){ if(!dest||!dest.lat) return; setTimeout(function(){ try{ var items=(typeof _getCurrentItems==='function')?_getCurrentItems():[]; var idx=(typeof dest.idx==='number'&&dest.idx>=0)?dest.idx:items.findIndex(function(p){return Number(p.lat)===Number(dest.lat)&&Number(p.lng)===Number(dest.lng);}); var item=idx>=0?items[idx]:dest.item; if(item&&typeof _showInfoCard==='function') _showInfoCard(item,idx); if(item&&typeof _focusMarkerAboveInfoCard==='function') _focusMarkerAboveInfoCard(item); }catch(e){ console.warn("[가톨릭길동무]", e); } },80); }
-  window.oaiResetRouteThenClose=function(){ var dest=rememberRouteDest(); try{ if(typeof window.resetRoute==='function') window.resetRoute(); }catch(e){ console.warn("[가톨릭길동무]", e); } try{_routeMode=false;}catch(e){ console.warn("[가톨릭길동무]", e); } var rs=byId('sheet-route'); if(rs) rs.classList.remove('open'); restoreDest(dest); };
-  /* 기존에는 여기서 prayer/web 부모 영역에 가로 preventDefault를 다시 붙였지만,
-     탭바의 자연스러운 손가락 스크롤을 막는 원인이 될 수 있어 제거한다. */
-})();
+/* V1-6: 사용처가 없는 정밀 보정 잔여 블록(__APP_PRECISE_GUARD__) 제거.
+   경로 복귀 안정화는 위의 __APP_BACK_ROUTE_GUARD__에서 계속 담당한다. */
 (function(){
   'use strict';
   window.oaiSwipeAction = function(el, dir){
