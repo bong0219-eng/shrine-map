@@ -4958,7 +4958,7 @@ body.gp-info-page #privacy-back-app-link {
   line-height: 1;
 }
 
-/* V1-9: Google Play 커버 하단 문구를 PWA처럼 화면 하단에 고정하고, 새로고침 버튼과 간격 확보 */
+/* V1-10: Google Play 커버 하단 문구를 PWA처럼 화면 하단에 고정하고, 새로고침 버튼과 간격 확보 */
 #cover {
   --cover-bottom-safe: calc(env(safe-area-inset-bottom, 0px) + clamp(52px, calc(var(--cover-vh, 1vh) * 7.6), 72px)) !important;
   padding-bottom: var(--cover-bottom-safe) !important;
@@ -4995,4 +4995,27 @@ body.gp-info-page #privacy-back-app-link {
   #cover #cover-action-row.cover-action-single {
     margin-bottom: clamp(10px, calc(var(--cover-vh, 1vh) * 1.25), 15px) !important;
   }
+}
+
+
+/* V1-10: 성지 화면 안에 CBCK 참고 출처 문구를 작게 표시 */
+.shrine-source-note {
+  display: none;
+  flex-shrink: 0;
+  padding: 6px 12px 7px;
+  background: #f8f4ec;
+  border-bottom: 1px solid rgba(196,155,86,.18);
+  color: #7a7468;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: -.02em;
+  text-align: center;
+}
+html.app-active:not(.parish-mode):not(.retreat-mode) .shrine-source-note {
+  display: block;
+}
+html.parish-mode .shrine-source-note,
+html.retreat-mode .shrine-source-note {
+  display: none !important;
 }
