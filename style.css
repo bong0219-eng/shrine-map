@@ -3034,12 +3034,6 @@ html.oai-font-global .nearby-type,
 html.oai-font-global .li-badge,
 html.oai-font-global .ic-type-badge,
 html.oai-font-global .web-card-badge { font-size: calc(11px * var(--app-inner-font-scale)); }
-html.oai-font-global .ic-link-btn,
-html.oai-font-global .ic-route-btn,
-html.oai-font-global .ic-tel-btn,
-html.oai-font-global .btn-kakao-nav,
-html.oai-font-global .btn-kakao-route,
-html.oai-font-global .btn-route-reset { font-size: calc(14px * var(--app-inner-font-scale)); }
 html.oai-font-global .pr-icon-dot { width: calc(36px * var(--app-inner-font-scale)); height: calc(36px * var(--app-inner-font-scale)); flex-basis: calc(36px * var(--app-inner-font-scale)); font-size: calc(17px * var(--app-inner-font-scale)); }
 html.oai-font-global .nearby-dist { font-size: calc(13px * var(--app-inner-font-scale)); }
 html.oai-font-global .sheet-title, html.oai-font-global .module-bar-title { font-size: calc(18px * var(--app-inner-font-scale)); }
@@ -3276,7 +3270,7 @@ html.retreat-mode #list-body .li-name{color:#111827!important}
 /* ===== /OAI ===== */
 .nearby-name,.li-name,.sm-name,.sm-place-name{font-size:16px;font-weight:800;line-height:1.35;letter-spacing:-.03em;white-space:normal;overflow:visible;word-break:keep-all}
 .nearby-addr,.li-sub,.sm-sub,.sm-place-addr{font-size:13px;line-height:1.45;letter-spacing:-.02em;white-space:normal;overflow:visible;word-break:keep-all}
-.ic-sub,.ic-type-badge,.ic-addr-lbl{font-size:12px!important}
+.ic-sub,.ic-type-badge,.ic-addr-lbl{font-size:12px}
 .ic-tel-btn,.ic-route-btn,.ic-link-btn,.btn-kakao-nav{font-size:16px!important}
 #sm-tab-bar{display:flex;gap:10px;padding:10px 12px;height:55px;align-items:center;background:#f5efe5;border-bottom:1px solid var(--ui-line);box-sizing:border-box}
 /* 일반 sm-tab-bar (srch-modal 밖) 배경 */
@@ -3325,7 +3319,7 @@ html.oai-font-global .sheet-title,html.oai-font-global .module-bar-title{font-si
 html.oai-font-global .module-bar-sub{font-size:calc(12px * var(--app-inner-font-scale,1))!important}
 html.oai-font-global .filter-btn,html.oai-font-global .region-search-btn,html.oai-font-global .sm-fb,html.oai-font-global .sm-tab,html.oai-font-global .web-cat-btn,html.oai-font-global .trail-tab{font-size:calc(14px * var(--app-inner-font-scale,1))!important}
 html.oai-font-global .ic-name{font-size:calc(17px * var(--app-inner-font-scale,1))!important}
-html.oai-font-global .ic-addr-val,html.oai-font-global .ic-link-btn,html.oai-font-global .ic-route-btn,html.oai-font-global .ic-tel-btn,html.oai-font-global .btn-kakao-nav,html.oai-font-global .btn-kakao-route,html.oai-font-global .btn-route-reset{font-size:calc(14px * var(--app-inner-font-scale,1))!important}
+html.oai-font-global .ic-addr-val,html.oai-font-global .ic-sub,html.oai-font-global .ic-addr-lbl,html.oai-font-global .ic-dist-lbl,html.oai-font-global .ic-dist-box{font-size:calc(14px * var(--app-inner-font-scale,1))!important}
 html.oai-font-global .web-card-name{font-size:calc(17px * var(--app-inner-font-scale,1))!important}
 html.oai-font-global .web-card-desc{font-size:calc(15px * var(--app-inner-font-scale,1))!important}
 html.oai-font-global .trail-nm,html.oai-font-global .trail-sh-name{font-size:calc(16px * var(--app-inner-font-scale,1))!important}
