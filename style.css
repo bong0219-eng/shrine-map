@@ -5193,3 +5193,20 @@ html.retreat-mode .shrine-source-note {
     line-height: 1.48 !important;
   }
 }
+
+/* V1-17: 피정의집 모드 상단 탭 긴 문구 잘림 방지 */
+html.retreat-mode #tab-btn-list {
+  padding-left: 1px !important;
+  padding-right: 1px !important;
+}
+html.retreat-mode #tab-list-lbl {
+  font-size: 11.5px !important;
+  letter-spacing: -0.095em !important;
+  line-height: 1.02 !important;
+  max-width: 100% !important;
+  white-space: nowrap !important;
+}
+html.retreat-mode #tab-btn-list.active #tab-list-lbl {
+  font-size: 11.3px !important;
+}
+
