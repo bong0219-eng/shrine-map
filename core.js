@@ -21,19 +21,19 @@ function _resetCoverExitReady(){
 function _clearCoverExitArmed(){
   try{
     window.__oaiCoverExitUntil = 0;
-    sessionStorage.removeItem(SS.COVER_EXIT_ARMED_UNTIL);
+    try{ sessionStorage.removeItem(SS.COVER_EXIT_ARMED_UNTIL); }catch(_e){}
   }catch(e){ console.warn('[가톨릭길동무]', e); }
 }
 function _armCoverExitWindow(){
   try{
     var until = Date.now() + 2500;
     window.__oaiCoverExitUntil = until;
-    sessionStorage.setItem(SS.COVER_EXIT_ARMED_UNTIL, String(until));
+    try{ sessionStorage.removeItem(SS.COVER_EXIT_ARMED_UNTIL); }catch(_e){}
   }catch(e){ console.warn('[가톨릭길동무]', e); }
 }
 function _isCoverExitArmed(){
   try{
-    var until = Number(window.__oaiCoverExitUntil || sessionStorage.getItem(SS.COVER_EXIT_ARMED_UNTIL) || 0);
+    var until = Number(window.__oaiCoverExitUntil || 0);
     return !!(until && Date.now() < until);
   }catch(e){ return false; }
 }
@@ -187,6 +187,9 @@ function _showBackToast(){
 }
 function attemptAppExit(){
   window._appExiting = true;
+  _resetCoverExitReady();
+  _clearCoverExitArmed();
+  _suppressCoverBackToast('before-app-exit', 2600);
   var bt = document.getElementById('_bt');
   if(bt) bt.remove();
   try{ sessionStorage.removeItem(SS.CATHOLIC_CORE_RETURN); }catch(e){ console.warn('[가톨릭길동무]', e); }
@@ -198,6 +201,7 @@ function attemptAppExit(){
 }
 function closeExitDlg(){
   window._exitReady = false;
+  _clearCoverExitArmed();
   clearTimeout(window._exitTimer);
   var bt = document.getElementById('_bt');
   if(bt) bt.remove();
