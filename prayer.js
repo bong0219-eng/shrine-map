@@ -571,10 +571,9 @@ window.prOpenDetail = prOpenDetail;
 window.prCloseDetail = window.prCloseDetail;
 
 /* ── 기도문 좌우 스와이프 (순환) — 웹사이트 기준 감도와 동일화 */
-function prBindSwipeTabs(){
+(function(){
   var el = document.getElementById('prayer-list-view');
-  if (!el || el.__prSwipeTabsBound) return;
-  el.__prSwipeTabsBound = true;
+  if (!el) return;
   var sx = 0, sy = 0;
   var THRESHOLD = 32;
   var HORIZONTAL_RATIO = 1.03;
@@ -623,45 +622,7 @@ function prBindSwipeTabs(){
     if (!isHorizontalSwipe(dx, dy)) return;
     if (dx < 0) goNext(); else goPrev();
   }, { passive: true });
-}
-window.prBindSwipeTabs = prBindSwipeTabs;
-prBindSwipeTabs();
-
-/* V1-31: 기도문 본문 좌우 스와이프 시 웹사이트와 같은 화살표 피드백만 복구.
-   본문 이동/뒤로가기/탭 전환 로직은 변경하지 않는다. */
-function prBindDetailSwipeArrow(){
-  var body = document.getElementById('prayer-detail-body');
-  if (!body || body.__prDetailSwipeArrowBound) return;
-  body.__prDetailSwipeArrowBound = true;
-
-  var sx = 0, sy = 0;
-  var THRESHOLD = 44;
-  var HORIZONTAL_RATIO = 1.18;
-
-  body.addEventListener('touchstart', function(e){
-    if(!e.touches || !e.touches[0]) return;
-    sx = e.touches[0].clientX;
-    sy = e.touches[0].clientY;
-  }, { passive: true });
-
-  body.addEventListener('touchend', function(e){
-    if (!e.changedTouches || !e.changedTouches[0]) return;
-    var detail = document.getElementById('prayer-detail');
-    if (!detail || !detail.classList.contains('show')) return;
-
-    var dx = e.changedTouches[0].clientX - sx;
-    var dy = e.changedTouches[0].clientY - sy;
-    if (Math.abs(dx) < THRESHOLD) return;
-    if (Math.abs(dx) < Math.abs(dy) * HORIZONTAL_RATIO) return;
-
-    if (typeof window.oaiSwipeAction === 'function') {
-      window.oaiSwipeAction(body, dx < 0 ? 'left' : 'right');
-    }
-  }, { passive: true });
-}
-window.prBindDetailSwipeArrow = prBindDetailSwipeArrow;
-prBindDetailSwipeArrow();
-
+})();
 /* lyTabColors: 미선언 전역 변수 - 참조하는 코드 없음, 제거 */
 
 window.initPrayerView = function(){
@@ -671,8 +632,6 @@ window.initPrayerView = function(){
   prApplyFont();
   prEnsureTabsVisible();
   prRenderList();
-  prBindSwipeTabs();
-  prBindDetailSwipeArrow();
   // 상세뷰 초기화
   const detail = prG('prayer-detail');
   const listView = prG('prayer-list-view');

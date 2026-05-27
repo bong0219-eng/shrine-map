@@ -627,18 +627,8 @@
       return;
     }
 
-    /* 커버: 토스트 → 두 번째에 종료.
-       단, WebView가 앱 재진입/복원 직후 발생시키는 오래된 popstate는
-       사용자의 실제 뒤로가기 명령이 아니므로 종료 안내를 띄우지 않는다. */
+    /* 커버: 토스트 → 두 번째에 종료. */
     if(!appActive()){
-      try{
-        if(typeof window._isCoverBackToastSuppressed === 'function' && window._isCoverBackToastSuppressed()){
-          if(typeof window._resetCoverExitReady === 'function') window._resetCoverExitReady();
-          if(typeof window._clearCoverExitArmed === 'function') window._clearCoverExitArmed();
-          armCoverBackTrap('cover-toast-suppressed', {force:true});
-          return;
-        }
-      }catch(e){ console.warn('[가톨릭길동무]', e); }
       var exiting = false;
       if(typeof window._showBackToast==='function') exiting = window._showBackToast() === true;
       if(!exiting){ armCoverBackTrap('cover-toast'); }
@@ -828,7 +818,7 @@
   window.__APP_FONT_SCALE_GUARD__=true;
   // V3-S: 커버 글자 크기 조절은 prayer.js에 의존하지 않는 공통 함수가 담당한다.
   // prayer.js는 기도문 화면이 열렸을 때 같은 localStorage 값을 읽어 자체 UI를 맞춘다.
-  var QA_URL="qa-firebase.html?v=V1-44";
+  var QA_URL="qa-firebase.html?v=V1-13";
   var FONT_KEY='prayer_font_size';
   var BASE=16;
   var FONT_SIZES=[13,14,15,16,17,18,19,20,21,22,24,26,28,30];

@@ -37,20 +37,6 @@ function _isCoverExitArmed(){
     return !!(until && Date.now() < until);
   }catch(e){ return false; }
 }
-function _suppressCoverBackToast(reason, ms){
-  try{
-    var until = Date.now() + (ms || 1400);
-    window.__OAI_SUPPRESS_COVER_BACK_TOAST_UNTIL__ = Math.max(Number(window.__OAI_SUPPRESS_COVER_BACK_TOAST_UNTIL__ || 0), until);
-    _resetCoverExitReady();
-    _clearCoverExitArmed();
-  }catch(e){ console.warn('[가톨릭길동무]', e); }
-}
-function _isCoverBackToastSuppressed(){
-  try{
-    var until = Number(window.__OAI_SUPPRESS_COVER_BACK_TOAST_UNTIL__ || 0);
-    return !!(until && Date.now() < until);
-  }catch(e){ return false; }
-}
 
 /* ── 화면 상태 판단 ─────────────────────────────────── */
 
@@ -146,13 +132,6 @@ function _resetAppBackTrap(reason){
 
 function _showBackToast(){
   try{
-    if(_isCoverBackToastSuppressed()){
-      _resetCoverExitReady();
-      _clearCoverExitArmed();
-      return false;
-    }
-  }catch(e){ console.warn('[가톨릭길동무]', e); }
-  try{
     if(typeof _consumePrayerCoverNeedsFirstToast === 'function' && _consumePrayerCoverNeedsFirstToast()){
       window._exitReady = false;
       _clearCoverExitArmed();
@@ -211,8 +190,6 @@ window._resetCoverExitReady   = _resetCoverExitReady;
 window._clearCoverExitArmed   = _clearCoverExitArmed;
 window._armCoverExitWindow    = _armCoverExitWindow;
 window._isCoverExitArmed      = _isCoverExitArmed;
-window._suppressCoverBackToast = _suppressCoverBackToast;
-window._isCoverBackToastSuppressed = _isCoverBackToastSuppressed;
 window._isCoverScreenVisible  = _isCoverScreenVisible;
 window._isAppScreenActive     = _isAppScreenActive;
 window._oaiNormalizeTrapState = _oaiNormalizeTrapState;
@@ -225,27 +202,7 @@ window.attemptAppExit         = attemptAppExit;
 window.closeExitDlg           = closeExitDlg;
 window.doExit                 = doExit;
 
-/* ── 초기화: 앱 로드/복귀 시 오래 남은 종료 상태 리셋 ── */
+/* ── 초기화: 앱 로드 시 종료 상태 리셋 ── */
 window._exitReady = false;
 window.__oaiCoverExitUntil = 0;
 try{ sessionStorage.removeItem(SS.COVER_EXIT_ARMED_UNTIL); }catch(_e){}
-_suppressCoverBackToast('core-load', 1600);
-try{
-  window.addEventListener('pagehide', function(){
-    _resetCoverExitReady();
-    _clearCoverExitArmed();
-  }, true);
-  window.addEventListener('pageshow', function(){
-    _suppressCoverBackToast('core-pageshow', 1400);
-  }, true);
-  document.addEventListener('visibilitychange', function(){
-    try{
-      if(document.visibilityState === 'hidden'){
-        _resetCoverExitReady();
-        _clearCoverExitArmed();
-      }else if(document.visibilityState === 'visible'){
-        _suppressCoverBackToast('core-visible', 1400);
-      }
-    }catch(e){ console.warn('[가톨릭길동무]', e); }
-  }, true);
-}catch(e){ console.warn('[가톨릭길동무]', e); }

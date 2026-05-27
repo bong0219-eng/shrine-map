@@ -333,19 +333,6 @@ html.ios-device .cb{width:34px!important;height:34px!important;border-radius:10p
 .hd-icon::before,.hd-icon::after{content:"";position:absolute;left:50%;background:#fff;border-radius:2px;display:block;}
 .hd-icon::before{top:50%;width:3px;height:24px;transform:translate(-50%,-50%);}
 .hd-icon::after{top:42%;width:14px;height:3px;transform:translate(-50%,-50%);}
-
-
-/* V1-40: 모바일 관구·교구 지도 인포카드 하단 잘림 방지
-   - 상단 교구(서울/의정부 등)를 눌렀을 때 카드를 하단에 띄우되,
-     Android/WebView 하단 안전영역과 지도 컨트롤 위로 충분히 올린다.
-   - 카드 내용이 화면보다 길어질 때는 카드 내부만 스크롤되게 하여 버튼이 잘리지 않게 한다. */
-@media(max-width:560px){
-  #card{
-    max-height:calc(100dvh - 170px)!important;
-    overflow:hidden auto!important;
-    -webkit-overflow-scrolling:touch!important;
-  }
-}
 </style>
 </head>
 <body>
@@ -1637,7 +1624,7 @@ function showCard(el){
   const isMobile=window.innerWidth<=560;
   if(isMobile){
     if(topDioceses.includes(diocese)){
-      card.style.top='auto';card.style.bottom='calc(74px + env(safe-area-inset-bottom, 0px))';card.style.right='10px';card.style.left='auto';
+      card.style.top='auto';card.style.bottom='10px';card.style.right='10px';card.style.left='auto';
     } else {
       card.style.top='6px';card.style.bottom='auto';card.style.right='6px';card.style.left='auto';
     }
