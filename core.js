@@ -41,7 +41,6 @@ function _suppressCoverBackToast(reason, ms){
   try{
     var until = Date.now() + (ms || 1400);
     window.__OAI_SUPPRESS_COVER_BACK_TOAST_UNTIL__ = Math.max(Number(window.__OAI_SUPPRESS_COVER_BACK_TOAST_UNTIL__ || 0), until);
-    if(typeof window.__oaiSuppressCoverBackToast === 'function') window.__oaiSuppressCoverBackToast(reason || 'core', ms || 1400);
     _resetCoverExitReady();
     _clearCoverExitArmed();
   }catch(e){ console.warn('[가톨릭길동무]', e); }
@@ -150,7 +149,6 @@ function _showBackToast(){
     if(_isCoverBackToastSuppressed()){
       _resetCoverExitReady();
       _clearCoverExitArmed();
-      if(_isCoverScreenVisible()) _ensureCoverBackTrap('cover-toast-suppressed');
       return false;
     }
   }catch(e){ console.warn('[가톨릭길동무]', e); }

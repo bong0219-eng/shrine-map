@@ -1413,7 +1413,7 @@ function openDioceseView(opts){
       if(!restore) try{ frame.contentWindow && frame.contentWindow.resetDioceseFirstPage && frame.contentWindow.resetDioceseFirstPage(); }catch(e){ console.warn("[가톨릭길동무]", e); }
       if(typeof dioceseLoaded==='function') dioceseLoaded();
     };
-    frame.src='diocese.html?v=V1-26';
+    frame.src='diocese.html?v=V1-27';
   }else if(!restore){
     try{ frame.contentWindow && frame.contentWindow.resetDioceseFirstPage && frame.contentWindow.resetDioceseFirstPage(); }catch(e){ console.warn("[가톨릭길동무]", e); }
   }
@@ -1810,7 +1810,7 @@ const _PARISH_DIOCESE_ASSETS={
 };
 const _PARISH_DIOCESE_LOAD_STATE={};
 const _PARISH_DIOCESE_LOAD_PROMISES={};
-const _PARISH_ASSET_VERSION='V1-26';
+const _PARISH_ASSET_VERSION='V1-27';
 function _getParishDioceseAsset(code){
   return _PARISH_DIOCESE_ASSETS[code] || null;
 }
@@ -1973,7 +1973,7 @@ function _ensureParishDataLoaded(){
 }
 _initParishDataFromGlobal();
 
-const _PRAYER_ASSET_VERSION='V1-26';
+const _PRAYER_ASSET_VERSION='V1-27';
 let _prayerModuleLoadPromise=null;
 function _isPrayerModuleReady(){
   return typeof window.initPrayerView === 'function' &&
@@ -2018,7 +2018,7 @@ try{ window.ensurePrayerModuleLoaded=ensurePrayerModuleLoaded; }catch(e){ consol
 let _RT_RAW = [];
 let _retreatRawLoaded = false;
 let _retreatDataLoadPromise = null;
-const _RETREAT_ASSET_VERSION='V1-26';
+const _RETREAT_ASSET_VERSION='V1-27';
 
 let RETREATS = [];
 function _buildRetreatList(raw){
@@ -2256,7 +2256,7 @@ const $=id=>document.getElementById(id);
 const $$=s=>document.querySelectorAll(s);
 const _GEO=navigator.geolocation;
 const _GO1={enableHighAccuracy:true,timeout:30000,maximumAge:30000};
-const _GO2={enableHighAccuracy:false,timeout:20000,maximumAge:0};
+const _GO2={enableHighAccuracy:false,timeout:25000,maximumAge:600000};
 const _GO3={enableHighAccuracy:false,timeout:40000,maximumAge:600000};
 const _EC=encodeURIComponent;
 const _NS='xmlns="http://www.w3.org/2000/svg"';
@@ -2267,7 +2267,7 @@ const _TY={'A':'성지','B':'순례지','C':'순교 사적지'};
 
 let _shrineRawLoaded = false;
 let _shrineDataLoadPromise = null;
-const _SHRINE_ASSET_VERSION='V1-26';
+const _SHRINE_ASSET_VERSION='V1-27';
 let SHRINES = [];
 let JUKRIMGUL_IDX = -1;
 function _decodeShrineHomePage(hp){
@@ -4390,6 +4390,34 @@ function _geoErrorMessage(err){
   if(err && err.code===3) return '위치 확인 시간이 초과되었습니다.\n' + _geoRuntimeGuideText();
   return '위치를 가져올 수 없습니다.\n' + _geoRuntimeGuideText();
 }
+const OAI_LAST_GEO_KEY='oai_catholic_way_last_geo_v1';
+function _saveLastGeo(lat,lng){
+  try{
+    const la=Number(lat), ln=Number(lng);
+    if(!isFinite(la)||!isFinite(ln)) return;
+    localStorage.setItem(OAI_LAST_GEO_KEY, JSON.stringify({lat:la,lng:ln,t:Date.now()}));
+  }catch(_e){}
+}
+function _readLastGeo(maxAgeMs){
+  try{
+    const raw=localStorage.getItem(OAI_LAST_GEO_KEY);
+    if(!raw) return null;
+    const o=JSON.parse(raw);
+    const la=Number(o&&o.lat), ln=Number(o&&o.lng), t=Number(o&&o.t||0);
+    if(!isFinite(la)||!isFinite(ln)||!t) return null;
+    if(maxAgeMs && Date.now()-t>maxAgeMs) return null;
+    return {lat:la,lng:ln,t:t};
+  }catch(_e){ return null; }
+}
+function _warmRefreshNearbyLocation(go){
+  if(!_GEO) return;
+  _requestCurrentPositionStable(function(p){
+    try{
+      _setMyLoc(p.coords.latitude,p.coords.longitude);
+      if(typeof go==='function') go(p.coords.latitude,p.coords.longitude);
+    }catch(e){ console.warn('[가톨릭길동무] 위치 배경 갱신 실패', e); }
+  }, function(){}, {noRefine:true});
+}
 function _requestCurrentPositionStable(onSuccess,onError,opts){
   opts = opts || {};
   if(!_GEO){ if(onError) onError({code:0,message:'geolocation unavailable'}); return; }
@@ -4450,13 +4478,15 @@ function _nearbyGeoActionHtml(state, err){
 }
 function _autoLocate(){
   if(!_GEO) return;
-  // Google Play/TWA 환경에서는 카테고리 진입과 동시에 위치 권한창을 자동으로 띄우지 않는다.
-  // 이미 권한이 허용된 경우에만 현재 위치 마커를 조용히 갱신하고,
-  // prompt/denied/unknown 상태는 내 주변 시트의 명시 버튼에서 사용자가 직접 요청한다.
-  _geoPermissionState().then(function(state){
-    if(state!=='granted') return;
+
+  function runAutoLocate(){
     _requestCurrentPositionStable(function(p){
       _setMyLoc(p.coords.latitude,p.coords.longitude);
+      if(_activeTab==='nearby'){
+        setTimeout(function(){
+          try{ _loadNearby({fromAutoLocate:true}); }catch(e){ console.warn('[가톨릭길동무] 자동 위치 목록 갱신 실패', e); }
+        }, 60);
+      }
       if(_mode==='shrine'){
         _map.setLevel(8);
         if(typeof _setMapCenterByInfoCardStandard==='function') _setMapCenterByInfoCardStandard(new _LL(p.coords.latitude,p.coords.longitude));
@@ -4470,8 +4500,20 @@ function _autoLocate(){
         if(typeof _setMapCenterByInfoCardStandard==='function') _setMapCenterByInfoCardStandard(new _LL(p.coords.latitude,p.coords.longitude));
         else _map.setCenter(new _LL(p.coords.latitude,p.coords.longitude));
       }
-    }, function(){}, {auto:true,noRefine:true});
-  }).catch(function(e){ console.warn('[가톨릭길동무] 위치 권한 상태 확인 실패', e); });
+    }, function(){}, {noRefine:true});
+  }
+
+  // Android WebView/Google Play 설치앱에서는 Permissions API가 실제 앱 권한과 다르게
+  // prompt/unknown으로 남을 수 있다. 그래서 설치앱에서는 권한이 명시적으로 denied일 때만 멈추고,
+  // 그 외에는 조용히 현재 위치 요청을 먼저 실행한다.
+  _geoPermissionState().then(function(state){
+    if(state==='denied') return;
+    if(_isInstalledLikeApp() || state==='granted') {
+      setTimeout(runAutoLocate, _isInstalledLikeApp() ? 700 : 100);
+    }
+  }).catch(function(){
+    if(_isInstalledLikeApp()) setTimeout(runAutoLocate, 700);
+  });
 }
 
 function _nearestDioCode(lat,lng){
@@ -4510,6 +4552,7 @@ function _showCurrentParishDioIfIdle(){
 }
 function _setMyLoc(lat,lng){
   _myLat=lat;_myLng=lng;
+  _saveLastGeo(lat,lng);
   if(typeof kakao==='undefined'||!_map) return;  // 지도 미로드 시 무시
   if(_myMkr) _myMkr.setMap(null);
   const svg=`<svg ${_NS} width='28' height='28' viewBox='0 0 28 28'><circle cx='14' cy='14' r='12' fill='#1a73e8' opacity='.18'/><circle cx='14' cy='14' r='7' fill='#1a73e8'/><circle cx='14' cy='14' r='3.5' fill='white'/></svg>`;
@@ -4551,33 +4594,90 @@ function _loadNearby(opts){
 
   const go=(lat,lng)=>{
     _myLat=lat;_myLng=lng;
+    _saveLastGeo(lat,lng);
     if(_mode==='shrine') _loadNearbyShrines(lat,lng);
     else if(_mode==='retreat') _loadNearbyRetreats(lat,lng);
     else _loadNearbyParishes(lat,lng);
   };
 
-  if(_myLat) { go(_myLat,_myLng); return; }
+  if(_myLat && _myLng) { go(_myLat,_myLng); return; }
 
   if(!opts.request){
-    body.innerHTML='<div class="empty-msg">📍 위치 권한 상태를 확인하는 중...</div>';
+    body.innerHTML='<div class="empty-msg">📍 현재 위치를 준비하는 중입니다...<br>잠시만 기다려 주세요.</div>';
     _geoPermissionState().then(function(state){
-      if(_myLat){ go(_myLat,_myLng); return; }
-      if(state==='granted'){
-        _loadNearby({request:true, granted:true});
+      if(_myLat && _myLng){ go(_myLat,_myLng); return; }
+
+      // Android WebView/Google Play 설치앱에서는 navigator.permissions 값이 실제 앱 권한과
+      // 다르게 prompt/unknown으로 남는 경우가 있다. 따라서 denied가 아니면 먼저 저장 위치를
+      // 보여 주고, 설치앱에서는 “위치 다시 찾기” 버튼과 같은 위치 요청을 자동 실행한다.
+      if(state!=='denied'){
+        const cached=_readLastGeo(24*60*60*1000);
+        if(cached){
+          go(cached.lat,cached.lng);
+          setTimeout(function(){ try{ _warmRefreshNearbyLocation(go); }catch(e){ console.warn('[가톨릭길동무] 저장 위치 갱신 실패', e); } }, 500);
+          return;
+        }
+      }
+
+      if(state==='granted' || _isInstalledLikeApp()){
+        setTimeout(function(){
+          try{
+            if(_myLat && _myLng){ go(_myLat,_myLng); return; }
+            _loadNearby({request:true, granted:state==='granted', retryCount:0, fromInitial:true});
+          }catch(e){
+            console.warn('[가톨릭길동무] 첫 위치 확인 시작 실패', e);
+            body.innerHTML=_nearbyGeoActionHtml('unknown');
+          }
+        }, _isInstalledLikeApp() ? 900 : 1200);
       }else{
         body.innerHTML=_nearbyGeoActionHtml(state);
       }
     }).catch(function(){
-      body.innerHTML=_nearbyGeoActionHtml('unknown');
+      if(_isInstalledLikeApp()){
+        setTimeout(function(){
+          try{ _loadNearby({request:true, granted:false, retryCount:0, fromInitial:true}); }catch(e){ body.innerHTML=_nearbyGeoActionHtml('unknown'); }
+        }, 900);
+      }else{
+        body.innerHTML=_nearbyGeoActionHtml('unknown');
+      }
     });
     return;
   }
 
-  body.innerHTML='<div class="empty-msg">📍 위치를 확인하는 중...</div>';
+  const retryCount = Number(opts.retryCount || 0);
+  body.innerHTML = retryCount
+    ? '<div class="empty-msg">📍 위치 응답이 늦어 자동으로 다시 확인하는 중입니다...<br>잠시만 기다려 주세요.</div>'
+    : '<div class="empty-msg">📍 위치를 확인하는 중...</div>';
+
   _requestCurrentPositionStable(function(p){
     _setMyLoc(p.coords.latitude,p.coords.longitude);
     go(p.coords.latitude,p.coords.longitude);
   },function(err){
+    if(_myLat && _myLng){
+      go(_myLat,_myLng);
+      return;
+    }
+    const cached=_readLastGeo(12*60*60*1000);
+    if(cached && retryCount>=1){
+      go(cached.lat,cached.lng);
+      setTimeout(function(){ try{ _warmRefreshNearbyLocation(go); }catch(e){ console.warn('[가톨릭길동무] 저장 위치 갱신 실패', e); } }, 800);
+      return;
+    }
+    if(err && (err.code===2 || err.code===3) && retryCount<4){
+      const delays=[1800,3600,6500,9000];
+      const delay=delays[Math.min(retryCount,delays.length-1)];
+      body.innerHTML='<div class="empty-msg">📍 위치 응답이 늦어 자동으로 다시 확인하는 중입니다...<br>잠시만 기다려 주세요.</div>';
+      setTimeout(function(){
+        try{
+          if(_myLat && _myLng){ go(_myLat,_myLng); return; }
+          _loadNearby({request:true, granted:opts.granted===true, retryCount:retryCount+1});
+        }catch(e){
+          console.warn('[가톨릭길동무] 위치 자동 재시도 실패', e);
+          body.innerHTML=_nearbyGeoActionHtml(null, err);
+        }
+      }, delay);
+      return;
+    }
     body.innerHTML=_nearbyGeoActionHtml(null, err);
   });
 }

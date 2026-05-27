@@ -3636,7 +3636,7 @@ html.retreat-mode .ic-type-badge{
   --retreat-category-soft-final:#DDECE5;
 }
 
-#app #info-card .ic-name{font-size:calc(17px * var(--app-inner-font-scale,1))!important;line-height:1.35!important}
+#app #info-card .ic-name{font-size:calc(18px * var(--app-inner-font-scale,1))!important;line-height:1.34!important}
 #app #info-card .ic-addr-val{font-size:calc(17px * var(--app-inner-font-scale,1))!important;line-height:1.5!important}
 #app #info-card .ic-sub,
 #app #info-card .ic-addr-lbl,
@@ -3646,8 +3646,8 @@ html.retreat-mode .ic-type-badge{
 #app #info-card .ic-tel-btn,
 #app #info-card .ic-route-btn,
 #app #info-card .ic-link-btn,
-#app #info-card .btn-kakao-nav{font-size:15px!important}
-#app #info-card .ic-tel-icon{font-size:16px!important}
+#app #info-card .btn-kakao-nav{font-size:14px!important;line-height:1.12!important;letter-spacing:-.035em!important}
+#app #info-card .ic-tel-icon{font-size:15px!important}
 
 html.retreat-mode{
   --retreat-primary:var(--retreat-category-final);
@@ -4960,7 +4960,7 @@ body.gp-info-page #privacy-back-app-link {
   line-height: 1;
 }
 
-/* V1-26: Google Play 커버 하단 구조 정리
+/* V1-13: Google Play 커버 하단 구조 정리
    - 안내 문구는 커버의 최하단에 고정한다.
    - 새로고침 버튼은 하단 안내 문구와 분리해 카테고리 카드 묶음 아래에 둔다. */
 #cover {
@@ -5066,7 +5066,7 @@ body.gp-info-page #privacy-back-app-link {
   }
 }
 
-/* V1-26: 성지 화면 안에 CBCK 참고 출처 문구를 작게 표시 */
+/* V1-13: 성지 화면 안에 CBCK 참고 출처 문구를 작게 표시 */
 .shrine-source-note {
   display: none;
   flex-shrink: 0;
@@ -5090,7 +5090,7 @@ html.retreat-mode .shrine-source-note {
 
 
 
-/* V1-26: Google Play 커버 하단 최종 정렬
+/* V1-13: Google Play 커버 하단 최종 정렬
    - 새로고침은 카테고리 카드 묶음의 일부로 유지한다.
    - 새로고침과 마지막 카테고리 카드 사이 간격은 카드 간 세로 간격과 맞춘다.
    - 안내 문구는 별도 최하단 고정이며, 문구 줄 간격을 조금 넓힌다. */
@@ -5195,3 +5195,20 @@ html.retreat-mode .shrine-source-note {
     line-height: 1.48 !important;
   }
 }
+
+/* V1-24: 피정의집 모드 상단 탭 긴 문구 잘림 방지 */
+html.retreat-mode #tab-btn-list {
+  padding-left: 1px !important;
+  padding-right: 1px !important;
+}
+html.retreat-mode #tab-list-lbl {
+  font-size: 11.5px !important;
+  letter-spacing: -0.095em !important;
+  line-height: 1.02 !important;
+  max-width: 100% !important;
+  white-space: nowrap !important;
+}
+html.retreat-mode #tab-btn-list.active #tab-list-lbl {
+  font-size: 11.3px !important;
+}
+
