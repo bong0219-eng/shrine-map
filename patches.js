@@ -1286,7 +1286,15 @@
   function boot(){fixRetreatTabLabel();resetNativeExitToastOnCoverEntry();}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
   window.addEventListener('load',function(){boot();setTimeout(boot,200);},{once:true});
-  // pageshow에서 종료 대기값을 지우지 않는다. 커버 진입/복귀 시에는 goToCover와 class 변화 감지에서만 초기화한다.
+  // bfcache 복원(persisted=true) 시에는 종료 대기 상태를 반드시 초기화한다.
+  // 토스트가 뜬 채로 홈 버튼/제스처로 앱을 나가면 bfcache가 _bt DOM + _exitReady=true를 그대로 저장하고,
+  // 재진입 시 토스트가 되살아나는 버그가 생기므로 persisted=true 케이스에서만 명시적으로 지운다.
+  window.addEventListener('pageshow', function(e){
+    if(!e.persisted) return;
+    clearNativeExitToast();
+    try{ if(typeof window._clearCoverExitArmed === 'function') window._clearCoverExitArmed(); }catch(ex){ console.warn('[가톨릭길동무]', ex); }
+    try{ window._appExiting = false; }catch(ex){ console.warn('[가톨릭길동무]', ex); }
+  }, true);
   try{new MutationObserver(function(){fixRetreatTabLabel();resetNativeExitToastOnCoverEntry();}).observe(document.documentElement,{attributes:true,attributeFilter:['class']});}catch(e){ console.warn("[가톨릭길동무]", e); }
 })();
 
