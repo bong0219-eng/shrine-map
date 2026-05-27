@@ -8,9 +8,9 @@
   window.__APP_CACHE_LIFECYCLE_GUARD__ = true;
   // APP_VERSION:      화면 표시용 단축 버전 (build marker, data-target-version)
   // SW_BUILD_VERSION:  SW 등록·캐시 키용 전체 버전 (sw.js BUILD_VERSION과 일치해야 함)
-  // ★ 화면 표시용 APP_VERSION은 V1로 단순 표시 가능. 캐시용 SW_BUILD_VERSION은 sw.js BUILD_VERSION과 동일하게 계속 증가시킬 것
-  var APP_VERSION = 'V1';
-  var SW_BUILD_VERSION = 'V1-46';
+  // ★ 버전 업그레이드 시 두 값 모두 수정, sw.js BUILD_VERSION과 SW_BUILD_VERSION을 동일하게 맞출 것
+  var APP_VERSION = 'V1-13';
+  var SW_BUILD_VERSION = 'V1-13';
   window.APP_VERSION = APP_VERSION;
 
   function now(){ return Date.now ? Date.now() : new Date().getTime(); }
