@@ -82,21 +82,6 @@ html.oai-exit-toast-boot-guard #oai-cover-exit-toast{display:none !important;opa
       }
     }catch(_e){}
   }
-  function hardClearExitToastState(reason){
-    try{
-      window._exitReady = false;
-      window.__oaiCoverExitUntil = 0;
-      window.__OAI_EARLY_COVER_BACK_SUPPRESS_UNTIL__ = Math.max(Number(window.__OAI_EARLY_COVER_BACK_SUPPRESS_UNTIL__ || 0), now() + 1200);
-      sessionStorage.removeItem('oai_cover_exit_armed_until');
-      sessionStorage.removeItem('OAI_COVER_EXIT_ARMED_UNTIL');
-      sessionStorage.removeItem('cover_exit_armed_until');
-      document.documentElement.classList.add('oai-exit-toast-boot-guard');
-      document.documentElement.setAttribute('data-oai-exit-state-cleared', reason || 'clear');
-    }catch(_e){}
-    removeToast();
-    setExitArmed(false);
-  }
-  window.__oaiHardClearExitToastState = hardClearExitToastState;
   function isExitArmed(){
     try{
       var until = Number(window.__oaiCoverExitUntil || sessionStorage.getItem('oai_cover_exit_armed_until') || 0);
@@ -182,27 +167,23 @@ html.oai-exit-toast-boot-guard #oai-cover-exit-toast{display:none !important;opa
   armEarlyCoverBackGuard('early-init', true);
   document.addEventListener('DOMContentLoaded', function(){ armEarlyCoverBackGuard('early-dom-ready', false); }, {once:true});
   window.addEventListener('pageshow', function(){
-    try{ hardClearExitToastState('pageshow-entry'); startBootToastGuard(1100); }catch(_e){}
+    try{ startBootToastGuard(1100); }catch(_e){}
     if(!window.__OAI_FULL_BACK_CTRL_ACTIVE__) armEarlyCoverBackGuard('early-pageshow', false);
   }, true);
   window.addEventListener('pagehide', function(){
-    try{ hardClearExitToastState('pagehide-leave'); }catch(_e){}
-  }, true);
-  window.addEventListener('beforeunload', function(){
-    try{ hardClearExitToastState('beforeunload-leave'); }catch(_e){}
-  }, true);
-  window.addEventListener('blur', function(){
-    try{ hardClearExitToastState('window-blur-leave'); }catch(_e){}
-  }, true);
-  document.addEventListener('freeze', function(){
-    try{ hardClearExitToastState('page-freeze-leave'); }catch(_e){}
+    try{
+      document.documentElement.classList.add('oai-exit-toast-boot-guard');
+      removeToast();
+      setExitArmed(false);
+    }catch(_e){}
   }, true);
   document.addEventListener('visibilitychange', function(){
     try{
       if(document.visibilityState === 'hidden'){
-        hardClearExitToastState('visibility-hidden-leave');
+        document.documentElement.classList.add('oai-exit-toast-boot-guard');
+        removeToast();
+        setExitArmed(false);
       }else if(document.visibilityState === 'visible'){
-        hardClearExitToastState('visibility-visible-entry');
         startBootToastGuard(1000);
       }
     }catch(_e){}
@@ -379,7 +360,7 @@ window.APP_CONFIG = {
 <meta name="theme-color" content="#0e1535">
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#0e1535">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0e1535">
-<script id="oai-status-bar-theme-lock-V1-38">
+<script id="oai-status-bar-theme-lock-V1-39">
 (function(){
   'use strict';
   var COLOR='#0e1535';
@@ -395,28 +376,28 @@ window.APP_CONFIG = {
   window.addEventListener('focus', lockStatusTheme, {passive:true});
 })();
 </script>
-<link rel="manifest" href="manifest.json?v=V1-38">
-<link rel="apple-touch-icon" href="icon-192x192.png?v=V1-38">
+<link rel="manifest" href="manifest.json?v=V1-39">
+<link rel="apple-touch-icon" href="icon-192x192.png?v=V1-39">
 <meta name="format-detection" content="telephone=no">
 <meta name="description" content="가톨릭길동무 - 가톨릭 신앙생활 종합 앱">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="가톨릭길동무">
 <meta property="og:title" content="가톨릭길동무">
 <meta property="og:description" content="성지 · 성당 · 기도문 · 순례길 · 가톨릭 웹사이트 안내">
-<meta property="og:image" content="icon-512x512.png?v=V1-38">
+<meta property="og:image" content="icon-512x512.png?v=V1-39">
 <meta property="og:image:width" content="512">
 <meta property="og:image:height" content="512">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="가톨릭길동무">
 <meta name="twitter:description" content="성지 · 성당 · 기도문 · 순례길 · 가톨릭 웹사이트 안내">
-<meta name="twitter:image" content="icon-512x512.png?v=V1-38">
+<meta name="twitter:image" content="icon-512x512.png?v=V1-39">
 <title>가톨릭길동무</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Crect width=%2232%22 height=%2232%22 fill=%22%230e1535%22/%3E%3Ctext x=%226%22 y=%2226%22 font-size=%2224%22 fill=%22%23d4aa6a%22%3E%E2%9C%9D%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style id="oai-initial-bg">html,body{margin:0;width:100%;height:100%;min-height:100%;background:#0e1535;overflow:hidden;color-scheme:light;}#cover{background:#0e1535;min-height:100%;}#app{background:#f8f6f2;display:none;}</style>
-<link rel="stylesheet" href="style.css?v=V1-38">
+<link rel="stylesheet" href="style.css?v=V1-39">
 </head>
 <body>
 <div id="missa-view" role="dialog" aria-modal="true" aria-label="매일미사">
@@ -664,9 +645,9 @@ window.APP_CONFIG = {
   </div>
 </div>
 
-<script src="constants.js?v=V1-38"></script>
-<script src="core.js?v=V1-38"></script>
-<script src="app.js?v=V1-38"></script>
+<script src="constants.js?v=V1-39"></script>
+<script src="core.js?v=V1-39"></script>
+<script src="app.js?v=V1-39"></script>
 <div id="oai-category-entry-veil" aria-hidden="true"></div>
 <div id="app"><div id="tabbar"><button id="tab-btn-nearby" class="tab-btn" data-tab="nearby"><span class="tab-icon">📍</span><span id="tab-nearby-lbl">내주변</span></button><button id="tab-btn-list" class="tab-btn" data-tab="list"><span class="tab-icon">📋</span><span id="tab-list-lbl">목록</span></button><button id="tab-btn-region" class="tab-btn" data-tab="region"><span class="tab-icon">🔍</span>지역검색
     </button><button id="tab-btn-route" class="tab-btn" data-tab="route"><span class="tab-icon">🧭</span>길찾기
@@ -742,13 +723,13 @@ window.APP_CONFIG = {
     </div>
   </div>
 </div>
-<script src="web.js?v=V1-38"></script>
+<script src="web.js?v=V1-39"></script>
 
 <div id="qna-view" role="dialog" aria-modal="true" aria-label="문의·건의" class="module-view"><div class="module-bar qna"><div class="module-bar-main"><div class="module-bar-ico">✝</div><div class="module-bar-txt"><div class="module-bar-title">문의·건의</div><div class="module-bar-sub">질문, 오류, 수정요청을 남겨주세요</div></div></div><button id="qna-close-btn" class="module-close" aria-label="문의·건의 닫기">×</button></div><div class="qna-body"><div class="qna-tabs"><button id="qna-tab-write" class="qna-tab on" type="button">작성</button></div><div class="qna-list" id="qna-list"></div></div></div>
 
-<script src="patches.js?v=V1-38"></script>
+<script src="patches.js?v=V1-39"></script>
 
-<script src="sw-update.js?v=V1-38"></script>
+<script src="sw-update.js?v=V1-39"></script>
 
 </body>
 </html>

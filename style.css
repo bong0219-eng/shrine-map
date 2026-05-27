@@ -5247,7 +5247,7 @@ html.retreat-mode #tab-btn-list.active #tab-list-lbl {
 }
 
 
-/* V1-38: 성지 내주변 목록 표시 시 목록/지도 갱신이 겹치며 보이는 순간 깜빡임 완화 */
+/* V1-39: V1-37 기준 성지 내주변 목록/지도 갱신 순간 깜빡임 완화 */
 html.oai-shrine-nearby-stabilizing #sheet-nearby,
 html.oai-shrine-nearby-stabilizing #nearby-body,
 html.oai-shrine-nearby-stabilizing #nearby-body .nearby-item {

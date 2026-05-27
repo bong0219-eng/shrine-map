@@ -1413,7 +1413,7 @@ function openDioceseView(opts){
       if(!restore) try{ frame.contentWindow && frame.contentWindow.resetDioceseFirstPage && frame.contentWindow.resetDioceseFirstPage(); }catch(e){ console.warn("[가톨릭길동무]", e); }
       if(typeof dioceseLoaded==='function') dioceseLoaded();
     };
-    frame.src='diocese.html?v=V1-38';
+    frame.src='diocese.html?v=V1-39';
   }else if(!restore){
     try{ frame.contentWindow && frame.contentWindow.resetDioceseFirstPage && frame.contentWindow.resetDioceseFirstPage(); }catch(e){ console.warn("[가톨릭길동무]", e); }
   }
@@ -1810,7 +1810,7 @@ const _PARISH_DIOCESE_ASSETS={
 };
 const _PARISH_DIOCESE_LOAD_STATE={};
 const _PARISH_DIOCESE_LOAD_PROMISES={};
-const _PARISH_ASSET_VERSION='V1-38';
+const _PARISH_ASSET_VERSION='V1-39';
 function _getParishDioceseAsset(code){
   return _PARISH_DIOCESE_ASSETS[code] || null;
 }
@@ -1973,7 +1973,7 @@ function _ensureParishDataLoaded(){
 }
 _initParishDataFromGlobal();
 
-const _PRAYER_ASSET_VERSION='V1-38';
+const _PRAYER_ASSET_VERSION='V1-39';
 let _prayerModuleLoadPromise=null;
 function _isPrayerModuleReady(){
   return typeof window.initPrayerView === 'function' &&
@@ -2018,7 +2018,7 @@ try{ window.ensurePrayerModuleLoaded=ensurePrayerModuleLoaded; }catch(e){ consol
 let _RT_RAW = [];
 let _retreatRawLoaded = false;
 let _retreatDataLoadPromise = null;
-const _RETREAT_ASSET_VERSION='V1-38';
+const _RETREAT_ASSET_VERSION='V1-39';
 
 let RETREATS = [];
 function _buildRetreatList(raw){
@@ -2267,7 +2267,7 @@ const _TY={'A':'성지','B':'순례지','C':'순교 사적지'};
 
 let _shrineRawLoaded = false;
 let _shrineDataLoadPromise = null;
-const _SHRINE_ASSET_VERSION='V1-38';
+const _SHRINE_ASSET_VERSION='V1-39';
 let SHRINES = [];
 let JUKRIMGUL_IDX = -1;
 function _decodeShrineHomePage(hp){
@@ -4742,7 +4742,7 @@ function _renderNearbyDone(prelim,results,getIdx,getColor,getLabel,phase){
   if(phase==='final') body.scrollTop=scrollTop;
   if(shouldUpdateShrineMap){
     // 성지 내주변 목록은 목록 표시와 지도 마커/bounds 갱신이 겹치며 화면이 두 번 깜빡일 수 있다.
-    // 목록을 먼저 고정하고, 지도 갱신은 약간 늦춰 한 번만 실행한다.
+    // V1-37의 뒤로가기/종료 흐름은 건드리지 않고, 성지 지도 갱신만 늦춰 한 번만 실행한다.
     const signature = String(Math.round((_myLat||0)*100000)) + ',' + String(Math.round((_myLng||0)*100000)) + ':' + _nearbyCache.map(function(x){ return x && x.name ? x.name : ''; }).join('|');
     const run=function(){
       try{
