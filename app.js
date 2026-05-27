@@ -4,6 +4,8 @@
 
 'use strict';
 
+
+
 // --- [Fix 1] Reliable Back Button Logic ---
 // We push a history state when leaving the cover so the back button has something to pop.
 function hideCoverAndRun(callback) {
