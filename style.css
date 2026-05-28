@@ -4966,113 +4966,12 @@ body.gp-info-page #privacy-back-app-link {
   line-height: 1;
 }
 
-/* V1-13: Google Play 커버 하단 구조 정리
-   - 안내 문구는 커버의 최하단에 고정한다.
-   - 새로고침 버튼은 하단 안내 문구와 분리해 카테고리 카드 묶음 아래에 둔다. */
-#cover {
-  --cover-bottom-safe: calc(env(safe-area-inset-bottom, 0px) + clamp(42px, calc(var(--cover-vh, 1vh) * 5.2), 56px)) !important;
-  padding-bottom: var(--cover-bottom-safe) !important;
-}
 
-#cover-main-block {
-  padding-bottom: 0 !important;
-}
+/* V1-28: Android 209 위치 안정화 1단계 CSS 정리
+   - 커버 하단/새로고침/인포카드/순례길 카드의 누적 보정 블록을 한곳으로 통합한다.
+   - 기능, 지도, 위치, 뒤로가기 로직은 건드리지 않는다. */
 
-#cover #cover-action-row.cover-action-single {
-  position: relative !important;
-  left: auto !important;
-  right: auto !important;
-  top: auto !important;
-  bottom: auto !important;
-  width: 100% !important;
-  height: 36px !important;
-  min-height: 36px !important;
-  max-height: 36px !important;
-  margin: clamp(3px, calc(var(--cover-vh, 1vh) * 0.7), 6px) 0 0 !important;
-  padding: 0 !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: flex-end !important;
-  flex: 0 0 36px !important;
-  z-index: 10 !important;
-  pointer-events: auto !important;
-  box-sizing: border-box !important;
-}
-
-#cover #cover-action-row.cover-action-single #cover-update-box {
-  flex: 0 0 auto !important;
-  width: clamp(126px, 32vw, 150px) !important;
-  min-width: 126px !important;
-  max-width: 150px !important;
-  height: 36px !important;
-  min-height: 36px !important;
-  max-height: 36px !important;
-  margin: 0 !important;
-  box-sizing: border-box !important;
-}
-
-#cover .cover-refresh-main-btn {
-  min-height: 36px !important;
-  height: 36px !important;
-  max-height: 36px !important;
-  font-size: calc(13.2px * var(--app-font-scale)) !important;
-  padding: 0 12px !important;
-}
-
-#cover-bottom-note {
-  position: fixed !important;
-  left: 50% !important;
-  right: auto !important;
-  bottom: calc(env(safe-area-inset-bottom, 0px) + 8px) !important;
-  transform: translateX(-50%) !important;
-  flex: none !important;
-  width: min(100vw, 720px) !important;
-  max-width: min(100vw, 720px) !important;
-  margin: 0 !important;
-  padding: 0 18px !important;
-  text-align: center !important;
-  font-size: clamp(8px, 2.1vw, 9.2px) !important;
-  line-height: 1.35 !important;
-  letter-spacing: -.02em !important;
-  color: rgba(96,86,76,.72) !important;
-  pointer-events: none !important;
-  z-index: 130 !important;
-  box-sizing: border-box !important;
-}
-
-@media (max-height: 740px) {
-  #cover {
-    --cover-bottom-safe: calc(env(safe-area-inset-bottom, 0px) + clamp(38px, calc(var(--cover-vh, 1vh) * 4.9), 50px)) !important;
-  }
-  #cover #cover-action-row.cover-action-single {
-    height: 34px !important;
-    min-height: 34px !important;
-    max-height: 34px !important;
-    flex-basis: 34px !important;
-    margin-top: clamp(2px, calc(var(--cover-vh, 1vh) * 0.55), 5px) !important;
-  }
-  #cover #cover-action-row.cover-action-single #cover-update-box {
-    width: clamp(118px, 32vw, 140px) !important;
-    min-width: 118px !important;
-    max-width: 140px !important;
-    height: 34px !important;
-    min-height: 34px !important;
-    max-height: 34px !important;
-  }
-  #cover .cover-refresh-main-btn {
-    min-height: 34px !important;
-    height: 34px !important;
-    font-size: calc(12.5px * var(--app-font-scale)) !important;
-    padding: 0 10px !important;
-  }
-  #cover-bottom-note {
-    bottom: calc(env(safe-area-inset-bottom, 0px) + 7px) !important;
-    font-size: clamp(7.7px, 2.0vw, 8.8px) !important;
-    line-height: 1.32 !important;
-  }
-}
-
-/* V1-13: 성지 화면 안에 CBCK 참고 출처 문구를 작게 표시 */
+/* 성지 화면 안에 CBCK 참고 출처 문구를 작게 표시 */
 .shrine-source-note {
   display: none;
   flex-shrink: 0;
@@ -5094,115 +4993,7 @@ html.retreat-mode .shrine-source-note {
   display: none !important;
 }
 
-
-
-/* V1-13: Google Play 커버 하단 최종 정렬
-   - 새로고침은 카테고리 카드 묶음의 일부로 유지한다.
-   - 새로고침과 마지막 카테고리 카드 사이 간격은 카드 간 세로 간격과 맞춘다.
-   - 안내 문구는 별도 최하단 고정이며, 문구 줄 간격을 조금 넓힌다. */
-#cover {
-  --cover-bottom-safe: calc(env(safe-area-inset-bottom, 0px) + clamp(42px, calc(var(--cover-vh, 1vh) * 5.2), 56px)) !important;
-  padding-bottom: var(--cover-bottom-safe) !important;
-}
-
-#cover-main-block {
-  padding-bottom: 0 !important;
-}
-
-#cover #cover-action-row.cover-action-single {
-  position: relative !important;
-  left: auto !important;
-  right: auto !important;
-  top: auto !important;
-  bottom: auto !important;
-  width: 100% !important;
-  height: 36px !important;
-  min-height: 36px !important;
-  max-height: 36px !important;
-  margin: clamp(4px, calc(var(--cover-vh, 1vh) * 0.75), 7px) 0 0 !important;
-  padding: 0 !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: flex-end !important;
-  flex: 0 0 36px !important;
-  z-index: 12 !important;
-  pointer-events: auto !important;
-  box-sizing: border-box !important;
-}
-
-#cover #cover-action-row.cover-action-single #cover-update-box {
-  flex: 0 0 auto !important;
-  width: clamp(126px, 32vw, 150px) !important;
-  min-width: 126px !important;
-  max-width: 150px !important;
-  height: 36px !important;
-  min-height: 36px !important;
-  max-height: 36px !important;
-  margin: 0 !important;
-  box-sizing: border-box !important;
-}
-
-#cover .cover-refresh-main-btn {
-  min-height: 36px !important;
-  height: 36px !important;
-  max-height: 36px !important;
-  font-size: calc(13.2px * var(--app-font-scale)) !important;
-  padding: 0 12px !important;
-}
-
-#cover-bottom-note {
-  position: fixed !important;
-  left: 50% !important;
-  right: auto !important;
-  bottom: calc(env(safe-area-inset-bottom, 0px) + 10px) !important;
-  transform: translateX(-50%) !important;
-  width: min(100vw, 720px) !important;
-  max-width: min(100vw, 720px) !important;
-  margin: 0 !important;
-  padding: 0 20px !important;
-  text-align: center !important;
-  font-size: clamp(8px, 2.1vw, 9.4px) !important;
-  line-height: 1.55 !important;
-  letter-spacing: -.02em !important;
-  color: rgba(96,86,76,.72) !important;
-  pointer-events: none !important;
-  z-index: 130 !important;
-  box-sizing: border-box !important;
-}
-
-@media (max-height: 740px) {
-  #cover {
-    --cover-bottom-safe: calc(env(safe-area-inset-bottom, 0px) + clamp(38px, calc(var(--cover-vh, 1vh) * 4.8), 50px)) !important;
-  }
-  #cover #cover-action-row.cover-action-single {
-    height: 34px !important;
-    min-height: 34px !important;
-    max-height: 34px !important;
-    flex-basis: 34px !important;
-    margin-top: clamp(3px, calc(var(--cover-vh, 1vh) * 0.55), 5px) !important;
-  }
-  #cover #cover-action-row.cover-action-single #cover-update-box {
-    width: clamp(118px, 32vw, 140px) !important;
-    min-width: 118px !important;
-    max-width: 140px !important;
-    height: 34px !important;
-    min-height: 34px !important;
-    max-height: 34px !important;
-  }
-  #cover .cover-refresh-main-btn {
-    min-height: 34px !important;
-    height: 34px !important;
-    font-size: calc(12.5px * var(--app-font-scale)) !important;
-    padding: 0 10px !important;
-  }
-  #cover-bottom-note {
-    bottom: calc(env(safe-area-inset-bottom, 0px) + 9px) !important;
-    font-size: clamp(7.7px, 2.0vw, 8.9px) !important;
-    line-height: 1.48 !important;
-  }
-}
-
-/* V1-19: 피정의집 모드 상단 탭 긴 문구 잘림 방지 */
+/* 피정의집 모드 상단 탭 긴 문구 잘림 방지 */
 html.retreat-mode #tab-btn-list {
   padding-left: 1px !important;
   padding-right: 1px !important;
@@ -5218,25 +5009,68 @@ html.retreat-mode #tab-btn-list.active #tab-list-lbl {
   font-size: 11.3px !important;
 }
 
-
-
-/* V1-19: 커버 새로고침을 카테고리 카드 묶음 쪽으로 정렬 */
+/* 커버 하단/새로고침 최종 위치 */
+#cover {
+  --cover-bottom-safe: calc(env(safe-area-inset-bottom, 0px) + clamp(18px, calc(var(--cover-vh, 1vh) * 2.2), 28px)) !important;
+  padding-bottom: var(--cover-bottom-safe) !important;
+  overflow: visible !important;
+}
 #cover-main-block {
   gap: clamp(3px, calc(var(--cover-vh, 1vh) * 0.7), 6px) !important;
+  padding-bottom: clamp(0px, calc(var(--cover-vh, 1vh) * 0.45), 5px) !important;
+  transform: translateY(clamp(-2px, calc(var(--cover-vh, 1vh) * -0.2), 0px)) !important;
 }
 #cover #cover-action-row.cover-action-single {
-  margin-top: 0 !important;
+  position: relative !important;
+  left: auto !important;
+  right: auto !important;
+  top: auto !important;
+  bottom: auto !important;
+  width: 100% !important;
+  height: 36px !important;
+  min-height: 36px !important;
+  max-height: 36px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  flex: 0 0 36px !important;
+  z-index: 12 !important;
+  pointer-events: auto !important;
+  box-sizing: border-box !important;
 }
-@media (max-height: 740px) {
-  #cover-main-block {
-    gap: clamp(2px, calc(var(--cover-vh, 1vh) * 0.55), 5px) !important;
-  }
-  #cover #cover-action-row.cover-action-single {
-    margin-top: 0 !important;
-  }
+#cover #cover-action-row.cover-action-single #cover-update-box {
+  flex: 0 0 auto !important;
+  width: clamp(126px, 32vw, 150px) !important;
+  min-width: 126px !important;
+  max-width: 150px !important;
+  height: 36px !important;
+  min-height: 36px !important;
+  max-height: 36px !important;
+  margin: 0 !important;
+  box-sizing: border-box !important;
 }
-
-/* V1-19: 테스트 세부 버전은 작게 표시 */
+#cover .cover-refresh-main-btn {
+  width: 100% !important;
+  min-height: 36px !important;
+  height: 36px !important;
+  max-height: 36px !important;
+  padding: 0 12px !important;
+  border-radius: 13px !important;
+  background: linear-gradient(180deg, #ece7de 0%, #ddd6c9 100%) !important;
+  color: #1f2a44 !important;
+  border: 1.5px solid rgba(31,42,68,.16) !important;
+  font-size: calc(13.2px * var(--app-font-scale)) !important;
+  font-weight: 900 !important;
+  line-height: 1 !important;
+  letter-spacing: -.02em !important;
+  box-shadow: 0 6px 12px rgba(31,42,68,.08) !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  box-sizing: border-box !important;
+}
 #cover .cover-refresh-main-btn .refresh-version-main {
   font-size: 1em;
   font-weight: 900;
@@ -5248,17 +5082,28 @@ html.retreat-mode #tab-btn-list.active #tab-list-lbl {
   margin-left: 1px;
   letter-spacing: -.04em;
 }
+#cover-bottom-note {
+  position: fixed !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: calc(env(safe-area-inset-bottom, 0px) - clamp(22px, calc(var(--cover-vh, 1vh) * 2.6), 36px)) !important;
+  transform: none !important;
+  flex: none !important;
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 16px !important;
+  text-align: center !important;
+  font-size: clamp(8px, 2.1vw, 9.4px) !important;
+  line-height: 1.55 !important;
+  letter-spacing: -.02em !important;
+  color: rgba(96,86,76,.72) !important;
+  pointer-events: none !important;
+  z-index: 130 !important;
+  box-sizing: border-box !important;
+}
 
-
-/* V1-20: Android 209 위치 미세 재조정
-   - 지도 하단 정보카드는 V1-19보다 낮게 배치한다.
-   - 문의/개인정보 상단 여백은 V1-19의 약 50%로 줄인다.
-   - 커버 내용은 V1-19보다 조금 더 아래로 둔다. */
-
-/* V1-23: Android 209 cover/trail/qna final retune
-   - Cover notice stays centered above the Android navigation area without left shift.
-   - Refresh remains with the category block, but the lower gap is reduced.
-   - Pilgrimage route sheet is lifted slightly from the very bottom. */
+/* 지도 하단 정보카드/순례길 카드 최종 위치 */
 #info-card {
   bottom: 0 !important;
   padding-bottom: 0 !important;
@@ -5266,60 +5111,6 @@ html.retreat-mode #tab-btn-list.active #tab-list-lbl {
 .trail-sheet {
   bottom: 6px !important;
   padding-bottom: 0 !important;
-}
-#cover-main-block {
-  padding-bottom: clamp(22px, calc(var(--cover-vh, 1vh) * 3.6), 34px) !important;
-}
-#cover-bottom-note {
-  position: fixed !important;
-  left: 0 !important;
-  right: 0 !important;
-  bottom: calc(env(safe-area-inset-bottom, 0px) + 10px) !important;
-  transform: none !important;
-  width: 100% !important;
-  max-width: none !important;
-  margin: 0 !important;
-  padding: 0 18px !important;
-  text-align: center !important;
-  z-index: 130 !important;
-  box-sizing: border-box !important;
-}
-@media (max-height: 740px) {
-  .trail-sheet {
-    bottom: 5px !important;
-  }
-  #cover-main-block {
-    padding-bottom: clamp(20px, calc(var(--cover-vh, 1vh) * 3.2), 30px) !important;
-  }
-  #cover-bottom-note {
-    bottom: calc(env(safe-area-inset-bottom, 0px) + 8px) !important;
-  }
-}
-
-/* V1-25: cover footer visibility and category block position retune */
-#cover {
-  --cover-bottom-safe: calc(env(safe-area-inset-bottom, 0px) + clamp(18px, calc(var(--cover-vh, 1vh) * 2.2), 28px)) !important;
-  padding-bottom: var(--cover-bottom-safe) !important;
-  overflow: visible !important;
-}
-#cover-main-block {
-  padding-bottom: clamp(0px, calc(var(--cover-vh, 1vh) * 0.45), 5px) !important;
-  transform: translateY(clamp(-2px, calc(var(--cover-vh, 1vh) * -0.2), 0px)) !important;
-}
-#cover-bottom-note {
-  position: fixed !important;
-  left: 0 !important;
-  right: 0 !important;
-  bottom: calc(env(safe-area-inset-bottom, 0px) - clamp(22px, calc(var(--cover-vh, 1vh) * 2.6), 36px)) !important;
-  transform: none !important;
-  width: 100% !important;
-  max-width: none !important;
-  margin: 0 !important;
-  padding: 0 16px !important;
-  text-align: center !important;
-  box-sizing: border-box !important;
-}
-.trail-sheet {
   border-radius: 26px 26px 0 0 !important;
   background: linear-gradient(180deg, #fffdf9, #f6efe4) !important;
 }
@@ -5343,15 +5134,43 @@ html.retreat-mode #tab-btn-list.active #tab-list-lbl {
 #app #info-card .ic-tel-icon {
   font-size: 16px !important;
 }
+
 @media (max-height: 740px) {
   #cover {
     --cover-bottom-safe: calc(env(safe-area-inset-bottom, 0px) + clamp(16px, calc(var(--cover-vh, 1vh) * 2.0), 24px)) !important;
   }
   #cover-main-block {
+    gap: clamp(2px, calc(var(--cover-vh, 1vh) * 0.55), 5px) !important;
     padding-bottom: 0 !important;
     transform: translateY(clamp(-1px, calc(var(--cover-vh, 1vh) * -0.15), 0px)) !important;
   }
+  #cover #cover-action-row.cover-action-single {
+    height: 34px !important;
+    min-height: 34px !important;
+    max-height: 34px !important;
+    flex-basis: 34px !important;
+    margin-top: 0 !important;
+  }
+  #cover #cover-action-row.cover-action-single #cover-update-box {
+    width: clamp(118px, 32vw, 140px) !important;
+    min-width: 118px !important;
+    max-width: 140px !important;
+    height: 34px !important;
+    min-height: 34px !important;
+    max-height: 34px !important;
+  }
+  #cover .cover-refresh-main-btn {
+    min-height: 34px !important;
+    height: 34px !important;
+    font-size: calc(12.5px * var(--app-font-scale)) !important;
+    padding: 0 10px !important;
+  }
   #cover-bottom-note {
     bottom: calc(env(safe-area-inset-bottom, 0px) - clamp(18px, calc(var(--cover-vh, 1vh) * 2.3), 30px)) !important;
+    font-size: clamp(7.7px, 2.0vw, 8.9px) !important;
+    line-height: 1.48 !important;
+  }
+  .trail-sheet {
+    bottom: 5px !important;
   }
 }
