@@ -789,6 +789,22 @@ function escHtml(str) {
 }
 
 /* ═══════════════════ 뒤로가기 처리 ═══════════════════ */
+function oaiPrepareNoReturnEffectToApp(){
+  try{
+    sessionStorage.setItem('oai_internal_return_no_effect_once','1');
+    sessionStorage.setItem('oai_internal_page_nav','qna');
+    sessionStorage.removeItem('oai_external_nav_started_at');
+    sessionStorage.removeItem('oai_external_nav_pagehide');
+    sessionStorage.removeItem('oai_external_nav_kind');
+    sessionStorage.removeItem('oai_external_nav_pending');
+    sessionStorage.removeItem('oai_external_nav_hold_until');
+    sessionStorage.removeItem('oai_external_nav_force_release_at');
+    sessionStorage.removeItem('oai_refresh_veil_until');
+    sessionStorage.removeItem('oai_refresh_veil_hold_ms');
+    sessionStorage.removeItem('oai_refresh_veil_reason');
+    sessionStorage.removeItem('oai_refresh_veil_visible_until');
+  }catch(e){}
+}
 function handleQaBack(){
   var active = document.querySelector('.view.active');
   if(active && active.id !== 'list-view'){
@@ -796,6 +812,7 @@ function handleQaBack(){
     return;
   }
   try{ document.activeElement && document.activeElement.blur && document.activeElement.blur(); }catch(e){}
+  oaiPrepareNoReturnEffectToApp();
   if(document.referrer && document.referrer.indexOf(location.hostname)>=0){
     history.back();
   } else {
@@ -822,10 +839,10 @@ showView('list-view', { historyMode:'replace' });
 subscribeList();
 </script>
 
-<script id="oai-cache-lifecycle-V1-13">
+<script id="oai-cache-lifecycle-V1-18">
 (function(){
   'use strict';
-  var APP_VERSION = 'V1-13';
+  var APP_VERSION = 'V1-18';
   if('serviceWorker' in navigator){
     try{ navigator.serviceWorker.register('./sw.js?v=' + encodeURIComponent(APP_VERSION)).then(function(reg){try{reg.update();}catch(e){}}).catch(function(){}); }catch(e){}
   }

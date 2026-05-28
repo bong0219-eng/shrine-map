@@ -904,12 +904,26 @@ try{ window._shouldMassQuickReturn=_shouldMassQuickReturn; window._shouldPrayerQ
 /* ═══════════════════════════════════════════════
    §3. 앱 새로고침 / 업데이트
    ═══════════════════════════════════════════════ */
+
+function oaiFormatCoverVersionHtml(version, suffixText){
+  var v = String(version || 'V1').trim() || 'V1';
+  var m = v.match(/^(V1)(-.+)$/);
+  var main = m ? m[1] : v;
+  var sub = m ? m[2] : '';
+  function esc(x){ return String(x).replace(/[&<>"]/g, function(c){ return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c] || c); }); }
+  return '<span class="refresh-version-main">' + esc(main) + '</span>' + (sub ? '<span class="refresh-version-sub">' + esc(sub) + '</span>' : '') + ' ' + esc(suffixText || '새로고침');
+}
+function oaiSetCoverRefreshButtonLabel(btn, version, suffixText){
+  if(!btn) return;
+  try{ btn.innerHTML = oaiFormatCoverVersionHtml(version, suffixText); }
+  catch(_e){ btn.textContent = (version || 'V1') + ' ' + (suffixText || '새로고침'); }
+}
 function _runRefreshAppFilesOnly(){
   var btn = document.getElementById('cover-update-btn');
   try{
     if(btn){
       btn.disabled = true;
-      btn.textContent = ((btn.getAttribute('data-target-version') || 'V1') + ' 새로고침 중');
+      oaiSetCoverRefreshButtonLabel(btn, btn.getAttribute('data-target-version') || 'V1', '새로고침 중');
     }
     if(document.activeElement && document.activeElement.blur) document.activeElement.blur();
     // V37: 새로고침 전에는 레이아웃/스크롤/모달 DOM을 건드리지 않고,
@@ -1074,7 +1088,7 @@ function syncCoverUpdateVersionState(){
     if(!current && marker) current = String(marker.textContent || '').trim();
     if(!current) current = target;
     var mismatch = current !== target;
-    btn.textContent = mismatch ? (target + ' 업데이트 필요') : (target + ' 새로고침');
+    oaiSetCoverRefreshButtonLabel(btn, target, mismatch ? '업데이트 필요' : '새로고침');
     box.classList.toggle('update-needed', mismatch);
     if(marker){
       marker.textContent = target || 'V1';
@@ -1413,7 +1427,7 @@ function openDioceseView(opts){
       if(!restore) try{ frame.contentWindow && frame.contentWindow.resetDioceseFirstPage && frame.contentWindow.resetDioceseFirstPage(); }catch(e){ console.warn("[가톨릭길동무]", e); }
       if(typeof dioceseLoaded==='function') dioceseLoaded();
     };
-    frame.src='diocese.html?v=V1-17';
+    frame.src='diocese.html?v=V1-18';
   }else if(!restore){
     try{ frame.contentWindow && frame.contentWindow.resetDioceseFirstPage && frame.contentWindow.resetDioceseFirstPage(); }catch(e){ console.warn("[가톨릭길동무]", e); }
   }
@@ -1810,7 +1824,7 @@ const _PARISH_DIOCESE_ASSETS={
 };
 const _PARISH_DIOCESE_LOAD_STATE={};
 const _PARISH_DIOCESE_LOAD_PROMISES={};
-const _PARISH_ASSET_VERSION='V1-17';
+const _PARISH_ASSET_VERSION='V1-18';
 function _getParishDioceseAsset(code){
   return _PARISH_DIOCESE_ASSETS[code] || null;
 }
@@ -1973,7 +1987,7 @@ function _ensureParishDataLoaded(){
 }
 _initParishDataFromGlobal();
 
-const _PRAYER_ASSET_VERSION='V1-17';
+const _PRAYER_ASSET_VERSION='V1-18';
 let _prayerModuleLoadPromise=null;
 function _isPrayerModuleReady(){
   return typeof window.initPrayerView === 'function' &&
@@ -2018,7 +2032,7 @@ try{ window.ensurePrayerModuleLoaded=ensurePrayerModuleLoaded; }catch(e){ consol
 let _RT_RAW = [];
 let _retreatRawLoaded = false;
 let _retreatDataLoadPromise = null;
-const _RETREAT_ASSET_VERSION='V1-17';
+const _RETREAT_ASSET_VERSION='V1-18';
 
 let RETREATS = [];
 function _buildRetreatList(raw){
@@ -2267,7 +2281,7 @@ const _TY={'A':'성지','B':'순례지','C':'순교 사적지'};
 
 let _shrineRawLoaded = false;
 let _shrineDataLoadPromise = null;
-const _SHRINE_ASSET_VERSION='V1-17';
+const _SHRINE_ASSET_VERSION='V1-18';
 let SHRINES = [];
 let JUKRIMGUL_IDX = -1;
 function _decodeShrineHomePage(hp){
