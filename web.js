@@ -583,9 +583,10 @@
         try{
           const lv = trailState.map.getLevel();
           if(Number.isFinite(lv) && lv < 12) trailState.map.setLevel(12);
-          // 백령도·울릉도 같은 극단 외곽 섬을 기준으로 보지 않는 우리나라 중심감에 맞춰
-          // 순례길 지도 초기 시야를 약간 서쪽으로 보정한다. 마커 데이터와 기능은 변경하지 않는다.
-          trailState.map.setCenter(new kakao.maps.LatLng(36.05, 127.45));
+          // V1-38: 사진 기준처럼 본토와 제주가 함께 자연스럽게 보이도록
+          // 백령도·울릉도 같은 극단 외곽 섬은 중심감에서 제외하고, 초기 시야를 우리나라 중심으로 보정한다.
+          // 마커 데이터와 기능은 변경하지 않는다.
+          trailState.map.setCenter(new kakao.maps.LatLng(36.10, 127.85));
         }catch(e){ console.warn("[가톨릭길동무]", e); }
       }, 60);
     }catch(e){ console.warn("[가톨릭길동무]", e); }
@@ -635,7 +636,7 @@
       }
       const container = ig$('trail-map');
       if(!container || !(window.kakao && window.kakao.maps)) return;
-      trailState.map = new kakao.maps.Map(container, { center:new kakao.maps.LatLng(36.2,127.9), level:12 });
+      trailState.map = new kakao.maps.Map(container, { center:new kakao.maps.LatLng(36.10,127.85), level:12 });
       trailState.map.addControl(new kakao.maps.ZoomControl(), kakao.maps.ControlPosition.RIGHT);
       if(trailState.restoreCenter && Number.isFinite(Number(trailState.restoreCenter.lat)) && Number.isFinite(Number(trailState.restoreCenter.lng))){
         try{ trailState.map.setCenter(new kakao.maps.LatLng(Number(trailState.restoreCenter.lat), Number(trailState.restoreCenter.lng))); }catch(e){ console.warn("[가톨릭길동무]", e); }
