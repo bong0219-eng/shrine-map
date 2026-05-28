@@ -4967,7 +4967,7 @@ body.gp-info-page #privacy-back-app-link {
 }
 
 
-/* V1-30: Android 209 위치 안정화 1단계 CSS 정리
+/* V1-31: Android 209 위치 안정화 1단계 CSS 정리
    - 커버 하단/새로고침/인포카드/순례길 카드의 누적 보정 블록을 한곳으로 통합한다.
    - 기능, 지도, 위치, 뒤로가기 로직은 건드리지 않는다. */
 
@@ -5172,5 +5172,135 @@ html.retreat-mode #tab-btn-list.active #tab-list-lbl {
   }
   .trail-sheet {
     bottom: 5px !important;
+  }
+}
+
+
+/* V1-31: 웹사이트 기준 UI 통일 및 하단 위치 미세 조정
+   - Android/위치/지도/뒤로가기/종료 로직은 건드리지 않고 웹앱 CSS만 정리한다.
+   - 웹사이트 화면을 기준으로 주요기도문·문의·순례길·관구교구의 헤더/탭/카드 글자 크기를 맞춘다. */
+:root {
+  --oai-website-header-h: 70px;
+  --oai-website-tabbar-h: 52px;
+  --oai-website-tab-btn-h: 40px;
+  --oai-website-title-fs: 18px;
+  --oai-website-sub-fs: 12px;
+  --oai-website-tab-fs: 15px;
+  --oai-website-card-title-fs: 17px;
+  --oai-website-card-body-fs: 13px;
+  --oai-website-card-meta-fs: 12px;
+  --oai-website-card-foot-fs: 12px;
+  --oai-android-nav-nudge: 32px;
+}
+
+/* 헤더 높이/제목/부제목: 웹사이트 기준으로 통일 */
+#web-view .module-bar,
+#trail-view .module-bar,
+#qna-view .module-bar,
+#diocese-module-bar,
+#prayer-bar {
+  height: calc(var(--oai-website-header-h) + env(safe-area-inset-top, 0px)) !important;
+  min-height: calc(var(--oai-website-header-h) + env(safe-area-inset-top, 0px)) !important;
+  max-height: calc(var(--oai-website-header-h) + env(safe-area-inset-top, 0px)) !important;
+  padding-top: calc(10px + env(safe-area-inset-top, 0px)) !important;
+  padding-bottom: 10px !important;
+  box-sizing: border-box !important;
+}
+#web-view .module-bar-title,
+#trail-view .module-bar-title,
+#qna-view .module-bar-title,
+#diocese-module-bar .module-bar-title,
+#prayer-bar .module-bar-title {
+  font-size: calc(var(--oai-website-title-fs) * var(--app-inner-font-scale, 1)) !important;
+  line-height: 1.2 !important;
+}
+#web-view .module-bar-sub,
+#trail-view .module-bar-sub,
+#qna-view .module-bar-sub,
+#diocese-module-bar .module-bar-sub,
+#prayer-bar .module-bar-sub {
+  font-size: calc(var(--oai-website-sub-fs) * var(--app-inner-font-scale, 1)) !important;
+  line-height: 1.2 !important;
+}
+
+/* 탭바/탭 버튼: 웹사이트 탭 기준으로 통일 */
+#prayer-tabs,
+#web-view .web-cats,
+#trail-view .trail-tabs,
+#qna-view .qna-tabs {
+  height: var(--oai-website-tabbar-h) !important;
+  min-height: var(--oai-website-tabbar-h) !important;
+  max-height: var(--oai-website-tabbar-h) !important;
+  padding: 9px 14px !important;
+  gap: 8px !important;
+  align-items: center !important;
+  box-sizing: border-box !important;
+  flex-shrink: 0 !important;
+}
+#prayer-tabs .pr-tab,
+#web-view .web-cat-btn,
+#trail-view .trail-tab,
+#qna-view .qna-tab {
+  height: var(--oai-website-tab-btn-h) !important;
+  min-height: var(--oai-website-tab-btn-h) !important;
+  max-height: var(--oai-website-tab-btn-h) !important;
+  padding: 0 12px !important;
+  border-radius: 14px !important;
+  font-size: calc(var(--oai-website-tab-fs) * var(--app-inner-font-scale, 1)) !important;
+  line-height: 1.1 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-sizing: border-box !important;
+  white-space: nowrap !important;
+}
+#trail-view .trail-tab,
+#qna-view .qna-tab { flex: 1 1 0 !important; }
+
+/* 순례길 목록/지도 인포카드: 웹사이트 카드 글자 크기 기준 */
+#trail-list .trail-bdg,
+#trail-sheet .trail-sh-bdg {
+  font-size: calc(var(--oai-website-card-meta-fs) * var(--app-inner-font-scale, 1)) !important;
+}
+#trail-list .trail-reg,
+#trail-sheet .trail-sh-region,
+#trail-sheet .trail-sh-sub {
+  font-size: calc(var(--oai-website-card-body-fs) * var(--app-inner-font-scale, 1)) !important;
+}
+#trail-list .trail-nm,
+#trail-sheet .trail-sh-name {
+  font-size: calc(var(--oai-website-card-title-fs) * var(--app-inner-font-scale, 1)) !important;
+  line-height: 1.38 !important;
+}
+#trail-list .trail-url,
+#trail-sheet .trail-sh-url {
+  font-size: calc(var(--oai-website-card-foot-fs) * var(--app-inner-font-scale, 1)) !important;
+}
+#trail-list .trail-arr,
+#trail-sheet .trail-sh-arr {
+  font-size: 15px !important;
+}
+
+/* 관구교구 iframe 바깥 헤더는 웹사이트 헤더 기준 유지 */
+#diocese-view .module-bar-main,
+#trail-view .module-bar-main,
+#qna-view .module-bar-main,
+#web-view .module-bar-main {
+  min-height: 0 !important;
+}
+
+/* 성지/성당/피정의집 지도: 내 위치 버튼과 성지 범례를 하단 네비게이션바 높이만큼 아래로 조정 */
+#loc-btn,
+#legend {
+  bottom: calc(18px + env(safe-area-inset-bottom, 0px) - var(--oai-android-nav-nudge)) !important;
+}
+
+/* 커버 하단 문구: 잘리지 않는 범위에서 아주 조금 아래로 */
+#cover-bottom-note {
+  bottom: calc(env(safe-area-inset-bottom, 0px) - clamp(25px, calc(var(--cover-vh, 1vh) * 2.8), 39px)) !important;
+}
+@media (max-height: 740px) {
+  #cover-bottom-note {
+    bottom: calc(env(safe-area-inset-bottom, 0px) - clamp(20px, calc(var(--cover-vh, 1vh) * 2.45), 32px)) !important;
   }
 }

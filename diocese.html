@@ -35,15 +35,15 @@
   --r:12px;
   /* ── 치수 변수 ── */
   --header-h:   70px;
-  --tab-h:      55px;
+  --tab-h:      52px;
   --tab-btn-h:  40px;
   --icon-size:  35px;
   --icon-r:     12px;
   --icon-fs:    15px;
   /* ── 글자 크기 변수 ── */
-  --fs-header:  22px;
+  --fs-header:  18px;
   --fs-tab:     15px;
-  --fs-sub:     10px;
+  --fs-sub:     12px;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html,body{height:100%;overflow:hidden;}
@@ -249,8 +249,8 @@ html.oai-dio-external-return *{transition:none!important;animation:none!importan
 /* 관구교구 헤더 아래 탭 버튼 표준화 + 글자 크기 조절(지도 제외) */
 :root{
   --diocese-font-scale:1;--dio-font-scale:1;--dio-effective-font-scale:calc(var(--dio-font-scale,1) * var(--ios-dio-font-scale,1));--diocese-effective-font-scale:calc(var(--diocese-font-scale,1) * var(--ios-dio-font-scale,1));}
-.tab-bar{height:55px!important;padding:8px 10px!important;gap:8px!important;background:#FFFBF2!important;border-top:0!important;border-bottom:1px solid #DDD5C8!important;align-items:center!important;}
-.tab{height:40px!important;border-radius:12px!important;font-size:calc(15px * var(--dio-effective-font-scale,1))!important;font-weight:800!important;background:#F8FAFC!important;color:#475569!important;border:1.5px solid #dde3ee!important;display:flex!important;align-items:center!important;justify-content:center!important;}
+.tab-bar{height:52px!important;padding:9px 14px!important;gap:8px!important;background:#FFFBF2!important;border-top:0!important;border-bottom:1px solid #DDD5C8!important;align-items:center!important;}
+.tab{height:40px!important;min-height:40px!important;max-height:40px!important;border-radius:14px!important;font-size:calc(15px * var(--dio-effective-font-scale,1))!important;font-weight:800!important;background:#F8FAFC!important;color:#475569!important;border:1.5px solid #dde3ee!important;display:flex!important;align-items:center!important;justify-content:center!important;}
 .tab.on{background:#1F2A44!important;color:#fff!important;border-color:#1F2A44!important;box-shadow:0 3px 10px rgba(31,42,68,.22)!important;}
 
 
@@ -308,8 +308,8 @@ html.oai-dio-returning #map-view.on,html.oai-dio-returning #list-view.on,html.oa
 <style id="oai-ios-ui-density-v22">
 /* iPhone 관구·교구 iframe 내부 UI 밀도 보정 */
 html.ios-device{--ios-dio-ui-scale:.96;}
-html.ios-device .tab-bar{height:46px!important;padding:7px 10px!important;gap:6px!important;align-items:center!important;}
-html.ios-device .tab{height:32px!important;min-height:32px!important;border-radius:10px!important;font-size:calc(14px * var(--dio-effective-font-scale,1))!important;line-height:1!important;}
+html.ios-device .tab-bar{height:52px!important;padding:9px 14px!important;gap:8px!important;align-items:center!important;}
+html.ios-device .tab{height:40px!important;min-height:40px!important;max-height:40px!important;border-radius:14px!important;font-size:calc(15px * var(--dio-effective-font-scale,1))!important;line-height:1.1!important;}
 html.ios-device #gw-bar{gap:6px!important;padding:7px 9px!important;}
 html.ios-device .gb{min-height:34px!important;padding:0 10px!important;border-radius:11px!important;}
 html.ios-device #card{width:170px!important;border-radius:13px!important;}
@@ -334,6 +334,31 @@ html.ios-device .cb{width:34px!important;height:34px!important;border-radius:10p
 .hd-icon::before{top:50%;width:3px;height:24px;transform:translate(-50%,-50%);}
 .hd-icon::after{top:42%;width:14px;height:3px;transform:translate(-50%,-50%);}
 </style>
+
+
+<style id="oai-diocese-website-ui-standard-V1-31">
+/* 관구·교구 내부 화면도 웹사이트 카드/탭 기준으로 맞춘다. */
+:root{
+  --header-h:70px;
+  --tab-h:52px;
+  --tab-btn-h:40px;
+  --fs-header:18px;
+  --fs-sub:12px;
+  --fs-tab:15px;
+}
+header{height:var(--header-h)!important;min-height:var(--header-h)!important;max-height:var(--header-h)!important;}
+.hd h1{font-size:calc(18px * var(--dio-effective-font-scale,1))!important;line-height:1.2!important;}
+.hd-sub{font-size:calc(12px * var(--dio-effective-font-scale,1))!important;line-height:1.2!important;}
+.tab-bar{height:52px!important;min-height:52px!important;max-height:52px!important;padding:9px 14px!important;gap:8px!important;box-sizing:border-box!important;}
+.tab{height:40px!important;min-height:40px!important;max-height:40px!important;border-radius:14px!important;font-size:calc(15px * var(--dio-effective-font-scale,1))!important;line-height:1.1!important;}
+#search-view .sl,#list-view .lv-bdg{font-size:calc(12px * var(--dio-effective-font-scale,1))!important;}
+#search-view .si-r-op,#list-view .lv-op{font-size:calc(11.5px * var(--dio-effective-font-scale,1))!important;}
+#search-view .sd,#list-view .lv-name{font-size:calc(17px * var(--dio-effective-font-scale,1))!important;line-height:1.38!important;}
+#search-view .sg,#list-view .lv-rg,#list-view .lv-det{font-size:calc(13px * var(--dio-effective-font-scale,1))!important;line-height:1.55!important;}
+#search-view .si-r-url,#list-view .lv-url{font-size:calc(12px * var(--dio-effective-font-scale,1))!important;}
+#search-view .si-r-arr,#list-view .lv-arr{font-size:15px!important;}
+</style>
+
 </head>
 <body>
 <header>
