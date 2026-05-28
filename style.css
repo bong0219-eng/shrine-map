@@ -5570,7 +5570,7 @@ html.retreat-mode #tab-btn-list.active #tab-list-lbl {
 }
 
 
-/* V1-54: 일반 인포카드 하단 여백만 조정
+/* V1-55: 일반 인포카드 하단 여백만 조정
    - 첫 번째 기준 화면처럼 카카오내비 버튼 아래에 적당한 아이보리 여백을 둔다.
    - 카드 전체 위치, 거리 영역, 주소, 버튼 기능은 건드리지 않는다. */
 #app #info-card {
@@ -5622,7 +5622,7 @@ html.retreat-mode #tab-btn-list.active #tab-list-lbl {
   font-weight: 800 !important;
 }
 
-/* V1-54: 일반 인포카드 하단 여백 최종 보정 - 큰 아이보리 공백 방지 */
+/* V1-55: 일반 인포카드 하단 여백 최종 보정 - 큰 아이보리 공백 방지 */
 #app #info-card::after,
 #info-card::after {
   display: none !important;
@@ -5637,7 +5637,7 @@ html.retreat-mode #tab-btn-list.active #tab-list-lbl {
 }
 
 
-/* V1-54: 요청 6항목 UI 미세 조정
+/* V1-55: 요청 6항목 UI 미세 조정
    1) 성당·성지·피정의집 일반 인포카드 장소명 확대
    2) 첫 진입 십자가는 index.html의 intro CSS에서 60% 확대
    3) 피정의집 지도 로딩 아이콘은 app.js에서 십자가로 통일
@@ -5653,7 +5653,7 @@ html.retreat-mode #tab-btn-list.active #tab-list-lbl {
   margin-left: 6px !important;
 }
 
-/* V1-54: 일반 인포카드 하단 위치 복구
+/* V1-55: 일반 인포카드 하단 위치 복구
    - env(safe-area-inset-bottom) 값을 더해 카드가 과하게 위로 뜨는 문제를 제거한다.
    - 카드 내부 구조/거리/주소/버튼은 유지하고, 일반 인포카드의 최종 bottom 기준만 0으로 복구한다. */
 #app #info-card.open {

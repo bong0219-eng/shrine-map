@@ -1496,7 +1496,7 @@ function openDioceseView(opts){
       if(!restore) try{ frame.contentWindow && frame.contentWindow.resetDioceseFirstPage && frame.contentWindow.resetDioceseFirstPage(); }catch(e){ console.warn("[가톨릭길동무]", e); }
       if(typeof dioceseLoaded==='function') dioceseLoaded();
     };
-    frame.src='diocese.html?v=V1-54';
+    frame.src='diocese.html?v=V1-55';
   }else if(!restore){
     try{ frame.contentWindow && frame.contentWindow.resetDioceseFirstPage && frame.contentWindow.resetDioceseFirstPage(); }catch(e){ console.warn("[가톨릭길동무]", e); }
   }
@@ -1893,7 +1893,7 @@ const _PARISH_DIOCESE_ASSETS={
 };
 const _PARISH_DIOCESE_LOAD_STATE={};
 const _PARISH_DIOCESE_LOAD_PROMISES={};
-const _PARISH_ASSET_VERSION='V1-54';
+const _PARISH_ASSET_VERSION='V1-55';
 function _getParishDioceseAsset(code){
   return _PARISH_DIOCESE_ASSETS[code] || null;
 }
@@ -2056,7 +2056,7 @@ function _ensureParishDataLoaded(){
 }
 _initParishDataFromGlobal();
 
-const _PRAYER_ASSET_VERSION='V1-54';
+const _PRAYER_ASSET_VERSION='V1-55';
 let _prayerModuleLoadPromise=null;
 function _isPrayerModuleReady(){
   return typeof window.initPrayerView === 'function' &&
@@ -2101,7 +2101,7 @@ try{ window.ensurePrayerModuleLoaded=ensurePrayerModuleLoaded; }catch(e){ consol
 let _RT_RAW = [];
 let _retreatRawLoaded = false;
 let _retreatDataLoadPromise = null;
-const _RETREAT_ASSET_VERSION='V1-54';
+const _RETREAT_ASSET_VERSION='V1-55';
 
 let RETREATS = [];
 function _buildRetreatList(raw){
@@ -2350,7 +2350,7 @@ const _TY={'A':'성지','B':'순례지','C':'순교 사적지'};
 
 let _shrineRawLoaded = false;
 let _shrineDataLoadPromise = null;
-const _SHRINE_ASSET_VERSION='V1-54';
+const _SHRINE_ASSET_VERSION='V1-55';
 let SHRINES = [];
 let JUKRIMGUL_IDX = -1;
 function _decodeShrineHomePage(hp){
@@ -3313,7 +3313,7 @@ function _setMapCenterByInfoCardStandard(pos){
 }
 
 function _centerCategoryMapOnLocation(lat, lng, source){
-  // V1-54: 성지·성당·피정의집 카테고리 첫 진입 시 황간 등 기본 중심이 먼저 보이지 않도록
+  // V1-55: 성지·성당·피정의집 카테고리 첫 진입 시 황간 등 기본 중심이 먼저 보이지 않도록
   // 현재 위치가 있으면 실제 현재 위치를 지도 중심에 둔다. 위치 실패 때만 기존 기본 중심을 유지한다.
   if(!_map || !lat || !lng || typeof _LL==='undefined') return false;
   if(!(_mode==='shrine' || _mode==='parish' || _mode==='retreat')) return false;
@@ -4233,7 +4233,7 @@ function _focusParishPointAround(lat, lng, opts){
         _map.setLevel(targetLevel);
       }
     }
-    // V1-54: 카테고리 첫 진입 직후에는 사용자의 현재 위치가 화면 중심에 오도록 유지한다.
+    // V1-55: 카테고리 첫 진입 직후에는 사용자의 현재 위치가 화면 중심에 오도록 유지한다.
     if(typeof _recentCategoryEntryCurrentCenter==='function' && _recentCategoryEntryCurrentCenter(2600) && !_curInfoItem && !_routeMode){
       _map.setCenter(pos);
       return true;
@@ -4910,7 +4910,7 @@ function _loadNearbyWithDist(lat,lng,items,getIdx,getColor,getLabel,opts){
 
   // 성당 첫 진입/내주변 목록은 정확한 도로거리 계산이 끝난 뒤에 표시한다.
   // 계산 전 직선거리 목록을 먼저 띄우지 않아 목록 순서가 바뀌는 느낌을 없앤다.
-  // V1-54: 비동기 결과가 늦게 도착해 다른 카테고리 목록을 덮지 않도록 요청 식별자를 확인한다.
+  // V1-55: 비동기 결과가 늦게 도착해 다른 카테고리 목록을 덮지 않도록 요청 식별자를 확인한다.
 
   const results=new Array(prelim.length).fill(null);
   let done=0;
