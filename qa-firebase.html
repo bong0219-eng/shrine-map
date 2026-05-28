@@ -830,6 +830,10 @@ window.addEventListener('popstate', function(){
   }
 });
 
+window.addEventListener('pagehide', function(){
+  oaiPrepareNoReturnEffectToApp();
+}, true);
+
 
 /* ═══════════════════ 초기화 ═══════════════════ */
 buildFilterBar();
@@ -840,10 +844,10 @@ showView('list-view', { historyMode:'replace' });
 subscribeList();
 </script>
 
-<script id="oai-cache-lifecycle-V1-25">
+<script id="oai-cache-lifecycle-V1-26">
 (function(){
   'use strict';
-  var APP_VERSION = 'V1-25';
+  var APP_VERSION = 'V1-26';
   if('serviceWorker' in navigator){
     try{ navigator.serviceWorker.register('./sw.js?v=' + encodeURIComponent(APP_VERSION)).then(function(reg){try{reg.update();}catch(e){}}).catch(function(){}); }catch(e){}
   }

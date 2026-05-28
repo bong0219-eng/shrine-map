@@ -6,6 +6,8 @@
 
 html.oai-stability-veil { background:#f5f0e8 !important; }
 html.oai-stability-veil *, html.oai-external-return-freeze * { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
+html.oai-internal-no-return-effect *, html.oai-internal-no-return-effect #cover > * { transition:none !important; animation:none !important; scroll-behavior:auto !important; }
+html.oai-internal-no-return-effect #cover > * { opacity:1 !important; visibility:visible !important; }
 html.oai-stability-veil::before { content:""; position:fixed; inset:0; z-index:2147483000; background:#f5f0e8; pointer-events:none; opacity:1; animation:oaiStabilityVeilIn .12s ease-out both; }
 html.oai-stability-veil.oai-stability-veil-releasing::before { animation:oaiStabilityVeilOut .18s ease-in both; }
 html.oai-stability-veil::after { content:""; position:fixed; left:50%; top:50%; width:28px; height:28px; margin:-14px 0 0 -14px; border-radius:50%; border:3px solid rgba(31,42,68,.16); border-top-color:#1f2a44; z-index:2147483001; pointer-events:none; animation:oaiStabilitySpin .75s linear infinite; }
@@ -200,8 +202,20 @@ html.oai-stability-veil::after { content:""; position:fixed; left:50%; top:50%; 
   var WIDTH_KEY = 'oai_cover_width_px_v48';
   var root = document.documentElement;
   var released = false;
+  var isInternalNoEffectReturn = false;
+  try{
+    isInternalNoEffectReturn = sessionStorage.getItem('oai_internal_return_no_effect_once') === '1';
+  }catch(_e){}
 
-  root.classList.add('oai-cover-booting');
+  if(!isInternalNoEffectReturn){
+    root.classList.add('oai-cover-booting');
+  }else{
+    root.classList.remove('oai-cover-booting');
+    root.classList.add('oai-internal-no-return-effect');
+    setTimeout(function(){
+      try{ root.classList.remove('oai-internal-no-return-effect'); }catch(_e){}
+    }, 420);
+  }
 
   function measureWidth(){ try{ return window.innerWidth || document.documentElement.clientWidth || 0; }catch(e){ return 0; } }
   function measure(){
@@ -336,7 +350,7 @@ window.APP_CONFIG = {
 <meta name="theme-color" content="#0e1535">
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#0e1535">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0e1535">
-<script id="oai-status-bar-theme-lock-V1-25">
+<script id="oai-status-bar-theme-lock-V1-26">
 (function(){
   'use strict';
   var COLOR='#0e1535';
@@ -352,28 +366,28 @@ window.APP_CONFIG = {
   window.addEventListener('focus', lockStatusTheme, {passive:true});
 })();
 </script>
-<link rel="manifest" href="manifest.json?v=V1-25">
-<link rel="apple-touch-icon" href="icon-192x192.png?v=V1-25">
+<link rel="manifest" href="manifest.json?v=V1-26">
+<link rel="apple-touch-icon" href="icon-192x192.png?v=V1-26">
 <meta name="format-detection" content="telephone=no">
 <meta name="description" content="가톨릭길동무 - 가톨릭 신앙생활 종합 앱">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="가톨릭길동무">
 <meta property="og:title" content="가톨릭길동무">
 <meta property="og:description" content="성지 · 성당 · 기도문 · 순례길 · 가톨릭 웹사이트 안내">
-<meta property="og:image" content="icon-512x512.png?v=V1-25">
+<meta property="og:image" content="icon-512x512.png?v=V1-26">
 <meta property="og:image:width" content="512">
 <meta property="og:image:height" content="512">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="가톨릭길동무">
 <meta name="twitter:description" content="성지 · 성당 · 기도문 · 순례길 · 가톨릭 웹사이트 안내">
-<meta name="twitter:image" content="icon-512x512.png?v=V1-25">
+<meta name="twitter:image" content="icon-512x512.png?v=V1-26">
 <title>가톨릭길동무</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Crect width=%2232%22 height=%2232%22 fill=%22%230e1535%22/%3E%3Ctext x=%226%22 y=%2226%22 font-size=%2224%22 fill=%22%23d4aa6a%22%3E%E2%9C%9D%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style id="oai-initial-bg">html,body{margin:0;width:100%;height:100%;min-height:100%;background:#0e1535;overflow:hidden;color-scheme:light;}#cover{background:#0e1535;min-height:100%;}#app{background:#f8f6f2;display:none;}</style>
-<link rel="stylesheet" href="style.css?v=V1-25">
+<link rel="stylesheet" href="style.css?v=V1-26">
 </head>
 <body>
 <div id="missa-view" role="dialog" aria-modal="true" aria-label="매일미사">
@@ -444,7 +458,7 @@ window.APP_CONFIG = {
   </div>
 </div>
 <div id="cover">
-<div id="oai-build-marker" aria-label="현재 버전" role="status" hidden aria-hidden="true">V1-25</div>
+<div id="oai-build-marker" aria-label="현재 버전" role="status" hidden aria-hidden="true">V1-26</div>
   <div id="cv-pull-modern" aria-hidden="true">
   <div class="cv-pull-ring">
     <svg viewBox="0 0 24 24" class="cv-pull-icon">
@@ -510,8 +524,8 @@ window.APP_CONFIG = {
       <div id="cover-action-row" class="cover-action-single">
         <div id="cover-update-box">
           <button id="cover-update-btn" class="cover-refresh-main-btn" type="button"
-                  data-target-version="V1-25"
-                  aria-label="V1-25 앱 새로고침"><span class="refresh-version-main">V1</span><span class="refresh-version-sub">-24</span> 새로고침</button>
+                  data-target-version="V1-26"
+                  aria-label="V1-26 앱 새로고침"><span class="refresh-version-main">V1</span><span class="refresh-version-sub">-26</span> 새로고침</button>
           <div id="cover-update-hint" role="status" aria-live="polite"></div>
         </div>
       </div>
@@ -621,9 +635,9 @@ window.APP_CONFIG = {
   </div>
 </div>
 
-<script src="constants.js?v=V1-25"></script>
-<script src="core.js?v=V1-25"></script>
-<script src="app.js?v=V1-25"></script>
+<script src="constants.js?v=V1-26"></script>
+<script src="core.js?v=V1-26"></script>
+<script src="app.js?v=V1-26"></script>
 <div id="oai-category-entry-veil" aria-hidden="true"></div>
 <div id="app"><div id="tabbar"><button id="tab-btn-nearby" class="tab-btn" data-tab="nearby"><span class="tab-icon">📍</span><span id="tab-nearby-lbl">내주변</span></button><button id="tab-btn-list" class="tab-btn" data-tab="list"><span class="tab-icon">📋</span><span id="tab-list-lbl">목록</span></button><button id="tab-btn-region" class="tab-btn" data-tab="region"><span class="tab-icon">🔍</span>지역검색
     </button><button id="tab-btn-route" class="tab-btn" data-tab="route"><span class="tab-icon">🧭</span>길찾기
@@ -699,13 +713,13 @@ window.APP_CONFIG = {
     </div>
   </div>
 </div>
-<script src="web.js?v=V1-25"></script>
+<script src="web.js?v=V1-26"></script>
 
 <div id="qna-view" role="dialog" aria-modal="true" aria-label="문의·건의" class="module-view"><div class="module-bar qna"><div class="module-bar-main"><div class="module-bar-ico">✝</div><div class="module-bar-txt"><div class="module-bar-title">문의·건의</div><div class="module-bar-sub">질문, 오류, 수정요청을 남겨주세요</div></div></div><button id="qna-close-btn" class="module-close" aria-label="문의·건의 닫기">×</button></div><div class="qna-body"><div class="qna-tabs"><button id="qna-tab-write" class="qna-tab on" type="button">작성</button></div><div class="qna-list" id="qna-list"></div></div></div>
 
-<script src="patches.js?v=V1-25"></script>
+<script src="patches.js?v=V1-26"></script>
 
-<script src="sw-update.js?v=V1-25"></script>
+<script src="sw-update.js?v=V1-26"></script>
 
 </body>
 </html>
