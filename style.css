@@ -1956,7 +1956,8 @@ html.retreat-mode .ric-hd { background: linear-gradient(135deg, #3F6F5A, #4F846C
   border: 1px solid #ddd5c8;
   border-left-width: 4px;
   border-radius: 11px;
-  padding: 12px 13px;
+  min-height: 66px;
+  padding: 14px 13px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -4967,12 +4968,12 @@ body.gp-info-page #privacy-back-app-link {
 }
 
 
-/* V1-31: Android 209 위치 안정화 1단계 CSS 정리
+/* V1-33: Android 209 위치 안정화 1단계 CSS 정리
    - 커버 하단/새로고침/인포카드/순례길 카드의 누적 보정 블록을 한곳으로 통합한다.
    - 기능, 지도, 위치, 뒤로가기 로직은 건드리지 않는다. */
 
-/* 성지 화면 안에 CBCK 참고 출처 문구를 작게 표시 */
-.shrine-source-note {
+/* 성지·성당·피정의집 화면 안에 정보 출처 문구를 같은 위치에 표시 */
+.category-source-note {
   display: none;
   flex-shrink: 0;
   padding: 6px 12px 7px;
@@ -4985,12 +4986,10 @@ body.gp-info-page #privacy-back-app-link {
   letter-spacing: -.02em;
   text-align: center;
 }
-html.app-active:not(.parish-mode):not(.retreat-mode) .shrine-source-note {
+html.app-active:not(.parish-mode):not(.retreat-mode) .source-note-shrine,
+html.app-active.parish-mode .source-note-parish,
+html.app-active.retreat-mode .source-note-retreat {
   display: block;
-}
-html.parish-mode .shrine-source-note,
-html.retreat-mode .shrine-source-note {
-  display: none !important;
 }
 
 /* 피정의집 모드 상단 탭 긴 문구 잘림 방지 */
@@ -5176,7 +5175,7 @@ html.retreat-mode #tab-btn-list.active #tab-list-lbl {
 }
 
 
-/* V1-31: 웹사이트 기준 UI 통일 및 하단 위치 미세 조정
+/* V1-33: 웹사이트 기준 UI 통일 및 하단 위치 미세 조정
    - Android/위치/지도/뒤로가기/종료 로직은 건드리지 않고 웹앱 CSS만 정리한다.
    - 웹사이트 화면을 기준으로 주요기도문·문의·순례길·관구교구의 헤더/탭/카드 글자 크기를 맞춘다. */
 :root {
@@ -5291,16 +5290,23 @@ html.retreat-mode #tab-btn-list.active #tab-list-lbl {
 
 /* 성지/성당/피정의집 지도: 내 위치 버튼과 성지 범례를 하단 네비게이션바 높이만큼 아래로 조정 */
 #loc-btn,
-#legend {
+#legend,
+#trail-loc-btn,
+.trail-loc-btn {
   bottom: calc(18px + env(safe-area-inset-bottom, 0px) - var(--oai-android-nav-nudge)) !important;
+}
+
+/* 성당/성지/피정의집 길찾기 시트: 카카오내비 버튼이 하단부에 더 가깝게 오도록 시트 전체를 아래로 조정 */
+#sheet-route {
+  bottom: calc(-1 * var(--oai-android-nav-nudge)) !important;
 }
 
 /* 커버 하단 문구: 잘리지 않는 범위에서 아주 조금 아래로 */
 #cover-bottom-note {
-  bottom: calc(env(safe-area-inset-bottom, 0px) - clamp(25px, calc(var(--cover-vh, 1vh) * 2.8), 39px)) !important;
+  bottom: calc(env(safe-area-inset-bottom, 0px) - clamp(28px, calc(var(--cover-vh, 1vh) * 3.05), 43px)) !important;
 }
 @media (max-height: 740px) {
   #cover-bottom-note {
-    bottom: calc(env(safe-area-inset-bottom, 0px) - clamp(20px, calc(var(--cover-vh, 1vh) * 2.45), 32px)) !important;
+    bottom: calc(env(safe-area-inset-bottom, 0px) - clamp(22px, calc(var(--cover-vh, 1vh) * 2.65), 35px)) !important;
   }
 }
