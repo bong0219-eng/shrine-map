@@ -92,13 +92,27 @@
     cursor: pointer; box-shadow: none; -webkit-tap-highlight-color: transparent;
   }
   #write-btn {
-    position: fixed; right: 18px;
-    bottom: calc(22px + env(safe-area-inset-bottom,0px));
-    z-index: 300; height: 52px; min-height: 52px; padding: 0 18px;
-    border-radius: 999px; background: #1f2a44; border: 1px solid rgba(212,170,106,.55);
-    color: #fff; font-family: 'Noto Sans KR', sans-serif;
-    font-size: 15px; font-weight: 800; line-height: 1; cursor: pointer;
-    box-shadow: 0 10px 24px rgba(15,23,42,.24);
+    position: fixed;
+    right: 12px;
+    bottom: calc(18px + env(safe-area-inset-bottom,0px) - 32px);
+    z-index: 300;
+    height: 36px;
+    min-height: 36px;
+    padding: 0 12px;
+    border-radius: 18px;
+    background: #fff;
+    border: none;
+    color: #1565c0;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
   }
   #write-btn:active { transform: scale(.97); }
 
@@ -845,10 +859,10 @@ showView('list-view', { historyMode:'replace' });
 subscribeList();
 </script>
 
-<script id="oai-cache-lifecycle-V1-33">
+<script id="oai-cache-lifecycle-V1-34">
 (function(){
   'use strict';
-  var APP_VERSION = 'V1-33';
+  var APP_VERSION = 'V1-34';
   if('serviceWorker' in navigator){
     try{ navigator.serviceWorker.register('./sw.js?v=' + encodeURIComponent(APP_VERSION)).then(function(reg){try{reg.update();}catch(e){}}).catch(function(){}); }catch(e){}
   }
