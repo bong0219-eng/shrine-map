@@ -5534,7 +5534,7 @@ html.retreat-mode #tab-btn-list.active #tab-list-lbl {
 }
 
 
-/* V1-64: 일반 인포카드 하단 기준 정리
+/* V1-65: 일반 인포카드 하단 기준 정리
    - 카카오내비 아래 여백 기준과 하단 마감 규칙을 한 곳으로 모은다.
    - 카드 내부 정보 구조, 거리 표시, 버튼 기능은 변경하지 않는다. */
 #app #info-card {
@@ -5592,7 +5592,7 @@ html.ios-device #app #info-card.open {
   font-weight: 800 !important;
 }
 
-/* V1-64: 요청 6항목 UI 미세 조정
+/* V1-65: 요청 6항목 UI 미세 조정
    1) 성당·성지·피정의집 일반 인포카드 장소명 확대
    2) 첫 진입 십자가는 index.html의 intro CSS에서 60% 확대
    3) 피정의집 지도 로딩 아이콘은 app.js에서 십자가로 통일
@@ -5608,7 +5608,7 @@ html.ios-device #app #info-card.open {
   margin-left: 6px !important;
 }
 
-/* V1-64: 글자 크기 연동 범위 정리
+/* V1-65: 글자 크기 연동 범위 정리
    - 커버 핵심 4문구는 줄바꿈 방지를 위해 A 글자 크기와 분리한다.
    - 헤더/탭/구조 버튼은 고정한다.
    - 커버 카테고리 박스는 A 글자 크기와 연결하되 박스 안에서만 커지도록 제한한다. */

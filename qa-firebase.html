@@ -348,13 +348,13 @@
 
 
 
-  /* V1-64: 문의/글쓰기 상단은 헤더의 상태바 여백만 사용하고 본문은 기본 여백으로 복귀 */
+  /* V1-65: 문의/글쓰기 상단은 헤더의 상태바 여백만 사용하고 본문은 기본 여백으로 복귀 */
   #write-view{
     padding-top:16px!important;
   }
 
 
-  /* V1-64: 문의·건의 UI 미세 조정 */
+  /* V1-65: 문의·건의 UI 미세 조정 */
   #write-btn {
     height: 40px !important;
     min-height: 40px !important;
@@ -916,10 +916,10 @@ showView('list-view', { historyMode:'replace' });
 subscribeList();
 </script>
 
-<script id="oai-cache-lifecycle-V1-64">
+<script id="oai-cache-lifecycle-V1-65">
 (function(){
   'use strict';
-  var APP_VERSION = 'V1-64';
+  var APP_VERSION = 'V1-65';
   if('serviceWorker' in navigator){
     try{ navigator.serviceWorker.register('./sw.js?v=' + encodeURIComponent(APP_VERSION)).then(function(reg){try{reg.update();}catch(e){}}).catch(function(){}); }catch(e){}
   }
