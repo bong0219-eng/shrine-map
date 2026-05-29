@@ -1833,22 +1833,6 @@ html.retreat-mode .ric-hd { background: linear-gradient(135deg, #3F6F5A, #4F846C
   pointer-events: none;
   box-sizing: border-box;
 }
-#diocese-loading .missa-spinner {
-  width: 44px;
-  height: 44px;
-  margin: 0 auto 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--gold, #d4aa6a);
-  font-size: 36px;
-  font-weight: 900;
-  line-height: 1;
-  animation: spin 2s linear infinite;
-}
-#diocese-loading .missa-spinner::before { content: '✝'; }
-#diocese-loading .missa-loading-txt { color: rgba(31,42,68,.72); font-size: 13px; font-weight: 700; }
-
 #diocese-frame { flex: 1 1 auto; min-height: 0; width: 100%; border: 0; background: #f8f6f2; }
 
 #prayer-view {
@@ -2629,22 +2613,16 @@ html.oai-category-dissolve.oai-category-dissolving #oai-category-entry-veil {
   transition: opacity var(--oai-category-enter-ms) ease-out;
 }
 #oai-category-entry-veil::after {
-  content: '✝';
-  width: 44px;
-  height: 44px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--gold, #d4aa6a);
-  font-size: 36px;
-  font-weight: 900;
-  line-height: 1;
-  text-shadow: 0 2px 8px rgba(120,80,20,.18);
-  animation: oaiCategoryVeilSpin 2s linear infinite;
+  content: '';
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  border: 3px solid rgba(255,255,255,.28);
+  border-top-color: #d4aa6a;
+  animation: oaiCategoryVeilSpin .8s linear infinite;
 }
 #oai-category-entry-veil.soft::after { display: none; }
 #oai-category-entry-veil.parish::after,
-#oai-category-entry-veil.retreat::after { color: var(--gold, #d4aa6a); }
+#oai-category-entry-veil.retreat::after { border-color: rgba(31,42,68,.18); border-top-color: #1f2a44; }
 @keyframes oaiCategoryVeilSpin { to { transform: rotate(360deg); } }
 html.oai-category-entering .sheet.open { z-index: 810; }
 html.oai-category-entering #tabbar { z-index: 950; }
@@ -2663,7 +2641,7 @@ html.oai-stability-veil { background: #f5f0e8 !important; }
 html.oai-stability-veil *, html.oai-external-return-freeze * { transition: none; animation: none; scroll-behavior: auto; }
 html.oai-stability-veil::before { content: ""; position: fixed; inset: 0; z-index: 2147483000; background: #f5f0e8; pointer-events: none; opacity: 1; animation: oaiStabilityVeilIn .12s ease-out both; }
 html.oai-stability-veil.oai-stability-veil-releasing::before { animation: oaiStabilityVeilOut .18s ease-in both; }
-html.oai-stability-veil::after { content: "✝"; position: fixed; left: 50%; top: 50%; width: 42px; height: 42px; margin: -21px 0 0 -21px; z-index: 2147483001; pointer-events: none; display: flex; align-items: center; justify-content: center; color: var(--gold, #d4aa6a); font-size: 36px; font-weight: 900; line-height: 1; text-shadow: 0 2px 8px rgba(120,80,20,.18); animation: oaiStabilitySpin 2s linear infinite; }
+html.oai-stability-veil::after { content: ""; position: fixed; left: 50%; top: 50%; width: 28px; height: 28px; margin: -14px 0 0 -14px; border-radius: 50%; border: 3px solid rgba(31,42,68,.16); border-top-color: #1f2a44; z-index: 2147483001; pointer-events: none; animation: oaiStabilitySpin .75s linear infinite; }
 @keyframes oaiStabilityVeilIn { from { opacity: 0; } to { opacity: 1; } }
 @keyframes oaiStabilityVeilOut { from { opacity: 1; } to { opacity: 0; } }
 @keyframes oaiStabilitySpin { to { transform: rotate(360deg); } }
@@ -5592,9 +5570,7 @@ html.retreat-mode #tab-btn-list.active #tab-list-lbl {
 }
 
 
-/* V1-57: 일반 인포카드 하단 여백만 조정
-   - 첫 번째 기준 화면처럼 카카오내비 버튼 아래에 적당한 아이보리 여백을 둔다.
-   - 카드 전체 위치, 거리 영역, 주소, 버튼 기능은 건드리지 않는다. */
+/* V1-52: 일반 인포카드 하단 여백 재정리 + 길찾기 결과 카드 글자 축소 + 전화 외 이모지 제거 후 버튼 정렬 */
 #app #info-card {
   background: linear-gradient(180deg, #fffdf9 0%, #f9f2e9 78%, #f6efe6 100%) !important;
 }
@@ -5611,7 +5587,7 @@ html.retreat-mode #tab-btn-list.active #tab-list-lbl {
   display: none !important;
 }
 #app #info-card .ic-body {
-  padding-bottom: 22px !important;
+  padding-bottom: 5px !important;
 }
 #app #info-card .ic-btn-row,
 #app #info-card .ic-links {
@@ -5644,7 +5620,7 @@ html.retreat-mode #tab-btn-list.active #tab-list-lbl {
   font-weight: 800 !important;
 }
 
-/* V1-57: 일반 인포카드 하단 여백 최종 보정 - 큰 아이보리 공백 방지 */
+/* V1-52: 일반 인포카드 하단 여백 최종 보정 - 큰 아이보리 공백 방지 */
 #app #info-card::after,
 #info-card::after {
   display: none !important;
@@ -5659,7 +5635,7 @@ html.retreat-mode #tab-btn-list.active #tab-list-lbl {
 }
 
 
-/* V1-57: 요청 6항목 UI 미세 조정
+/* V1-52: 요청 6항목 UI 미세 조정
    1) 성당·성지·피정의집 일반 인포카드 장소명 확대
    2) 첫 진입 십자가는 index.html의 intro CSS에서 60% 확대
    3) 피정의집 지도 로딩 아이콘은 app.js에서 십자가로 통일
@@ -5675,7 +5651,7 @@ html.retreat-mode #tab-btn-list.active #tab-list-lbl {
   margin-left: 6px !important;
 }
 
-/* V1-57: 일반 인포카드 하단 위치 복구
+/* V1-52: 일반 인포카드 하단 위치 복구
    - env(safe-area-inset-bottom) 값을 더해 카드가 과하게 위로 뜨는 문제를 제거한다.
    - 카드 내부 구조/거리/주소/버튼은 유지하고, 일반 인포카드의 최종 bottom 기준만 0으로 복구한다. */
 #app #info-card.open {
