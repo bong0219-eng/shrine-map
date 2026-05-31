@@ -818,7 +818,7 @@
   window.__APP_FONT_SCALE_GUARD__=true;
   // V3-S: 커버 글자 크기 조절은 prayer.js에 의존하지 않는 공통 함수가 담당한다.
   // prayer.js는 기도문 화면이 열렸을 때 같은 localStorage 값을 읽어 자체 UI를 맞춘다.
-  var QA_URL="qa-firebase.html?v=V1-12";
+  var QA_URL="qa-firebase.html?v=V1-14";
   var FONT_KEY='prayer_font_size';
   var BASE=16;
   var FONT_SIZES=[13,14,15,16,17,18,19,20,21,22,24,26,28,30];
@@ -1058,7 +1058,7 @@
   window.addEventListener('load', init);
   window.addEventListener('pageshow', init);
 })();
-/* V1-123: 사용처가 없는 정밀 보정 잔여 블록(__APP_PRECISE_GUARD__) 제거.
+/* V1-143: 사용처가 없는 정밀 보정 잔여 블록(__APP_PRECISE_GUARD__) 제거.
    경로 복귀 안정화는 위의 __APP_BACK_ROUTE_GUARD__에서 계속 담당한다. */
 (function(){
   'use strict';
