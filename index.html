@@ -2,7 +2,7 @@
 <html lang="ko" class="oai-font-global" style="background:#f5f0e8;">
 <head>
 <style id="oai-first-entry-bg">html,body{margin:0;width:100%;min-height:100%;background:#f5f0e8;color-scheme:light;}body{background:#f5f0e8;}</style>
-<link rel="preload" href="intro-cross-jesus.jpg?v=V1-79" as="image" fetchpriority="high">
+<link rel="preload" href="intro-cross-jesus.jpg?v=V1-1" as="image" fetchpriority="high">
 
 <style id="oai-android-update-gate-style">
 html.oai-android-update-required,
@@ -132,29 +132,38 @@ html.oai-first-entry-intro::after {
   left:50%;
   top:50%;
   z-index:2147483401;
-  width:min(88vw, 540px);
-  height:min(88vh, 760px);
+  width:min(78vw, 470px);
+  height:min(78vh, 660px);
   transform:translate(-50%,-50%) scale(.985);
-  background-image:url("intro-cross-jesus.jpg?v=V1-79");
-  background-position:center;
-  background-size:auto 104%;
-  background-repeat:no-repeat;
+  background-image:
+    radial-gradient(ellipse 82% 86% at 50% 46%, rgba(245,240,232,0) 56%, rgba(245,240,232,.08) 64%, rgba(245,240,232,.30) 76%, rgba(245,240,232,.72) 88%, rgba(245,240,232,.98) 100%),
+    linear-gradient(to bottom, rgba(245,240,232,.10), rgba(245,240,232,.04)),
+    url("intro-cross-jesus.jpg?v=V1-1");
+  background-position:center center, center center, center center;
+  background-size:100% 100%, 100% 100%, auto 96%;
+  background-repeat:no-repeat, no-repeat, no-repeat;
   pointer-events:none;
   opacity:0;
-  border-radius:28px;
+  border-radius:36px;
   background-color:#f5f0e8;
-  box-shadow:0 0 0 999px #f5f0e8, 0 12px 28px rgba(80,54,18,.08);
-  filter:drop-shadow(0 10px 24px rgba(80,54,18,.08));
+  box-shadow:
+    0 0 0 999px #f5f0e8,
+    0 8px 18px rgba(80,54,18,.05),
+    inset 0 0 54px rgba(245,240,232,.20),
+    inset 0 0 110px rgba(245,240,232,.12);
+  -webkit-mask-image:radial-gradient(ellipse 84% 88% at 50% 46%, #000 58%, rgba(0,0,0,.96) 67%, rgba(0,0,0,.78) 78%, rgba(0,0,0,.42) 89%, rgba(0,0,0,.12) 96%, transparent 100%);
+  mask-image:radial-gradient(ellipse 84% 88% at 50% 46%, #000 58%, rgba(0,0,0,.96) 67%, rgba(0,0,0,.78) 78%, rgba(0,0,0,.42) 89%, rgba(0,0,0,.12) 96%, transparent 100%);
+  filter:contrast(1.015) saturate(1.02) drop-shadow(0 6px 16px rgba(80,54,18,.05));
   animation:oaiJesusIntroPhoto 2.85s cubic-bezier(.18,.76,.22,1) both;
 }
 html.oai-cover-first-reveal #cover > * {
   animation:oaiCoverFirstReveal .72s ease-out both !important;
 }
 @keyframes oaiJesusIntroPhoto {
-  0%{opacity:0; transform:translate(-50%,-49%) scale(.96);}
+  0%{opacity:0; transform:translate(-50%,-49%) scale(.97);}
   34%{opacity:1; transform:translate(-50%,-50%) scale(1);}
   62%{opacity:1; transform:translate(-50%,-50%) scale(1);}
-  100%{opacity:0; transform:translate(-50%,-51%) scale(1.012);}
+  100%{opacity:0; transform:translate(-50%,-51%) scale(1.006);}
 }
 @keyframes oaiCoverFirstReveal {
   0%{opacity:0; transform:translateY(6px) scale(.99);}
@@ -548,7 +557,7 @@ window.APP_CONFIG = {
 <meta name="theme-color" content="#0e1535">
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#0e1535">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0e1535">
-<script id="oai-status-bar-theme-lock-V1-79">
+<script id="oai-status-bar-theme-lock-V1-1">
 (function(){
   'use strict';
   var COLOR='#0e1535';
@@ -564,33 +573,33 @@ window.APP_CONFIG = {
   window.addEventListener('focus', lockStatusTheme, {passive:true});
 })();
 </script>
-<link rel="manifest" href="manifest.json?v=V1-79">
-<link rel="apple-touch-icon" href="icon-192x192.png?v=V1-79">
+<link rel="manifest" href="manifest.json?v=V1-1">
+<link rel="apple-touch-icon" href="icon-192x192.png?v=V1-1">
 <meta name="format-detection" content="telephone=no">
 <meta name="description" content="가톨릭길동무 - 가톨릭 신앙생활 종합 앱">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="가톨릭길동무">
 <meta property="og:title" content="가톨릭길동무">
 <meta property="og:description" content="성지 · 성당 · 기도문 · 순례길 · 가톨릭 웹사이트 안내">
-<meta property="og:image" content="icon-512x512.png?v=V1-79">
+<meta property="og:image" content="icon-512x512.png?v=V1-1">
 <meta property="og:image:width" content="512">
 <meta property="og:image:height" content="512">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="가톨릭길동무">
 <meta name="twitter:description" content="성지 · 성당 · 기도문 · 순례길 · 가톨릭 웹사이트 안내">
-<meta name="twitter:image" content="icon-512x512.png?v=V1-79">
+<meta name="twitter:image" content="icon-512x512.png?v=V1-1">
 <title>가톨릭길동무</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Crect width=%2232%22 height=%2232%22 fill=%22%230e1535%22/%3E%3Ctext x=%226%22 y=%2226%22 font-size=%2224%22 fill=%22%23d4aa6a%22%3E%E2%9C%9D%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style id="oai-initial-bg">html,body{margin:0;width:100%;height:100%;min-height:100%;background:#f5f0e8;overflow:hidden;color-scheme:light;}#cover{background:#f5f0e8;min-height:100%;}#app{background:#f8f6f2;display:none;}</style>
-<link rel="stylesheet" href="style.css?v=V1-79">
+<link rel="stylesheet" href="style.css?v=V1-1">
 
 <script id="oai-android-update-gate-script">
 (function(){
   'use strict';
-  var MIN_ANDROID_VERSION = 232;
+  var MIN_ANDROID_VERSION = 233;
   var PACKAGE_NAME = 'kr.catholic.gildonmu';
 
   function getAndroidVersion(){
@@ -724,7 +733,7 @@ window.APP_CONFIG = {
   </div>
 </div>
 <div id="cover">
-<div id="oai-build-marker" aria-label="현재 버전" role="status" hidden aria-hidden="true">V1-79</div>
+<div id="oai-build-marker" aria-label="현재 버전" role="status" hidden aria-hidden="true">V1-1</div>
   <div id="cv-pull-modern" aria-hidden="true">
   <div class="cv-pull-ring">
     <svg viewBox="0 0 24 24" class="cv-pull-icon">
@@ -790,8 +799,8 @@ window.APP_CONFIG = {
       <div id="cover-action-row" class="cover-action-single">
         <div id="cover-update-box">
           <button id="cover-update-btn" class="cover-refresh-main-btn" type="button"
-                  data-target-version="V1-79"
-                  aria-label="V1-79 앱 새로고침"><span class="refresh-version-main">V1</span><span class="refresh-version-sub">-68</span> 새로고침</button>
+                  data-target-version="V1-1"
+                  aria-label="V1-1 앱 새로고침"><span class="refresh-version-main">V1</span><span class="refresh-version-sub">-68</span> 새로고침</button>
           <div id="cover-update-hint" role="status" aria-live="polite"></div>
         </div>
       </div>
@@ -889,7 +898,7 @@ window.APP_CONFIG = {
         <span class="cover-menu-icon">📘</span>
         <span class="cover-menu-text">주요기능</span>
       </button>
-      <a id="cover-menu-privacy-link" class="cover-menu-item" href="privacy.html?v=V1-79">
+      <a id="cover-menu-privacy-link" class="cover-menu-item" href="privacy.html?v=V1-1">
         <span class="cover-menu-icon">🛡</span>
         <span class="cover-menu-text">개인정보처리방침</span>
       </a>
@@ -901,9 +910,9 @@ window.APP_CONFIG = {
   </div>
 </div>
 
-<script src="constants.js?v=V1-79"></script>
-<script src="core.js?v=V1-79"></script>
-<script src="app.js?v=V1-79"></script>
+<script src="constants.js?v=V1-1"></script>
+<script src="core.js?v=V1-1"></script>
+<script src="app.js?v=V1-1"></script>
 <div id="oai-category-entry-veil" aria-hidden="true"></div>
 <div id="app"><div id="tabbar"><button id="tab-btn-nearby" class="tab-btn" data-tab="nearby"><span class="tab-icon">📍</span><span id="tab-nearby-lbl">내주변</span></button><button id="tab-btn-list" class="tab-btn" data-tab="list"><span class="tab-icon">📋</span><span id="tab-list-lbl">목록</span></button><button id="tab-btn-region" class="tab-btn" data-tab="region"><span class="tab-icon">🔍</span>지역검색
     </button><button id="tab-btn-route" class="tab-btn" data-tab="route"><span class="tab-icon">🧭</span>길찾기
@@ -979,13 +988,13 @@ window.APP_CONFIG = {
     </div>
   </div>
 </div>
-<script src="web.js?v=V1-79"></script>
+<script src="web.js?v=V1-1"></script>
 
 <div id="qna-view" role="dialog" aria-modal="true" aria-label="문의·건의" class="module-view"><div class="module-bar qna"><div class="module-bar-main"><div class="module-bar-ico">✝</div><div class="module-bar-txt"><div class="module-bar-title">문의·건의</div><div class="module-bar-sub">질문, 오류, 수정요청을 남겨주세요</div></div></div><button id="qna-close-btn" class="module-close" aria-label="문의·건의 닫기">×</button></div><div class="qna-body"><div class="qna-tabs"><button id="qna-tab-write" class="qna-tab on" type="button">작성</button></div><div class="qna-list" id="qna-list"></div></div></div>
 
-<script src="patches.js?v=V1-79"></script>
+<script src="patches.js?v=V1-1"></script>
 
-<script src="sw-update.js?v=V1-79"></script>
+<script src="sw-update.js?v=V1-1"></script>
 
 </body>
 </html>
