@@ -339,7 +339,7 @@
   #qna-cross-icon::before{ top:50%; width:3px; height:24px; transform:translate(-50%,-50%); }
   #qna-cross-icon::after{ top:42%; width:14px; height:3px; transform:translate(-50%,-50%); }
 
-  /* V1-93 qna no return effect */
+  /* V1-103 qna no return effect */
   html.returning-to-cover *,
   body.returning-to-cover * {
     transition: none !important;
@@ -348,13 +348,13 @@
 
 
 
-  /* V1-93: 문의/글쓰기 상단은 헤더의 상태바 여백만 사용하고 본문은 기본 여백으로 복귀 */
+  /* V1-103: 문의/글쓰기 상단은 헤더의 상태바 여백만 사용하고 본문은 기본 여백으로 복귀 */
   #write-view{
     padding-top:16px!important;
   }
 
 
-  /* V1-93: 문의·건의 UI 미세 조정 */
+  /* V1-103: 문의·건의 UI 미세 조정 */
   #write-btn {
     height: 40px !important;
     min-height: 40px !important;
@@ -493,7 +493,7 @@ const COL = db.collection("qa_posts");
 
 /* ─── 상수 ─── */
 const CATEGORIES  = ["문의","수정제안","개선건의","칭찬"];
-const QA_LIST_LIMIT = 30; // V1-93: 처음 30개를 빠르게 표시하고, 더보기로 이전 글을 30개씩 추가한다.
+const QA_LIST_LIMIT = 30; // V1-103: 처음 30개를 빠르게 표시하고, 더보기로 이전 글을 30개씩 추가한다.
 const ANON_NAMES  = ["익명의 순례자","익명의 신자","익명의 교우"];
 const FILTERS     = ["전체", ...CATEGORIES];
 
@@ -916,10 +916,10 @@ showView('list-view', { historyMode:'replace' });
 subscribeList();
 </script>
 
-<script id="oai-cache-lifecycle-V1-93">
+<script id="oai-cache-lifecycle-V1-103">
 (function(){
   'use strict';
-  var APP_VERSION = 'V1-93';
+  var APP_VERSION = 'V1-103';
   if('serviceWorker' in navigator){
     try{ navigator.serviceWorker.register('./sw.js?v=' + encodeURIComponent(APP_VERSION)).then(function(reg){try{reg.update();}catch(e){}}).catch(function(){}); }catch(e){}
   }
