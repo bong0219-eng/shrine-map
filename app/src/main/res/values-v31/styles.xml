@@ -1,0 +1,8 @@
+<resources>
+    <style name="AppTheme.Launcher" parent="@style/AppTheme">
+        <item name="android:windowBackground">@color/splash_ivory</item>
+        <item name="android:windowSplashScreenBackground">@color/splash_ivory</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/splash_empty</item>
+        <item name="android:windowSplashScreenIconBackgroundColor">@color/splash_ivory</item>
+    </style>
+</resources>

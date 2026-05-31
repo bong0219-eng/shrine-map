@@ -1,0 +1,20 @@
+<resources>
+    <style name="AppTheme" parent="android:style/Theme.Material.Light.NoActionBar">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:windowTranslucentStatus">false</item>
+        <item name="android:windowTranslucentNavigation">false</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar">false</item>
+        <item name="android:statusBarColor">@color/shell_system_bar</item>
+        <item name="android:navigationBarColor">@color/shell_system_bar</item>
+        <item name="android:windowBackground">@color/shell_system_bar</item>
+        <item name="android:enforceStatusBarContrast">false</item>
+        <item name="android:enforceNavigationBarContrast">false</item>
+    </style>
+
+    <style name="AppTheme.Launcher" parent="@style/AppTheme">
+        <item name="android:windowBackground">@drawable/splash_window</item>
+    </style>
+</resources>

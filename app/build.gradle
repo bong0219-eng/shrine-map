@@ -1,0 +1,49 @@
+plugins {
+    id 'com.android.application'
+}
+
+def hasReleaseSigning = System.getenv('KEYSTORE_FILE') &&
+        System.getenv('KEYSTORE_PASSWORD') &&
+        System.getenv('KEY_ALIAS') &&
+        System.getenv('KEY_PASSWORD')
+
+android {
+    namespace 'kr.catholic.gildonmu'
+    compileSdk 35
+
+    defaultConfig {
+        // 중요: 기존 Google Play 앱의 패키지명과 반드시 같아야 업데이트 업로드가 됩니다.
+        // 현재 첨부 ZIP의 assetlinks.json 기준 package_name은 kr.catholic.gildonmu 입니다.
+        applicationId 'kr.catholic.gildonmu'
+        minSdk 23
+        targetSdk 35
+        // Play Console에서 "이미 사용한 versionCode"라고 나오면 이 숫자만 더 크게 올리세요.
+        versionCode 220
+        versionName '1.2.20-stable-intro-image'
+    }
+
+    signingConfigs {
+        release {
+            if (hasReleaseSigning) {
+                storeFile file(System.getenv('KEYSTORE_FILE'))
+                storePassword System.getenv('KEYSTORE_PASSWORD')
+                keyAlias System.getenv('KEY_ALIAS')
+                keyPassword System.getenv('KEY_PASSWORD')
+            }
+        }
+    }
+
+    buildTypes {
+        debug {
+            applicationIdSuffix '.debug'
+            versionNameSuffix '-debug'
+        }
+        release {
+            minifyEnabled false
+            shrinkResources false
+            if (hasReleaseSigning) {
+                signingConfig signingConfigs.release
+            }
+        }
+    }
+}
