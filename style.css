@@ -2126,8 +2126,8 @@ html.oai-cover-booting #cover > * {
   box-sizing: border-box;
 }
 .cover-title {
-  font-family: "Noto Sans KR", "Apple SD Gothic Neo", sans-serif;
-font-size: clamp(32px, 8.9vw, 43px);
+  font-family: "Noto Serif KR", "Noto Sans KR", serif;
+  font-size: clamp(32px, 8.9vw, 43px);
 font-weight: 800;
   letter-spacing: -.03em;
   color: #3e362e;
@@ -2953,8 +2953,8 @@ html.oai-font-global .c-gw, html.oai-font-global .c-rg, html.oai-font-global .c-
 html.oai-font-global .dd, html.oai-font-global .sg { font-size: calc(12px * var(--app-inner-font-scale)); line-height: 1.45; }
 
 html.oai-font-global #cover .cover-title {
-  font-family: "Noto Sans KR", "Apple SD Gothic Neo", sans-serif;
-font-size: clamp(32px, 8.9vw, 43px);
+  font-family: "Noto Serif KR", "Noto Sans KR", serif;
+  font-size: clamp(32px, 8.9vw, 43px);
 }
 html.oai-font-global #cover .cover-subtitle { font-size: 16px; }
 html.oai-font-global #cover .cover-name { font-size: 16px; }
@@ -3006,8 +3006,8 @@ html.oai-font-global #region-body .dio-hd { font-size: calc(17px * var(--app-inn
   #cover { --cover-top-safe: calc(env(safe-area-inset-top, 0px) + clamp(70px, calc(var(--cover-vh, 1vh) * 10.8), 86px)); --cover-bottom-safe: calc(env(safe-area-inset-bottom, 0px) + clamp(12px, calc(var(--cover-vh, 1vh) * 1.8), 20px)); padding-top: var(--cover-top-safe); padding-bottom: var(--cover-bottom-safe); }
   #cover .cover-header { padding-bottom: 12px; }
   #cover .cover-title {
-  font-family: "Noto Sans KR", "Apple SD Gothic Neo", sans-serif;
-font-size: clamp(32px, 8.9vw, 43px);
+  font-family: "Noto Serif KR", "Noto Sans KR", serif;
+  font-size: clamp(32px, 8.9vw, 43px);
 }
   #cover .cover-subtitle { font-size: 10px; }
   #cover .cover-grid { row-gap: clamp(2px, calc(var(--cover-vh, 1vh) * 0.5), 4px); }
@@ -4989,7 +4989,7 @@ body.gp-info-page #privacy-back-app-link {
 }
 
 
-/* V24: Android 209 위치 안정화 1단계 CSS 정리
+/* V14: Android 209 위치 안정화 1단계 CSS 정리
    - 커버 하단/새로고침/인포카드/순례길 카드의 누적 보정 블록을 한곳으로 통합한다.
    - 기능, 지도, 위치, 뒤로가기 로직은 건드리지 않는다. */
 
@@ -5281,7 +5281,7 @@ html.retreat-mode #tab-btn-list.active #tab-list-lbl {
 }
 
 
-/* V24: 웹사이트 기준 UI 통일 및 하단 위치 미세 조정
+/* V14: 웹사이트 기준 UI 통일 및 하단 위치 미세 조정
    - Android/위치/지도/뒤로가기/종료 로직은 건드리지 않고 웹앱 CSS만 정리한다.
    - 웹사이트 화면을 기준으로 주요기도문·문의·순례길·관구교구의 헤더/탭/카드 글자 크기를 맞춘다. */
 :root {
@@ -5446,7 +5446,7 @@ html.retreat-mode #tab-btn-list.active #tab-list-lbl {
   }
 }
 
-/* V24: 주요기도문 카드 높이 및 순례길/관구교구 목록 카드 간격 안정화 */
+/* V14: 주요기도문 카드 높이 및 순례길/관구교구 목록 카드 간격 안정화 */
 .pr-item{
   min-height:76px!important;
   padding-top:16px!important;
@@ -5465,7 +5465,7 @@ html.retreat-mode #tab-btn-list.active #tab-list-lbl {
 }
 
 
-/* V24: 검색창 기준 통일 + 장소검색 모달 상단 잘림 보정
+/* V14: 검색창 기준 통일 + 장소검색 모달 상단 잘림 보정
    - 성당/성지/피정 찾기 검색창을 기준으로 입력 글자색/크기/높이를 맞춘다.
    - 출발지/도착지 검색 모달은 Android 상태바에 헤더가 가려지지 않도록 상단 여백을 둔다. */
 :root{
@@ -5541,7 +5541,7 @@ html.retreat-mode #tab-btn-list.active #tab-list-lbl {
 }
 
 
-/* V2: 일반 인포카드·경로 정보카드 하단 여백 기준 통일
+/* V1: 일반 인포카드·경로 정보카드 하단 여백 기준 통일
    - 두 카드의 외곽 하단은 bottom:0으로 맞춘다.
    - 실제 버튼 아래 여백은 카드 내부 padding-bottom 기준으로 통일한다.
    - 카드 내부 정보 구조, 거리 표시, 버튼 기능은 변경하지 않는다. */
@@ -5613,7 +5613,7 @@ html.ios-device #app #info-card.open {
   font-weight: 800 !important;
 }
 
-/* V2: 요청 6항목 UI 미세 조정
+/* V1: 요청 6항목 UI 미세 조정
    1) 성당·성지·피정의집 일반 인포카드 장소명 확대
    2) 첫 진입 십자가는 index.html의 intro CSS에서 60% 확대
    3) 피정의집 지도 로딩 아이콘은 app.js에서 십자가로 통일
@@ -5629,11 +5629,11 @@ html.ios-device #app #info-card.open {
   margin-left: 6px !important;
 }
 
-/* V2: 커버 세부 균형 조정
+/* V1: 커버 세부 균형 조정
    - 커버 메뉴는 1단계 추가 확대하고 var(--app-font-scale)에 계속 연결한다.
    - 커버 제목과 하단 안내문은 1단계 추가 확대한다.
    - 성당·성지·피정의집 일반 인포카드 주소 상세 글자는 1단계 줄인다. */
-/* V2: 정식 출시 기준 글자 크기 2단계 정리
+/* V1: 정식 출시 기준 글자 크기 2단계 정리
    - 커버 제목/부제목·메뉴·새로고침·카테고리·표준 헤더/탭은 요청 범위만 2단계 확대한다.
    - 커버 카테고리 글자는 font-size 최대 제한과 줄수 제한을 제거해 앱 글자 크기 기준을 그대로 따른다.
    - 커버 메뉴·새로고침은 고정 px가 아니라 var(--app-font-scale)에 연결한다.
@@ -5648,8 +5648,8 @@ html.oai-font-global #cover .cover-subtitle {
 }
 #cover .cover-title,
 html.oai-font-global #cover .cover-title {
-  font-family: "Noto Sans KR", "Apple SD Gothic Neo", sans-serif;
-font-size: clamp(32px, 8.9vw, 43px);
+  font-family: "Noto Serif KR", "Noto Sans KR", serif;
+  font-size: clamp(32px, 8.9vw, 43px);
 white-space: nowrap !important;
   overflow: visible !important;
   text-overflow: clip !important;
@@ -5764,8 +5764,8 @@ html.oai-font-global .sheet-title {
 @media (max-width: 370px) {
   #cover .cover-title,
   html.oai-font-global #cover .cover-title {
-  font-family: "Noto Sans KR", "Apple SD Gothic Neo", sans-serif;
-font-size: clamp(32px, 8.9vw, 43px);
+  font-family: "Noto Serif KR", "Noto Sans KR", serif;
+  font-size: clamp(32px, 8.9vw, 43px);
 }
   #cover .cover-subtitle,
   html.oai-font-global #cover .cover-subtitle {

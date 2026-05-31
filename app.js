@@ -975,8 +975,8 @@ try{ window._shouldMassQuickReturn=_shouldMassQuickReturn; window._shouldPrayerQ
    ═══════════════════════════════════════════════ */
 
 function oaiFormatCoverVersionHtml(version, suffixText){
-  var v = String(version || 'V2').trim() || 'V2';
-  var m = v.match(/^(V2)(-.+)$/);
+  var v = String(version || 'V1').trim() || 'V1';
+  var m = v.match(/^(V1)(-.+)$/);
   var main = m ? m[1] : v;
   var sub = m ? m[2] : '';
   function esc(x){ return String(x).replace(/[&<>"]/g, function(c){ return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c] || c); }); }
@@ -985,14 +985,14 @@ function oaiFormatCoverVersionHtml(version, suffixText){
 function oaiSetCoverRefreshButtonLabel(btn, version, suffixText){
   if(!btn) return;
   try{ btn.innerHTML = oaiFormatCoverVersionHtml(version, suffixText); }
-  catch(_e){ btn.textContent = (version || 'V2') + ' ' + (suffixText || '새로고침'); }
+  catch(_e){ btn.textContent = (version || 'V1') + ' ' + (suffixText || '새로고침'); }
 }
 function _runRefreshAppFilesOnly(){
   var btn = document.getElementById('cover-update-btn');
   try{
     if(btn){
       btn.disabled = true;
-      oaiSetCoverRefreshButtonLabel(btn, btn.getAttribute('data-target-version') || 'V2', '새로고침 중');
+      oaiSetCoverRefreshButtonLabel(btn, btn.getAttribute('data-target-version') || 'V1', '새로고침 중');
     }
     if(document.activeElement && document.activeElement.blur) document.activeElement.blur();
     // V37: 새로고침 전에는 레이아웃/스크롤/모달 DOM을 건드리지 않고,
@@ -1098,7 +1098,7 @@ async function _runClearAppFilesCacheCompletely(){
   }catch(e){
     console.warn('[가톨릭길동무]', e);
   }
-  // V23: 긴 새로고침도 보호막을 다시 예약하지 않고 현재 문서에서 1회만 유지한다.
+  // V13: 긴 새로고침도 보호막을 다시 예약하지 않고 현재 문서에서 1회만 유지한다.
   try{
     // 현재 히스토리 항목을 그대로 reload한다.
     // location.replace(?refresh=...)는 이전 root 항목과 URL이 갈라져
@@ -1151,7 +1151,7 @@ function syncCoverUpdateVersionState(){
     var box = document.getElementById('cover-update-box');
     var marker = document.getElementById('oai-build-marker');
     if(!btn || !box) return;
-        var target = btn.getAttribute('data-target-version') || 'V2';
+        var target = btn.getAttribute('data-target-version') || 'V1';
     var current = '';
     if(window.APP_VERSION) current = String(window.APP_VERSION).trim();
     if(!current && marker) current = String(marker.textContent || '').trim();
@@ -1160,7 +1160,7 @@ function syncCoverUpdateVersionState(){
     oaiSetCoverRefreshButtonLabel(btn, target, mismatch ? '업데이트 필요' : '새로고침');
     box.classList.toggle('update-needed', mismatch);
     if(marker){
-      marker.textContent = target || 'V2';
+      marker.textContent = target || 'V1';
       marker.setAttribute('hidden', 'hidden');
       marker.setAttribute('aria-hidden','true');
       marker.style.display = 'none';
@@ -1496,7 +1496,7 @@ function openDioceseView(opts){
       if(!restore) try{ frame.contentWindow && frame.contentWindow.resetDioceseFirstPage && frame.contentWindow.resetDioceseFirstPage(); }catch(e){ console.warn("[가톨릭길동무]", e); }
       if(typeof dioceseLoaded==='function') dioceseLoaded();
     };
-    frame.src='diocese.html?v=V2';
+    frame.src='diocese.html?v=V1';
   }else if(!restore){
     try{ frame.contentWindow && frame.contentWindow.resetDioceseFirstPage && frame.contentWindow.resetDioceseFirstPage(); }catch(e){ console.warn("[가톨릭길동무]", e); }
   }
@@ -1893,7 +1893,7 @@ const _PARISH_DIOCESE_ASSETS={
 };
 const _PARISH_DIOCESE_LOAD_STATE={};
 const _PARISH_DIOCESE_LOAD_PROMISES={};
-const _PARISH_ASSET_VERSION='V2';
+const _PARISH_ASSET_VERSION='V1';
 function _getParishDioceseAsset(code){
   return _PARISH_DIOCESE_ASSETS[code] || null;
 }
@@ -2056,7 +2056,7 @@ function _ensureParishDataLoaded(){
 }
 _initParishDataFromGlobal();
 
-const _PRAYER_ASSET_VERSION='V2';
+const _PRAYER_ASSET_VERSION='V1';
 let _prayerModuleLoadPromise=null;
 function _isPrayerModuleReady(){
   return typeof window.initPrayerView === 'function' &&
@@ -2101,7 +2101,7 @@ try{ window.ensurePrayerModuleLoaded=ensurePrayerModuleLoaded; }catch(e){ consol
 let _RT_RAW = [];
 let _retreatRawLoaded = false;
 let _retreatDataLoadPromise = null;
-const _RETREAT_ASSET_VERSION='V2';
+const _RETREAT_ASSET_VERSION='V1';
 
 let RETREATS = [];
 function _buildRetreatList(raw){
@@ -2350,7 +2350,7 @@ const _TY={'A':'성지','B':'순례지','C':'순교 사적지'};
 
 let _shrineRawLoaded = false;
 let _shrineDataLoadPromise = null;
-const _SHRINE_ASSET_VERSION='V2';
+const _SHRINE_ASSET_VERSION='V1';
 let SHRINES = [];
 let JUKRIMGUL_IDX = -1;
 function _decodeShrineHomePage(hp){
@@ -3323,7 +3323,7 @@ function _setMapCenterByInfoCardStandard(pos){
 }
 
 function _centerCategoryMapOnLocation(lat, lng, source){
-  // V2: 성지·성당·피정의집 카테고리 첫 진입 시 황간 등 기본 중심이 먼저 보이지 않도록
+  // V1: 성지·성당·피정의집 카테고리 첫 진입 시 황간 등 기본 중심이 먼저 보이지 않도록
   // 현재 위치가 있으면 실제 현재 위치를 지도 중심에 둔다. 위치 실패 때만 기존 기본 중심을 유지한다.
   if(!_map || !lat || !lng || typeof _LL==='undefined') return false;
   if(!(_mode==='shrine' || _mode==='parish' || _mode==='retreat')) return false;
@@ -4243,7 +4243,7 @@ function _focusParishPointAround(lat, lng, opts){
         _map.setLevel(targetLevel);
       }
     }
-    // V2: 카테고리 첫 진입 직후에는 사용자의 현재 위치가 화면 중심에 오도록 유지한다.
+    // V1: 카테고리 첫 진입 직후에는 사용자의 현재 위치가 화면 중심에 오도록 유지한다.
     if(typeof _recentCategoryEntryCurrentCenter==='function' && _recentCategoryEntryCurrentCenter(2600) && !_curInfoItem && !_routeMode){
       _map.setCenter(pos);
       return true;
@@ -4920,7 +4920,7 @@ function _loadNearbyWithDist(lat,lng,items,getIdx,getColor,getLabel,opts){
 
   // 성당 첫 진입/내주변 목록은 정확한 도로거리 계산이 끝난 뒤에 표시한다.
   // 계산 전 직선거리 목록을 먼저 띄우지 않아 목록 순서가 바뀌는 느낌을 없앤다.
-  // V2: 비동기 결과가 늦게 도착해 다른 카테고리 목록을 덮지 않도록 요청 식별자를 확인한다.
+  // V1: 비동기 결과가 늦게 도착해 다른 카테고리 목록을 덮지 않도록 요청 식별자를 확인한다.
 
   const results=new Array(prelim.length).fill(null);
   let done=0;
