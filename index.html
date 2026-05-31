@@ -2,7 +2,95 @@
 <html lang="ko" class="oai-font-global" style="background:#f5f0e8;">
 <head>
 <style id="oai-first-entry-bg">html,body{margin:0;width:100%;min-height:100%;background:#f5f0e8;color-scheme:light;}body{background:#f5f0e8;}</style>
-<link rel="preload" href="intro-cross-jesus.jpg?v=V1-77" as="image" fetchpriority="high">
+<link rel="preload" href="intro-cross-jesus.jpg?v=V1-79" as="image" fetchpriority="high">
+
+<style id="oai-android-update-gate-style">
+html.oai-android-update-required,
+html.oai-android-update-required body {
+  margin:0;
+  width:100%;
+  min-height:100%;
+  background:#f5f0e8 !important;
+  overflow:hidden !important;
+}
+html.oai-android-update-required #cover,
+html.oai-android-update-required #app,
+html.oai-android-update-required #diocese-view,
+html.oai-android-update-required #prayer-view,
+html.oai-android-update-required #missa-view {
+  display:none !important;
+}
+#oai-android-update-gate {
+  position:fixed;
+  inset:0;
+  z-index:2147483600;
+  background:#f5f0e8;
+  color:#1f2937;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:24px;
+  box-sizing:border-box;
+  font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+html.oai-android-update-required #oai-android-update-gate {
+  display:flex;
+}
+.oai-update-card {
+  width:min(420px, 100%);
+  border-radius:28px;
+  background:rgba(255,255,255,.74);
+  box-shadow:0 18px 48px rgba(31,41,55,.16);
+  border:1px solid rgba(183,121,31,.18);
+  padding:28px 22px 24px;
+  text-align:center;
+}
+.oai-update-cross {
+  width:54px;
+  height:54px;
+  border-radius:18px;
+  margin:0 auto 16px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#b7791f;
+  font-size:38px;
+  font-weight:900;
+  background:rgba(183,121,31,.10);
+}
+.oai-update-title {
+  font-size:21px;
+  line-height:1.32;
+  font-weight:900;
+  margin:0 0 10px;
+  color:#111827;
+}
+.oai-update-text {
+  font-size:14.5px;
+  line-height:1.62;
+  color:#4b5563;
+  margin:0 0 20px;
+}
+.oai-update-btn {
+  width:100%;
+  min-height:48px;
+  border:none;
+  border-radius:16px;
+  background:#1f2937;
+  color:#fff;
+  font-size:15px;
+  font-weight:900;
+  cursor:pointer;
+  box-shadow:0 10px 24px rgba(31,41,55,.20);
+}
+.oai-update-sub {
+  margin-top:12px;
+  color:#6b7280;
+  font-size:12px;
+  line-height:1.45;
+}
+</style>
+
 <style id="oai-refresh-veil-early-style">
 
 html.oai-stability-veil { background:#f5f0e8 !important; }
@@ -44,29 +132,29 @@ html.oai-first-entry-intro::after {
   left:50%;
   top:50%;
   z-index:2147483401;
-  width:min(96vw, 600px);
-  height:min(96vh, 840px);
+  width:min(88vw, 540px);
+  height:min(88vh, 760px);
   transform:translate(-50%,-50%) scale(.985);
-  background-image:url("intro-cross-jesus.jpg?v=V1-77");
+  background-image:url("intro-cross-jesus.jpg?v=V1-79");
   background-position:center;
-  background-size:auto 112%;
+  background-size:auto 104%;
   background-repeat:no-repeat;
   pointer-events:none;
   opacity:0;
   border-radius:28px;
   background-color:#f5f0e8;
-  box-shadow:0 0 0 999px #f5f0e8, 0 18px 48px rgba(80,54,18,.10);
-  filter:drop-shadow(0 18px 38px rgba(80,54,18,.10));
+  box-shadow:0 0 0 999px #f5f0e8, 0 12px 28px rgba(80,54,18,.08);
+  filter:drop-shadow(0 10px 24px rgba(80,54,18,.08));
   animation:oaiJesusIntroPhoto 2.85s cubic-bezier(.18,.76,.22,1) both;
 }
 html.oai-cover-first-reveal #cover > * {
   animation:oaiCoverFirstReveal .72s ease-out both !important;
 }
 @keyframes oaiJesusIntroPhoto {
-  0%{opacity:0; transform:translate(-50%,-49%) scale(.94);}
+  0%{opacity:0; transform:translate(-50%,-49%) scale(.96);}
   34%{opacity:1; transform:translate(-50%,-50%) scale(1);}
   62%{opacity:1; transform:translate(-50%,-50%) scale(1);}
-  100%{opacity:0; transform:translate(-50%,-51%) scale(1.018);}
+  100%{opacity:0; transform:translate(-50%,-51%) scale(1.012);}
 }
 @keyframes oaiCoverFirstReveal {
   0%{opacity:0; transform:translateY(6px) scale(.99);}
@@ -283,6 +371,7 @@ html.oai-cover-first-reveal #cover > * {
     }catch(_e){ return !isInternalNoEffectReturn; }
   }
 
+  if(window.__OAI_ANDROID_UPDATE_REQUIRED__) return;
   var showFirstIntro = shouldShowFirstIntro();
   if(!isInternalNoEffectReturn){
     root.classList.add('oai-cover-booting');
@@ -459,7 +548,7 @@ window.APP_CONFIG = {
 <meta name="theme-color" content="#0e1535">
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#0e1535">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0e1535">
-<script id="oai-status-bar-theme-lock-V1-77">
+<script id="oai-status-bar-theme-lock-V1-79">
 (function(){
   'use strict';
   var COLOR='#0e1535';
@@ -475,30 +564,98 @@ window.APP_CONFIG = {
   window.addEventListener('focus', lockStatusTheme, {passive:true});
 })();
 </script>
-<link rel="manifest" href="manifest.json?v=V1-77">
-<link rel="apple-touch-icon" href="icon-192x192.png?v=V1-77">
+<link rel="manifest" href="manifest.json?v=V1-79">
+<link rel="apple-touch-icon" href="icon-192x192.png?v=V1-79">
 <meta name="format-detection" content="telephone=no">
 <meta name="description" content="가톨릭길동무 - 가톨릭 신앙생활 종합 앱">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="가톨릭길동무">
 <meta property="og:title" content="가톨릭길동무">
 <meta property="og:description" content="성지 · 성당 · 기도문 · 순례길 · 가톨릭 웹사이트 안내">
-<meta property="og:image" content="icon-512x512.png?v=V1-77">
+<meta property="og:image" content="icon-512x512.png?v=V1-79">
 <meta property="og:image:width" content="512">
 <meta property="og:image:height" content="512">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="가톨릭길동무">
 <meta name="twitter:description" content="성지 · 성당 · 기도문 · 순례길 · 가톨릭 웹사이트 안내">
-<meta name="twitter:image" content="icon-512x512.png?v=V1-77">
+<meta name="twitter:image" content="icon-512x512.png?v=V1-79">
 <title>가톨릭길동무</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Crect width=%2232%22 height=%2232%22 fill=%22%230e1535%22/%3E%3Ctext x=%226%22 y=%2226%22 font-size=%2224%22 fill=%22%23d4aa6a%22%3E%E2%9C%9D%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style id="oai-initial-bg">html,body{margin:0;width:100%;height:100%;min-height:100%;background:#f5f0e8;overflow:hidden;color-scheme:light;}#cover{background:#f5f0e8;min-height:100%;}#app{background:#f8f6f2;display:none;}</style>
-<link rel="stylesheet" href="style.css?v=V1-77">
+<link rel="stylesheet" href="style.css?v=V1-79">
+
+<script id="oai-android-update-gate-script">
+(function(){
+  'use strict';
+  var MIN_ANDROID_VERSION = 232;
+  var PACKAGE_NAME = 'kr.catholic.gildonmu';
+
+  function getAndroidVersion(){
+    try{
+      var ua = navigator.userAgent || '';
+      var m = ua.match(/GildongmuAndroid\/(\d+)/);
+      return m ? parseInt(m[1], 10) : 0;
+    }catch(_e){ return 0; }
+  }
+
+  function isAndroidWebView(){
+    try{
+      var ua = navigator.userAgent || '';
+      return /Android/i.test(ua) && (/GildongmuAndroid\//.test(ua) || /; wv/i.test(ua) || /wv\)/i.test(ua));
+    }catch(_e){ return false; }
+  }
+
+  function openStore(){
+    var marketUrl = 'market://details?id=' + PACKAGE_NAME;
+    var webUrl = 'https://play.google.com/store/apps/details?id=' + PACKAGE_NAME;
+    try{ location.href = marketUrl; }catch(_e){}
+    setTimeout(function(){ try{ location.href = webUrl; }catch(_e){} }, 700);
+  }
+
+  function showGate(){
+    try{
+      document.documentElement.classList.add('oai-android-update-required');
+      document.documentElement.classList.remove('oai-first-entry-intro','oai-cover-first-reveal','oai-cover-booting');
+      try{ sessionStorage.removeItem('oai_first_intro_seen_session'); }catch(_e){}
+      var bind = function(){
+        var btn = document.getElementById('oai-android-update-btn');
+        if(btn && !btn.__oaiBound){
+          btn.__oaiBound = true;
+          btn.addEventListener('click', openStore, false);
+        }
+      };
+      if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bind, {once:true});
+      else bind();
+    }catch(_e){}
+  }
+
+  var androidVersion = getAndroidVersion();
+  if(isAndroidWebView() && androidVersion > 0 && androidVersion < MIN_ANDROID_VERSION){
+    window.__OAI_ANDROID_UPDATE_REQUIRED__ = true;
+    showGate();
+  }
+})();
+</script>
+
 </head>
 <body>
+
+<div id="oai-android-update-gate" role="dialog" aria-modal="true" aria-label="앱 업데이트 안내">
+  <div class="oai-update-card">
+    <div class="oai-update-cross" aria-hidden="true">✝</div>
+    <h1 class="oai-update-title">새 업데이트가 있습니다</h1>
+    <p class="oai-update-text">
+      더 안정적인 이용을 위해<br>
+      최신 버전으로 업데이트해 주세요.
+    </p>
+    <button id="oai-android-update-btn" class="oai-update-btn" type="button">Google Play에서 업데이트</button>
+    <div class="oai-update-sub">업데이트 후 앱을 다시 열면 정상적으로 이용할 수 있습니다.</div>
+  </div>
+</div>
+
 <div id="missa-view" role="dialog" aria-modal="true" aria-label="매일미사">
   <div id="missa-bar">
     <button id="missa-close" aria-label="매일미사 닫기"><span aria-hidden="true">←</span></button>
@@ -567,7 +724,7 @@ window.APP_CONFIG = {
   </div>
 </div>
 <div id="cover">
-<div id="oai-build-marker" aria-label="현재 버전" role="status" hidden aria-hidden="true">V1-77</div>
+<div id="oai-build-marker" aria-label="현재 버전" role="status" hidden aria-hidden="true">V1-79</div>
   <div id="cv-pull-modern" aria-hidden="true">
   <div class="cv-pull-ring">
     <svg viewBox="0 0 24 24" class="cv-pull-icon">
@@ -633,8 +790,8 @@ window.APP_CONFIG = {
       <div id="cover-action-row" class="cover-action-single">
         <div id="cover-update-box">
           <button id="cover-update-btn" class="cover-refresh-main-btn" type="button"
-                  data-target-version="V1-77"
-                  aria-label="V1-77 앱 새로고침"><span class="refresh-version-main">V1</span><span class="refresh-version-sub">-68</span> 새로고침</button>
+                  data-target-version="V1-79"
+                  aria-label="V1-79 앱 새로고침"><span class="refresh-version-main">V1</span><span class="refresh-version-sub">-68</span> 새로고침</button>
           <div id="cover-update-hint" role="status" aria-live="polite"></div>
         </div>
       </div>
@@ -732,7 +889,7 @@ window.APP_CONFIG = {
         <span class="cover-menu-icon">📘</span>
         <span class="cover-menu-text">주요기능</span>
       </button>
-      <a id="cover-menu-privacy-link" class="cover-menu-item" href="privacy.html?v=V1-77">
+      <a id="cover-menu-privacy-link" class="cover-menu-item" href="privacy.html?v=V1-79">
         <span class="cover-menu-icon">🛡</span>
         <span class="cover-menu-text">개인정보처리방침</span>
       </a>
@@ -744,9 +901,9 @@ window.APP_CONFIG = {
   </div>
 </div>
 
-<script src="constants.js?v=V1-77"></script>
-<script src="core.js?v=V1-77"></script>
-<script src="app.js?v=V1-77"></script>
+<script src="constants.js?v=V1-79"></script>
+<script src="core.js?v=V1-79"></script>
+<script src="app.js?v=V1-79"></script>
 <div id="oai-category-entry-veil" aria-hidden="true"></div>
 <div id="app"><div id="tabbar"><button id="tab-btn-nearby" class="tab-btn" data-tab="nearby"><span class="tab-icon">📍</span><span id="tab-nearby-lbl">내주변</span></button><button id="tab-btn-list" class="tab-btn" data-tab="list"><span class="tab-icon">📋</span><span id="tab-list-lbl">목록</span></button><button id="tab-btn-region" class="tab-btn" data-tab="region"><span class="tab-icon">🔍</span>지역검색
     </button><button id="tab-btn-route" class="tab-btn" data-tab="route"><span class="tab-icon">🧭</span>길찾기
@@ -822,13 +979,13 @@ window.APP_CONFIG = {
     </div>
   </div>
 </div>
-<script src="web.js?v=V1-77"></script>
+<script src="web.js?v=V1-79"></script>
 
 <div id="qna-view" role="dialog" aria-modal="true" aria-label="문의·건의" class="module-view"><div class="module-bar qna"><div class="module-bar-main"><div class="module-bar-ico">✝</div><div class="module-bar-txt"><div class="module-bar-title">문의·건의</div><div class="module-bar-sub">질문, 오류, 수정요청을 남겨주세요</div></div></div><button id="qna-close-btn" class="module-close" aria-label="문의·건의 닫기">×</button></div><div class="qna-body"><div class="qna-tabs"><button id="qna-tab-write" class="qna-tab on" type="button">작성</button></div><div class="qna-list" id="qna-list"></div></div></div>
 
-<script src="patches.js?v=V1-77"></script>
+<script src="patches.js?v=V1-79"></script>
 
-<script src="sw-update.js?v=V1-77"></script>
+<script src="sw-update.js?v=V1-79"></script>
 
 </body>
 </html>
