@@ -583,7 +583,7 @@
         try{
           const lv = trailState.map.getLevel();
           if(Number.isFinite(lv) && lv < 12) trailState.map.setLevel(12);
-          // V1-38: 사진 기준처럼 본토와 제주가 함께 자연스럽게 보이도록
+          // V1-48: 사진 기준처럼 본토와 제주가 함께 자연스럽게 보이도록
           // 백령도·울릉도 같은 극단 외곽 섬은 중심감에서 제외하고, 초기 시야를 우리나라 중심으로 보정한다.
           // 마커 데이터와 기능은 변경하지 않는다.
           trailState.map.setCenter(new kakao.maps.LatLng(36.10, 127.85));
