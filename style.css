@@ -2126,9 +2126,8 @@ html.oai-cover-booting #cover > * {
   box-sizing: border-box;
 }
 .cover-title {
-  font-size:44px;
-  font-size: clamp(28px, 8.2vw, 38px);
-  font-weight: 800;
+  font-size: clamp(36px, 9.6vw, 48px);
+font-weight: 800;
   letter-spacing: -.03em;
   color: #3e362e;
   margin: 0;
@@ -2952,7 +2951,9 @@ html.oai-font-global .lv-rg, html.oai-font-global .lv-det, html.oai-font-global 
 html.oai-font-global .c-gw, html.oai-font-global .c-rg, html.oai-font-global .c-lbl,
 html.oai-font-global .dd, html.oai-font-global .sg { font-size: calc(12px * var(--app-inner-font-scale)); line-height: 1.45; }
 
-html.oai-font-global #cover .cover-title { font-size: clamp(28px, 8.2vw, 38px); }
+html.oai-font-global #cover .cover-title {
+  font-size: clamp(36px, 9.6vw, 48px);
+}
 html.oai-font-global #cover .cover-subtitle { font-size: 16px; }
 html.oai-font-global #cover .cover-name { font-size: 16px; }
 html.oai-font-global #cover .cover-emoji { font-size: 40px; background: transparent; box-shadow: none; }
@@ -3002,7 +3003,9 @@ html.oai-font-global #region-body .dio-hd { font-size: calc(17px * var(--app-inn
 @media (max-height: 650px) {
   #cover { --cover-top-safe: calc(env(safe-area-inset-top, 0px) + clamp(70px, calc(var(--cover-vh, 1vh) * 10.8), 86px)); --cover-bottom-safe: calc(env(safe-area-inset-bottom, 0px) + clamp(12px, calc(var(--cover-vh, 1vh) * 1.8), 20px)); padding-top: var(--cover-top-safe); padding-bottom: var(--cover-bottom-safe); }
   #cover .cover-header { padding-bottom: 12px; }
-  #cover .cover-title { font-size: clamp(18px, 5vw, 24px); }
+  #cover .cover-title {
+  font-size: clamp(36px, 9.6vw, 48px);
+}
   #cover .cover-subtitle { font-size: 10px; }
   #cover .cover-grid { row-gap: clamp(2px, calc(var(--cover-vh, 1vh) * 0.5), 4px); }
   #cover .cover-card { padding: clamp(4px, calc(var(--cover-vh, 1vh) * 0.8), 8px) 6px; }
@@ -5642,8 +5645,8 @@ html.oai-font-global #cover .cover-subtitle {
 }
 #cover .cover-title,
 html.oai-font-global #cover .cover-title {
-  font-size: clamp(31px, 9vw, 41px) !important;
-  white-space: nowrap !important;
+  font-size: clamp(36px, 9.6vw, 48px);
+white-space: nowrap !important;
   overflow: visible !important;
   text-overflow: clip !important;
 }
@@ -5757,8 +5760,8 @@ html.oai-font-global .sheet-title {
 @media (max-width: 370px) {
   #cover .cover-title,
   html.oai-font-global #cover .cover-title {
-    font-size: clamp(28px, 8.2vw, 37px) !important;
-  }
+  font-size: clamp(36px, 9.6vw, 48px);
+}
   #cover .cover-subtitle,
   html.oai-font-global #cover .cover-subtitle {
     font-size: 16px !important;
