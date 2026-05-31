@@ -1,7 +1,2 @@
 include:
   - .well-known
-
-exclude:
-  - qa-firebase.html
-  - firestore_rules.sample
-  - _gitignore
