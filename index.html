@@ -2,110 +2,31 @@
 <html lang="ko" class="oai-font-global" style="background:#f5f0e8;">
 <head>
 <style id="oai-first-entry-bg">html,body{margin:0;width:100%;min-height:100%;background:#f5f0e8;color-scheme:light;}body{background:#f5f0e8;}</style>
-<link rel="preload" href="intro-cross-jesus.jpg?v=V1-14" as="image" fetchpriority="high">
-
-<style id="oai-android-update-gate-style">
-html.oai-android-update-required,
-html.oai-android-update-required body {
-  margin:0;
-  width:100%;
-  min-height:100%;
-  background:#f5f0e8 !important;
-  overflow:hidden !important;
-}
-html.oai-android-update-required #cover,
-html.oai-android-update-required #app,
-html.oai-android-update-required #diocese-view,
-html.oai-android-update-required #prayer-view,
-html.oai-android-update-required #missa-view {
-  display:none !important;
-}
-#oai-android-update-gate {
-  position:fixed;
-  inset:0;
-  z-index:2147483600;
-  background:#f5f0e8;
-  color:#1f2937;
-  display:none;
-  align-items:center;
-  justify-content:center;
-  padding:24px;
-  box-sizing:border-box;
-  font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-}
-html.oai-android-update-required #oai-android-update-gate {
-  display:flex;
-}
-.oai-update-card {
-  width:min(420px, 100%);
-  border-radius:28px;
-  background:rgba(255,255,255,.74);
-  box-shadow:0 18px 48px rgba(31,41,55,.16);
-  border:1px solid rgba(183,121,31,.18);
-  padding:28px 22px 24px;
-  text-align:center;
-}
-.oai-update-cross {
-  width:54px;
-  height:54px;
-  border-radius:18px;
-  margin:0 auto 16px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  color:#b7791f;
-  font-size:38px;
-  font-weight:900;
-  background:rgba(183,121,31,.10);
-}
-.oai-update-title {
-  font-size:21px;
-  line-height:1.32;
-  font-weight:900;
-  margin:0 0 10px;
-  color:#111827;
-}
-.oai-update-text {
-  font-size:14.5px;
-  line-height:1.62;
-  color:#4b5563;
-  margin:0 0 20px;
-}
-.oai-update-btn {
-  width:100%;
-  min-height:48px;
-  border:none;
-  border-radius:16px;
-  background:#1f2937;
-  color:#fff;
-  font-size:15px;
-  font-weight:900;
-  cursor:pointer;
-  box-shadow:0 10px 24px rgba(31,41,55,.20);
-}
-.oai-update-sub {
-  margin-top:12px;
-  color:#6b7280;
-  font-size:12px;
-  line-height:1.45;
-}
-</style>
-
+<link rel="preload" href="intro-cross-jesus.jpg?v=V3-20" as="image" fetchpriority="high">
 <style id="oai-refresh-veil-early-style">
-
+/* 새로고침 직후 style.css가 아직 도착하지 않은 첫 페인트도 아이보리 보호막으로 덮는다. */
 html.oai-stability-veil { background:#f5f0e8 !important; }
 html.oai-stability-veil *, html.oai-external-return-freeze * { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
-html.oai-internal-no-return-effect *, html.oai-internal-no-return-effect #cover > * { transition:none !important; animation:none !important; scroll-behavior:auto !important; }
-html.oai-internal-no-return-effect #cover > * { opacity:1 !important; visibility:visible !important; }
 html.oai-stability-veil::before { content:""; position:fixed; inset:0; z-index:2147483000; background:#f5f0e8; pointer-events:none; opacity:1; animation:oaiStabilityVeilIn .12s ease-out both; }
 html.oai-stability-veil.oai-stability-veil-releasing::before { animation:oaiStabilityVeilOut .18s ease-in both; }
-html.oai-stability-veil::after { content:"✝"; position:fixed; left:50%; top:50%; width:42px; height:42px; margin:-21px 0 0 -21px; z-index:2147483001; pointer-events:none; display:flex; align-items:center; justify-content:center; color:#d4aa6a; font-size:36px; font-weight:900; line-height:1; text-shadow:0 2px 8px rgba(120,80,20,.18); animation:oaiStabilitySpin 2s linear infinite; }
+html.oai-stability-veil::after { content:""; position:fixed; left:50%; top:50%; width:28px; height:28px; margin:-14px 0 0 -14px; border-radius:50%; border:3px solid rgba(31,42,68,.16); border-top-color:#1f2a44; z-index:2147483001; pointer-events:none; animation:oaiStabilitySpin .75s linear infinite; }
 @keyframes oaiStabilityVeilIn { from { opacity:0; } to { opacity:1; } }
 @keyframes oaiStabilityVeilOut { from { opacity:1; } to { opacity:0; } }
 @keyframes oaiStabilitySpin { to { transform:rotate(360deg); } }
 </style>
 
 <style id="oai-first-entry-intro-style">
+html.oai-internal-no-return-effect *,
+html.oai-internal-no-return-effect #cover > * {
+  transition:none !important;
+  animation:none !important;
+  scroll-behavior:auto !important;
+}
+html.oai-internal-no-return-effect #cover > * {
+  opacity:1 !important;
+  visibility:visible !important;
+}
+/* V3-20: PWA 기본 금색 십자가는 아이콘 파일에서 제거하고, 첨부한 십자고상 사진만 짧게 표시한다. */
 html.oai-first-entry-intro,
 html.oai-first-entry-intro body,
 html.oai-first-entry-intro #cover {
@@ -118,11 +39,10 @@ html.oai-first-entry-intro #cover > * {
   animation:none !important;
 }
 html.oai-first-entry-intro.oai-cover-under-intro-reveal #cover > * {
-  opacity:0 !important;
-  visibility:hidden !important;
-  animation:none !important;
+  opacity:1 !important;
+  visibility:visible !important;
+  animation:oaiCoverFirstRevealV319 .72s ease-out both !important;
 }
-
 html.oai-first-entry-intro::before {
   content:"";
   position:fixed;
@@ -145,7 +65,7 @@ html.oai-first-entry-intro::after {
     linear-gradient(to right, #f5f0e8 0%, rgba(245,240,232,.96) 5%, rgba(245,240,232,.60) 13%, rgba(245,240,232,.16) 24%, rgba(245,240,232,0) 36%, rgba(245,240,232,0) 64%, rgba(245,240,232,.16) 76%, rgba(245,240,232,.60) 87%, rgba(245,240,232,.96) 95%, #f5f0e8 100%),
     linear-gradient(to bottom, #f5f0e8 0%, rgba(245,240,232,.90) 6%, rgba(245,240,232,.36) 17%, rgba(245,240,232,0) 30%, rgba(245,240,232,0) 70%, rgba(245,240,232,.36) 83%, rgba(245,240,232,.90) 94%, #f5f0e8 100%),
     radial-gradient(ellipse 96% 88% at 50% 48%, rgba(245,240,232,0) 50%, rgba(245,240,232,.08) 62%, rgba(245,240,232,.34) 76%, rgba(245,240,232,.76) 90%, rgba(245,240,232,1) 100%),
-    url("intro-cross-jesus.jpg?v=V1-14");
+    url("intro-cross-jesus.jpg?v=V3-20");
   background-position:center center, center center, center center, center center;
   background-size:100% 100%, 100% 100%, 100% 100%, auto 96%;
   background-repeat:no-repeat, no-repeat, no-repeat, no-repeat;
@@ -166,13 +86,12 @@ html.oai-first-entry-intro::after {
     linear-gradient(to right, transparent 0%, rgba(0,0,0,.35) 6%, rgba(0,0,0,.82) 15%, #000 28%, #000 72%, rgba(0,0,0,.82) 85%, rgba(0,0,0,.35) 94%, transparent 100%),
     linear-gradient(to bottom, transparent 0%, rgba(0,0,0,.50) 5%, rgba(0,0,0,.90) 13%, #000 24%, #000 76%, rgba(0,0,0,.90) 87%, rgba(0,0,0,.50) 95%, transparent 100%);
   mask-composite: intersect;
-  animation:oaiJesusIntroPhoto 2.10s cubic-bezier(.18,.76,.22,1) both;
+  filter:contrast(1.015) saturate(1.02) drop-shadow(0 6px 16px rgba(80,54,18,.05));
+  animation:oaiJesusIntroPhotoV319 1.6s cubic-bezier(.18,.76,.22,1) both;
 }
 html.oai-cover-first-reveal #cover > * {
-  animation:none !important;
+  animation:oaiCoverFirstRevealV319 .72s ease-out both !important;
 }
-
-
 @media (max-width: 540px) and (max-aspect-ratio: 3/4) {
   html.oai-first-entry-intro::after {
     left:0;
@@ -185,30 +104,47 @@ html.oai-cover-first-reveal #cover > * {
     -webkit-mask-image:none;
     mask-image:none;
     box-shadow:0 0 0 999px #f5f0e8;
-    animation:oaiJesusIntroPhotoMobile 2.10s cubic-bezier(.18,.76,.22,1) both;
+    animation:oaiJesusIntroPhotoMobileV319 1.6s cubic-bezier(.18,.76,.22,1) both;
   }
 }
-@keyframes oaiJesusIntroPhotoMobile {
-  0%{opacity:.06; transform:scale(.978); filter:contrast(1.005) saturate(1.01);}
-  52%{opacity:1; transform:scale(1); filter:contrast(1.015) saturate(1.02);}
-  76%{opacity:1; transform:scale(1); filter:contrast(1.015) saturate(1.02);}
-  100%{opacity:0; transform:scale(1.004); filter:brightness(1.08) contrast(.96) saturate(.92) blur(.4px);}
+@keyframes oaiJesusIntroPhotoMobileV319 {
+  0%{opacity:0; transform:scale(.988);}
+  18%{opacity:1; transform:scale(1);}
+  65%{opacity:1; transform:scale(1);}
+  100%{opacity:0; transform:scale(1.004);}
 }
-
-@keyframes oaiJesusIntroPhoto {
-  0%{opacity:.06; transform:translate(-50%,-49%) scale(.958); filter:contrast(1.005) saturate(1.01) drop-shadow(0 4px 12px rgba(80,54,18,.035));}
-  52%{opacity:1; transform:translate(-50%,-50%) scale(1); filter:contrast(1.015) saturate(1.02) drop-shadow(0 6px 16px rgba(80,54,18,.05));}
-  76%{opacity:1; transform:translate(-50%,-50%) scale(1); filter:contrast(1.015) saturate(1.02) drop-shadow(0 6px 16px rgba(80,54,18,.05));}
-  100%{opacity:0; transform:translate(-50%,-50%) scale(1.004); filter:brightness(1.08) contrast(.96) saturate(.92) blur(.4px);}
+@keyframes oaiJesusIntroPhotoV319 {
+  0%{opacity:0; transform:translate(-50%,-49.4%) scale(.975);}
+  18%{opacity:1; transform:translate(-50%,-50%) scale(1);}
+  65%{opacity:1; transform:translate(-50%,-50%) scale(1);}
+  100%{opacity:0; transform:translate(-50%,-50.6%) scale(1.004);}
 }
-@keyframes oaiCoverFirstReveal {
-  0%{opacity:1; transform:none;}
-  100%{opacity:1; transform:none;}
+@keyframes oaiCoverFirstRevealV319 {
+  0%{opacity:0; transform:translateY(6px) scale(.99);}
+  100%{opacity:1; transform:translateY(0) scale(1);}
 }
 </style>
 
 <script>
-
+(function(){
+  var ua = navigator.userAgent.toLowerCase();
+  var isAndroid = ua.indexOf('android') > -1;
+  var isKakao = ua.indexOf('kakaotalk') > -1;
+  var isIOS = /iphone|ipad|ipod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  if(isIOS){
+    document.documentElement.classList.add('ios-device');
+  }
+  // iPhone/iPad에서만 iOS 전용 화면 보정을 적용한다.
+  /* Android 카카오톡에서만 Chrome으로 연결합니다. iPhone/iPad/Safari/PWA에서는 실행하지 않습니다. */
+  if(isAndroid && isKakao){
+    var url = location.href;
+    location.href = 'intent://' + url.replace(/https?:\/\//i,'') + '#Intent;scheme=https;package=com.android.chrome;end';
+  }
+})();
+</script>
+<script>
+/* V3-20: patches.js가 로드되기 전 첫 커버 Back도 먼저 잡는 최소 조기 가드.
+   실패했던 hash/query URL trap은 사용하지 않고, 같은 URL의 root/trap 한 쌍만 만든다. */
 (function(){
   'use strict';
   if(window.__OAI_EARLY_COVER_BACK_GUARD__) return;
@@ -283,7 +219,7 @@ html.oai-cover-first-reveal #cover > * {
     try{ if(navigator.app && typeof navigator.app.exitApp === 'function'){ navigator.app.exitApp(); return; } }catch(_e){}
     try{ window.open('', '_self'); window.close(); }catch(_e){}
     try{ document.documentElement.classList.add('app-exiting'); }catch(_e){}
-    
+    /* 일반 브라우저에서는 window.close가 막힐 수 있어 한 번 더 실제 뒤로가기를 시도한다. */
     setTimeout(function(){ try{ history.back(); }catch(_e){} }, 30);
   }
   function armEarlyCoverBackGuard(reason, force){
@@ -292,14 +228,8 @@ html.oai-cover-first-reveal #cover > * {
       var href = baseHref();
       var st = history.state;
       // force 호출이어도 이미 커버 trap 상태라면 다시 root/trap을 쌓지 않는다.
-      // 다른 trap 위에서 커버로 돌아온 경우에는 pushState 대신 replaceState로 역할만 교체한다.
       // 중복 trap이 쌓이면 종료 안내 뒤에도 Back을 여러 번 더 눌러야 한다.
       if(st && st._p === 1 && st.oai_cover_trap){
-        window.__OAI_EARLY_COVER_BACK_TRAP_READY__ = true;
-        return;
-      }
-      if(st && st._p === 1){
-        history.replaceState({_p:1, oai_cover_trap:reason || 'early-cover-trap'}, '', href);
         window.__OAI_EARLY_COVER_BACK_TRAP_READY__ = true;
         return;
       }
@@ -328,7 +258,9 @@ html.oai-cover-first-reveal #cover > * {
 })();
 </script>
 <script>
-
+/* 짧은/긴 새로고침 직후 첫 페인트를 아이보리 보호막으로 덮어 화면 흔들림을 숨긴다.
+   긴 새로고침은 캐시를 비운 뒤 네트워크 로딩 시간이 길 수 있으므로,
+   감지 기한(deadline)은 길게 잡되 실제 표시 시간은 hold_ms 기준으로 1초만 유지한다. */
 (function(){
   try{
     var now = Date.now ? Date.now() : new Date().getTime();
@@ -357,9 +289,9 @@ html.oai-cover-first-reveal #cover > * {
               sessionStorage.removeItem('oai_refresh_veil_reason');
               sessionStorage.removeItem('oai_refresh_veil_visible_until');
             }catch(_e){}
-          }, 180);
+          }, 80);
         }catch(_e){}
-      }, Math.max(3200, showFor + 1200));
+      }, Math.max(9000, showFor + 7800));
     }else if(until){
       sessionStorage.removeItem('oai_refresh_veil_until');
       sessionStorage.removeItem('oai_refresh_veil_hold_ms');
@@ -370,7 +302,9 @@ html.oai-cover-first-reveal #cover > * {
 })();
 </script>
 <script>
-
+/* 커버 글자 크기 변수 조기 적용: 새로고침 직후 patches.js가 로드되기 전까지
+   --app-font-scale 기본값(1)으로 먼저 그려졌다가 저장값으로 바뀌며
+   커버 이모티콘/텍스트만 좌우로 흔들리는 현상을 줄인다. */
 (function(){
   try{
     var FONT_KEY = 'prayer_font_size';
@@ -386,27 +320,26 @@ html.oai-cover-first-reveal #cover > * {
 })();
 </script>
 <script>
-
+/* 커버 실제 화면 높이 고정: 모바일/PWA 첫 실행·새로고침 때 첫 화면과 로딩 후 화면의 기준 높이가 달라지는 현상을 줄인다. */
 (function(){
   try{ if('scrollRestoration' in history) history.scrollRestoration = 'manual'; }catch(e){}
   var KEY = 'oai_cover_vh_px_v48';
   var WIDTH_KEY = 'oai_cover_width_px_v48';
   var root = document.documentElement;
-  var released = false;
   var isInternalNoEffectReturn = false;
   try{
     var internalUntil = parseInt(sessionStorage.getItem('oai_internal_return_no_effect_until') || '0', 10) || 0;
     var internalNow = Date.now ? Date.now() : new Date().getTime();
     isInternalNoEffectReturn = sessionStorage.getItem('oai_internal_return_no_effect_once') === '1' || (internalUntil && internalNow < internalUntil);
   }catch(_e){}
-
+  function now(){ return Date.now ? Date.now() : new Date().getTime(); }
   function storageFlag(key){ try{ return sessionStorage.getItem(key); }catch(_e){ return null; } }
   function storageSet(key, value){ try{ sessionStorage.setItem(key, value); }catch(_e){} }
   function shouldShowFirstIntro(){
     try{
       if(isInternalNoEffectReturn) return false;
-      if(storageFlag('oai_first_intro_seen_session') === '1') return false;
-      var nowTs = Date.now ? Date.now() : new Date().getTime();
+      if(storageFlag('oai_first_intro_seen_session_v3_20') === '1') return false;
+      var nowTs = now();
       var refreshUntil = parseInt(storageFlag('oai_refresh_veil_until') || '0', 10) || 0;
       if(refreshUntil && refreshUntil > nowTs) return false;
       var extTs = parseInt(storageFlag('oai_external_nav_started_at') || '0', 10) || 0;
@@ -415,145 +348,254 @@ html.oai-cover-first-reveal #cover > * {
       return true;
     }catch(_e){ return !isInternalNoEffectReturn; }
   }
-
-  if(window.__OAI_ANDROID_UPDATE_REQUIRED__) return;
   var showFirstIntro = shouldShowFirstIntro();
   if(!isInternalNoEffectReturn){
     root.classList.add('oai-cover-booting');
     if(showFirstIntro){
-      storageSet('oai_first_intro_seen_session', '1');
+      storageSet('oai_first_intro_seen_session_v3_20', '1');
       root.classList.add('oai-first-entry-intro');
       setTimeout(function(){
-        try{
-          root.classList.add('oai-cover-under-intro-reveal');
-        }catch(_e){}
-      }, 1840);
+        try{ root.classList.add('oai-cover-under-intro-reveal'); }catch(_e){}
+      }, 600);
       setTimeout(function(){
         try{
-          root.classList.remove('oai-first-entry-intro','oai-cover-under-intro-reveal','oai-ivory-wipe-transition');
+          root.classList.remove('oai-first-entry-intro','oai-cover-under-intro-reveal');
           root.classList.add('oai-cover-first-reveal');
-          setTimeout(function(){
-            try{ root.classList.remove('oai-cover-first-reveal'); }catch(__e){}
-          }, 80);
+          setTimeout(function(){ try{ root.classList.remove('oai-cover-first-reveal'); }catch(__e){} }, 760);
         }catch(_e){}
-      }, 2100);
+      }, 1050);
     }
   }else{
-    root.classList.remove('oai-cover-booting','oai-first-entry-intro','oai-cover-under-intro-reveal','oai-ivory-wipe-transition');
+    root.classList.remove('oai-cover-booting','oai-first-entry-intro','oai-cover-under-intro-reveal');
     root.classList.add('oai-internal-no-return-effect');
-    setTimeout(function(){
-      try{ root.classList.remove('oai-internal-no-return-effect'); }catch(_e){}
-    }, 420);
+    setTimeout(function(){ try{ root.classList.remove('oai-internal-no-return-effect'); }catch(_e){} }, 420);
   }
-
-  function measureWidth(){ try{ return window.innerWidth || document.documentElement.clientWidth || 0; }catch(e){ return 0; } }
+  function readStored(){
+    try{
+      var v = parseFloat(localStorage.getItem(KEY) || '');
+      var w = parseFloat(localStorage.getItem(WIDTH_KEY) || '');
+      return {vh:(v > 3 && v < 20) ? v : 0, width:(w > 240 && w < 1600) ? w : 0};
+    }catch(e){ return {vh:0,width:0}; }
+  }
   function measure(){
-    var h = 0;
-    try{ h = (window.visualViewport && window.visualViewport.height) || window.innerHeight || document.documentElement.clientHeight || 0; }catch(e){}
-    return (h > 300 && h < 2000) ? (h * 0.01) : 0;
+    var docH = 0, innerH = 0, vvH = 0;
+    try{ docH = parseFloat(document.documentElement && document.documentElement.clientHeight || 0); }catch(e){}
+    try{ innerH = parseFloat(window.innerHeight || 0); }catch(e){}
+    try{ vvH = parseFloat(window.visualViewport && window.visualViewport.height || 0); }catch(e){}
+    var values = [];
+    function add(v){
+      v = parseFloat(v || 0);
+      if(v > 300 && v < 2000) values.push(v);
+    }
+    add(docH); add(innerH); add(vvH);
+    if(!values.length) return 0;
+    // V3-20: iOS/Android에서 저장된 작은 viewport 또는 visualViewport 값 때문에
+    // 커버 하단이 위로 뜨는 현상을 줄인다. 키보드가 열린 것으로 보이는 경우만
+    // visualViewport 축소값을 제외하고, 일반 커버 화면은 가장 넓은 높이 기준을 쓴다.
+    var keyboardLikely = !!(vvH && innerH && vvH / innerH < 0.78);
+    var h = keyboardLikely ? Math.max(docH || 0, innerH || 0) : Math.max.apply(Math, values);
+    if(!(h > 300 && h < 2000)) h = Math.max.apply(Math, values);
+    return h ? (h * 0.01) : 0;
   }
-  function applyVh(v){
+  function measureWidth(){
+    try{ return window.innerWidth || document.documentElement.clientWidth || 0; }catch(e){ return 0; }
+  }
+  function save(v, width){
+    try{
+      if(v > 3 && v < 20) localStorage.setItem(KEY, String(v));
+      if(width > 240 && width < 1600) localStorage.setItem(WIDTH_KEY, String(width));
+    }catch(e){}
+  }
+  function apply(v, shouldSave, width){
     if(!(v > 3 && v < 20)) return;
     root.style.setProperty('--cover-vh', v + 'px');
-    try{ localStorage.setItem(KEY, String(v)); localStorage.setItem(WIDTH_KEY, String(measureWidth())); }catch(e){}
+    if(shouldSave) save(v, width || measureWidth());
   }
+  var measured = measure();
+  var currentWidth = measureWidth();
+  var stored = readStored();
+  var softRefreshRecent = false;
+  try{
+    var sr = parseInt(sessionStorage.getItem('oai_soft_refresh_requested') || '0', 10) || 0;
+    softRefreshRecent = !!sr && (now() - sr < 120000);
+  }catch(e){}
+  var widthMatches = !!(stored.width && currentWidth && Math.abs(stored.width - currentWidth) < 24);
+  var storedDiffersFromNow = !!(measured && stored.vh && Math.abs(measured - stored.vh) > 0.55);
+  // 새로고침뿐 아니라 같은 화면 폭의 일반 재진입에서도 직전 커버 높이를 먼저 쓰되,
+  // 저장된 값이 현재 실제 높이와 크게 다르면 그 값 때문에 하단이 위로 뜰 수 있으므로 즉시 갱신한다.
+  var useStored = !!(stored.vh && (softRefreshRecent || widthMatches) && !storedDiffersFromNow);
+  var firstVh = useStored ? stored.vh : (measured || stored.vh || 8);
+  apply(firstVh, !useStored, currentWidth);
+  var baseCoverWidth = currentWidth;
+
+  function isCoverVisible(){
+    try{
+      var c = document.getElementById('cover');
+      return !!c && !document.documentElement.classList.contains('app-active') && c.style.display !== 'none';
+    }catch(e){ return false; }
+  }
+  var settleTimer = 0;
   function releaseBooting(){
-    if(released) return;
-    released = true;
     try{ root.classList.remove('oai-cover-booting'); }catch(e){}
   }
-
-  
-  try{
-    var sv = parseFloat(localStorage.getItem(KEY) || '');
-    var sw = parseFloat(localStorage.getItem(WIDTH_KEY) || '');
-    var cw = measureWidth();
-    if(sv > 3 && sv < 20 && sw > 0 && Math.abs(sw - cw) < 24) applyVh(sv);
-  }catch(e){}
-
-  
-  function onLoad(){
-    var v = measure();
-    if(v > 3 && v < 20) applyVh(v);
-    setTimeout(releaseBooting, 60);
+  function afterStableFirstPaint(fn){
+    if(window.requestAnimationFrame){
+      requestAnimationFrame(fn);
+    }else{ fn(); }
   }
-  if(document.readyState === 'complete') setTimeout(onLoad, 0);
-  else window.addEventListener('load', onLoad, {once:true});
-
-  
-  setTimeout(releaseBooting, 2000);
-
-  
-  window.addEventListener('orientationchange', function(){
-    setTimeout(function(){ var v = measure(); if(v > 3 && v < 20) applyVh(v); }, 400);
-  }, {passive:true});
-
-  window.oaiSettleCoverSize = function(){};
+  function settleCoverSize(reason){
+    if(!isCoverVisible()) return;
+    var r = String(reason || '');
+    var width = measureWidth();
+    var widthChanged = !!(baseCoverWidth && width && Math.abs(width - baseCoverWidth) >= 24);
+    var orientationChanged = r.indexOf('orientation') >= 0;
+    // 주소창/브라우저 UI가 접히며 생기는 세로 viewport resize는 커버를 흔들리게 하므로 무시한다.
+    if(!widthChanged && !orientationChanged) return;
+    var next = measure();
+    if(!next) return;
+    var cur = parseFloat(getComputedStyle(root).getPropertyValue('--cover-vh')) || 0;
+    if(cur && Math.abs(next - cur) < 0.35) return;
+    apply(next, true, width);
+    if(width) baseCoverWidth = width;
+    try{
+      root.classList.add('oai-cover-resizing');
+      clearTimeout(settleTimer);
+      settleTimer = setTimeout(function(){ root.classList.remove('oai-cover-resizing'); }, 80);
+    }catch(e){}
+  }
+  function scheduleSettle(reason){
+    clearTimeout(settleTimer);
+    settleTimer = setTimeout(function(){ settleCoverSize(reason); }, 120);
+    setTimeout(function(){ settleCoverSize(reason + '-late'); }, 360);
+  }
+  window.addEventListener('orientationchange', function(){ scheduleSettle('orientation'); }, {passive:true});
+  window.addEventListener('resize', function(){ scheduleSettle('resize'); }, {passive:true});
+  if(window.visualViewport){
+    window.visualViewport.addEventListener('resize', function(){ scheduleSettle('visualViewport'); }, {passive:true});
+  }
+  // V3-20: 첫 진입 십자고상 사진은 위의 versioned session 키로 1회 표시하고, 이후 커버 높이 안정화만 유지한다.
+  if(!isInternalNoEffectReturn){
+    if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function(){ afterStableFirstPaint(releaseBooting); }, {once:true});
+    else afterStableFirstPaint(releaseBooting);
+    window.addEventListener('load', function(){ afterStableFirstPaint(releaseBooting); }, {once:true});
+  }
+  window.oaiSettleCoverSize = settleCoverSize;
 })();
 </script>
 <script>
+/* V3-20: iPhone/PWA 전체 화면 높이 안정화.
+   iOS에서 visualViewport가 일시적으로 작아진 값을 오래 붙잡아
+   기도문·목록·관구교구 지도 하단에 큰 빈 공간이 생기는 현상을 줄인다.
+   상태바 색상과 Android 레이아웃은 건드리지 않는다. */
+(function(){
+  var root = document.documentElement;
+  if(!root || !root.classList || !root.classList.contains('ios-device')) return;
 
+  var KEY = 'oai_ios_app_h_px_v3s';
+  var WIDTH_KEY = 'oai_ios_app_w_px_v3s';
+  var lastApplied = 0;
+  var lastWidth = 0;
+  var settleTimer = 0;
+
+  function isStandalone(){
+    try{ if(window.navigator && window.navigator.standalone === true) return true; }catch(_e){}
+    try{ return !!(window.matchMedia && window.matchMedia('(display-mode: standalone)').matches); }catch(_e){ return false; }
+  }
+  function width(){
+    try{ return Math.round(window.innerWidth || document.documentElement.clientWidth || 0); }catch(_e){ return 0; }
+  }
+  function validHeight(v){
+    v = Math.round(parseFloat(v || 0));
+    return (v > 320 && v < 2400) ? v : 0;
+  }
+  function measureHeight(){
+    var vals = [];
+    function add(v){ v = validHeight(v); if(v) vals.push(v); }
+    try{ add(document.documentElement && document.documentElement.clientHeight); }catch(_e){}
+    try{ add(window.innerHeight); }catch(_e){}
+    try{ add(window.visualViewport && window.visualViewport.height); }catch(_e){}
+    // 설치형 iPhone PWA에서는 screen.height가 실제 사용 가능한 전체 높이에 가장 가까운 경우가 많다.
+    // Safari/카카오 브라우저에서는 과도하게 커질 수 있으므로 standalone일 때만 보조값으로 쓴다.
+    if(isStandalone()){
+      try{ add(window.screen && window.screen.height); }catch(_e){}
+      try{ add(window.screen && window.screen.availHeight); }catch(_e){}
+    }
+    if(!vals.length) return 0;
+    return Math.max.apply(Math, vals);
+  }
+  function readStored(curW){
+    try{
+      var h = validHeight(localStorage.getItem(KEY) || '');
+      var w = Math.round(parseFloat(localStorage.getItem(WIDTH_KEY) || '0')) || 0;
+      if(!h || !w || !curW || Math.abs(w - curW) >= 24) return 0;
+      return h;
+    }catch(_e){ return 0; }
+  }
+  function save(h, w){
+    try{
+      if(validHeight(h)) localStorage.setItem(KEY, String(Math.round(h)));
+      if(w > 240 && w < 1600) localStorage.setItem(WIDTH_KEY, String(Math.round(w)));
+    }catch(_e){}
+  }
+  function applyHeight(h, w, reason){
+    h = validHeight(h);
+    if(!h) return;
+    lastApplied = h;
+    lastWidth = w || width();
+    root.style.setProperty('--oai-app-h', h + 'px');
+    root.style.setProperty('--cover-vh', (h * 0.01) + 'px');
+    save(h, lastWidth);
+  }
+  function settle(reason){
+    var w = width();
+    var measured = measureHeight();
+    var stored = readStored(w);
+    var widthChanged = !!(lastWidth && w && Math.abs(lastWidth - w) >= 24);
+    var next = measured;
+
+    if(widthChanged){
+      next = measured || stored || lastApplied;
+    }else{
+      // iOS의 일시적인 세로 축소값은 무시하고, 같은 폭에서는 더 큰 안정값을 유지한다.
+      next = Math.max(measured || 0, stored || 0, lastApplied || 0);
+    }
+    if(!next) return;
+    if(!widthChanged && lastApplied && Math.abs(next - lastApplied) < 2) return;
+    applyHeight(next, w, reason);
+  }
+  function schedule(reason){
+    clearTimeout(settleTimer);
+    settleTimer = setTimeout(function(){ settle(reason); }, 60);
+    setTimeout(function(){ settle(reason + '-late'); }, 80);
+    setTimeout(function(){ settle(reason + '-final'); }, 720);
+  }
+
+  applyHeight(Math.max(measureHeight() || 0, readStored(width()) || 0), width(), 'boot');
+  window.addEventListener('pageshow', function(){ schedule('pageshow'); }, {passive:true});
+  window.addEventListener('focus', function(){ schedule('focus'); }, {passive:true});
+  window.addEventListener('resize', function(){ schedule('resize'); }, {passive:true});
+  window.addEventListener('orientationchange', function(){ lastWidth = 0; schedule('orientation'); }, {passive:true});
+  document.addEventListener('visibilitychange', function(){ if(!document.hidden) schedule('visible'); }, {passive:true});
+  if(window.visualViewport){
+    window.visualViewport.addEventListener('resize', function(){ schedule('visualViewport'); }, {passive:true});
+  }
+  window.oaiSettleIosAppHeight = settle;
+})();
+</script>
+<script>
+/* 외부 사이트 복귀 직후 첫 페인트 안정막.
+   app.js가 붙기 전 화면 높이/헤더 재계산이 보이지 않게 먼저 덮고,
+   실제 해제는 app.js의 공통 외부복귀 안정화 함수가 담당한다. */
 (function(){
   function now(){ return Date.now ? Date.now() : new Date().getTime(); }
-  function clearQnaReturnEffectState(){
-    try{
-      sessionStorage.removeItem('oai_internal_return_no_effect_once');
-      sessionStorage.removeItem('oai_internal_return_no_effect_until');
-      sessionStorage.removeItem('oai_internal_page_nav');
-      sessionStorage.removeItem('oai_external_nav_started_at');
-      sessionStorage.removeItem('oai_external_nav_pagehide');
-      sessionStorage.removeItem('oai_external_nav_kind');
-      sessionStorage.removeItem('oai_external_nav_pending');
-      sessionStorage.removeItem('oai_external_nav_hold_until');
-      sessionStorage.removeItem('oai_external_nav_force_release_at');
-      sessionStorage.removeItem('oai_refresh_veil_until');
-      sessionStorage.removeItem('oai_refresh_veil_hold_ms');
-      sessionStorage.removeItem('oai_refresh_veil_reason');
-      sessionStorage.removeItem('oai_refresh_veil_visible_until');
-    }catch(_e){}
-    try{
-      document.documentElement.classList.remove(
-        'oai-internal-no-return-effect',
-        'oai-cover-booting',
-        'oai-cover-resizing',
-        'oai-returning',
-        'oai-diocese-returning',
-        'oai-external-return-freeze',
-        'oai-external-leaving',
-        'oai-stability-veil',
-        'oai-stability-veil-releasing',
-        'oai-category-entering',
-        'oai-category-dissolve',
-        'oai-category-dissolving'
-      );
-      document.documentElement.removeAttribute('data-oai-stability-reason');
-      document.documentElement.removeAttribute('data-oai-external-return-early');
-      document.documentElement.removeAttribute('data-oai-refresh-early-veil');
-      var veil=document.getElementById('oai-category-entry-veil');
-      if(veil){ veil.style.opacity=''; veil.className=''; }
-    }catch(_e){}
-  }
-  function consumeQnaNoEffectReturn(){
-    try{
-      var until=parseInt(sessionStorage.getItem('oai_internal_return_no_effect_until')||'0',10)||0;
-      var nowTs=Date.now ? Date.now() : new Date().getTime();
-      if(sessionStorage.getItem('oai_internal_return_no_effect_once') === '1' || (until && nowTs < until)){
-        clearQnaReturnEffectState();
-        return true;
-      }
-    }catch(_e){}
-    return false;
-  }
   function hasPendingExternalReturn(){
     try{
-      if(consumeQnaNoEffectReturn()) return false;
       var ts=parseInt(sessionStorage.getItem('oai_external_nav_started_at')||'0',10)||0;
       var pending=sessionStorage.getItem('oai_external_nav_pending')==='1' || sessionStorage.getItem('oai_external_nav_pagehide')==='1';
       return (!!ts && (now()-ts) < 10*60*1000) || pending;
     }catch(e){ return false; }
   }
   function hold(){
-    try{ if(consumeQnaNoEffectReturn()) return; }catch(_e){}
     try{
       document.documentElement.classList.add('oai-external-return-freeze','oai-stability-veil');
       document.documentElement.classList.remove('oai-stability-veil-releasing');
@@ -574,9 +616,15 @@ html.oai-cover-first-reveal #cover > * {
   window.addEventListener('pageshow', function(){ if(hasPendingExternalReturn()) hold(); }, true);
 })();
 </script>
-
+<!-- ★ 아래 ?v= 값들은 sw.js BUILD_VERSION과 맞춰주세요.
+       (sw.js CACHE_VERSION이 바뀌면 SW가 자동 갱신하지만,
+        첫 방문 브라우저 캐시 버스팅을 위해 함께 바꾸는 것이 좋습니다.) -->
 <script>
-
+/* 공개 코드에는 Kakao JavaScript 키와 REST 프록시 주소만 둡니다.
+   - Kakao JavaScript 키는 Kakao Developers에서 웹 도메인 제한을 반드시 적용하세요.
+   - REST API 키는 Cloudflare Worker 또는 서버 환경변수에만 보관하세요.
+   - KAKAO_REST_PROXY_URL에는 Worker의 공개 프록시 주소를 넣으세요.
+*/
 window.APP_CONFIG = {
   KAKAO_JS_KEY: '07f7989e29fdfb425fff924f36fb3ec0',
   KAKAO_REST_PROXY_URL: 'https://kakao-rest-proxy.bong0219.workers.dev'
@@ -588,129 +636,41 @@ window.APP_CONFIG = {
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<meta http-equiv="Permissions-Policy" content="geolocation=*">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="가톨릭길동무">
 <meta name="application-name" content="가톨릭길동무">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="color-scheme" content="light">
-<meta name="theme-color" content="#0e1535">
-<meta name="theme-color" media="(prefers-color-scheme: light)" content="#0e1535">
-<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0e1535">
-<script id="oai-status-bar-theme-lock-V1-14">
-(function(){
-  'use strict';
-  var COLOR='#0e1535';
-  function lockStatusTheme(){
-    try{
-      document.querySelectorAll('meta[name="theme-color"]').forEach(function(m){ m.setAttribute('content', COLOR); });
-      document.documentElement.style.backgroundColor = COLOR;
-    }catch(_e){}
-  }
-  lockStatusTheme();
-  window.addEventListener('pageshow', lockStatusTheme, {passive:true});
-  document.addEventListener('visibilitychange', lockStatusTheme, {passive:true});
-  window.addEventListener('focus', lockStatusTheme, {passive:true});
-})();
-</script>
-<link rel="manifest" href="manifest.json?v=V1-14">
-<link rel="apple-touch-icon" href="icon-192x192.png?v=V1-14">
+<meta name="theme-color" content="#f5f0e8">
+<link rel="manifest" href="manifest.json?v=V3-20">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon-v3-20.png?v=V3-20">
+<link rel="apple-touch-icon-precomposed" sizes="180x180" href="apple-touch-icon-v3-20.png?v=V3-20">
 <meta name="format-detection" content="telephone=no">
 <meta name="description" content="가톨릭길동무 - 가톨릭 신앙생활 종합 앱">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="가톨릭길동무">
 <meta property="og:title" content="가톨릭길동무">
 <meta property="og:description" content="성지 · 성당 · 기도문 · 순례길 · 가톨릭 웹사이트 안내">
-<meta property="og:image" content="icon-512x512.png?v=V1-14">
+<meta property="og:image" content="pwa-blank-icon-v3-20-512.png?v=V3-20">
 <meta property="og:image:width" content="512">
 <meta property="og:image:height" content="512">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="가톨릭길동무">
 <meta name="twitter:description" content="성지 · 성당 · 기도문 · 순례길 · 가톨릭 웹사이트 안내">
-<meta name="twitter:image" content="icon-512x512.png?v=V1-14">
+<meta name="twitter:image" content="pwa-blank-icon-v3-20-512.png?v=V3-20">
 <title>가톨릭길동무</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Crect width=%2232%22 height=%2232%22 fill=%22%230e1535%22/%3E%3Ctext x=%226%22 y=%2226%22 font-size=%2224%22 fill=%22%23d4aa6a%22%3E%E2%9C%9D%3C/text%3E%3C/svg%3E">
+<link rel="icon" type="image/png" sizes="192x192" href="pwa-blank-icon-v3-20-192.png?v=V3-20">
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style id="oai-initial-bg">html,body{margin:0;width:100%;height:100%;min-height:100%;background:#f5f0e8;overflow:hidden;color-scheme:light;}#cover{background:#f5f0e8;min-height:100%;}#app{background:#f8f6f2;display:none;}</style>
-<link rel="stylesheet" href="style.css?v=V1-14">
-
-<script id="oai-android-update-gate-script">
-(function(){
-  'use strict';
-  var MIN_ANDROID_VERSION = 233;
-  var PACKAGE_NAME = 'kr.catholic.gildonmu';
-
-  function getAndroidVersion(){
-    try{
-      var ua = navigator.userAgent || '';
-      var m = ua.match(/GILDONGMUAndroid\/(\d+)/);
-      return m ? parseInt(m[1], 10) : 0;
-    }catch(_e){ return 0; }
-  }
-
-  function isAndroidWebView(){
-    try{
-      var ua = navigator.userAgent || '';
-      return /Android/i.test(ua) && (/GILDONGMUAndroid\//.test(ua) || /; wv/i.test(ua) || /wv\)/i.test(ua));
-    }catch(_e){ return false; }
-  }
-
-  function openStore(){
-    var playUrl = 'https://play.google.com/store/apps/details?id=kr.catholic.gildonmu';
-    try{
-      window.location.href = playUrl;
-    }catch(_e){
-      try{ location.href = playUrl; }catch(__e){}
-    }
-  }
-
-  function showGate(){
-    try{
-      document.documentElement.classList.add('oai-android-update-required');
-      document.documentElement.classList.remove('oai-first-entry-intro','oai-cover-first-reveal','oai-cover-booting');
-      try{ sessionStorage.removeItem('oai_first_intro_seen_session'); }catch(_e){}
-      var bind = function(){
-        var btn = document.getElementById('oai-android-update-btn');
-        if(btn && !btn.__oaiBound){
-          btn.__oaiBound = true;
-          btn.addEventListener('click', openStore, false);
-        }
-      };
-      if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bind, {once:true});
-      else bind();
-    }catch(_e){}
-  }
-
-    var androidVersion = getAndroidVersion();
-  if(isAndroidWebView() && (androidVersion === 0 || androidVersion < MIN_ANDROID_VERSION)){
-    window.__OAI_ANDROID_UPDATE_REQUIRED__ = true;
-    showGate();
-  }
-})();
-</script>
-
+<link rel="stylesheet" href="style.css?v=V3-20">
 </head>
 <body>
-
-<div id="oai-android-update-gate" role="dialog" aria-modal="true" aria-label="앱 업데이트 안내">
-  <div class="oai-update-card">
-    <div class="oai-update-cross" aria-hidden="true">✝</div>
-    <h1 class="oai-update-title">새 업데이트가 있습니다</h1>
-    <p class="oai-update-text">
-      더 안정적인 이용을 위해<br>
-      최신 버전으로 업데이트해 주세요.
-    </p>
-    <button id="oai-android-update-btn" class="oai-update-btn" type="button">Google Play에서 업데이트</button>
-    <div class="oai-update-sub">업데이트 후 앱을 다시 열면 정상적으로 이용할 수 있습니다.</div>
-  </div>
-</div>
-
 <div id="missa-view" role="dialog" aria-modal="true" aria-label="매일미사">
   <div id="missa-bar">
-    <button id="missa-close" aria-label="매일미사 닫기"><span aria-hidden="true">←</span></button>
+    <button id="missa-close" aria-label="매일미사 닫기"><i class="fa-solid fa-arrow-left"></i></button>
     <span id="missa-bar-title">✝ 매일미사</span>
   </div>
 </div>
@@ -747,7 +707,7 @@ window.APP_CONFIG = {
   <div id="prayer-tabs"></div>
   <div id="prayer-search-bar">
     <div id="prayer-search-wrap">
-      <span id="prayer-search-ico" aria-hidden="true">⌕</span>
+      <i class="fa-solid fa-magnifying-glass" id="prayer-search-ico"></i>
       <input type="text" id="prayer-search-inp" placeholder="기도문 검색" aria-label="기도문 검색" autocomplete="off" autocorrect="off" spellcheck="false">
     </div>
     <div class="pr-font-ctrl">
@@ -768,7 +728,7 @@ window.APP_CONFIG = {
         <div class="pr-font-divider"></div>
         <button id="pr-lg-btn-2" class="pr-font-btn pr-lg">가</button>
       </div>
-      <button id="pr-detail-star" class="pr-star" aria-label="즐겨찾기" style="margin-left:6px;font-size:24px;width:34px;height:34px;display:flex;align-items:center;justify-content:center;"><span aria-hidden="true">★</span></button>
+      <button id="pr-detail-star" class="pr-star" aria-label="즐겨찾기" style="margin-left:6px;font-size:20px;width:34px;height:34px;display:flex;align-items:center;justify-content:center;"><i class="fa-solid fa-star"></i></button>
     </div>
     <div id="prayer-detail-body">
       <div class="pr-content-card" id="prayer-detail-content"></div>
@@ -776,7 +736,7 @@ window.APP_CONFIG = {
   </div>
 </div>
 <div id="cover">
-<div id="oai-build-marker" aria-label="현재 버전" role="status" hidden aria-hidden="true">V1-14</div>
+<div id="oai-build-marker" aria-label="수정 단계 표시" style="position:absolute;left:8px;bottom:calc(env(safe-area-inset-bottom,0px) + 6px);z-index:120;display:none;align-items:center;justify-content:center;min-width:46px;height:20px;padding:0 8px;border-radius:999px;background:rgba(31,42,68,.72);color:#fff;font-size:10px;font-weight:800;line-height:1;pointer-events:none;opacity:0;visibility:hidden;"></div>
   <div id="cv-pull-modern" aria-hidden="true">
   <div class="cv-pull-ring">
     <svg viewBox="0 0 24 24" class="cv-pull-icon">
@@ -790,7 +750,7 @@ window.APP_CONFIG = {
       <div class="pr-font-divider"></div>
       <button type="button" id="cover-lg-btn" class="pr-font-btn pr-lg">가</button>
     </div>
-    <button id="cover-menu-btn" class="cover-guide-btn cover-menu-btn" type="button" aria-label="메뉴 열기"><span class="cover-menu-hamburger" aria-hidden="true"><span></span><span></span><span></span></span><span class="cover-menu-label">메 뉴</span></button>
+    <button id="cover-guide-btn" type="button" aria-label="가톨릭길동무 주요 기능 보기">주요기능</button>
     <div id="mass-quick-modal" class="guide-modal mass-quick-modal" role="dialog" aria-modal="true" aria-label="미사 중 빠른 사용" aria-hidden="true">
       <div class="guide-backdrop" data-mass-quick-close="1"></div>
       <div class="guide-panel mass-quick-panel">
@@ -838,44 +798,81 @@ window.APP_CONFIG = {
               <span class="cover-name">관구·교구 알아보기</span>
           </button>
       </div>
-      
-      <div id="cover-action-row" class="cover-action-single">
+      <div id="ios-kakao-safari-banner" class="ios-safari-banner" aria-hidden="true" hidden>
+        <button id="ios-kakao-safari-close" class="ios-safari-banner-x" type="button" aria-label="iPhone 앱 설치 안내 닫기">×</button>
+        <div class="ios-safari-banner-text">
+          <strong>iPhone 앱 설치 안내</strong>
+          <span>카카오톡에서는 Safari로 열어야<br>홈 화면에 추가할 수 있습니다.</span>
+        </div>
+        <button id="ios-kakao-safari-help" type="button">설치 방법 보기</button>
+      </div>
+      <!-- 커버 하단 작업줄: 새로고침 + 문의·건의 -->
+      <div id="cover-action-row" aria-label="커버 보조 기능">
         <div id="cover-update-box">
-          <button id="cover-update-btn" class="cover-refresh-main-btn" type="button"
-                  data-target-version="V1-14"
-                  aria-label="V1-14 앱 새로고침"><span class="refresh-version-main">V1</span><span class="refresh-version-sub">-68</span> 새로고침</button>
-          <div id="cover-update-hint" role="status" aria-live="polite"></div>
+          <button id="cover-update-btn" type="button" data-target-version="V3-4" aria-label="짧게 누르면 새로고침, 더 길게 누르면 앱 캐시 초기화">
+            V3-4 새로고침
+          </button>
+          <div id="cover-update-hint" aria-live="polite">아래 버전과 다릅니다. 눌러서 최신 파일을 다시 받아 주세요.</div>
+        </div>
+        <button id="qna-cover-btn" type="button" aria-label="문의·건의">
+          💬 문의·건의
+        </button>
+      </div>
+    </div>
+
+<!-- 커버 하단 안내문구 — 제일 아래 -->
+<div id="cover-bottom-note" aria-label="앱 안내문구">
+  본 앱은 가톨릭 신자들의 신앙생활을 돕기 위해 만든 비공식 개인 앱입니다.<br>
+  정보는 CBCK, 굿뉴스 및 각 교구 홈페이지를 참고했습니다.<br>
+</div>
+
+<!-- iPhone 카카오톡 Safari 설치 안내 팝업 -->
+<div id="ios-safari-guide-modal" class="guide-modal" role="dialog" aria-modal="true" aria-labelledby="ios-safari-guide-title" aria-hidden="true">
+  <div class="guide-backdrop" data-ios-safari-close="1"></div>
+  <div class="guide-panel ios-safari-guide-panel">
+    <button class="guide-x" type="button" data-ios-safari-close="1" aria-label="iPhone 앱 설치 안내 닫기">×</button>
+    <div class="guide-badge">iPhone 앱 설치 안내</div>
+    <h2 id="ios-safari-guide-title">iPhone 앱 설치 안내</h2>
+    <div class="ios-safari-scroll" aria-label="iPhone 앱 설치 단계 안내">
+      <p class="guide-lead">실제 iPhone 화면 순서대로 따라 해 주세요.</p>
+      <div class="ios-safari-steps">
+        <div class="ios-safari-step">
+          <b>1</b>
+          <span>카카오톡 하단 버튼 4개 중 <strong>오른쪽 끝 버튼</strong>을 누르세요.</span>
+          <img data-src="ios-install-step1-kakao-bottom-buttons.png?v=V3-20" alt="카카오톡 오른쪽 아래 버튼 모양" width="945" height="248" loading="lazy" decoding="async">
+        </div>
+        <div class="ios-safari-step">
+          <b>2</b>
+          <span>공유 화면에서 <strong>Safari로 열기</strong>를 누르세요.</span>
+          <img data-src="ios-install-step2-safari-open.png?v=V3-20" alt="Safari로 열기 버튼" width="880" height="755" loading="lazy" decoding="async" fetchpriority="low">
+        </div>
+        <div class="ios-safari-step">
+          <b>3</b>
+          <span>Safari로 열린 뒤, 화면 <strong>오른쪽 아래 ··· 버튼</strong>을 누르세요.</span>
+          <div class="ios-safari-shot ios-safari-shot-more">
+            <img data-src="KakaoTalk_20260514_134255658_04.jpg?v=V3-20" alt="Safari 오른쪽 아래 더보기 버튼" width="960" height="307" loading="lazy" decoding="async">
+            <i class="ios-gold-highlight" aria-hidden="true"></i>
+          </div>
+        </div>
+        <div class="ios-safari-step">
+          <b>4</b>
+          <span>열린 메뉴에서 <strong>공유</strong>를 누르세요.</span>
+          <img data-src="ios-install-step3-share-menu.png?v=V3-20" alt="Safari 공유 버튼" width="750" height="580" loading="lazy" decoding="async" fetchpriority="low">
+        </div>
+        <div class="ios-safari-step">
+          <b>5</b>
+          <span>목록을 아래로 내려 <strong>홈 화면에 추가</strong>를 누르세요.</span>
+          <img data-src="ios-install-step4-home-screen.png?v=V3-20" alt="홈 화면에 추가 버튼" width="865" height="750" loading="lazy" decoding="async" fetchpriority="low">
         </div>
       </div>
     </div>
-    <div id="cover-bottom-note" aria-label="앱 안내문구">
-      본 앱은 가톨릭 신자들의 신앙생활을 돕기 위해 만든 비공식 개인 앱입니다.<br>
-      정보는 CBCK, 굿뉴스 및 각 교구 홈페이지를 참고했습니다.
-    </div>
-
-<div id="guide-intro-modal" class="guide-modal" role="dialog" aria-modal="true" aria-labelledby="guide-intro-title" aria-hidden="true">
-  <div class="guide-backdrop" data-guide-close="intro"></div>
-  <div class="guide-panel guide-intro-panel">
-    <button class="guide-x" type="button" data-guide-close="intro" aria-label="주요 기능 안내 닫기">×</button>
-    <div class="guide-badge">주요 기능</div>
-    <h2 id="guide-intro-title">가톨릭길동무 주요 기능</h2>
-    <p class="guide-lead">처음사용하시는 분을 위한 안내</p>
-    <p class="guide-intro-note">성당 찾기, 기도문, 성지·피정, 순례길, 웹사이트, 새로고침 기능을 한눈에 확인할 수 있습니다.</p>
     <div class="guide-actions">
-      <button id="guide-open-detail-btn" type="button" class="guide-primary">주요 기능 보기</button>
-      <button id="guide-later-btn" type="button" class="guide-secondary">나중에</button>
+      <button type="button" class="guide-primary" data-ios-safari-close="1">확인</button>
     </div>
   </div>
 </div>
 
-<div id="favorites-reset-notice-banner" class="favorites-reset-banner" aria-live="polite" hidden>
-  <div class="favorites-reset-text">
-    <strong>업데이트 안내</strong>
-    <span>앱 안정화를 위한 업데이트가 진행되었습니다.<br>기존 즐겨찾기는 초기화되었으니 다시 등록해 주세요.</span>
-  </div>
-  <button id="favorites-reset-notice-ok" type="button">확인</button>
-</div>
-
+<!-- 주요 기능 안내 팝업 (커버 전용, 별도 파일 없음) -->
 <div id="guide-manual-modal" class="guide-modal" role="dialog" aria-modal="true" aria-labelledby="guide-manual-title" aria-hidden="true">
   <div class="guide-backdrop" data-guide-close="manual"></div>
   <div class="guide-panel guide-manual-panel">
@@ -924,52 +921,27 @@ window.APP_CONFIG = {
     <button id="guide-ok-btn" type="button" class="guide-primary guide-ok">확인</button>
   </div>
 </div>
-</div>
 
-<div id="cover-menu-modal" class="cover-menu-modal" aria-hidden="true">
-  <div class="cover-menu-backdrop" data-cover-menu-close="true"></div>
-  <div class="cover-menu-panel" role="dialog" aria-modal="true" aria-labelledby="cover-menu-title">
-    <div class="cover-menu-head">
-      <div>
-        <div id="cover-menu-title" class="cover-menu-title">가톨릭길동무 메뉴</div>
-        <div class="cover-menu-subtitle">필요한 기능을 선택하세요</div>
-      </div>
-      <button id="cover-menu-close" class="cover-menu-close" type="button" aria-label="메뉴 닫기">×</button>
-    </div>
-    <div class="cover-menu-list">
-      <button id="cover-menu-guide-btn" class="cover-menu-item" type="button">
-        <span class="cover-menu-icon">📘</span>
-        <span class="cover-menu-text">주요기능</span>
-      </button>
-      <a id="cover-menu-privacy-link" class="cover-menu-item" href="privacy.html?v=V1-14">
-        <span class="cover-menu-icon">🛡</span>
-        <span class="cover-menu-text">개인정보처리방침</span>
-      </a>
-      <button id="cover-menu-qna-btn" class="cover-menu-item" type="button">
-        <span class="cover-menu-icon">💬</span>
-        <span class="cover-menu-text">문의·건의</span>
-      </button>
-    </div>
-  </div>
+<!-- PWA 설치 버튼 (커버 전용) -->
+<button id="pwa-install-btn" aria-label="앱 설치하기">
+  📲 홈 화면에 앱 설치하기
+</button>
 </div>
-
-<script src="constants.js?v=V1-14"></script>
-<script src="core.js?v=V1-14"></script>
-<script src="app.js?v=V1-14"></script>
+<script src="app.js?v=V3-20"></script>
 <div id="oai-category-entry-veil" aria-hidden="true"></div>
 <div id="app"><div id="tabbar"><button id="tab-btn-nearby" class="tab-btn" data-tab="nearby"><span class="tab-icon">📍</span><span id="tab-nearby-lbl">내주변</span></button><button id="tab-btn-list" class="tab-btn" data-tab="list"><span class="tab-icon">📋</span><span id="tab-list-lbl">목록</span></button><button id="tab-btn-region" class="tab-btn" data-tab="region"><span class="tab-icon">🔍</span>지역검색
     </button><button id="tab-btn-route" class="tab-btn" data-tab="route"><span class="tab-icon">🧭</span>길찾기
-    </button></div><div id="map-wrap"><div id="map"></div><button id="loc-btn">📍<span style="font-size:12px">내위치</span></button><div id="legend"><div class="leg-row"><div class="leg-dot" style="background:var(--shrine)"></div><span>성지</span></div><div class="leg-row"><div class="leg-dot" style="background:var(--pilgrim)"></div><span>순례지</span></div><div class="leg-row"><div class="leg-dot" style="background:var(--martyr)"></div><span>순교사적지</span></div></div><div id="route-guide"></div><button id="map-category-close-btn" class="map-category-close" type="button" aria-label="카테고리 닫고 커버로 이동">×</button></div><div class="sheet" id="sheet-nearby"><div class="sheet-hd"><div class="sheet-title" id="nearby-sheet-title">내주변</div><button class="sheet-x" id="nearby-close-btn" aria-label="내주변 목록 닫기">×</button></div><div class="category-source-note source-note-shrine">성지 정보는 CBCK 홈페이지를 참고했습니다.</div><div class="category-source-note source-note-parish">성당 정보는 각 교구 홈페이지를 참고했습니다.</div><div class="category-source-note source-note-retreat">피정의집 정보는 CBCK 및 각 교구 홈페이지를 참고했습니다.</div><div class="sheet-body" id="nearby-body"><div class="empty-msg">📍 위치를 확인하는 중...</div></div></div><div class="sheet" id="sheet-list"><div class="sheet-hd"><div class="sheet-title" id="list-sheet-title">찾기 목록</div><button class="sheet-x" id="list-close-btn" aria-label="찾기 목록 닫기">×</button></div><div class="srch-bar"><div class="srch-inner"><span style="font-size:14px;opacity:.5;margin-right:8px;color:#fff">🔍</span><input type="text" id="list-srch-inp" placeholder="이름, 주소 검색" aria-label="이름, 주소 검색"
-          autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" inputmode="search" enterkeyhint="done"><button class="srch-x" id="list-srch-x" aria-label="검색어 지우기">×</button></div></div><div class="filter-bar" id="list-filter-bar"></div><div class="category-source-note source-note-shrine">성지 정보는 CBCK 홈페이지를 참고했습니다.</div><div class="category-source-note source-note-parish">성당 정보는 각 교구 홈페이지를 참고했습니다.</div><div class="category-source-note source-note-retreat">피정의집 정보는 CBCK 및 각 교구 홈페이지를 참고했습니다.</div><div class="sheet-body" id="list-body"></div></div><div class="sheet" id="sheet-region"><div class="sheet-hd"><div class="sheet-title" id="region-sheet-title">지역검색</div><button class="sheet-x" id="region-close-btn" aria-label="지역검색 닫기">×</button></div><div class="region-wrap"><div class="region-row"><div class="srch-inner" style="flex:1"><span style="font-size:14px;opacity:.4;margin-right:8px;color:#fff">🔍</span><input type="text" id="region-inp" aria-label="지역 검색"
+    </button></div><div id="map-wrap"><div id="map"></div><button id="loc-btn">📍<span style="font-size:12px">내위치</span></button><div id="legend"><div class="leg-row"><div class="leg-dot" style="background:var(--shrine)"></div><span>성지</span></div><div class="leg-row"><div class="leg-dot" style="background:var(--pilgrim)"></div><span>순례지</span></div><div class="leg-row"><div class="leg-dot" style="background:var(--martyr)"></div><span>순교사적지</span></div></div><div id="route-guide"></div><button id="map-category-close-btn" class="map-category-close" type="button" aria-label="카테고리 닫고 커버로 이동">×</button></div><div class="sheet" id="sheet-nearby"><div class="sheet-hd"><div class="sheet-title" id="nearby-sheet-title">내주변</div><button class="sheet-x" id="nearby-close-btn" aria-label="내주변 목록 닫기">×</button></div><div class="sheet-body" id="nearby-body"><div class="empty-msg">📍 위치를 확인하는 중...</div></div></div><div class="sheet" id="sheet-list"><div class="sheet-hd"><div class="sheet-title" id="list-sheet-title">찾기 목록</div><button class="sheet-x" id="list-close-btn" aria-label="찾기 목록 닫기">×</button></div><div class="srch-bar"><div class="srch-inner"><span style="font-size:14px;opacity:.5;margin-right:8px;color:#fff">🔍</span><input type="text" id="list-srch-inp" placeholder="이름, 주소 검색" aria-label="이름, 주소 검색"
+          autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" inputmode="search" enterkeyhint="done"><button class="srch-x" id="list-srch-x" aria-label="검색어 지우기">×</button></div></div><div class="filter-bar" id="list-filter-bar"></div><div class="sheet-body" id="list-body"></div></div><div class="sheet" id="sheet-region"><div class="sheet-hd"><div class="sheet-title" id="region-sheet-title">지역검색</div><button class="sheet-x" id="region-close-btn" aria-label="지역검색 닫기">×</button></div><div class="region-wrap"><div class="region-row"><div class="srch-inner" style="flex:1"><span style="font-size:14px;opacity:.4;margin-right:8px;color:#fff">🔍</span><input type="text" id="region-inp" aria-label="지역 검색"
             placeholder="지역명 또는 장소명 입력"
             style="flex:1;background:none;border:none;outline:none;font-size:13px;color:#fff;font-family:inherit"
-            autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" inputmode="search" enterkeyhint="done"></div><button id="region-search-btn" class="region-search-btn">검색</button></div></div><div class="category-source-note source-note-shrine">성지 정보는 CBCK 홈페이지를 참고했습니다.</div><div class="category-source-note source-note-parish">성당 정보는 각 교구 홈페이지를 참고했습니다.</div><div class="category-source-note source-note-retreat">피정의집 정보는 CBCK 및 각 교구 홈페이지를 참고했습니다.</div><div class="sheet-body" id="region-body"><div class="empty-msg">
+            autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" inputmode="search" enterkeyhint="done"></div><button id="region-search-btn" class="region-search-btn">검색</button></div></div><div class="sheet-body" id="region-body"><div class="empty-msg">
         🏞 여행지나 숙박 지역을 검색하면<br>근처 성지/성당 목록이 나타납니다
       </div></div></div><div class="sheet" id="sheet-route"><button class="route-sheet-x" id="route-close-btn" type="button" aria-label="길찾기 닫기">×</button><div id="rs-top" style="padding:12px 48px 0 14px;flex-shrink:0;"><div style="display:flex;align-items:stretch;gap:0;"><div style="flex:1;display:flex;flex-direction:column;gap:6px;"><div id="rs-start-box" class="rs-start-box"><div class="rs-dot" style="background:#1565c0;"></div><span class="rs-lbl empty" id="rs-start-lbl">출발지를 선택하세요</span><button id="rs-myloc-btn" class="rs-myloc"
               style="flex-shrink:0;">📍 현위치</button></div><div id="rs-end-box" class="rs-end-box"><div class="rs-dot" style="background:#e53935;"></div><span class="rs-lbl empty" id="rs-end-lbl">도착지를 선택하세요</span><button class="rs-x" id="rs-end-x"
               style="display:none" aria-label="도착지 지우기">×</button></div></div><div style="display:flex;align-items:center;padding-left:10px;"><button id="rs-swap-btn" class="rs-swap-btn" aria-label="출발지·도착지 바꾸기">⇅</button></div></div><button id="rs-search-btn">
         🔍 경로 검색
-      </button></div><div id="rs-bottom" style="padding:10px 14px 14px;"><div id="rs-result" style="display:none;"><div class="rs-result"><div class="rs-stats"><div class="rs-stat"><div class="rs-stat-lbl">도로 거리</div><div class="rs-stat-val"><span id="rs-km">—</span><span class="rs-stat-unit"> km</span></div></div><div class="rs-stat"><div class="rs-stat-lbl">소요시간</div><div class="rs-stat-val"><span id="rs-time">—</span></div></div></div><div class="rs-note" id="rs-note"></div><div class="route-btns"><button id="rs-kakao-btn" class="btn-kakao-route">카카오내비</button><button id="rs-reset-btn" class="btn-route-reset">다시선택</button></div></div></div><div class="rs-hint" id="rs-hint">출발·도착을 탭하거나<br>지도에서 마커를 직접 탭하세요</div></div></div><div id="info-card"><div class="ic-header"><div class="ic-name" id="ic-name"></div><span class="ic-type-badge" id="ic-type"></span><button id="ic-close-btn" class="ic-close-btn" aria-label="닫기">×</button></div><div class="ic-body"><div class="ic-addr-row"><div class="ic-addr-left"><div class="ic-sub" id="ic-sub"></div><div class="ic-addr-val" id="ic-addr"></div></div><div class="ic-dist-col" id="ic-dist-col"><div class="ic-dist-lbl">내위치에서 거리</div><div class="ic-dist-box" id="ic-dist"></div></div></div><div class="ic-btn-row"><a class="ic-tel-btn" id="ic-tel-link" href="#" style="display:none"><span class="ic-tel-icon">📞</span><span class="ic-tel" id="ic-tel"></span></a><button id="ic-route-btn" class="ic-route-btn">경로검색</button></div><div class="ic-links" id="ic-links-row" style="display:none;padding:7px 14px 0;"><a class="ic-link-btn ic-hp-btn" id="ic-hp" href="#" target="_blank" style="display:none">홈페이지</a><button class="ic-link-btn ic-guide-btn" id="ic-guide" style="display:none">성지 상세페이지</button></div><div style="padding:7px 14px 0;"><button class="btn-kakao-nav" id="ic-kakao-nav">카카오내비</button></div></div></div><div id="srch-modal" role="dialog" aria-modal="true" aria-label="장소 검색"><div class="sm-inner"><div class="sm-hd"><span class="sm-title" id="sm-title">성지 검색</span><button id="sm-close-btn" class="sm-x" aria-label="검색 닫기">×</button></div><div class="sm-filter" id="sm-filter-bar"></div><div class="sm-srch"><div class="sm-si"><span>🔍</span><input type="text" id="sm-inp" placeholder="이름 또는 장소 입력" aria-label="장소 이름 입력"
+      </button></div><div id="rs-bottom" style="padding:10px 14px 14px;"><div id="rs-result" style="display:none;"><div class="rs-result"><div class="rs-stats"><div class="rs-stat"><div class="rs-stat-lbl">🛣 도로 거리</div><div class="rs-stat-val"><span id="rs-km">—</span><span class="rs-stat-unit"> km</span></div></div><div class="rs-stat"><div class="rs-stat-lbl">🚗 소요시간</div><div class="rs-stat-val"><span id="rs-time">—</span></div></div></div><div class="rs-note" id="rs-note"></div><div class="route-btns"><button id="rs-kakao-btn" class="btn-kakao-route">🗺 카카오내비</button><button id="rs-reset-btn" class="btn-route-reset">↩ 다시선택</button></div></div></div><div class="rs-hint" id="rs-hint">출발·도착을 탭하거나<br>지도에서 마커를 직접 탭하세요</div></div></div><div id="info-card"><div class="ic-header"><div class="ic-name" id="ic-name"></div><button id="ic-close-btn" class="ic-close-btn" aria-label="닫기">×</button></div><div class="ic-body"><div class="ic-meta"><span class="ic-sub" id="ic-sub"></span><span class="ic-type-badge" id="ic-type"></span></div><div class="ic-addr-row"><div class="ic-addr-left"><div class="ic-addr-lbl">주소</div><div class="ic-addr-val" id="ic-addr"></div></div><div class="ic-dist-col" id="ic-dist-col"><div class="ic-dist-lbl">내위치에서 거리</div><div class="ic-dist-box" id="ic-dist"></div></div></div><div class="ic-btn-row"><a class="ic-tel-btn" id="ic-tel-link" href="#" style="display:none"><span class="ic-tel-icon">📞</span><span class="ic-tel" id="ic-tel"></span></a><button id="ic-route-btn" class="ic-route-btn">경로검색</button></div><div class="ic-links" id="ic-links-row" style="display:none;padding:7px 14px 0;"><a class="ic-link-btn ic-hp-btn" id="ic-hp" href="#" target="_blank" style="display:none">홈페이지</a><button class="ic-link-btn ic-guide-btn" id="ic-guide" style="display:none">성지 상세페이지</button></div><div style="padding:7px 14px 0;"><button class="btn-kakao-nav" id="ic-kakao-nav">카카오내비</button></div></div></div><div id="srch-modal" role="dialog" aria-modal="true" aria-label="장소 검색"><div class="sm-inner"><div class="sm-hd"><span class="sm-title" id="sm-title">성지 검색</span><button id="sm-close-btn" class="sm-x" aria-label="검색 닫기">×</button></div><div class="sm-filter" id="sm-filter-bar"></div><div class="sm-srch"><div class="sm-si"><span>🔍</span><input type="text" id="sm-inp" placeholder="이름 또는 장소 입력" aria-label="장소 이름 입력"
             autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" inputmode="search" enterkeyhint="done"></div></div><div style="display:flex;border-bottom:1px solid #eee;flex-shrink:0;background:#f8f9fc;" id="sm-tab-bar"><button class="sm-tab active" id="sm-tab-cat">성지/성당/피정</button><button class="sm-tab" id="sm-tab-place">일반장소</button></div><div class="sm-body" id="sm-body"></div><div class="sm-body" id="sm-body-place" style="display:none;"></div></div></div></div>
 <div id="web-view" role="dialog" aria-modal="true" aria-label="가톨릭 웹사이트" class="module-view">
   <div class="module-bar web">
@@ -1024,20 +996,28 @@ window.APP_CONFIG = {
           <span class="trail-sh-arr">›</span>
         </div>
       </div>
-      <button id="trail-loc-btn" class="trail-loc-btn">📍<span style="font-size:12px">내위치</span></button>
+      <button id="trail-loc-btn" class="trail-loc-btn">📍 내 위치</button>
     </div>
     <div class="trail-panel" id="trail-panel-list">
       <div id="trail-list"></div>
     </div>
   </div>
 </div>
-<script src="web.js?v=V1-14"></script>
+<script src="web.js?v=V3-20"></script>
 
 <div id="qna-view" role="dialog" aria-modal="true" aria-label="문의·건의" class="module-view"><div class="module-bar qna"><div class="module-bar-main"><div class="module-bar-ico">✝</div><div class="module-bar-txt"><div class="module-bar-title">문의·건의</div><div class="module-bar-sub">질문, 오류, 수정요청을 남겨주세요</div></div></div><button id="qna-close-btn" class="module-close" aria-label="문의·건의 닫기">×</button></div><div class="qna-body"><div class="qna-tabs"><button id="qna-tab-write" class="qna-tab on" type="button">작성</button></div><div class="qna-list" id="qna-list"></div></div></div>
 
-<script src="patches.js?v=V1-14"></script>
+<script src="patches.js?v=V3-20"></script>
 
-<script src="sw-update.js?v=V1-14"></script>
+<script src="sw-update.js?v=V3-20"></script>
+
+
+
+
+
+
+
+
 
 </body>
 </html>
