@@ -5815,3 +5815,14 @@ html.oai-font-global .sheet-title {
   font-weight: 700 !important;
 }
 
+/* V1-72: match Mass/Prayer/Hymn quick titles with cover category title size */
+#cover #cc-1 .cover-name,
+html.oai-font-global #cover #cc-1 .cover-name,
+#cover #mass-quick-modal .mass-quick-btn strong,
+html.oai-font-global #cover #mass-quick-modal .mass-quick-btn strong {
+  font-size: calc(18px * var(--app-font-scale, 1)) !important;
+  line-height: 1.14 !important;
+  font-weight: 850 !important;
+  letter-spacing: -.03em !important;
+}
+

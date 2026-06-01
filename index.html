@@ -2,7 +2,7 @@
 <html lang="ko" class="oai-font-global" style="background:#f5f0e8;">
 <head>
 <style id="oai-first-entry-bg">html,body{margin:0;width:100%;min-height:100%;background:#f5f0e8;color-scheme:light;}body{background:#f5f0e8;}</style>
-<link rel="preload" href="intro-cross-jesus.jpg?v=V1-71" as="image" fetchpriority="high">
+<link rel="preload" href="intro-cross-jesus.jpg?v=V1-72" as="image" fetchpriority="high">
 
 <style id="oai-android-update-gate-style">
 html.oai-android-update-required,
@@ -135,8 +135,8 @@ html.oai-first-entry-intro #cover > * {
   animation:none !important;
 }
 html.oai-first-entry-intro.oai-cover-under-intro-reveal #cover > * {
-  opacity:0 !important;
-  visibility:hidden !important;
+  opacity:1 !important;
+  visibility:visible !important;
   animation:none !important;
 }
 
@@ -148,6 +148,7 @@ html.oai-first-entry-intro::before {
   background:#f5f0e8;
   pointer-events:none;
   opacity:1;
+  animation:oaiIvoryIntroVeil 1.62s cubic-bezier(.18,.76,.22,1) both;
 }
 html.oai-first-entry-intro::after {
   content:"";
@@ -162,7 +163,7 @@ html.oai-first-entry-intro::after {
     linear-gradient(to right, #f5f0e8 0%, rgba(245,240,232,.96) 5%, rgba(245,240,232,.60) 13%, rgba(245,240,232,.16) 24%, rgba(245,240,232,0) 36%, rgba(245,240,232,0) 64%, rgba(245,240,232,.16) 76%, rgba(245,240,232,.60) 87%, rgba(245,240,232,.96) 95%, #f5f0e8 100%),
     linear-gradient(to bottom, #f5f0e8 0%, rgba(245,240,232,.90) 6%, rgba(245,240,232,.36) 17%, rgba(245,240,232,0) 30%, rgba(245,240,232,0) 70%, rgba(245,240,232,.36) 83%, rgba(245,240,232,.90) 94%, #f5f0e8 100%),
     radial-gradient(ellipse 96% 88% at 50% 48%, rgba(245,240,232,0) 50%, rgba(245,240,232,.08) 62%, rgba(245,240,232,.34) 76%, rgba(245,240,232,.76) 90%, rgba(245,240,232,1) 100%),
-    url("intro-cross-jesus.jpg?v=V1-71");
+    url("intro-cross-jesus.jpg?v=V1-72");
   background-position:center center, center center, center center, center center;
   background-size:100% 100%, 100% 100%, 100% 100%, auto 96%;
   background-repeat:no-repeat, no-repeat, no-repeat, no-repeat;
@@ -183,21 +184,26 @@ html.oai-first-entry-intro::after {
     linear-gradient(to right, transparent 0%, rgba(0,0,0,.35) 6%, rgba(0,0,0,.82) 15%, #000 28%, #000 72%, rgba(0,0,0,.82) 85%, rgba(0,0,0,.35) 94%, transparent 100%),
     linear-gradient(to bottom, transparent 0%, rgba(0,0,0,.50) 5%, rgba(0,0,0,.90) 13%, #000 24%, #000 76%, rgba(0,0,0,.90) 87%, rgba(0,0,0,.50) 95%, transparent 100%);
   mask-composite: intersect;
-  animation:oaiJesusIntroPhoto 1.80s cubic-bezier(.18,.76,.22,1) both;
+  animation:oaiJesusIntroPhoto 1.62s cubic-bezier(.18,.76,.22,1) both;
 }
 
 html.oai-cover-first-reveal #cover {
-  animation:oaiCoverScaleReveal .46s cubic-bezier(.18,.76,.22,1) both !important;
+  animation:oaiCoverScaleReveal .32s cubic-bezier(.18,.76,.22,1) both !important;
   transform-origin:center center !important;
   will-change:opacity, transform;
 }
 html.oai-cover-first-reveal #cover > * {
   transform-origin:center center !important;
-  animation:oaiCoverScaleReveal .46s cubic-bezier(.18,.76,.22,1) both !important;
+  animation:oaiCoverScaleReveal .32s cubic-bezier(.18,.76,.22,1) both !important;
 }
 @keyframes oaiCoverScaleReveal {
-  0%{transform:scale(.92);}
-  100%{transform:scale(1);}
+  0%{opacity:.96; transform:scale(.985);}
+  100%{opacity:1; transform:scale(1);}
+}
+
+@keyframes oaiIvoryIntroVeil {
+  0%, 72%{opacity:1;}
+  100%{opacity:0;}
 }
 
 
@@ -214,7 +220,7 @@ html.oai-cover-first-reveal #cover > * {
     -webkit-mask-image:none;
     mask-image:none;
     box-shadow:0 0 0 999px #f5f0e8;
-    animation:oaiJesusIntroPhotoMobile 1.80s cubic-bezier(.18,.76,.22,1) both;
+    animation:oaiJesusIntroPhotoMobile 1.62s cubic-bezier(.18,.76,.22,1) both;
   }
 }
 @keyframes oaiJesusIntroPhotoMobile {
@@ -456,16 +462,16 @@ html.oai-cover-first-reveal #cover > * {
         try{
           root.classList.add('oai-cover-under-intro-reveal');
         }catch(_e){}
-      }, 1520);
+      }, 1260);
       setTimeout(function(){
         try{
           root.classList.remove('oai-first-entry-intro','oai-cover-under-intro-reveal','oai-ivory-wipe-transition');
           root.classList.add('oai-cover-first-reveal');
           setTimeout(function(){
             try{ root.classList.remove('oai-cover-first-reveal'); }catch(__e){}
-          }, 480);
+          }, 360);
         }catch(_e){}
-      }, 1800);
+      }, 1620);
     }
   }else{
     root.classList.remove('oai-cover-booting','oai-first-entry-intro','oai-cover-under-intro-reveal','oai-ivory-wipe-transition');
@@ -627,7 +633,7 @@ window.APP_CONFIG = {
 <meta name="theme-color" content="#0e1535">
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#0e1535">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0e1535">
-<script id="oai-status-bar-theme-lock-V1-71">
+<script id="oai-status-bar-theme-lock-V1-72">
 (function(){
   'use strict';
   var COLOR='#0e1535';
@@ -643,28 +649,28 @@ window.APP_CONFIG = {
   window.addEventListener('focus', lockStatusTheme, {passive:true});
 })();
 </script>
-<link rel="manifest" href="manifest.json?v=V1-71">
-<link rel="apple-touch-icon" href="icon-192x192.png?v=V1-71">
+<link rel="manifest" href="manifest.json?v=V1-72">
+<link rel="apple-touch-icon" href="icon-192x192.png?v=V1-72">
 <meta name="format-detection" content="telephone=no">
 <meta name="description" content="가톨릭길동무 - 가톨릭 신앙생활 종합 앱">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="가톨릭길동무">
 <meta property="og:title" content="가톨릭길동무">
 <meta property="og:description" content="성지 · 성당 · 기도문 · 순례길 · 가톨릭 웹사이트 안내">
-<meta property="og:image" content="icon-512x512.png?v=V1-71">
+<meta property="og:image" content="icon-512x512.png?v=V1-72">
 <meta property="og:image:width" content="512">
 <meta property="og:image:height" content="512">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="가톨릭길동무">
 <meta name="twitter:description" content="성지 · 성당 · 기도문 · 순례길 · 가톨릭 웹사이트 안내">
-<meta name="twitter:image" content="icon-512x512.png?v=V1-71">
+<meta name="twitter:image" content="icon-512x512.png?v=V1-72">
 <title>가톨릭길동무</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Crect width=%2232%22 height=%2232%22 fill=%22%230e1535%22/%3E%3Ctext x=%226%22 y=%2226%22 font-size=%2224%22 fill=%22%23d4aa6a%22%3E%E2%9C%9D%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style id="oai-initial-bg">html,body{margin:0;width:100%;height:100%;min-height:100%;background:#f5f0e8;overflow:hidden;color-scheme:light;}#cover{background:#f5f0e8;min-height:100%;}#app{background:#f8f6f2;display:none;}</style>
-<link rel="stylesheet" href="style.css?v=V1-71">
+<link rel="stylesheet" href="style.css?v=V1-72">
 
 <script id="oai-android-update-gate-script">
 (function(){
@@ -941,7 +947,7 @@ window.APP_CONFIG = {
   </div>
 </div>
 <div id="cover">
-<div id="oai-build-marker" aria-label="현재 버전" role="status" hidden aria-hidden="true">V1-71</div>
+<div id="oai-build-marker" aria-label="현재 버전" role="status" hidden aria-hidden="true">V1-72</div>
   <div id="cv-pull-modern" aria-hidden="true">
   <div class="cv-pull-ring">
     <svg viewBox="0 0 24 24" class="cv-pull-icon">
@@ -1007,8 +1013,8 @@ window.APP_CONFIG = {
       <div id="cover-action-row" class="cover-action-single">
         <div id="cover-update-box">
           <button id="cover-update-btn" class="cover-refresh-main-btn" type="button"
-                  data-target-version="V1-71"
-                  aria-label="V1-71 앱 새로고침"><span class="refresh-version-main">V1</span><span class="refresh-version-sub">-71</span> 새로고침</button>
+                  data-target-version="V1-72"
+                  aria-label="V1-72 앱 새로고침"><span class="refresh-version-main">V1</span><span class="refresh-version-sub">-71</span> 새로고침</button>
           <div id="cover-update-hint" role="status" aria-live="polite"></div>
         </div>
       </div>
@@ -1106,7 +1112,7 @@ window.APP_CONFIG = {
         <span class="cover-menu-icon">📘</span>
         <span class="cover-menu-text">주요기능</span>
       </button>
-      <a id="cover-menu-privacy-link" class="cover-menu-item" href="privacy.html?v=V1-71">
+      <a id="cover-menu-privacy-link" class="cover-menu-item" href="privacy.html?v=V1-72">
         <span class="cover-menu-icon">🛡</span>
         <span class="cover-menu-text">개인정보처리방침</span>
       </a>
@@ -1118,9 +1124,9 @@ window.APP_CONFIG = {
   </div>
 </div>
 
-<script src="constants.js?v=V1-71"></script>
-<script src="core.js?v=V1-71"></script>
-<script src="app.js?v=V1-71"></script>
+<script src="constants.js?v=V1-72"></script>
+<script src="core.js?v=V1-72"></script>
+<script src="app.js?v=V1-72"></script>
 <div id="oai-category-entry-veil" aria-hidden="true"></div>
 <div id="app"><div id="tabbar"><button id="tab-btn-nearby" class="tab-btn" data-tab="nearby"><span class="tab-icon">📍</span><span id="tab-nearby-lbl">내주변</span></button><button id="tab-btn-list" class="tab-btn" data-tab="list"><span class="tab-icon">📋</span><span id="tab-list-lbl">목록</span></button><button id="tab-btn-region" class="tab-btn" data-tab="region"><span class="tab-icon">🔍</span>지역검색
     </button><button id="tab-btn-route" class="tab-btn" data-tab="route"><span class="tab-icon">🧭</span>길찾기
@@ -1196,13 +1202,13 @@ window.APP_CONFIG = {
     </div>
   </div>
 </div>
-<script src="web.js?v=V1-71"></script>
+<script src="web.js?v=V1-72"></script>
 
 <div id="qna-view" role="dialog" aria-modal="true" aria-label="문의·건의" class="module-view"><div class="module-bar qna"><div class="module-bar-main"><div class="module-bar-ico">✝</div><div class="module-bar-txt"><div class="module-bar-title">문의·건의</div><div class="module-bar-sub">질문, 오류, 수정요청을 남겨주세요</div></div></div><button id="qna-close-btn" class="module-close" aria-label="문의·건의 닫기">×</button></div><div class="qna-body"><div class="qna-tabs"><button id="qna-tab-write" class="qna-tab on" type="button">작성</button></div><div class="qna-list" id="qna-list"></div></div></div>
 
-<script src="patches.js?v=V1-71"></script>
+<script src="patches.js?v=V1-72"></script>
 
-<script src="sw-update.js?v=V1-71"></script>
+<script src="sw-update.js?v=V1-72"></script>
 
 </body>
 </html>
