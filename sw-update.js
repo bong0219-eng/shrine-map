@@ -10,7 +10,7 @@
   // SW_BUILD_VERSION:  SW 등록·캐시 키용 전체 버전 (sw.js BUILD_VERSION과 일치해야 함)
   // ★ 버전 업그레이드 시 두 값 모두 수정, sw.js BUILD_VERSION과 SW_BUILD_VERSION을 동일하게 맞출 것
   var APP_VERSION = 'V2';
-  var SW_BUILD_VERSION = 'V2-3';
+  var SW_BUILD_VERSION = 'V2-4';
   window.APP_VERSION = APP_VERSION;
 
   function now(){ return Date.now ? Date.now() : new Date().getTime(); }
