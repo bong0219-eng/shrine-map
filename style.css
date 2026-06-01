@@ -2120,25 +2120,43 @@ html.oai-cover-booting #cover > * {
 .cover-header {
   flex: 0 0 auto;
   width: 100%;
-  padding: 0 18px clamp(6px, calc(var(--cover-vh, 1vh) * 1.15), 14px);
+  padding: clamp(10px, calc(var(--cover-vh, 1vh) * 1.45), 15px) 18px clamp(11px, calc(var(--cover-vh, 1vh) * 1.55), 17px);
   margin: 0;
   text-align: center;
   box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+  border-radius: 22px;
+  background: linear-gradient(135deg, #2f3742 0%, #3f4752 100%);
+  border: 1px solid rgba(212,170,106,.22);
+  box-shadow: 0 8px 18px rgba(31,42,68,.10), inset 0 1px 0 rgba(255,255,255,.10);
 }
 .cover-title {
-  font-family: "Noto Serif KR", "Noto Sans KR", serif;
+  display: inline-block;
   font-size: clamp(32px, 8.9vw, 43px);
-font-weight: 800;
+  font-family: "Noto Sans KR", "Apple SD Gothic Neo", sans-serif;
+  font-weight: 800;
   letter-spacing: -.03em;
-  color: #3e362e;
+  color: #fffaf0;
   margin: 0;
   line-height: 1.14;
+  text-shadow: 0 2px 7px rgba(0,0,0,.16);
+}
+.cover-title::after {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 2px;
+  margin: clamp(7px, calc(var(--cover-vh, 1vh) * .85), 10px) 0 0;
+  border-radius: 999px;
+  background: #d4aa6a;
+  box-shadow: 0 1px 4px rgba(212,170,106,.25);
 }
 .cover-subtitle {
   font-size: 16px;
-  font-weight: 600;
-  color: #81b29a;
-  margin: 0 0 8px;
+  font-weight: 650;
+  color: rgba(255,250,240,.74);
+  margin: 0 0 7px;
   line-height: 1.45;
 }
 
@@ -2158,10 +2176,10 @@ font-weight: 800;
   justify-content: center;
   gap: clamp(5px, calc(var(--cover-vh, 1vh) * 0.8), 10px);
   box-sizing: border-box;
-  transform: translateY(clamp(8px, calc(var(--cover-vh, 1vh) * 1.6), 16px));
 }
 
 .cover-grid {
+  position: relative;
   flex: 1 1 auto;
   min-height: 0;
   width: 100%;
@@ -2174,30 +2192,85 @@ font-weight: 800;
   column-gap: clamp(4px, 1.2vw, 8px);
   align-content: stretch;
   box-sizing: border-box;
+  isolation: isolate;
+}
+/* V3-46: 커버 카테고리 박스 상단 라인 단색 유지 / 내부 그라데이션 1안 복귀 */
+.cover-grid::after {
+  content: none;
+  display: none;
 }
 .cover-card {
+  --cover-card-point: #d4aa6a;
+  position: relative;
+  overflow: hidden;
   width: 100%;
   height: 100%;
   min-height: 0;
-  padding: clamp(5px, calc(var(--cover-vh, 1vh) * 1.05), 10px) 7px;
-  border-radius: 18px;
+  padding: clamp(6px, calc(var(--cover-vh, 1vh) * 1.0), 10px) 7px clamp(5px, calc(var(--cover-vh, 1vh) * 0.85), 9px);
+  border-radius: 17px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 7px;
+  gap: 6px;
   text-align: center;
   cursor: pointer;
-  background: var(--card-bg);
-  border: 1px solid rgba(0,0,0,.05);
-  box-shadow: 0 4px 6px rgba(0,0,0,.02);
+  background: linear-gradient(180deg, #fffdf8 0%, #f1e5d3 100%);
+  border: 1px solid rgba(126,104,74,.24);
+  box-shadow:
+    0 1px 2px rgba(31,42,68,.045),
+    inset 0 1px 0 rgba(255,255,255,.96),
+    inset 0 -7px 13px rgba(136,112,78,.13),
+    inset 0 0 0 1px rgba(255,255,255,.34);
   outline: none;
   box-sizing: border-box;
 }
-#cover .cover-grid > #cc-1.cover-card-wide {
-  grid-column: 1 / -1 !important;
+.cover-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--cover-card-point);
+  opacity: .34;
+  border-radius: 0;
 }
-.cover-card.app-pressing { transform: translateY(8px) scale(.974); box-shadow: 0 2px 3px rgba(0,0,0,.02); filter: brightness(.94); transition: transform .16s, filter .16s; }
+.cover-card::after {
+  content: "";
+  position: absolute;
+  left: 4px;
+  right: 4px;
+  top: 4px;
+  bottom: 4px;
+  border-radius: 13px;
+  border: 1px solid rgba(255,255,255,.42);
+  pointer-events: none;
+}
+
+#cc-1 { --cover-card-point: #c49a57; }
+#cc-2 { --cover-card-point: #3F4752; }
+#cc-3 { --cover-card-point: #1f2a44; }
+#cc-4 { --cover-card-point: #3F6F5A; }
+#cc-5 { --cover-card-point: #5c4a37; }
+#cc-6 { --cover-card-point: #2563EB; }
+#cc-7 { --cover-card-point: #1a3560; }
+.cover-card .cover-icon-wrap,
+.cover-card .cover-name {
+  position: relative;
+  z-index: 1;
+}
+
+.cover-card.app-pressing {
+  transform: translateY(7px) scale(.978);
+  box-shadow:
+    0 1px 2px rgba(31,42,68,.035),
+    inset 0 1px 0 rgba(255,255,255,.96),
+    inset 0 -7px 13px rgba(136,112,78,.16),
+    inset 0 0 0 1px rgba(255,255,255,.36);
+  filter: brightness(.97);
+  transition: transform .16s, filter .16s, box-shadow .16s;
+}
 
 .cover-icon-wrap {
   width: clamp(44px, 12.6vw, 58px);
@@ -2236,7 +2309,7 @@ font-weight: 800;
   width: 100%;
   min-width: 0;
   margin: 0;
-  font-size: 16px;
+  font-size: calc(16px * var(--app-font-scale));
   line-height: 1.22;
   font-weight: 850;
   letter-spacing: -.02em;
@@ -2244,6 +2317,9 @@ font-weight: 800;
   word-break: keep-all;
   color: var(--text-main);
 }
+#cc-5 .cover-name { font-size: 13px; letter-spacing: -.04em; }
+
+/* 커버 액션 줄 */
 #cover-action-row {
   width: 100%;
   margin: 0;
@@ -2949,7 +3025,7 @@ html.oai-font-global .c-gw, html.oai-font-global .c-rg, html.oai-font-global .c-
 html.oai-font-global .dd, html.oai-font-global .sg { font-size: calc(12px * var(--app-inner-font-scale)); line-height: 1.45; }
 
 html.oai-font-global #cover .cover-title {
-  font-family: "Noto Serif KR", "Noto Sans KR", serif;
+  font-family: "Noto Sans KR", "Apple SD Gothic Neo", sans-serif;
   font-size: clamp(32px, 8.9vw, 43px);
 }
 html.oai-font-global #cover .cover-subtitle { font-size: 16px; }
@@ -3002,7 +3078,7 @@ html.oai-font-global #region-body .dio-hd { font-size: calc(17px * var(--app-inn
   #cover { --cover-top-safe: calc(env(safe-area-inset-top, 0px) + clamp(70px, calc(var(--cover-vh, 1vh) * 10.8), 86px)); --cover-bottom-safe: calc(env(safe-area-inset-bottom, 0px) + clamp(12px, calc(var(--cover-vh, 1vh) * 1.8), 20px)); padding-top: var(--cover-top-safe); padding-bottom: var(--cover-bottom-safe); }
   #cover .cover-header { padding-bottom: 12px; }
   #cover .cover-title {
-  font-family: "Noto Serif KR", "Noto Sans KR", serif;
+  font-family: "Noto Sans KR", "Apple SD Gothic Neo", sans-serif;
   font-size: clamp(32px, 8.9vw, 43px);
 }
   #cover .cover-subtitle { font-size: 10px; }
@@ -4475,19 +4551,21 @@ html.app-active #cover-menu-btn { display: none !important; }
 
 #cover-main-block {
   flex: 1 1 auto !important;
-  min-height: 0 !important;
-  height: 100% !important;
+  height: auto !important;
   max-height: 100% !important;
+  min-height: 0 !important;
   width: 100% !important;
+  contain: layout paint !important;
   max-width: min(500px, calc(100vw - 20px)) !important;
   margin: 0 auto !important;
-  padding: 0 10px !important;
+  padding: 0 10px 0 !important;
   display: flex !important;
   flex-direction: column !important;
   align-items: stretch !important;
-  justify-content: flex-end !important;
-  gap: clamp(5px, calc(var(--cover-vh, 1vh) * 0.75), 8px) !important;
+  justify-content: center !important;
+  gap: clamp(5px, calc(var(--cover-vh, 1vh) * 0.8), 10px) !important;
   box-sizing: border-box !important;
+  transform: none !important;
 }
 
 #cover .cover-grid {
@@ -5032,9 +5110,10 @@ html.retreat-mode #tab-btn-list.active #tab-list-lbl {
   overflow: visible !important;
 }
 #cover-main-block {
-  gap: clamp(3px, calc(var(--cover-vh, 1vh) * 0.7), 6px) !important;
-  padding-bottom: clamp(0px, calc(var(--cover-vh, 1vh) * 0.45), 5px) !important;
-  transform: translateY(clamp(-2px, calc(var(--cover-vh, 1vh) * -0.2), 0px)) !important;
+  gap: clamp(5px, calc(var(--cover-vh, 1vh) * 0.8), 10px) !important;
+  padding-bottom: 0 !important;
+  transform: none !important;
+  justify-content: center !important;
 }
 #cover #cover-action-row.cover-action-single {
   position: relative !important;
@@ -5102,21 +5181,23 @@ html.retreat-mode #tab-btn-list.active #tab-list-lbl {
   position: fixed !important;
   left: 0 !important;
   right: 0 !important;
-  bottom: calc(env(safe-area-inset-bottom, 0px) - clamp(22px, calc(var(--cover-vh, 1vh) * 2.6), 36px)) !important;
+  bottom: 0 !important;
   transform: none !important;
   flex: none !important;
   width: 100% !important;
-  max-width: none !important;
-  margin: 0 !important;
-  padding: 0 16px !important;
+  max-width: 720px !important;
+  margin: 0 auto !important;
+  padding: 3px 22px calc(7px + env(safe-area-inset-bottom, 0px)) 60px !important;
   text-align: center !important;
-  font-size: clamp(8px, 2.1vw, 9.4px) !important;
-  line-height: 1.55 !important;
+  font-size: clamp(7.8px, calc(var(--cover-vh, 1vh) * 1.1), 9px) !important;
+  font-weight: 500 !important;
+  line-height: 1.28 !important;
   letter-spacing: -.02em !important;
   color: rgba(96,86,76,.72) !important;
   pointer-events: none !important;
   z-index: 130 !important;
   box-sizing: border-box !important;
+  white-space: normal !important;
 }
 
 /* 지도 하단 정보카드/순례길 카드 최종 위치 */
@@ -5241,9 +5322,9 @@ html.retreat-mode #tab-btn-list.active #tab-list-lbl {
     --cover-bottom-safe: calc(env(safe-area-inset-bottom, 0px) + clamp(16px, calc(var(--cover-vh, 1vh) * 2.0), 24px)) !important;
   }
   #cover-main-block {
-    gap: clamp(2px, calc(var(--cover-vh, 1vh) * 0.55), 5px) !important;
+    gap: clamp(4px, calc(var(--cover-vh, 1vh) * .55), 7px) !important;
     padding-bottom: 0 !important;
-    transform: translateY(clamp(-1px, calc(var(--cover-vh, 1vh) * -0.15), 0px)) !important;
+    transform: none !important;
   }
   #cover #cover-action-row.cover-action-single {
     height: 34px !important;
@@ -5267,9 +5348,9 @@ html.retreat-mode #tab-btn-list.active #tab-list-lbl {
     padding: 0 10px !important;
   }
   #cover-bottom-note {
-    bottom: calc(env(safe-area-inset-bottom, 0px) - clamp(18px, calc(var(--cover-vh, 1vh) * 2.3), 30px)) !important;
-    font-size: clamp(7.7px, 2.0vw, 8.9px) !important;
-    line-height: 1.48 !important;
+    bottom: 0 !important;
+    font-size: clamp(7.8px, calc(var(--cover-vh, 1vh) * 1.1), 9px) !important;
+    line-height: 1.28 !important;
   }
   .trail-sheet {
     bottom: 5px !important;
@@ -5432,13 +5513,13 @@ html.retreat-mode #tab-btn-list.active #tab-list-lbl {
   padding-bottom: 16px !important;
 }
 
-/* 커버 하단 문구: 잘리지 않는 범위에서 아주 조금 아래로 */
+/* 커버 하단 문구: V3-54 기준으로 하단 고정, 잘림 방지 */
 #cover-bottom-note {
-  bottom: calc(env(safe-area-inset-bottom, 0px) - clamp(30px, calc(var(--cover-vh, 1vh) * 3.18), 45px)) !important;
+  bottom: 0 !important;
 }
 @media (max-height: 740px) {
   #cover-bottom-note {
-    bottom: calc(env(safe-area-inset-bottom, 0px) - clamp(24px, calc(var(--cover-vh, 1vh) * 2.78), 37px)) !important;
+    bottom: 0 !important;
   }
 }
 
@@ -5637,14 +5718,14 @@ html.ios-device #app #info-card.open {
    - Android textZoom과 기능 흐름은 건드리지 않는다. */
 #cover .cover-subtitle,
 html.oai-font-global #cover .cover-subtitle {
-  font-size: 18px !important;
+  font-size: 16px !important;
   white-space: nowrap !important;
   overflow: visible !important;
   text-overflow: clip !important;
 }
 #cover .cover-title,
 html.oai-font-global #cover .cover-title {
-  font-family: "Noto Serif KR", "Noto Sans KR", serif;
+  font-family: "Noto Sans KR", "Apple SD Gothic Neo", sans-serif;
   font-size: clamp(32px, 8.9vw, 43px);
 white-space: nowrap !important;
   overflow: visible !important;
@@ -5652,15 +5733,15 @@ white-space: nowrap !important;
 }
 #cover #cover-bottom-note,
 html.oai-font-global #cover #cover-bottom-note {
-  font-size: clamp(9.4px, calc(var(--cover-vh, 1vh) * 1.28), 11px) !important;
-  white-space: nowrap !important;
+  font-size: clamp(7.8px, calc(var(--cover-vh, 1vh) * 1.1), 9px) !important;
+  white-space: normal !important;
 }
 #cover .cover-name,
 html.oai-font-global #cover .cover-name,
 #cc-5 .cover-name,
 html.oai-font-global #cc-5 .cover-name {
-  font-size: calc(18px * var(--app-font-scale, 1)) !important;
-  line-height: 1.14 !important;
+  font-size: calc(16px * var(--app-font-scale, 1)) !important;
+  line-height: 1.22 !important;
   letter-spacing: -.03em !important;
   max-width: none !important;
   max-height: none !important;
@@ -5687,17 +5768,17 @@ html.oai-font-global #cc-5 .cover-emoji {
 html.oai-font-global #cover #cc-1 .cover-name,
 #cover #mass-quick-modal .mass-quick-btn strong,
 html.oai-font-global #cover #mass-quick-modal .mass-quick-btn strong {
-  font-size: calc(18px * var(--app-font-scale, 1)) !important;
-  line-height: 1.14 !important;
+  font-size: calc(16px * var(--app-font-scale, 1)) !important;
+  line-height: 1.22 !important;
   font-weight: 850 !important;
   letter-spacing: -.03em !important;
 }
 #cover #cover-menu-btn .cover-menu-label {
-  font-size: calc(14.5px * var(--app-font-scale, 1)) !important;
+  font-size: calc(12px * var(--app-font-scale, 1)) !important;
 }
 #cover #cover-update-btn,
 #cover .cover-refresh-main-btn {
-  font-size: calc(14.5px * var(--app-font-scale, 1)) !important;
+  font-size: calc(11.5px * var(--app-font-scale, 1)) !important;
 }
 #cover #qna-cover-btn,
 #cover #cover-guide-btn {
@@ -5771,7 +5852,7 @@ html.oai-font-global .sheet-title {
 @media (max-width: 370px) {
   #cover .cover-title,
   html.oai-font-global #cover .cover-title {
-  font-family: "Noto Serif KR", "Noto Sans KR", serif;
+  font-family: "Noto Sans KR", "Apple SD Gothic Neo", sans-serif;
   font-size: clamp(32px, 8.9vw, 43px);
 }
   #cover .cover-subtitle,
